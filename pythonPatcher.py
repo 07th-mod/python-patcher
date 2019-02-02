@@ -29,12 +29,20 @@ check07thModServerConnection()
 rootWindow = tkinter.Tk()
 
 # Scan for moddable games on the user's computer before starting installation
-higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
-umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
+# higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
+#umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
 
-scanner = GameScanner(uminekoModList=umimodList, higurashiModList=higuModList)
-scanner.scan()
-for config in scanner.configList:
+with open('uminekoInstallData.json', 'r', encoding="utf-8") as content_file:
+	umimodList = json.loads(content_file.read())["mods"]
+
+# with open('higurashiInstallData.json', 'r', encoding="utf-8") as content_file:
+# 	higuModList = json.loads(content_file.read())["mods"]
+
+#for now, don't try to load higurashi data. Eventually, merge both json into one
+scanner = GameScanner(uminekoModList=umimodList)
+configList = scanner.scan()
+
+for config in configList:
 	print(config)
 
 def closeAndStartHigurashi():
@@ -44,7 +52,7 @@ def closeAndStartHigurashi():
 
 def closeAndStartUmineko():
 	rootWindow.withdraw()
-	uminekoInstaller.mainUmineko(rootWindow, scanner.configList)
+	uminekoInstaller.mainUmineko(rootWindow, configList)
 	installFinishedMessage = "Install Finished. Temporary install files have been displayed - please delete the " \
 							 "temporary files after checking the mod has installed correctly."
 	print(installFinishedMessage)

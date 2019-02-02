@@ -1,27 +1,83 @@
 from common import *
 
 class GameInstallConfig:
-	def __init__(self, gameType, gamePath, gameConfig):
-		self.gameType = gameType #high level game type, eg Higurashi or Umineko
-		self.gameName = gameConfig['name'] #the name of the game, which should match the name in the JSON file
-		self.gamePath = gamePath #the path to the game
-		self.gameConfig = gameConfig #configuration information, taken from the json file
+	#modOption: each game may have more than one mod option, specifying which files to use.
+	# def __init__(self, gamePath, gameConfig, modOption):
+	# 	self.type = gameConfig['type'] #high level game type, eg Higurashi or Umineko
+	# 	self.name = gameConfig['name'] #the name of the game, which should match the name in the JSON file
+	# 	self.path = gamePath #the path to the game
+	# 	self.CFBundleName = gameConfig['CFBundleName']
+	# 	self.dataname = gameConfig['dataname']
+	# 	self.target = gameConfig['target']
+
+	#object initialized in factory func
+	def __init__(self):
+		#these are only for type hinting
+		self.type = None
+		self.name = None
+		self.path = None
+		self.CFBundleName = None
+		self.dataname = None
+		self.target = None
+		self.files = None
+		self.os = None
+		self.type = None
+
+	def generateConfigs(gamePath, gameConfig):
+		retModOptions = []
+
+		for modOptionName, modOptionData in gameConfig['files'].items(): #'files' at this level is really mod options
+			installConfig = GameInstallConfig()
+
+			#this part is the same for each mod option
+			installConfig.type = gameConfig['type'] #high level game type, eg Higurashi or Umineko
+			installConfig.name = gameConfig['name'] #the name of the game, which should match the name in the JSON file
+			installConfig.path = gamePath #the path to the game
+			installConfig.CFBundleName = gameConfig['CFBundleName']
+			installConfig.dataname = gameConfig['dataname']
+			installConfig.target = gameConfig['target']
+
+			#this part is different for each mod option
+			installConfig.optionName = modOptionName
+			installConfig.files = modOptionData['files']
+			installConfig.os = modOptionData['os']
+			installConfig.supportedVariants = modOptionData['supportedVariants']
+
+			retModOptions.append(installConfig)
+
+		return retModOptions
 
 	def __repr__(self):
-		return "Type: [{}] Game Name: [{}] Path: [{}]".format(self.gameType, self.gameName, self.gamePath, self.gameConfig['name'])
+		return "Type: [{}] Game Name: [{}] Path: [{}]".format(self.type, self.name, self.path)
 
 class GameScanner:
-	def __init__(self, uminekoModList, higurashiModList):
+	def __init__(self, uminekoModList):
 		self.uminekoModList = uminekoModList
-		self.higurashiModList = higurashiModList
-		self.configList = []
 
 	def scan(self):
 		configList = []
 		for gamePath in self.getAllPossibleGames():
 			gameInstallConfig = self.getGameInstallConfigFromPath(gamePath)
 			if gameInstallConfig is not None:
-				self.configList.append(gameInstallConfig)
+				configList.extend(gameInstallConfig)
+
+		# print out all configurations, Not sure how to generate/remove valid configurations without having another class which holds the return values.
+		debugPathToPrint = None
+		for config in configList:
+			if config.path != debugPathToPrint:
+				print("Options for Path", config.path)
+				debugPathToPrint = config.path
+
+			option_valid = False
+			if IS_WINDOWS and "win" in config.os or IS_LINUX and "linux" in config.os or IS_MAC and "mac" in config.os:
+				option_valid = True
+
+			valid_symbol = " "
+			if option_valid:
+				valid_symbol = "X"
+			print("\t- [{}] {}: Supports {}".format(valid_symbol, config.optionName, config.os))
+
+		return configList
 
 	def getGameInstallConfigFromPath(self, path):
 		# Given a game path, returns the corresponding game install information for that path
@@ -32,7 +88,7 @@ class GameScanner:
 				try:
 					for filename in os.listdir(gamePath):
 						if uminekoGameInfo['dataname'].lower() in filename.lower():
-							return GameInstallConfig("Umineko", gamePath, uminekoGameInfo)
+							return GameInstallConfig.generateConfigs(gamePath, uminekoGameInfo)
 				except:
 					print("getGameNameFromGamePath failed on path [{}]".format(gamePath))
 
@@ -74,16 +130,17 @@ class GameScanner:
 
 			for mod in modList:
 				if mod["dataname"] == name:
-					return GameInstallConfig("Higurashi", gamePath, mod)
+					return GameInstallConfig.generateConfigs(gamePath, mod)
 			return None
 
 		uminekoConfig = getUminekoGameInformationFromGamePath(path, self.uminekoModList)
 		if uminekoConfig:
 			return uminekoConfig
 
-		higurashiConfig = getGameNameFromGamePathHigurashi(path, self.higurashiModList)
+		higurashiConfig = getGameNameFromGamePathHigurashi(path, self.uminekoModList)
 		if higurashiConfig:
 			return higurashiConfig
+
 
 		return None
 

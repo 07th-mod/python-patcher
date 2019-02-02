@@ -2,12 +2,12 @@
     "version": 1,
     "mods": [
         {
+            "type": "Umineko",
             "name": "UminekoQuestion",
             "displayName" : "Umineko Question (Ch. 1-4)",
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko1to4.app",
             "target": "This Field Is Not Used",
-            "modTypes" : ["modVoiceOnly", "modFullPatch", "mod1080p"],
             "files": {
                 "voiceOnly" : {
                     "files":[
@@ -18,7 +18,7 @@
                         "https://07th-mod.com/download.php?repository=umineko-question&file=voice_only/InDevelopment/ManualUpdates/0.utf"
                     ],
                     "os": ["win", "mac", "linux"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 },
 
                 "full" : {
@@ -28,7 +28,8 @@
                         "https://07th-mod.com/Beato/Umineko1to4"
                     ],
                     "os": ["win", "mac", "linux"],
-                    "type" : "all"},
+                    "supportedVariants" : ["steam", "mg"]
+                },
 
                 "1080p-win" : {
                     "files": [
@@ -40,7 +41,7 @@
                         "https://07th-mod.com/Beato/1080p/Umineko1to4.exe"
                     ],
                     "os": ["win"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 },
 
                 "1080p-mac-linux" : {
@@ -54,17 +55,17 @@
                         "https://07th-mod.com/Beato/1080p/Umineko1to4"
                     ],
                     "os": ["mac", "linux"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 }
             }
         },
         {
+            "type": "Umineko",
             "name": "UminekoAnswer",
             "displayName" : "Umineko Answer (Ch. 5-8)",
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko5to8.app",
             "target": "This Field Is Not Used",
-            "modTypes" : ["modVoiceOnly", "modFullPatch", "modADVMode"],
             "files": {
                 "voice_only" : {
                     "files": [
@@ -76,7 +77,7 @@
                         "https://07th-mod.com/download.php?repository=umineko-answer&file=master/voices-only/0.utf"
                     ],
                     "os": ["win", "mac", "linux"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 },
 
                 "full" : {
@@ -86,7 +87,7 @@
                         "https://07th-mod.com/Bern/Umineko5to8"
                     ],
                     "os": ["win", "mac", "linux"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 },
 
                 "adv" : {
@@ -99,7 +100,7 @@
                         "https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z"
                     ],
                     "os": ["win", "mac", "linux"],
-                    "type" : "all"
+                    "supportedVariants" : ["steam", "mg"]
                 }
             }
         }
