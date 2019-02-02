@@ -256,7 +256,6 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	if IS_WINDOWS:
 		tryShowFolder(downloadTempDir)
 
-
 #do install given a installer config object
 def mainUmineko(rootWindow, gameInstallConfigs):
 	print("Installer got: ", gameInstallConfigs)
@@ -265,8 +264,13 @@ def mainUmineko(rootWindow, gameInstallConfigs):
 
 	print("Game types: ", gameTypes)
 
+	# for config in gameInstallConfigs:
+	# 	print("Mod types: ", config.gameConfig["modTypes"])
+
 	for config in gameInstallConfigs:
-		print("Mod types: ", config.gameConfig["modTypes"])
+		print("Options for ", config.gameConfig["name"], "at", config.gamePath)
+		for optionName,v in config.gameConfig["files"].items():
+			print("\t- {}".format(optionName))
 
 	# print("Getting latest mod info (Umineko)...")
 	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")

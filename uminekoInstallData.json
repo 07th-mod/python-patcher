@@ -7,9 +7,9 @@
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko1to4.app",
             "target": "This Field Is Not Used",
-            "modTypes" : ["modVoiceOnly", "modFullPatch", "mod1080p"],
+            "modTypes" : ["modVoiceOnly", "modFullPatch", "mod1080p"], //REMOVE THIS FIELD LATER!
             "files": {
-                "voice_only" : [
+                "voiceOnly" : [
                     "https://07th-mod.com/Beato/Umineko-Voices.7z",
                     "https://07th-mod.com/Beato-voice/Umineko1to4.exe",
                     "https://07th-mod.com/Beato-voice/Umineko1to4.app.zip",
@@ -23,7 +23,7 @@
                     "https://07th-mod.com/Beato/Umineko1to4"
                 ],
 
-                "1080p_windows" : [
+                "1080p-win" : [
                     "https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4",
                     "https://07th-mod.com/download.php?repository=umineko-question&file=1080p/InDevelopment/ManualUpdates/0.utf",
                     "https://07th-mod.com/Bern/Umineko-ADV_Mode.7z",
@@ -32,7 +32,7 @@
                     "https://07th-mod.com/Beato/1080p/Umineko1to4.exe"
                 ],
 
-                "1080p_linux_mac" : [
+                "1080p-unix" : [
                     "https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4",
                     "https://07th-mod.com/download.php?repository=umineko-question&file=1080p/InDevelopment/ManualUpdates/0.utf",
                     "https://07th-mod.com/Bern/Umineko-ADV_Mode.7z",
