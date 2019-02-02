@@ -170,6 +170,7 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	if os.path.isdir(downloadTempDir):
 		print("Information: Temp directories already exist - continued or overwritten install")
 
+		# TODO: move this voice only warning into GUI instead, or handle in some other way
 		if "voice_only" in modToInstall:
 			continueInstallation = messagebox.askyesno("Voice Only Warning",
 			                       "We have detected you have run the 'Voice Only' installer before.\n\n" +
@@ -197,41 +198,22 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 		os.chmod(executablePath, current.st_mode | 0o111)
 
 	# Download and extract files for Question/Answer Arcs
+	uminekoDownload(downloadTempDir, url_list=gameInfo["files"][modToInstall]["files"])
+	uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
+
+	# Apply some fixes and add utility tools
 	if isQuestionArcs:
-		if modToInstall == "mod_voice_only":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-		elif modToInstall == "mod_full_patch":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-		elif modToInstall == "mod_1080p":
-			if IS_WINDOWS:
-				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_windows"])
-			else:
-				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_linux_mac"])
-		else:
-			print("ERROR - unknown mod")
-			exitWithError()
-
-		uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-
 		# need to un-quarantine .app file on MAC
 		if IS_MAC:
 			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
 
 		makeExecutable(os.path.join(gamePath, "Umineko1to4"))
 		makeExecutable(os.path.join(gamePath, "Umineko1to4.app/Contents/MacOS/umineko4"))
+
+		# write batch file to let users launch game in debug mode
+		with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
+			f.writelines(["Umineko1to4.exe --debug", "pause"])
 	else:
-		if modToInstall == "mod_voice_only":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-		elif modToInstall == "mod_full_patch":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-		elif modToInstall == "mod_adv_mode":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["adv"])
-		else:
-			print("ERROR - unknown mod")
-			exitWithError()
-
-		uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-
 		# need to un-quarantine .app file on MAC
 		if IS_MAC:
 			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
@@ -239,11 +221,8 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 		makeExecutable(os.path.join(gamePath, "Umineko5to8"))
 		makeExecutable(os.path.join(gamePath, "Umineko5to8.app/Contents/MacOS/umineko8"))
 
-	# write batch file to let users launch game in debug mode
-	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
-		f.writelines(["Umineko1to4.exe --debug", "pause"])
-	with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
-		f.writelines(["Umineko5to8.exe --debug", "pause"])
+		with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
+			f.writelines(["Umineko5to8.exe --debug", "pause"])
 
 	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
 	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
