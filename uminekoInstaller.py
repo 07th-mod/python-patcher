@@ -269,8 +269,8 @@ def mainUmineko(rootWindow, gameInstallConfigs):
 
 	for config in gameInstallConfigs:
 		print("Options for ", config.gameConfig["name"], "at", config.gamePath)
-		for optionName,v in config.gameConfig["files"].items():
-			print("\t- {}".format(optionName))
+		for optionName, optionDetails in config.gameConfig["files"].items():
+			print("\t- {}: Supports {}".format(optionName, optionDetails["os"]))
 
 	# print("Getting latest mod info (Umineko)...")
 	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")

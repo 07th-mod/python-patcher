@@ -17,7 +17,7 @@
                         "https://07th-mod.com/Beato-voice/Umineko1to4",
                         "https://07th-mod.com/download.php?repository=umineko-question&file=voice_only/InDevelopment/ManualUpdates/0.utf"
                     ],
-                    "os": [],
+                    "os": ["win", "mac", "linux"],
                     "type" : "all"
                 },
 
@@ -27,7 +27,7 @@
                         "https://07th-mod.com/Beato/0utf_umineko1to4.app.zip",
                         "https://07th-mod.com/Beato/Umineko1to4"
                     ],
-                    "os": [],
+                    "os": ["win", "mac", "linux"],
                     "type" : "all"},
 
                 "1080p-win" : {
@@ -43,7 +43,7 @@
                     "type" : "all"
                 },
 
-                "1080p-unix" : {
+                "1080p-mac-linux" : {
                     "files":[
                         "https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4",
                         "https://07th-mod.com/download.php?repository=umineko-question&file=1080p/InDevelopment/ManualUpdates/0.utf",
@@ -75,7 +75,7 @@
                         "https://07th-mod.com/Bern-voice/Umineko5to8",
                         "https://07th-mod.com/download.php?repository=umineko-answer&file=master/voices-only/0.utf"
                     ],
-                    "os": [],
+                    "os": ["win", "mac", "linux"],
                     "type" : "all"
                 },
 
@@ -85,7 +85,7 @@
                         "https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip",
                         "https://07th-mod.com/Bern/Umineko5to8"
                     ],
-                    "os": [],
+                    "os": ["win", "mac", "linux"],
                     "type" : "all"
                 },
 
@@ -98,7 +98,7 @@
                         "https://07th-mod.com/download.php?repository=umineko-answer&file=adv_mode/0.utf",
                         "https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z"
                     ],
-                    "os": [],
+                    "os": ["win", "mac", "linux"],
                     "type" : "all"
                 }
             }
