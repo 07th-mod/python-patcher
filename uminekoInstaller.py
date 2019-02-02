@@ -166,7 +166,6 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = os.path.join(gamePath, "temp")
-	advDownloadTempDir = os.path.join(gamePath, "temp_adv")
 
 	if os.path.isdir(downloadTempDir):
 		print("Information: Temp directories already exist - continued or overwritten install")
@@ -184,10 +183,9 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 				exitWithError()
 
 	makeDirsExistOK(downloadTempDir)
-	makeDirsExistOK(advDownloadTempDir)
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
-	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
+	deleteAllInPathExceptSpecified([downloadTempDir],
 	                               extensions=['7z', 'zip'],
 	                               searchStrings=['graphic', 'voice'])
 
@@ -224,18 +222,15 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	else:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_full_patch":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_adv_mode":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
-			uminekoExtractAndCopyFiles(fromDir=advDownloadTempDir, toDir=gamePath)
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["adv"])
 		else:
 			print("ERROR - unknown mod")
 			exitWithError()
+
+		uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 
 		# need to un-quarantine .app file on MAC
 		if IS_MAC:
@@ -260,8 +255,6 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	# Open the temp folder so users can delete/backup any temp install files
 	if IS_WINDOWS:
 		tryShowFolder(downloadTempDir)
-		if 'adv' in modToInstall:
-			tryShowFolder(advDownloadTempDir)
 
 
 #do install given a installer config object

@@ -67,6 +67,10 @@
                 ],
 
                 "adv" : [
+                    "https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4",
+                    "https://07th-mod.com/Bern/Umineko5to8.exe",
+                    "https://07th-mod.com/Bern/Umineko5to8",
+                    "https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip",
                     "https://07th-mod.com/download.php?repository=umineko-answer&file=adv_mode/0.utf",
                     "https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z"
                 ]
