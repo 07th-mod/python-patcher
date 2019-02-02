@@ -1,0 +1,195 @@
+{
+	"version": 1,
+	"mods": [
+		{
+			"name": "Onikakushi",
+			"CFBundleName": "Higurashi When They Cry - Ch.1 Onikakushi",
+			"dataname": "HigurashiEp01_Data",
+			"target": "Onikakushi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/Onikakushi-CG.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-Movie.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-Voices.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=onikakushi"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/Onikakushi-CG.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-Voices.7z",
+					"https://07th-mod.com/rikachama/Onikakushi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=onikakushi"
+				]
+			}
+		},
+		{
+			"name": "Watanagashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.2 Watanagashi",
+			"dataname": "HigurashiEp02_Data",
+			"target": "Watanagashi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/Watanagashi-CG.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-Movie.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-Voices.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=watanagashi"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/Watanagashi-CG.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-Voices.7z",
+					"https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=watanagashi"
+				]
+			}
+		},
+		{
+			"name": "Tatarigoroshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.3 Tatarigoroshi",
+			"dataname": "HigurashiEp03_Data",
+			"target": "Tatarigoroshi",
+			"files": {
+				"win-steam": [
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Movie.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=tatarigoroshi"
+				],
+				"unix-steam": [
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=tatarigoroshi"
+				],
+				"win-mg": [
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Movie.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-UI_MG.7z",
+					"https://07th-mod.com/latest.php?repository=tatarigoroshi"
+				],
+				"unix-mg": [
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX-MG.7z",
+					"https://07th-mod.com/latest.php?repository=tatarigoroshi"
+				]
+			}
+		},
+		{
+			"name": "Himatsubushi",
+			"CFBundleName": "Higurashi When They Cry - Ch.4 Himatsubushi",
+			"CFBundleIdentifier": "unity.MangaGamer.Higurashi When They Cry - Ch.4 Himatsubushi",
+			"dataname": "HigurashiEp04_Data",
+			"target": "Himatsubushi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/Himatsubushi-CG.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-Movie.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-Voices.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=himatsubushi"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/Himatsubushi-CG.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-Voices.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=himatsubushi"
+				]
+			}
+		},
+		{
+			"name": "Meakashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.5 Meakashi",
+			"dataname": "HigurashiEp05_Data",
+			"target": "Meakashi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/Meakashi-CG.7z",
+					"https://07th-mod.com/rikachama/Meakashi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Meakashi-Movie.7z",
+					"https://07th-mod.com/rikachama/Meakashi-Voices.7z",
+					"https://07th-mod.com/rikachama/Meakashi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=meakashi"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/Meakashi-CG.7z",
+					"https://07th-mod.com/rikachama/Meakashi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Meakashi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Meakashi-Voices.7z",
+					"https://07th-mod.com/rikachama/Meakashi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=meakashi"
+				]
+			}
+		},
+		{
+			"name": "Tsumihoroboshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.6 Tsumihoroboshi",
+			"dataname": "HigurashiEp06_Data",
+			"target": "Tsumihoroboshi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-Movie.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-UI.7z",
+					"https://07th-mod.com/latest.php?repository=tsumihoroboshi"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-CG.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-CGAlt.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-Voices.7z",
+					"https://07th-mod.com/rikachama/Tsumihoroboshi-UI_UNIX.7z",
+					"https://07th-mod.com/latest.php?repository=tsumihoroboshi"
+				]
+			}
+		},
+		{
+			"name": "Console Arcs",
+			"CFBundleName": "Higurashi When They Cry - Console Arcs",
+			"CFBundleIdentifier": "unity.MangaGamer.Higurashi When They Cry - Console Arcs",
+			"dataname": "HigurashiEp04_Data",
+			"target": "Himatsubushi",
+			"files": {
+				"win": [
+					"https://07th-mod.com/rikachama/ConsoleArcs-CG.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-BGM.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-SE.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-Movie.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-Voices.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-UI.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-System.7z",
+					"https://07th-mod.com/latest.php?repository=higurashi-console-arcs"
+				],
+				"unix": [
+					"https://07th-mod.com/rikachama/ConsoleArcs-CG.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-BGM.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-SE.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-Movie_UNIX.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-Voices.7z",
+					"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z",
+					"https://07th-mod.com/rikachama/ConsoleArcs-System.7z",
+					"https://07th-mod.com/latest.php?repository=higurashi-console-arcs"
+				]
+			}
+		}
+	]
+}

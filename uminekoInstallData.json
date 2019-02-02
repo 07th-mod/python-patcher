@@ -1,0 +1,74 @@
+{
+    "version": 1,
+    "mods": [
+        {
+            "name": "UminekoQuestion",
+            "displayName" : "Umineko Question (Ch. 1-4)",
+            "CFBundleName": "This Field is Not Used",
+            "dataname": "Umineko1to4.app",
+            "target": "This Field Is Not Used",
+            "files": {
+                "voice_only" : [
+                    "https://07th-mod.com/Beato/Umineko-Voices.7z",
+                    "https://07th-mod.com/Beato-voice/Umineko1to4.exe",
+                    "https://07th-mod.com/Beato-voice/Umineko1to4.app.zip",
+                    "https://07th-mod.com/Beato-voice/Umineko1to4",
+                    "https://07th-mod.com/download.php?repository=umineko-question&file=voice_only/InDevelopment/ManualUpdates/0.utf"
+                ],
+
+                "full" : [
+                    "https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4",
+                    "https://07th-mod.com/Beato/0utf_umineko1to4.app.zip",
+                    "https://07th-mod.com/Beato/Umineko1to4"
+                ],
+
+                "1080p_windows" : [
+                    "https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4",
+                    "https://07th-mod.com/download.php?repository=umineko-question&file=1080p/InDevelopment/ManualUpdates/0.utf",
+                    "https://07th-mod.com/Bern/Umineko-ADV_Mode.7z",
+                    "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z",
+                    "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z",
+                    "https://07th-mod.com/Beato/1080p/Umineko1to4.exe"
+                ],
+
+                "1080p_linux_mac" : [
+                    "https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4",
+                    "https://07th-mod.com/download.php?repository=umineko-question&file=1080p/InDevelopment/ManualUpdates/0.utf",
+                    "https://07th-mod.com/Bern/Umineko-ADV_Mode.7z",
+                    "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z",
+                    "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z",
+                    "https://07th-mod.com/Beato/1080p/0utf_umineko1to4_1080p.zip",
+                    "https://07th-mod.com/Beato/1080p/Umineko1to4"
+                ]
+            }
+        },
+        {
+            "name": "UminekoAnswer",
+            "displayName" : "Umineko Answer (Ch. 5-8)",
+            "CFBundleName": "This Field is Not Used",
+            "dataname": "Umineko5to8.app",
+            "target": "This Field Is Not Used",
+            "files": {
+                "voice_only" : [
+                    "https://07th-mod.com/Bern/UminekoChiru-Voices.7z",
+                    "https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip",
+                    "https://07th-mod.com/Bern-voice/Umineko5to8.exe",
+                    "https://07th-mod.com/Bern-voice/Umineko5to8.app.zip",
+                    "https://07th-mod.com/Bern-voice/Umineko5to8",
+                    "https://07th-mod.com/download.php?repository=umineko-answer&file=master/voices-only/0.utf"
+                ],
+
+                "full" : [
+                    "https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_full.meta4",
+                    "https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip",
+                    "https://07th-mod.com/Bern/Umineko5to8"
+                ],
+
+                "adv" : [
+                    "https://07th-mod.com/download.php?repository=umineko-answer&file=adv_mode/0.utf",
+                    "https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z"
+                ]
+            }
+        }
+    ]
+}
