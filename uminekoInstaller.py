@@ -263,58 +263,57 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 		if 'adv' in modToInstall:
 			tryShowFolder(advDownloadTempDir)
 
-def mainUmineko(rootWindow):
 
-	# Given a game path, returns the corresponding game install information for that path
-	# In the JSON, this is one of the elements of the top level array
-	# It will return 'None' if the game path is invalid (not an Umineko game). Use this feature to scan for valid game paths.
-	def getUminekoGameInformationFromGamePath(modList, gamePath):
-		for uminekoGameInfo in modList:
-			try:
-				for filename in os.listdir(gamePath):
-					if uminekoGameInfo['dataname'].lower() in filename.lower():
-						return uminekoGameInfo
-			except:
-				print("getGameNameFromGamePath failed on path [{}]".format(gamePath))
+#do install given a installer config object
+def mainUmineko(rootWindow, gameInstallConfigs):
+	print("Installer got: ", gameInstallConfigs)
 
-		return None
+	gameTypes = set(x.gameType for x in gameInstallConfigs)
 
-	print("Getting latest mod info (Umineko)...")
-	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
+	print("Game types: ", gameTypes)
 
-	gamePathList = [gamePath for gamePath in findPossibleGamePaths("Umineko") if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
-	print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
+	for config in gameInstallConfigs:
+		print("Mod types: ", config.gameConfig["modTypes"])
 
-	userSelectedGamePath = promptChoice(
-		rootGUIWindow=rootWindow,
-		choiceList= gamePathList,
-		guiPrompt="Please choose a game to mod",
-		canOther=True
-	)
+	# print("Getting latest mod info (Umineko)...")
+	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
+	#
+	# gamePathList = [gamePath for gamePath in findPossibleGamePaths("Umineko") if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
+	# print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
+	#
+	# userSelectedGamePath = promptChoice(
+	# 	rootGUIWindow=rootWindow,
+	# 	choiceList= gamePathList,
+	# 	guiPrompt="Please choose a game to mod",
+	# 	canOther=True
+	# )
+	#
+	# print("Selected game folder: [{}]".format(userSelectedGamePath))
+	# gameInfo = getUminekoGameInformationFromGamePath(modList, userSelectedGamePath)
+	# print("Selected Game Information:")
+	# pp.pprint(gameInfo)
 
-	print("Selected game folder: [{}]".format(userSelectedGamePath))
-	gameInfo = getUminekoGameInformationFromGamePath(modList, userSelectedGamePath)
-	print("Selected Game Information:")
-	pp.pprint(gameInfo)
+	# userSl
+	# gameInfo = gameInstallConfig.gameConfig
 
-	isQuestionArcs = None
-	modNames = None
-	if gameInfo['name'] == 'UminekoAnswer':
-		modNames = UMINEKO_ANSWER_MODS
-		isQuestionArcs = False
-	elif gameInfo['name'] == 'UminekoQuestion':
-		modNames = UMINEKO_QUESTION_MODS
-		isQuestionArcs = True
-	else:
-		print("Unknown Umineko game [{}]".format(gameInfo['name']))
-		exitWithError()
-
-	# ask user which mod they want to apply to their game
-	userSelectedMod = promptChoice(
-		rootGUIWindow=rootWindow,
-		choiceList=modNames,
-		guiPrompt="Please choose which mod to install for " + gameInfo['displayName'],
-		canOther=False
-	)
-
-	installUmineko(gameInfo, userSelectedMod, userSelectedGamePath, isQuestionArcs)
+	# isQuestionArcs = None
+	# modNames = None
+	# if gameInfo['name'] == 'UminekoAnswer':
+	# 	modNames = UMINEKO_ANSWER_MODS
+	# 	isQuestionArcs = False
+	# elif gameInfo['name'] == 'UminekoQuestion':
+	# 	modNames = UMINEKO_QUESTION_MODS
+	# 	isQuestionArcs = True
+	# else:
+	# 	print("Unknown Umineko game [{}]".format(gameInfo['name']))
+	# 	exitWithError()
+	#
+	# # ask user which mod they want to apply to their game
+	# userSelectedMod = promptChoice(
+	# 	rootGUIWindow=rootWindow,
+	# 	choiceList=modNames,
+	# 	guiPrompt="Please choose which mod to install for " + gameInfo['displayName'],
+	# 	canOther=False
+	# )
+	#
+	# installUmineko(gameInfo, userSelectedMod, pathToInstall, isQuestionArcs)

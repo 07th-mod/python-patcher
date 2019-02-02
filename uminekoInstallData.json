@@ -7,6 +7,7 @@
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko1to4.app",
             "target": "This Field Is Not Used",
+            "modTypes" : ["modVoiceOnly", "modFullPatch", "mod1080p"],
             "files": {
                 "voice_only" : [
                     "https://07th-mod.com/Beato/Umineko-Voices.7z",
@@ -48,6 +49,7 @@
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko5to8.app",
             "target": "This Field Is Not Used",
+            "modTypes" : ["modVoiceOnly", "modFullPatch", "modADVMode"],
             "files": {
                 "voice_only" : [
                     "https://07th-mod.com/Bern/UminekoChiru-Voices.7z",

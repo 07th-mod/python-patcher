@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals, with_statement
 from common import *
 import higurashiInstaller
 import uminekoInstaller
+from gameScanner import GameScanner
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -27,6 +28,15 @@ check07thModServerConnection()
 
 rootWindow = tkinter.Tk()
 
+# Scan for moddable games on the user's computer before starting installation
+higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
+umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
+
+scanner = GameScanner(uminekoModList=umimodList, higurashiModList=higuModList)
+scanner.scan()
+for config in scanner.configList:
+	print(config)
+
 def closeAndStartHigurashi():
 	rootWindow.withdraw()
 	higurashiInstaller.main(rootWindow)
@@ -34,12 +44,13 @@ def closeAndStartHigurashi():
 
 def closeAndStartUmineko():
 	rootWindow.withdraw()
-	uminekoInstaller.mainUmineko(rootWindow)
+	uminekoInstaller.mainUmineko(rootWindow, scanner.configList)
 	installFinishedMessage = "Install Finished. Temporary install files have been displayed - please delete the " \
 							 "temporary files after checking the mod has installed correctly."
 	print(installFinishedMessage)
 	messagebox.showinfo("Install Completed", installFinishedMessage)
 	rootWindow.destroy()
+
 
 
 
