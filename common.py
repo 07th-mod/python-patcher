@@ -117,6 +117,13 @@ IS_WINDOWS = platform.system() == "Windows"
 IS_LINUX = platform.system() == "Linux"
 IS_MAC = platform.system() == "Darwin"
 
+# Set os string matching string used in the JSON file, for convenience
+OS_STRING = "win"
+if IS_LINUX:
+	OS_STRING = "linux"
+elif IS_MAC:
+	OS_STRING = "mac"
+
 #query available executables. If any installation of executables is done in the python script, it must be done
 #before this executes
 ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "./.aria2c", "aria2c"], '-h')
@@ -352,6 +359,7 @@ def findPossibleGamePaths(gameName):
 
 	#if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
+
 
 def getGameNameFromGamePath(gamePath, modList):
 	"""

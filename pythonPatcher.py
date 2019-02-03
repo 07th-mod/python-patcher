@@ -49,8 +49,17 @@ for mod in umimodList:
 		subModconfigList.append(conf)
 
 
-scanForFullInstallConfigs(subModconfigList)
+configs = scanForFullInstallConfigs(subModconfigList)
 # for each path, check which mods are compatible with that path
+
+# class for main installer to provide progress updates, possible on a different thread
+class ProgressNotifier:
+	pass
+
+progressNotifier = ProgressNotifier()
+
+# for testing, just skip the GUI part
+uminekoInstaller.mainUmineko(progressNotifier, configs.pop())
 
 
 

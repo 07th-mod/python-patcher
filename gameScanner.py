@@ -2,21 +2,50 @@ from common import *
 
 #contains all the install information required to install the game to a given path
 class FullInstallConfiguration:
-	def __init__(self, subModConfig, path):
-		self.path = path
+	def __init__(self, subModConfig, path, isSteam):
+		# type: (SubModConfig, str, bool) -> FullInstallConfiguration
 		self.subModConfig = subModConfig
+		self.path = path
+		self.isSteam = isSteam
+		self.useIPV6 = False
+
+	#applies the fileOverrides to the files to
+	def buildFileList(self):
+		#convert the files list into a dict
+		filesDict = {}
+		for file in self.subModConfig.files:
+			filesDict[file.name] = file
+
+		for fileOverride in self.subModConfig.fileOverrides:
+			#skip overrides where OS doesn't match
+			if OS_STRING not in fileOverride.os:
+				continue
+
+			#skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
+			if fileOverride.steam and fileOverride.steam != self.isSteam:
+				continue
+
+			#for all other overrides, overwrite the value in the filesDict with a new ModFile
+			currentModFile = filesDict[fileOverride.name]
+			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority)
+
+		#sort the priority from Lowest to Highest (eg items with priority '0' will always be at start of the list)
+		#this is because the low priority items should be extracted first, so the high priority items can overwrite them.
+		return sorted(filesDict.values(), key=lambda x: x.priority)
+
 
 class ModFile:
 	def __init__(self, name, url, priority):
 		self.name = name
 		self.url = url
-		self.priority = priority
+		self.priority = priority #consider renaming this "extractionOrder"?
 
 class ModFileOverride:
 	def __init__(self, name, os, steam, url):
+		# type: (str, [], Optional[bool], str) -> None
 		self.name = name
-		self.os = os
-		self.steam = steam
+		self.os = os #note: this is an ARRAY, eg ["mac", "linux"]
+		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
 		self.url = url
 
 #directly represents a single submod from the json file
@@ -80,9 +109,8 @@ def getMaybeGamePaths():
 # Returns a full install config if the given sub mod can be installed to the given path
 # otherwise returns None if the sub mod is incompatible
 # The "gamePathContentsSet" argument is a set containing the
-def tryGetFullInstallConfigurationFromPath(subModConfig, gamePath, gamePathContentsSet):
-	# type: (SubModConfig, str, set) -> Optional[FullInstallConfiguration]
-
+def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
+	# type: (SubModConfig, str, set) -> bool
 	# Higurashi Mac
 	if IS_MAC and subModConfig.family == 'higurashi':
 		try:
@@ -91,15 +119,15 @@ def tryGetFullInstallConfigurationFromPath(subModConfig, gamePath, gamePathConte
 			parsed = json.loads(info)
 			name = parsed["CFBundleExecutable"] + "_Data"
 			if name == subModConfig.dataname:
-				return FullInstallConfiguration(subModConfig, gamePath)
+				return True
 		except (OSError, KeyError):
-			return None
+			return False
 
 	# All other configurations
 	if subModConfig.dataname in gamePathContentsSet:
-		return FullInstallConfiguration(subModConfig, gamePath)
+		return True
 	else:
-		return None
+		return False
 
 # Returns a list of all possible submods that can be installed on the system.
 def scanForFullInstallConfigs(subModConfigList):
@@ -107,13 +135,24 @@ def scanForFullInstallConfigs(subModConfigList):
 	returnedFullConfigs = []
 	possiblePaths = getMaybeGamePaths()
 
-	for path in possiblePaths:
+	for gamePath in possiblePaths:
 		#the contents of each game path is cached for better performance
-		gamePathContentsSet = set(os.listdir(path))
+		gamePathContentsSet = set(os.listdir(gamePath))
 
 		for subModConfig in subModConfigList:
-			fullInstallConfig = tryGetFullInstallConfigurationFromPath(subModConfig, path, gamePathContentsSet)
-			if fullInstallConfig:
-				returnedFullConfigs.append(fullInstallConfig)
+			if subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
+				#check whether path is steam or mangagamer type
+				possibleSteamPaths = [
+					os.path.join(gamePath, "steam_api.dll"),
+					os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
+					os.path.join(gamePath, "libsteam_api.so")
+				]
+
+				isSteam = False
+				for possibleSteamPath in possibleSteamPaths:
+					if os.path.exists(possibleSteamPath):
+						isSteam = True
+
+				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
 
 	return returnedFullConfigs

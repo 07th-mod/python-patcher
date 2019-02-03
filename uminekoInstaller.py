@@ -1,5 +1,7 @@
 from common import *
 import os, shutil, subprocess
+from gameScanner import FullInstallConfiguration
+from gameScanner import SubModConfig
 
 ################################################## UMINEKO INSTALL #####################################################
 
@@ -236,20 +238,34 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 		tryShowFolder(downloadTempDir)
 
 #do install given a installer config object
-def mainUmineko(rootWindow, gameInstallConfigs):
-	print("Installer got: ", gameInstallConfigs)
+def mainUmineko(progressNotifier, conf):
+	# type: (ProgressNotifier, FullInstallConfiguration) -> None
 
-	gameTypes = set(x.gameType for x in gameInstallConfigs)
+	print("CONFIGURATION:")
+	print("Install path", conf.path)
+	print("Mod Option", conf.subModConfig.modname)
+	print("Sub Option", conf.subModConfig.submodname)
+	print("Is Windows", IS_WINDOWS)
+	print("Is Linux", IS_LINUX)
+	print("Is Mac", IS_MAC)
 
-	print("Game types: ", gameTypes)
+	# build file list
+	print("\nFiles will be extracted in the following order:")
+	for i,file in enumerate(conf.buildFileList()):
+		print("{}. {} - {}".format(i, file.name, file.url))
 
+
+	# gameTypes = set(x.gameType for x in gameInstallConfigs)
+	#
+	# print("Game types: ", gameTypes)
+	#
+	# # for config in gameInstallConfigs:
+	# # 	print("Mod types: ", config.gameConfig["modTypes"])
+	#
 	# for config in gameInstallConfigs:
-	# 	print("Mod types: ", config.gameConfig["modTypes"])
-
-	for config in gameInstallConfigs:
-		print("Options for ", config.gameConfig["name"], "at", config.gamePath)
-		for optionName, optionDetails in config.gameConfig["files"].items():
-			print("\t- {}: Supports {}".format(optionName, optionDetails["os"]))
+	# 	print("Options for ", config.gameConfig["name"], "at", config.gamePath)
+	# 	for optionName, optionDetails in config.gameConfig["files"].items():
+	# 		print("\t- {}: Supports {}".format(optionName, optionDetails["os"]))
 
 	# print("Getting latest mod info (Umineko)...")
 	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
