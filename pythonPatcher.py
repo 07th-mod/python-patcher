@@ -4,7 +4,8 @@ from __future__ import print_function, unicode_literals, with_statement
 from common import *
 import higurashiInstaller
 import uminekoInstaller
-from gameScanner import GameScanner
+from gameScanner import SubModConfig
+from gameScanner import scanForFullInstallConfigs
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -39,8 +40,22 @@ with open('uminekoInstallData.json', 'r', encoding="utf-8") as content_file:
 # 	higuModList = json.loads(content_file.read())["mods"]
 
 #for now, don't try to load higurashi data. Eventually, merge both json into one
-scanner = GameScanner(uminekoModList=umimodList)
-configList = scanner.scan()
+
+subModconfigList = []
+for mod in umimodList:
+	for submod in mod['submods']:
+		conf = SubModConfig(mod, submod)
+		print(conf)
+		subModconfigList.append(conf)
+
+
+scanForFullInstallConfigs(subModconfigList)
+# for each path, check which mods are compatible with that path
+
+
+
+configList = []
+
 
 for config in configList:
 	print(config)

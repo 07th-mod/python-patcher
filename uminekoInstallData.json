@@ -2,7 +2,7 @@
     "version": 1,
     "mods": [
         {
-            "family": "Umineko",
+            "family": "umineko",
             "name": "Umineko Question (Ch. 1-4)",
             "target": "UminekoQuestion",
             "CFBundleName": "This Field is Not Used",
@@ -20,7 +20,6 @@
                         {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
                     ]
                 },
-
                 {
                     "name" : "1080p",
                     "files":[
@@ -40,7 +39,7 @@
             ]
         },
         {
-            "family": "Umineko",
+            "family": "umineko",
             "name" : "Umineko Answer (Ch. 5-8)",
             "target": "UminekoAnswer",
             "CFBundleName": "This Field is Not Used",
@@ -59,7 +58,6 @@
                         {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
                     ]
                 },
-
                 {
                     "name" : "full",
                     "files":[
@@ -72,7 +70,6 @@
                         {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
                     ]
                 },
-
                 {
                     "name" : "adv",
                     "files":[
