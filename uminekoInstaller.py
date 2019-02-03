@@ -3,10 +3,6 @@ import os, shutil, subprocess
 from gameScanner import FullInstallConfiguration
 from gameScanner import SubModConfig
 
-################################################## UMINEKO INSTALL #####################################################
-
-UMINEKO_ANSWER_MODS = ["mod_voice_only", "mod_full_patch", "mod_adv_mode"]
-UMINEKO_QUESTION_MODS = ["mod_voice_only", "mod_full_patch", "mod_1080p"]
 umi_debug_mode = False
 
 def uminekoDownload(downloadTempDir, url_list):
@@ -21,68 +17,20 @@ def uminekoDownload(downloadTempDir, url_list):
 				exitWithError()
 
 
-def uminekoExtractAndCopyFiles(fromDir, toDir):
-	"""
-	This function extracts all archives from the "fromDir" to the "toDir". It also will copy any files in the "fromDir"
-	to the "toDir". Finally, if there are any *.utf files in the fromDir, they will be renamed to 0.u in the "toDir"
-	depending on the operating system.
+def extractOrCopyFile(filename, sourceFolder, destinationFolder):
+	makeDirsExistOK(destinationFolder)
+	sourcePath = os.path.join(sourceFolder, filename)
+	if umi_debug_mode:
+		print("Copying or Extracting [{}] into [{}]".format(sourcePath, destinationFolder))
+		return
 
-	NOTE: this function makes some assumptions about the archive files:
-	- all archive files have either the extension .7z, .zip (or both)
-	- the archives are intended to be extracted in the order: 'graphics' 'voices' 'update', then any other type of archive
+	if '.7z' in filename.lower() or '.zip' in filename.lower():
+		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
+			print("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
+			exitWithError()
+	else:
+		shutil.copy(sourcePath, os.path.join(destinationFolder, filename))
 
-	:param fromDir: source directory to copy/extract files from
-	:param toDir: destination directory to place copied/extracted files
-	:return: None
-	"""
-	def sortingFunction(filenameAnyCase):
-		filename = filenameAnyCase.lower()
-		if 'graphics' in filename:
-			return 0
-		elif 'voices' in filename:
-			return 1
-		elif 'update' in filename:
-			return 2
-		else:
-			return 3
-
-	print("extracting from {} to {}".format(fromDir, toDir))
-
-	archives = []
-	otherFiles = []
-
-	for filename in os.listdir(fromDir):
-		if '.7z' in filename.lower() or '.zip' in filename.lower():
-			archives.append(filename)
-		else:
-			otherFiles.append(filename)
-
-	#sort the archive files so they are extracted in the correct order
-	archives.sort(key=sortingFunction)
-
-	for archive_name in archives:
-		archive_path = os.path.join(fromDir, archive_name)
-		print("Trying to extract file {} to {}".format(archive_path, toDir))
-		if not umi_debug_mode:
-			if sevenZipExtract(archive_path, outputDir=toDir) != 0:
-				print("ERROR - could not extract [{}]. Installation Stopped".format(archive_path))
-				exitWithError()
-
-	#copy all non-archive files to the game folder. If a .utf file is found, rename it depending on the OS
-	for sourceFilename in otherFiles:
-		fileNameNoExt, extension = os.path.splitext(sourceFilename)
-
-		destFilename = sourceFilename
-
-		#on any OS besides MAC, rename 0.utf files to 0.u files. On mac, leave filenames unchanged.
-		if not IS_MAC and extension.lower() == '.utf':
-			destFilename = fileNameNoExt + '.u'
-
-		sourceFullPath = os.path.join(fromDir, sourceFilename)
-		destFullPath = os.path.join(toDir, destFilename)
-
-		print("Trying to copy", sourceFullPath, "to", destFullPath)
-		shutil.copy(sourceFullPath, destFullPath)
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 	"""
@@ -155,87 +103,6 @@ def backupOrRemoveFiles(folderToBackup):
 			print("backupOrRemoveFiles: backing up", fullFilePath)
 			shutil.move(fullFilePath, backupPath)
 
-def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
-	print("User wants to install", modToInstall)
-	print("game info:", gameInfo)
-	print("game path:", gamePath)
-
-	# do a quick verification that the directory is correct before starting installer
-	if not os.path.isfile(os.path.join(gamePath, "arc.nsa")):
-		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
-		print("ERROR - wrong game path. Installation Stopped.")
-		exitWithError()
-
-	# Create aliases for the temp directories, and ensure they exist beforehand
-	downloadTempDir = os.path.join(gamePath, "temp")
-
-	if os.path.isdir(downloadTempDir):
-		print("Information: Temp directories already exist - continued or overwritten install")
-
-		# TODO: move this voice only warning into GUI instead, or handle in some other way
-		if "voice_only" in modToInstall:
-			continueInstallation = messagebox.askyesno("Voice Only Warning",
-			                       "We have detected you have run the 'Voice Only' installer before.\n\n" +
-			                       "If you switching from 'full patch' to 'voice only', please quit the " +
-			                       "installer and completely delete the game directory, then re-install the game\n\n" +
-			                       "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
-			                       "Continue the installation?")
-
-			if not continueInstallation:
-				print("User cancelled install (Voice Only)")
-				exitWithError()
-
-	makeDirsExistOK(downloadTempDir)
-
-	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
-	deleteAllInPathExceptSpecified([downloadTempDir],
-	                               extensions=['7z', 'zip'],
-	                               searchStrings=['graphic', 'voice'])
-
-	# Backup/clear the .exe and script files
-	backupOrRemoveFiles(gamePath)
-
-	def makeExecutable(executablePath):
-		current = os.stat(executablePath)
-		os.chmod(executablePath, current.st_mode | 0o111)
-
-	# Download and extract files for Question/Answer Arcs
-	uminekoDownload(downloadTempDir, url_list=gameInfo["files"][modToInstall]["files"])
-	uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-
-	# Apply some fixes and add utility tools
-	if isQuestionArcs:
-		# need to un-quarantine .app file on MAC
-		if IS_MAC:
-			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
-
-		makeExecutable(os.path.join(gamePath, "Umineko1to4"))
-		makeExecutable(os.path.join(gamePath, "Umineko1to4.app/Contents/MacOS/umineko4"))
-
-		# write batch file to let users launch game in debug mode
-		with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
-			f.writelines(["Umineko1to4.exe --debug", "pause"])
-	else:
-		# need to un-quarantine .app file on MAC
-		if IS_MAC:
-			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
-
-		makeExecutable(os.path.join(gamePath, "Umineko5to8"))
-		makeExecutable(os.path.join(gamePath, "Umineko5to8.app/Contents/MacOS/umineko8"))
-
-		with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
-			f.writelines(["Umineko5to8.exe --debug", "pause"])
-
-	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
-	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
-	with open(os.path.join(gamePath, "EnableSteamSync.bat"), 'w') as f:
-		f.writelines(["mklink saves mysav /J", "pause"])
-
-	# For now, don't copy save data
-
-	# Open the temp folder so users can delete/backup any temp install files
-	if IS_WINDOWS:
-		tryShowFolder(downloadTempDir)
 
 def getMetalinkFilenames(url, downloadDir):
 	import xml.etree.ElementTree as ET
@@ -262,14 +129,18 @@ def getMetalinkFilenames(url, downloadDir):
 def mainUmineko(progressNotifier, conf):
 	# type: (ProgressNotifier, FullInstallConfiguration) -> None
 
+	isQuestionArcs = 'question' in conf.subModConfig.modname.lower()
+
 	print("CONFIGURATION:")
 	print("Install path", conf.installPath)
 	print("Mod Option", conf.subModConfig.modname)
 	print("Sub Option", conf.subModConfig.submodname)
+	print("Is Question Arcs", isQuestionArcs)
 	print("Is Windows", IS_WINDOWS)
 	print("Is Linux", IS_LINUX)
 	print("Is Mac", IS_MAC)
 
+	####################################### VALIDATE AND PREPARE FOLDERS ###############################################
 	# do a quick verification that the directory is correct before starting installer
 	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):
 		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
@@ -293,22 +164,7 @@ def mainUmineko(progressNotifier, conf):
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(conf.installPath)
 
-
-	#
-	# 	# TODO: move this voice only warning into GUI instead, or handle in some other way
-	# 	if "voice_only" in modToInstall:
-	# 		continueInstallation = messagebox.askyesno("Voice Only Warning",
-	# 		                       "We have detected you have run the 'Voice Only' installer before.\n\n" +
-	# 		                       "If you switching from 'full patch' to 'voice only', please quit the " +
-	# 		                       "installer and completely delete the game directory, then re-install the game\n\n" +
-	# 		                       "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
-	# 		                       "Continue the installation?")
-	#
-	# 		if not continueInstallation:
-	# 			print("User cancelled install (Voice Only)")
-	# 			exitWithError()
-	#
-
+	##################################### BUILD FILE LIST, DOWNLOAD, EXTRACT ###########################################
 	# build file list
 	downloadList = []
 	extractList = []
@@ -331,113 +187,110 @@ def mainUmineko(progressNotifier, conf):
 			extractList.append(os.path.basename(file.url))
 
 
-	print(downloadList)
-	print(extractList)
+	print("\nFirst these files will be downloaded:")
+	print('\n - '.join([''] + downloadList))
+	print("\nThen these files will be extracted or copied:")
+	print('\n - '.join([''] + extractList))
+	print()
 
-	# download the files
-	# print("Downloading:{} to {}".format(url_list, downloadTempDir))
-	# makeDirsExistOK(downloadTempDir)
-	#
-	# for url in url_list:
-	# 	print("will try to download {} into {} ".format(url, downloadTempDir))
-	# 	if not umi_debug_mode:
-	# 		if aria(downloadTempDir, url=url) != 0:
-	# 			print("ERROR - could not download [{}]. Installation Stopped".format(url))
-	# 			exitWithError()
+	#download all urls to the download temp folder
+	uminekoDownload(downloadTempDir, downloadList)
 
+	#extract all files
+	for file in extractList:
+		extractOrCopyFile(file, downloadTempDir, conf.installPath)
 
-	#
-	#
-	# # Download and extract files for Question/Answer Arcs
-	# uminekoDownload(downloadTempDir, url_list=gameInfo["files"][modToInstall]["files"])
-	# uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-	#
-	# # Apply some fixes and add utility tools
-	# if isQuestionArcs:
-	# 	# need to un-quarantine .app file on MAC
-	# 	if IS_MAC:
-	# 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
-	#
-	# 	makeExecutable(os.path.join(gamePath, "Umineko1to4"))
-	# 	makeExecutable(os.path.join(gamePath, "Umineko1to4.app/Contents/MacOS/umineko4"))
-	#
-	# 	# write batch file to let users launch game in debug mode
-	# 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
-	# 		f.writelines(["Umineko1to4.exe --debug", "pause"])
-	# else:
-	# 	# need to un-quarantine .app file on MAC
-	# 	if IS_MAC:
-	# 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
-	#
-	# 	makeExecutable(os.path.join(gamePath, "Umineko5to8"))
-	# 	makeExecutable(os.path.join(gamePath, "Umineko5to8.app/Contents/MacOS/umineko8"))
-	#
-	# 	with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
-	# 		f.writelines(["Umineko5to8.exe --debug", "pause"])
-	#
-	# # Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
-	# # Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
-	# with open(os.path.join(gamePath, "EnableSteamSync.bat"), 'w') as f:
-	# 	f.writelines(["mklink saves mysav /J", "pause"])
-	#
-	# # For now, don't copy save data
-	#
-	# # Open the temp folder so users can delete/backup any temp install files
-	# if IS_WINDOWS:
-	# 	tryShowFolder(downloadTempDir)
+	#################################### MAKE EXECUTABLE, WRITE HELPER SCRIPTS #########################################
+	gameBaseName = "Umineko5to8"
+	if isQuestionArcs:
+		gameBaseName = "Umineko1to4"
+
+	if IS_MAC:
+		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(conf.installPath, gameBaseName + ".app")])
+
+	# write batch file to let users launch game in debug mode
+	with open(os.path.join(conf.installPath, gameBaseName + "_DebugMode.bat"), 'w') as f:
+		f.writelines([gameBaseName + ".exe --debug", "pause"])
+
+	#make the following files executable, if they exist
+	makeExecutableList = [
+		os.path.join(conf.installPath, "Umineko1to4"),
+		os.path.join(conf.installPath, "Umineko1to4.app/Contents/MacOS/umineko4"),
+		os.path.join(conf.installPath, "Umineko5to8"),
+		os.path.join(conf.installPath, "Umineko5to8.app/Contents/MacOS/umineko8")
+	]
+
+	for exePath in makeExecutableList:
+		if os.path.exists(exePath):
+			makeExecutable(exePath)
+
+	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
+	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
+	with open(os.path.join(conf.installPath, "EnableSteamSync.bat"), 'w') as f:
+		f.writelines(["mklink saves mysav /J", "pause"])
+
+	# For now, don't copy save data
+
+	# Open the temp folder so users can delete/backup any temp install files
+	if IS_WINDOWS:
+		tryShowFolder(downloadTempDir)
 
 
-	# gameTypes = set(x.gameType for x in gameInstallConfigs)
-	#
-	# print("Game types: ", gameTypes)
-	#
-	# # for config in gameInstallConfigs:
-	# # 	print("Mod types: ", config.gameConfig["modTypes"])
-	#
-	# for config in gameInstallConfigs:
-	# 	print("Options for ", config.gameConfig["name"], "at", config.gamePath)
-	# 	for optionName, optionDetails in config.gameConfig["files"].items():
-	# 		print("\t- {}: Supports {}".format(optionName, optionDetails["os"]))
 
-	# print("Getting latest mod info (Umineko)...")
-	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
-	#
-	# gamePathList = [gamePath for gamePath in findPossibleGamePaths("Umineko") if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
-	# print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
-	#
-	# userSelectedGamePath = promptChoice(
-	# 	rootGUIWindow=rootWindow,
-	# 	choiceList= gamePathList,
-	# 	guiPrompt="Please choose a game to mod",
-	# 	canOther=True
-	# )
-	#
-	# print("Selected game folder: [{}]".format(userSelectedGamePath))
-	# gameInfo = getUminekoGameInformationFromGamePath(modList, userSelectedGamePath)
-	# print("Selected Game Information:")
-	# pp.pprint(gameInfo)
 
-	# userSl
-	# gameInfo = gameInstallConfig.gameConfig
 
-	# isQuestionArcs = None
-	# modNames = None
-	# if gameInfo['name'] == 'UminekoAnswer':
-	# 	modNames = UMINEKO_ANSWER_MODS
-	# 	isQuestionArcs = False
-	# elif gameInfo['name'] == 'UminekoQuestion':
-	# 	modNames = UMINEKO_QUESTION_MODS
-	# 	isQuestionArcs = True
-	# else:
-	# 	print("Unknown Umineko game [{}]".format(gameInfo['name']))
-	# 	exitWithError()
-	#
-	# # ask user which mod they want to apply to their game
-	# userSelectedMod = promptChoice(
-	# 	rootGUIWindow=rootWindow,
-	# 	choiceList=modNames,
-	# 	guiPrompt="Please choose which mod to install for " + gameInfo['displayName'],
-	# 	canOther=False
-	# )
-	#
-	# installUmineko(gameInfo, userSelectedMod, pathToInstall, isQuestionArcs)
+
+# gameTypes = set(x.gameType for x in gameInstallConfigs)
+#
+# print("Game types: ", gameTypes)
+#
+# # for config in gameInstallConfigs:
+# # 	print("Mod types: ", config.gameConfig["modTypes"])
+#
+# for config in gameInstallConfigs:
+# 	print("Options for ", config.gameConfig["name"], "at", config.gamePath)
+# 	for optionName, optionDetails in config.gameConfig["files"].items():
+# 		print("\t- {}: Supports {}".format(optionName, optionDetails["os"]))
+
+# print("Getting latest mod info (Umineko)...")
+# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
+#
+# gamePathList = [gamePath for gamePath in findPossibleGamePaths("Umineko") if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
+# print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
+#
+# userSelectedGamePath = promptChoice(
+# 	rootGUIWindow=rootWindow,
+# 	choiceList= gamePathList,
+# 	guiPrompt="Please choose a game to mod",
+# 	canOther=True
+# )
+#
+# print("Selected game folder: [{}]".format(userSelectedGamePath))
+# gameInfo = getUminekoGameInformationFromGamePath(modList, userSelectedGamePath)
+# print("Selected Game Information:")
+# pp.pprint(gameInfo)
+
+# userSl
+# gameInfo = gameInstallConfig.gameConfig
+
+# isQuestionArcs = None
+# modNames = None
+# if gameInfo['name'] == 'UminekoAnswer':
+# 	modNames = UMINEKO_ANSWER_MODS
+# 	isQuestionArcs = False
+# elif gameInfo['name'] == 'UminekoQuestion':
+# 	modNames = UMINEKO_QUESTION_MODS
+# 	isQuestionArcs = True
+# else:
+# 	print("Unknown Umineko game [{}]".format(gameInfo['name']))
+# 	exitWithError()
+#
+# # ask user which mod they want to apply to their game
+# userSelectedMod = promptChoice(
+# 	rootGUIWindow=rootWindow,
+# 	choiceList=modNames,
+# 	guiPrompt="Please choose which mod to install for " + gameInfo['displayName'],
+# 	canOther=False
+# )
+#
+# installUmineko(gameInfo, userSelectedMod, pathToInstall, isQuestionArcs)
