@@ -1,0 +1,5 @@
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/pythonPatcher.py
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/common.py
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstaller.py
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstaller.py
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/gameScanner.py
