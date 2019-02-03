@@ -7,6 +7,7 @@
             "target": "UminekoQuestion",
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko1to4.app",
+            "identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
             "submods": [
                 {
                     "name" : "voice-only",
@@ -44,6 +45,7 @@
             "target": "UminekoAnswer",
             "CFBundleName": "This Field is Not Used",
             "dataname": "Umineko5to8.app",
+            "identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
             "submods": [
                 {
                     "name" : "voice-only",

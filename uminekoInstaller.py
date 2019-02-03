@@ -237,22 +237,154 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	if IS_WINDOWS:
 		tryShowFolder(downloadTempDir)
 
+def getMetalinkFilenames(url, downloadDir):
+	import xml.etree.ElementTree as ET
+
+	metalinkFileName = os.path.basename(url)
+	metalinkFileFullPath = os.path.join(downloadDir, metalinkFileName)
+
+	aria(downloadDir, url=url)
+
+	tree = ET.parse(metalinkFileFullPath)
+	root = tree.getroot()
+
+	# return the 'name' attribute of each 'file' node.
+	# ignore namespaces by removing the {stuff} part of the tag
+	filenames = []
+	for fileNode in root.iter():
+		tagNoNamespace = fileNode.tag.split('}')[-1]
+		if tagNoNamespace == 'file':
+			filenames.append(fileNode.attrib['name'])
+
+	return filenames
+
 #do install given a installer config object
 def mainUmineko(progressNotifier, conf):
 	# type: (ProgressNotifier, FullInstallConfiguration) -> None
 
 	print("CONFIGURATION:")
-	print("Install path", conf.path)
+	print("Install path", conf.installPath)
 	print("Mod Option", conf.subModConfig.modname)
 	print("Sub Option", conf.subModConfig.submodname)
 	print("Is Windows", IS_WINDOWS)
 	print("Is Linux", IS_LINUX)
 	print("Is Mac", IS_MAC)
 
+	# do a quick verification that the directory is correct before starting installer
+	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):
+		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
+		print("ERROR - wrong game path. Installation Stopped.")
+		exitWithError()
+
+	# Create aliases for the temp directories, and ensure they exist beforehand
+	downloadTempDir = os.path.join(conf.installPath, "temp")
+
+	if os.path.isdir(downloadTempDir):
+		print("Information: Temp directories already exist - continued or overwritten install")
+
+
+	makeDirsExistOK(downloadTempDir)
+
+	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
+	deleteAllInPathExceptSpecified([downloadTempDir],
+	                               extensions=['7z', 'zip'],
+	                               searchStrings=['graphic', 'voice'])
+
+	# Backup/clear the .exe and script files
+	backupOrRemoveFiles(conf.installPath)
+
+
+	#
+	# 	# TODO: move this voice only warning into GUI instead, or handle in some other way
+	# 	if "voice_only" in modToInstall:
+	# 		continueInstallation = messagebox.askyesno("Voice Only Warning",
+	# 		                       "We have detected you have run the 'Voice Only' installer before.\n\n" +
+	# 		                       "If you switching from 'full patch' to 'voice only', please quit the " +
+	# 		                       "installer and completely delete the game directory, then re-install the game\n\n" +
+	# 		                       "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
+	# 		                       "Continue the installation?")
+	#
+	# 		if not continueInstallation:
+	# 			print("User cancelled install (Voice Only)")
+	# 			exitWithError()
+	#
+
 	# build file list
+	downloadList = []
+	extractList = []
+
 	print("\nFiles will be extracted in the following order:")
-	for i,file in enumerate(conf.buildFileList()):
+	for i, file in enumerate(conf.buildFileListSorted()):
 		print("{}. {} - {}".format(i, file.name, file.url))
+		name, ext = os.path.splitext(file.url)
+
+		# For metafiles, we need to look for filenames within each metafile to know what to extract
+		# Other files can be left as-is
+		# The order of the download and extraction is maintained through the list ordering.
+		if ext == '.meta4' or ext == '.metalink':
+			metalinkFilenames = getMetalinkFilenames(file.url, downloadTempDir)
+			print("metalink contains: ", metalinkFilenames)
+			downloadList.append(file.url)
+			extractList.extend(metalinkFilenames)
+		else:
+			downloadList.append(file.url)
+			extractList.append(os.path.basename(file.url))
+
+
+	print(downloadList)
+	print(extractList)
+
+	# download the files
+	# print("Downloading:{} to {}".format(url_list, downloadTempDir))
+	# makeDirsExistOK(downloadTempDir)
+	#
+	# for url in url_list:
+	# 	print("will try to download {} into {} ".format(url, downloadTempDir))
+	# 	if not umi_debug_mode:
+	# 		if aria(downloadTempDir, url=url) != 0:
+	# 			print("ERROR - could not download [{}]. Installation Stopped".format(url))
+	# 			exitWithError()
+
+
+	#
+	#
+	# # Download and extract files for Question/Answer Arcs
+	# uminekoDownload(downloadTempDir, url_list=gameInfo["files"][modToInstall]["files"])
+	# uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
+	#
+	# # Apply some fixes and add utility tools
+	# if isQuestionArcs:
+	# 	# need to un-quarantine .app file on MAC
+	# 	if IS_MAC:
+	# 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
+	#
+	# 	makeExecutable(os.path.join(gamePath, "Umineko1to4"))
+	# 	makeExecutable(os.path.join(gamePath, "Umineko1to4.app/Contents/MacOS/umineko4"))
+	#
+	# 	# write batch file to let users launch game in debug mode
+	# 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
+	# 		f.writelines(["Umineko1to4.exe --debug", "pause"])
+	# else:
+	# 	# need to un-quarantine .app file on MAC
+	# 	if IS_MAC:
+	# 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
+	#
+	# 	makeExecutable(os.path.join(gamePath, "Umineko5to8"))
+	# 	makeExecutable(os.path.join(gamePath, "Umineko5to8.app/Contents/MacOS/umineko8"))
+	#
+	# 	with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
+	# 		f.writelines(["Umineko5to8.exe --debug", "pause"])
+	#
+	# # Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
+	# # Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
+	# with open(os.path.join(gamePath, "EnableSteamSync.bat"), 'w') as f:
+	# 	f.writelines(["mklink saves mysav /J", "pause"])
+	#
+	# # For now, don't copy save data
+	#
+	# # Open the temp folder so users can delete/backup any temp install files
+	# if IS_WINDOWS:
+	# 	tryShowFolder(downloadTempDir)
 
 
 	# gameTypes = set(x.gameType for x in gameInstallConfigs)

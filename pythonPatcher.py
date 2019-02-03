@@ -61,7 +61,7 @@ progressNotifier = ProgressNotifier()
 # for testing, just skip the GUI part
 uminekoInstaller.mainUmineko(progressNotifier, configs.pop())
 
-
+exit()
 
 configList = []
 

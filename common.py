@@ -139,7 +139,7 @@ if SEVEN_ZIP_EXECUTABLE is None:
 	exitWithError()
 
 #when calling this function, use named arguments to avoid confusion!
-def aria(downloadDir=None, inputFile=None, url=None):
+def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 	"""
 	Calls aria2c with some default arguments:
 	TODO: list what each default argument does as comments next to arguments array?
@@ -157,9 +157,13 @@ def aria(downloadDir=None, inputFile=None, url=None):
 		'-x 8',
 		'-s 8',
 		'-j 1',
-		'--follow-metalink=mem',  #always follow metalinks, for now
-		'--check-integrity=true', #check integrity when using metalink
 	]
+
+	if followMetaLink:
+		arguments.append('--follow-metalink=mem')
+		arguments.append('--check-integrity=true')  # check integrity when using metalink
+	else:
+		arguments.append('--follow-metalink=false')
 
 	if not GLOBAL_SETTINGS.USE_IPV6:
 		arguments.append('--disable-ipv6=true')
@@ -425,3 +429,6 @@ def printSupportedGames(modList):
 	for game in set(x["target"] for x in modList):
 		print("  " + game)
 
+def makeExecutable(executablePath):
+	current = os.stat(executablePath)
+	os.chmod(executablePath, current.st_mode | 0o111)

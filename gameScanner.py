@@ -5,12 +5,12 @@ class FullInstallConfiguration:
 	def __init__(self, subModConfig, path, isSteam):
 		# type: (SubModConfig, str, bool) -> FullInstallConfiguration
 		self.subModConfig = subModConfig
-		self.path = path
+		self.installPath = path
 		self.isSteam = isSteam
 		self.useIPV6 = False
 
 	#applies the fileOverrides to the files to
-	def buildFileList(self):
+	def buildFileListSorted(self):
 		#convert the files list into a dict
 		filesDict = {}
 		for file in self.subModConfig.files:
@@ -57,6 +57,7 @@ class SubModConfig:
 		self.target = mod['target']
 		self.CFBundleName = mod['CFBundleName']
 		self.dataname = mod['dataname']
+		self.identifiers = mod['identifiers']
 		self.submodname = submod['name']
 
 		self.files = []
@@ -111,6 +112,7 @@ def getMaybeGamePaths():
 # The "gamePathContentsSet" argument is a set containing the
 def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
 	# type: (SubModConfig, str, set) -> bool
+
 	# Higurashi Mac
 	if IS_MAC and subModConfig.family == 'higurashi':
 		try:
@@ -118,16 +120,17 @@ def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
 				["plutil", "-convert", "json", "-o", "-", path.join(gamePath, "Contents/Info.plist")])
 			parsed = json.loads(info)
 			name = parsed["CFBundleExecutable"] + "_Data"
-			if name == subModConfig.dataname:
+			if name in subModConfig.identifiers:
 				return True
 		except (OSError, KeyError):
 			return False
-
-	# All other configurations
-	if subModConfig.dataname in gamePathContentsSet:
-		return True
 	else:
-		return False
+		# All other configurations
+		for identifier in subModConfig.identifiers:
+			if identifier in gamePathContentsSet:
+				return True
+
+	return False
 
 # Returns a list of all possible submods that can be installed on the system.
 def scanForFullInstallConfigs(subModConfigList):
