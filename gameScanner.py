@@ -159,3 +159,28 @@ def scanForFullInstallConfigs(subModConfigList):
 				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
 
 	return returnedFullConfigs
+
+
+#NOTE: the filter functions in this class return a COPY of the current object, with the items filtered out
+class SubModFilter:
+	def __init__(self, subModConfigList):
+		self.submods = subModConfigList
+
+	def getFamilyList(self):
+		# type: () -> [str]
+		return list(set([x.family for x in self.submods]))
+
+	def getSubModNameList(self):
+		# type: () -> [str]
+		return list(set([x.modname for x in self.submods]))
+
+	def filterByFamily(self, whichFamily):
+		# type: (str) -> SubModFilter
+		return SubModFilter([x for x in self.submods if x.family == whichFamily])
+
+	def filterByModName(self, whichModname):
+		# type: (str) -> SubModFilter
+		return SubModFilter([x for x in self.submods if x.modname == whichModname])
+
+	def getSubMods(self):
+		return self.submods

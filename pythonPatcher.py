@@ -4,8 +4,9 @@ from __future__ import print_function, unicode_literals, with_statement
 from common import *
 import higurashiInstaller
 import uminekoInstaller
-from gameScanner import SubModConfig
+from gameScanner import SubModConfig, SubModFilter
 from gameScanner import scanForFullInstallConfigs
+from gui import InstallerGUI
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -27,8 +28,6 @@ def check07thModServerConnection():
 check07thModServerConnection()
 
 
-rootWindow = tkinter.Tk()
-
 # Scan for moddable games on the user's computer before starting installation
 # higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
 #umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
@@ -48,59 +47,36 @@ for mod in umimodList:
 		print(conf)
 		subModconfigList.append(conf)
 
+subModFilter = SubModFilter(subModconfigList)
+
+#ask the user which family of games they want
+families = subModFilter.getFamilyList()
+print(families)
+
+#filter out by users choice of family
+subModsFilteredByFamily = subModFilter.filterByFamily(families[0])
+
+#ask the user what submod they want to install
+modNameList = subModsFilteredByFamily.getSubModNameList()
+print(modNameList)
+
+#filter out by user's choice of sub mod name
+finalSubModList = subModsFilteredByFamily.filterByModName(modNameList[0])
+print(finalSubModList.getSubMods())
+
 
 configs = scanForFullInstallConfigs(subModconfigList)
-# for each path, check which mods are compatible with that path
 
-# class for main installer to provide progress updates, possible on a different thread
-class ProgressNotifier:
-	pass
+gui = InstallerGUI()
+gui.mainloop()
 
-progressNotifier = ProgressNotifier()
-
-# for testing, just skip the GUI part
-uminekoInstaller.mainUmineko(progressNotifier, configs.pop())
+# # class for main installer to provide progress updates, possible on a different thread
+# class ProgressNotifier:
+# 	pass
+#
+# progressNotifier = ProgressNotifier()
+#
+# # for testing, just skip the GUI part
+# uminekoInstaller.mainUmineko(progressNotifier, configs.pop())
 
 exit()
-
-configList = []
-
-
-for config in configList:
-	print(config)
-
-def closeAndStartHigurashi():
-	rootWindow.withdraw()
-	higurashiInstaller.main(rootWindow)
-	rootWindow.destroy()
-
-def closeAndStartUmineko():
-	rootWindow.withdraw()
-	uminekoInstaller.mainUmineko(rootWindow, configList)
-	installFinishedMessage = "Install Finished. Temporary install files have been displayed - please delete the " \
-							 "temporary files after checking the mod has installed correctly."
-	print(installFinishedMessage)
-	messagebox.showinfo("Install Completed", installFinishedMessage)
-	rootWindow.destroy()
-
-
-
-
-# Add an 'OK' button. When pressed, the dialog is closed
-defaultPadding = {"padx": 20, "pady": 10}
-b = tkinter.Button(rootWindow, text="Install Higurashi Mods", command=closeAndStartHigurashi)
-b.pack(**defaultPadding)
-b = tkinter.Button(rootWindow, text="Install Umineko Mods", command=closeAndStartUmineko)
-b.pack(**defaultPadding)
-
-tkinter.Label(rootWindow, text="Advanced Settings").pack()
-
-# Add a checkbox to enable/disable IPV6. IPV6 is disabled by default due to some
-# installations failing when IPV6 is used due to misconfigured routers/other problems.
-use_ipv6_var = IntVar()
-def onIPV6CheckboxToggled():
-	GLOBAL_SETTINGS.USE_IPV6 = use_ipv6_var.get()
-c = Checkbutton(rootWindow, text="Enable IPv6", var=use_ipv6_var, command=onIPV6CheckboxToggled)
-c.pack()
-
-rootWindow.mainloop()
