@@ -47,27 +47,9 @@ for mod in umimodList:
 		print(conf)
 		subModconfigList.append(conf)
 
-subModFilter = SubModFilter(subModconfigList)
+fullInstallConfigs = scanForFullInstallConfigs(subModconfigList)
 
-#ask the user which family of games they want
-families = subModFilter.getFamilyList()
-print(families)
-
-#filter out by users choice of family
-subModsFilteredByFamily = subModFilter.filterByFamily(families[0])
-
-#ask the user what submod they want to install
-modNameList = subModsFilteredByFamily.getSubModNameList()
-print(modNameList)
-
-#filter out by user's choice of sub mod name
-finalSubModList = subModsFilteredByFamily.filterByModName(modNameList[0])
-print(finalSubModList.getSubMods())
-
-
-configs = scanForFullInstallConfigs(subModconfigList)
-
-gui = InstallerGUI()
+gui = InstallerGUI(subModconfigList)
 gui.mainloop()
 
 # # class for main installer to provide progress updates, possible on a different thread

@@ -168,11 +168,11 @@ class SubModFilter:
 
 	def getFamilyList(self):
 		# type: () -> [str]
-		return list(set([x.family for x in self.submods]))
+		return sorted(list(set([x.family for x in self.submods])), reverse=True)
 
-	def getSubModNameList(self):
+	def getModNameList(self):
 		# type: () -> [str]
-		return list(set([x.modname for x in self.submods]))
+		return sorted(list(set([x.modname for x in self.submods])), reverse=True)
 
 	def filterByFamily(self, whichFamily):
 		# type: (str) -> SubModFilter
@@ -183,4 +183,5 @@ class SubModFilter:
 		return SubModFilter([x for x in self.submods if x.modname == whichModname])
 
 	def getSubMods(self):
-		return self.submods
+		# type: () -> [SubModConfig]
+		return sorted(self.submods, key=lambda submod: submod.submodname)

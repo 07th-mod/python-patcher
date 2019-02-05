@@ -10,6 +10,7 @@ from tkinter.scrolledtext import ScrolledText
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 #which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 #but I don't think we will encounter them
+from gameScanner import SubModFilter
 
 """
 Apple 8.5.9
@@ -49,16 +50,22 @@ class ImageButtonList:
         self.frame = Frame(root, **frame_padding)
         self.button_list = []
         self.max_per_column = max_per_column
-        self.result = None
-
-    def add_button_default(self, upper_text, lower_text, image, default_value):
-        self.add_button(upper_text, lower_text, image, lambda: default_value)
 
     def add_button(self, upper_text, lower_text, image, callback):
-        def do_callback_and_close_window_and_run_callback_with_result():
-            self.result = callback()
+        """
+        NOTE: remember to use the following syntax if using lambdas, otherwise the lambda will capture a reference to the variable, not the value of the variable:
 
-        btn = make_two_line_button(self.frame, upper_text, lower_text, image, do_callback_and_close_window_and_run_callback_with_result)
+        By VALUE       lambda modName=modName: self.setModNameAndAdvance(modName)
+
+        By REFERENCE   lambda: self.setModNameAndAdvance(modName)
+
+        :param upper_text:
+        :param lower_text:
+        :param image:
+        :param callback:
+        :return:
+        """
+        btn = make_two_line_button(self.frame, upper_text, lower_text, image, callback)
         btn.grid(row=len(self.button_list)%self.max_per_column,
                  column = len(self.button_list)//self.max_per_column,
                  sticky="W")
@@ -141,7 +148,7 @@ class InstallStatusWidget:
             else:
                 print("Error - invalid data received in progress receiver")
 
-        root.after(200, self.progress_receiver)
+        self.root.after(200, self.progress_receiver)
 
 # Forward  button - if not set, defaults to a disabled button
 # Backward button - for first page, is disabled. For all other pages, automatically moves you back to the previous page by destroying the widget
@@ -365,8 +372,41 @@ class HigurashiInstallerThread(threading.Thread):
 class InstallerGUI:
     def __init__(self, configList):
         self.root = Tk()
+        self.root.minsize(800, 500)
         self.wiz = InstallWizard2(self.root)
         self.wiz.pack()
+
+        #Note: MUST keep a handle to the image, otherwise it will be garbage collected!!!
+        self.img = PhotoImage(file="earth.gif")
+
+        self.subModFilterAll = SubModFilter(configList)
+
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which game family you want to install")
+        btn_list = ImageButtonList(frame, max_per_column=6)
+        for family in self.subModFilterAll.getFamilyList():
+            btn_list.add_button(family, "", self.img, lambda family=family: self.setFamilyAndAdvance(family))
+        btn_list.pack()
+
+    def setFamilyAndAdvance(self, family):
+        self.subModFilterByFamily = self.subModFilterAll.filterByFamily(family)
+
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod you want to install")
+        btn_list = ImageButtonList(frame, max_per_column=6)
+
+        for modName in self.subModFilterByFamily.getModNameList():
+            btn_list.add_button(modName, "", self.img, lambda modName=modName: self.setModNameAndAdvance(modName))
+
+        btn_list.pack()
+
+    def setModNameAndAdvance(self, modName):
+        print("FILTERING BY", modName)
+        self.subModFilterByFamilyAndModName = self.subModFilterByFamily.filterByModName(modName)
+
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
+        btn_list = ImageButtonList(frame, max_per_column=6)
+        for subMod in self.subModFilterByFamilyAndModName.getSubMods():
+            btn_list.add_button(subMod.submodname, "", self.img, lambda: self.setModNameAndAdvance(modName))
+        btn_list.pack()
 
     #installer GUI needs to ask, then filter:
     # - WHICH game family (Umineko or Higurashi) [mods:family] field
