@@ -10,7 +10,7 @@ from tkinter.scrolledtext import ScrolledText
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 #which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 #but I don't think we will encounter them
-from gameScanner import SubModFilter
+from gameScanner import SubModFilter, scanForFullInstallConfigs
 
 """
 Apple 8.5.9
@@ -405,8 +405,27 @@ class InstallerGUI:
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
         for subMod in self.subModFilterByFamilyAndModName.getSubMods():
-            btn_list.add_button(subMod.submodname, "", self.img, lambda: self.setModNameAndAdvance(modName))
+            btn_list.add_button(subMod.submodname, "", self.img, lambda subMod=subMod: self.setSubModAndAdvance(subMod))
         btn_list.pack()
+
+    def setSubModAndAdvance(self, subMod):
+        #do search over all possible install locations that the selected submod can be installed.
+        fullInstallConfigs = scanForFullInstallConfigs([subMod])
+
+        #show "no games autodetected - please choose manually" if none exist
+
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which installation to install the mod to")
+        btn_list = ImageButtonList(frame, max_per_column=6)
+        for fullConfig in fullInstallConfigs:
+            btn_list.add_button("Path: {}".format(fullConfig.installPath),
+                                "Will Install: {} - {} Option".format(fullConfig.subModConfig.modname, fullConfig.subModConfig.submodname),
+                                self.img,
+                                lambda: () )
+        btn_list.pack()
+
+        #also add the option to select the path manually somewhere
+        #once some item has been selected, proceed to install status page and start the install.
+
 
     #installer GUI needs to ask, then filter:
     # - WHICH game family (Umineko or Higurashi) [mods:family] field
