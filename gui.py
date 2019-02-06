@@ -422,8 +422,10 @@ class InstallerGUI:
             if gameExecutablePath:
                 installDir = os.path.normpath(os.path.join(gameExecutablePath, os.pardir))
 
-                if subModCompatibleWithPath(subMod, installDir):
+                fullInstallConfigs = scanForFullInstallConfigs(subModConfigList=[subMod], possiblePaths=[installDir])
+                if fullInstallConfigs:
                     print("Path Ok: ", installDir)
+                    self.confirmationPage(fullInstallConfigs[0])
                 else:
                     print("Path INVALID:", installDir)
                     messagebox.showinfo("Error", "Can't install the mod to the path\n" + installDir)
@@ -436,10 +438,10 @@ class InstallerGUI:
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which installation to install the mod to")
         btn_list = ImageButtonList(frame, max_per_column=6)
         for fullConfig in fullInstallConfigs:
-            btn_list.add_button("Path: {}".format(fullConfig.installPath),
-                                "Will Install: {} - {} Option".format(fullConfig.subModConfig.modname, fullConfig.subModConfig.submodname),
+            btn_list.add_button("Install Mod To:",
+                                fullConfig.installPath,
                                 self.img,
-                                lambda: () )
+                                lambda fullConfig=fullConfig: self.confirmationPage(fullConfig) )
         btn_list.pack()
 
         but = Button(frame, text="Find Game Exe Manually", command=askGameExeAndValidate)
@@ -452,8 +454,15 @@ class InstallerGUI:
         #once some item has been selected, proceed to install status page and start the install.
 
 
-    def confirmationPage(self):
-        pass
+    def confirmationPage(self, fullInstallSettings):
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Please confirm your settings: ")
+
+        #TODO: fix this later with two column layout
+        for attr, value in fullInstallSettings.__dict__.items():
+            if attr != "wiz":
+                setting_text = Label(frame, text="{:20}: {}".format(attr, value), justify=LEFT)
+                setting_text.pack(fill=BOTH, expand=1)
+
 
     def installStatusPage(self):
         pass

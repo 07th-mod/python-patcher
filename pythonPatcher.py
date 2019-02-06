@@ -47,7 +47,7 @@ for mod in umimodList:
 		print(conf)
 		subModconfigList.append(conf)
 
-fullInstallConfigs = scanForFullInstallConfigs(subModconfigList)
+# fullInstallConfigs = scanForFullInstallConfigs(subModconfigList)
 
 gui = InstallerGUI(subModconfigList)
 gui.mainloop()
