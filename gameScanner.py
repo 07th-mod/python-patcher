@@ -110,8 +110,10 @@ def getMaybeGamePaths():
 # Returns a full install config if the given sub mod can be installed to the given path
 # otherwise returns None if the sub mod is incompatible
 # The "gamePathContentsSet" argument is a set containing the
-def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
+def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet=None):
 	# type: (SubModConfig, str, set) -> bool
+	if not gamePathContentsSet:
+		gamePathContentsSet = set(os.listdir(gamePath))
 
 	# Higurashi Mac
 	if IS_MAC and subModConfig.family == 'higurashi':
