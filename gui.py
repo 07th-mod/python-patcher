@@ -1,3 +1,4 @@
+import os
 import queue
 import threading
 import time
@@ -411,9 +412,16 @@ class InstallerGUI:
 
     def setSubModAndAdvance(self, subMod):
         # type: (SubModConfig) -> None
-        def askDirectoryAndValidate():
-            installDir = filedialog.askdirectory()
-            if installDir:
+        def askGameExeAndValidate():
+            #this creates the default option, which allows you to select all identifiers and any extras specified here.
+            extensionList = ["com.apple.application"] + subMod.identifiers
+            fileList = [("Game Executable", x) for x in extensionList]
+            fileList.append(("Any In Game Folder", "*.*"))
+
+            gameExecutablePath = filedialog.askopenfilename(filetypes=fileList)
+            if gameExecutablePath:
+                installDir = os.path.normpath(os.path.join(gameExecutablePath, os.pardir))
+
                 if subModCompatibleWithPath(subMod, installDir):
                     print("Path Ok: ", installDir)
                 else:
@@ -434,10 +442,10 @@ class InstallerGUI:
                                 lambda: () )
         btn_list.pack()
 
-        but = Button(frame, text="Choose Folder Manually", command=askDirectoryAndValidate)
+        but = Button(frame, text="Find Game Exe Manually", command=askGameExeAndValidate)
         but.pack()
 
-        label = Label(frame, text="HINT - The installer is looking for a folder containing:\n - " + "\n - ".join(subMod.identifiers))
+        label = Label(frame, text="HINT - Find any of these files:\n - " + "\n - ".join(subMod.identifiers))
         label.pack()
 
         #also add the option to select the path manually somewhere
