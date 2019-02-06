@@ -4,13 +4,15 @@ import time
 from queue import Queue
 from tkinter import *
 import tkinter as tk
+from tkinter import filedialog, messagebox
 from tkinter.filedialog import askdirectory
 from tkinter.scrolledtext import ScrolledText
+from gameScanner import SubModConfig
 
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 #which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 #but I don't think we will encounter them
-from gameScanner import SubModFilter, scanForFullInstallConfigs
+from gameScanner import SubModFilter, scanForFullInstallConfigs, subModCompatibleWithPath
 
 """
 Apple 8.5.9
@@ -223,7 +225,6 @@ class InstallWizard2:
         # Hide the previous frame
         page_index = self.page_count-1
         if page_index > 0:
-            print("forgetting", page_index-1)
             self.page_frames[page_index-1].pack_forget()
             self.page_texts[page_index - 1].pack_forget()
 
@@ -409,6 +410,16 @@ class InstallerGUI:
         btn_list.pack()
 
     def setSubModAndAdvance(self, subMod):
+        # type: (SubModConfig) -> None
+        def askDirectoryAndValidate():
+            installDir = filedialog.askdirectory()
+            if installDir:
+                if subModCompatibleWithPath(subMod, installDir):
+                    print("Path Ok: ", installDir)
+                else:
+                    print("Path INVALID:", installDir)
+                    messagebox.showinfo("Error", "Can't install the mod to the path\n" + installDir)
+
         #do search over all possible install locations that the selected submod can be installed.
         fullInstallConfigs = scanForFullInstallConfigs([subMod])
 
@@ -423,8 +434,21 @@ class InstallerGUI:
                                 lambda: () )
         btn_list.pack()
 
+        but = Button(frame, text="Choose Folder Manually", command=askDirectoryAndValidate)
+        but.pack()
+
+        label = Label(frame, text="HINT - The installer is looking for a folder containing:\n - " + "\n - ".join(subMod.identifiers))
+        label.pack()
+
         #also add the option to select the path manually somewhere
         #once some item has been selected, proceed to install status page and start the install.
+
+
+    def confirmationPage(self):
+        pass
+
+    def installStatusPage(self):
+        pass
 
 
     #installer GUI needs to ask, then filter:
