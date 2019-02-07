@@ -8,6 +8,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter.filedialog import askdirectory
 from tkinter.scrolledtext import ScrolledText
+
+import uminekoInstaller
 from gameScanner import SubModConfig
 
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
@@ -270,19 +272,6 @@ class InstallWizard2:
     def pack(self):
         self.outer_frame.pack(fill=BOTH, expand=1)
 
-class HigurashiInstallerThread(threading.Thread):
-   def __init__(self, install_widget, config):
-        threading.Thread.__init__(self, daemon=True)
-        #only either read the variables, or call functions prepended with 'threadsafe_" from these objects
-        #do not attempt to call other functions, or write to these objects, as they're not properly thread safe
-        self.install_widget = install_widget
-        self.config = config
-
-   def run(self):
-       for i in range(0, 10000):
-           self.install_widget.threadsafe_set_overall_progress(i / 100)
-           time.sleep(.01)
-
 
 class InstallerGUI:
     def __init__(self, configList):
@@ -382,8 +371,11 @@ class InstallerGUI:
         install_widget = InstallStatusWidget(frame)
         install_widget.pack()
 
-        # thread = HigurashiInstallerThread(install_widget, config=fullInstallSettings)
-        # thread.start()
+        t = threading.Thread(target=uminekoInstaller.mainUmineko,
+                         args=(install_widget, fullInstallSettings),
+                         daemon=True)
+        t.start()
+
 
     def mainloop(self):
         self.root.mainloop()
