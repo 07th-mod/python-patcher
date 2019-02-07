@@ -98,7 +98,6 @@ class InstallStatusWidget:
         self.label_subtask.pack()
         self.progress_subtask.pack()
         self.terminal.pack(fill=BOTH, expand=1, pady=20)
-        self.outer_frame.pack()
 
         #hack to make terminal readonly while still letting us freeely insert text and let user copy from text
         #See: https://stackoverflow.com/questions/3842155/is-there-a-way-to-make-the-tkinter-text-widget-read-only
@@ -136,7 +135,7 @@ class InstallStatusWidget:
             try:
                 msg_type, msg_data = self.notification_queue.get_nowait()
             except queue.Empty:
-                root.after(200, self.progress_receiver)
+                self.root.after(200, self.progress_receiver)
                 return
 
             if msg_type == InstallStatusWidget.MSG_TYPE_OVERALL_PROGRESS:
@@ -149,6 +148,9 @@ class InstallStatusWidget:
                 print("Error - invalid data received in progress receiver")
 
         self.root.after(200, self.progress_receiver)
+
+    def pack(self):
+        self.outer_frame.pack()
 
 # Forward  button - if not set, defaults to a disabled button
 # Backward button - for first page, is disabled. For all other pages, automatically moves you back to the previous page by destroying the widget
@@ -268,92 +270,6 @@ class InstallWizard2:
     def pack(self):
         self.outer_frame.pack(fill=BOTH, expand=1)
 
-#settings common to both installers
-class BaseInstallerSettings:
-    def __init__(self, wizard):
-        self.use_ipv6 = False
-        self.install_path = None
-        self.mod_type = None
-        self.wiz = wizard
-
-    def make_settings_confirmation_widget(self, root):
-        frame = Frame(root)
-
-        #TODO: fix this later with two column layout
-        for attr, value in self.__dict__.items():
-            if attr != "wiz":
-                setting_text = Label(root, text="{:20}: {}".format(attr, value), justify=LEFT)
-                setting_text.pack(fill=BOTH, expand=1)
-
-        return frame
-
-
-class HigurashiInstaller(BaseInstallerSettings):
-    def __init__(self, wizard):
-        BaseInstallerSettings.__init__(self, wizard)
-        #TODO: put higurashi specific settings here
-
-    def advance_to_choose_game_folder_higurashi(self):
-        name_path_tuples = [("Higurashi Ep. 1", r"c:\program files\steam\higurashi\one\two\three"),
-                           ("Higurashi Ep. 2", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 3", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 4", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 5", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 6", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 7", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 8", r"c:\program files\steam\higurashi"),
-                           ("Higurashi Ep. 9", r"c:\program files\steam\higurashi"), ]
-
-        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which Episode to install:", forward_callback=None, backward_callback=lambda: print("advance_to_choose_game_folder_umineko"))
-
-        btn_list = ImageButtonList(frame, max_per_column=6)
-
-        def set_path_and_advance(path):
-            if path:
-                self.install_path = path
-            else:
-                #need to do verificartion of path here! copy from higurashiinstaller.py
-                self.install_path = askdirectory()
-
-            if self.install_path != "":
-                self.advance_to_choose_mod_type_higurashi()
-
-        for name, path in name_path_tuples:
-            btn_list.add_button(name, path, img, lambda: set_path_and_advance(path))
-
-        btn_list.add_button("Higurashi Ep. C", r"Can't Find Path - Choose Manually", img, lambda: set_path_and_advance(None))
-        btn_list.pack()
-
-
-    def advance_to_choose_mod_type_higurashi(self):
-        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod to install:", backward_callback=lambda: print("choose mod type back"))
-
-        def set_mod_type_and_advance(mod_type):
-            self.mod_type = mod_type
-            self.advance_to_confirmation_page()
-
-        btn_list = ImageButtonList(frame, max_per_column=6)
-        btn_list.add_button("Full Patch", r"Patch Graphics, Voices, etc.", img, lambda:set_mod_type_and_advance("FULL"))
-        btn_list.add_button("ADV Mode", r"Use ADV mode (see wiki for description)", img, lambda:set_mod_type_and_advance("ADV"))
-        btn_list.add_button("Voice Only", r"Only Patch Voices", img, lambda:set_mod_type_and_advance("VOICE_ONLY"))
-        btn_list.pack()
-
-
-    def advance_to_confirmation_page(self):
-        frame = self.wiz.get_new_frame_and_hide_old_frame("Please confirm your settings, then click next to begin the installation")
-        install_button = Button(frame, text="Start Install!", command=self.advance_to_install_status_page)
-        settings_confirmation_widget = self.make_settings_confirmation_widget(frame)
-        settings_confirmation_widget.pack()
-        install_button.pack()
-
-
-    def advance_to_install_status_page(self):
-        frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
-        install_widget = InstallStatusWidget(frame)
-
-        thread = HigurashiInstallerThread(install_widget, config=self)
-        thread.start()
-
 class HigurashiInstallerThread(threading.Thread):
    def __init__(self, install_widget, config):
         threading.Thread.__init__(self, daemon=True)
@@ -449,10 +365,6 @@ class InstallerGUI:
         label = Label(frame, text="HINT - Find any of these files:\n - " + "\n - ".join(subMod.identifiers))
         label.pack()
 
-        #also add the option to select the path manually somewhere
-        #once some item has been selected, proceed to install status page and start the install.
-
-
     def confirmationPage(self, fullInstallSettings):
         frame = self.wiz.get_new_frame_and_hide_old_frame("Please confirm your settings: ")
 
@@ -462,54 +374,16 @@ class InstallerGUI:
                 setting_text = Label(frame, text="{:20}: {}".format(attr, value), justify=LEFT)
                 setting_text.pack(fill=BOTH, expand=1)
 
+        start_install_button = Button(frame, text="Start Install!", command=lambda: self.advance_to_install_status_page(fullInstallSettings))
+        start_install_button.pack()
 
-    def installStatusPage(self):
-        pass
+    def advance_to_install_status_page(self, fullInstallSettings):
+        frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
+        install_widget = InstallStatusWidget(frame)
+        install_widget.pack()
 
-
-    #installer GUI needs to ask, then filter:
-    # - WHICH game family (Umineko or Higurashi) [mods:family] field
-    # - WHICH mod they want to install (Himatsubushi, Console Arcs, Umineko Chiru) [mods:name] field
-
-    # - display
-    #   - a list of autodetected game paths with the above criteria (should only ever be one mod option which satisfies the above criteria)
-    #   - the option to TRY to select a custom path (which still has to be validated )
-
-    # - let user choose the submod they want to install, if there is more than one submod
+        # thread = HigurashiInstallerThread(install_widget, config=fullInstallSettings)
+        # thread.start()
 
     def mainloop(self):
         self.root.mainloop()
-
-#
-#
-# root = Tk()
-#
-# img = PhotoImage(file="earth.gif").subsample(4)
-#
-# root.minsize(800, 500)
-#
-# wiz = InstallWizard2(root)
-#
-# def advance_to_intro_page():
-#     frame = wiz.get_new_frame_and_hide_old_frame("Please choose which game you want to install",
-#                                                  forward_callback=None, #disable forward callback
-#                                                  backward_callback=lambda: print("advance intro page(never called)"))
-#     button_higurashi = Button(frame, text="Install Higurashi Mod", command=higu_installer.advance_to_choose_game_folder_higurashi)
-#     button_umineko = Button(frame, text="Install Umineko Mod", command=advance_to_choose_game_folder_umineko)
-#     button_higurashi.pack(**default_padding)
-#     button_umineko.pack(**default_padding)
-#
-# def advance_to_choose_game_folder_umineko():
-#     frame = wiz.get_new_frame_and_hide_old_frame("Umineko placeholder")
-#
-# higu_installer = HigurashiInstaller(wiz)
-#
-#
-# advance_to_intro_page()
-#
-# wiz.pack()
-#
-#
-# root.mainloop()
-#
-# print("finished")
