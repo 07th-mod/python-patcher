@@ -9,6 +9,7 @@ from tkinter import filedialog, messagebox
 from tkinter.filedialog import askdirectory
 from tkinter.scrolledtext import ScrolledText
 
+import higurashiInstaller
 import uminekoInstaller
 from gameScanner import SubModConfig
 
@@ -331,7 +332,7 @@ class InstallerGUI:
                     self.confirmationPage(fullInstallConfigs[0])
                 else:
                     print("Path INVALID:", installDir)
-                    messagebox.showinfo("Error", "Can't install the mod to the path\n" + installDir)
+                    messagebox.showerror("Error", "Can't install the mod to the path\n" + installDir)
 
         #do search over all possible install locations that the selected submod can be installed.
         fullInstallConfigs = scanForFullInstallConfigs([subMod])
@@ -371,11 +372,18 @@ class InstallerGUI:
         install_widget = InstallStatusWidget(frame)
         install_widget.pack()
 
-        t = threading.Thread(target=uminekoInstaller.mainUmineko,
-                         args=(install_widget, fullInstallSettings),
-                         daemon=True)
-        t.start()
+        installerFunction = {
+            "higurashi" : higurashiInstaller.main,
+            "umineko" : uminekoInstaller.mainUmineko
+        }.get(fullInstallSettings.subModConfig.family, default=None)
 
+        if not installerFunction:
+            messagebox.showerror("Error - Unknown Game Family",
+                                 "I don't know how to install [{}] family of games. Please notify 07th-mod developers.")
+            return
+
+        t = threading.Thread(target=installerFunction, args=(install_widget, fullInstallSettings), daemon=True)
+        t.start()
 
     def mainloop(self):
         self.root.mainloop()
