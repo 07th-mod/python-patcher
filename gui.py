@@ -54,21 +54,18 @@ class ImageButtonList:
         self.button_list = []
         self.max_per_column = max_per_column
 
-    def add_button(self, upper_text, lower_text, image, callback):
+    def add_button(self, upper_text, lower_text, image, callback, *callback_args, **callback_kwargs):
         """
-        NOTE: remember to use the following syntax if using lambdas, otherwise the lambda will capture a reference to the variable, not the value of the variable:
 
-        By VALUE       lambda modName=modName: self.setModNameAndAdvance(modName)
-
-        By REFERENCE   lambda: self.setModNameAndAdvance(modName)
-
-        :param upper_text:
-        :param lower_text:
-        :param image:
-        :param callback:
-        :return:
+        :param upper_text: Text displayed on the first line, on the right of the button
+        :param lower_text: Text displayed on the second line, on the right of the button
+        :param image:      The image object displayed inside the button. REMEMBER TO KEEP A REFERENCE TO THE IMAGE OR IT WON'T BE SHOWN.
+        :param callback:   The callback to be called when the button is pressed
+        :param callback_args:    arguments to the callback function
+        :param callback_kwargs:  keyword arguments to the callback function (eg a=5, b=7)
+        :return: None
         """
-        btn = make_two_line_button(self.frame, upper_text, lower_text, image, callback)
+        btn = make_two_line_button(self.frame, upper_text, lower_text, image, lambda: callback(*callback_args, **callback_kwargs))
         btn.grid(row=len(self.button_list)%self.max_per_column,
                  column = len(self.button_list)//self.max_per_column,
                  sticky="W")
@@ -386,7 +383,7 @@ class InstallerGUI:
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which game family you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
         for family in self.subModFilterAll.getFamilyList():
-            btn_list.add_button(family, "", self.img, lambda family=family: self.setFamilyAndAdvance(family))
+            btn_list.add_button(family, "", self.img, self.setFamilyAndAdvance, family)
         btn_list.pack()
 
     def setFamilyAndAdvance(self, family):
@@ -396,7 +393,7 @@ class InstallerGUI:
         btn_list = ImageButtonList(frame, max_per_column=6)
 
         for modName in self.subModFilterByFamily.getModNameList():
-            btn_list.add_button(modName, "", self.img, lambda modName=modName: self.setModNameAndAdvance(modName))
+            btn_list.add_button(modName, "", self.img, self.setModNameAndAdvance, modName)
 
         btn_list.pack()
 
@@ -407,7 +404,8 @@ class InstallerGUI:
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
         for subMod in self.subModFilterByFamilyAndModName.getSubMods():
-            btn_list.add_button(subMod.submodname, "", self.img, lambda subMod=subMod: self.setSubModAndAdvance(subMod))
+            btn_list.add_button(subMod.submodname, "", self.img, self.setSubModAndAdvance, subMod)
+
         btn_list.pack()
 
     def setSubModAndAdvance(self, subMod):
@@ -441,7 +439,8 @@ class InstallerGUI:
             btn_list.add_button("Install Mod To:",
                                 fullConfig.installPath,
                                 self.img,
-                                lambda fullConfig=fullConfig: self.confirmationPage(fullConfig) )
+                                self.confirmationPage,
+                                fullConfig)
         btn_list.pack()
 
         but = Button(frame, text="Find Game Exe Manually", command=askGameExeAndValidate)
