@@ -143,31 +143,31 @@ if SEVEN_ZIP_EXECUTABLE is None:
 	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 	exitWithError()
 
-def runProcessOutputToTempFile(arguments, tempfilePath):
-	print("BEGIN EXECUTING COMMAND: [{}] stdout=[{}]".format(arguments, tempfilePath))
-	with open(tempfilePath, "w") as stdoutFileWrite:
-		with open(tempfilePath, "r") as stdoutFileRead:
+#TODO: capture both stdout and stderr
+def runProcessOutputToTempFile(arguments):
+	print("BEGIN EXECUTING COMMAND: [{}]".format(arguments))
 
-			proc = subprocess.Popen(arguments, stdout=stdoutFileWrite)
+	# need universal_newlines=True so stdout is opened in normal. However, this might result in garbled japanese(unicode) characters!
+	# to fix this properly, you would need to make a custom class which takes in raw bytes using stdout.read(10)
+	# and then periodically convert newline delimited sections of the text to utf-8 (or whatever encoding), and catch bad encoding errors
+	# See comments on https://stackoverflow.com/a/15374326/848627 and answer https://stackoverflow.com/a/48880977/848627
+	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, universal_newlines=True)
 
-			# wait for process to complete
-			while proc.poll() is None:
-				while True:
-					line = stdoutFileRead.readline()
-					if line:
-						print(line)
-					else:
-						break
+	# wait for process to complete
+	while proc.poll() is None:
+		while True:
+			line = proc.stdout.readline()
 
-				time.sleep(.5)
-
-			# do one last poll for more data if there is any
-			line = stdoutFileRead.readline()
 			if line:
 				print(line)
+			else:
+				break
 
-			print("--------------- EXECUTION FINISHED ---------------")
-			return proc.returncode
+		time.sleep(.5)
+		proc.stdout.flush()
+
+	print("--------------- EXECUTION FINISHED ---------------")
+	return proc.returncode
 
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
@@ -211,13 +211,13 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 
 	# with open('seven_zip_stdout.txt', "w", buffering=100) as outfile:
 	# 	return subprocess.call(arguments, stdout=outfile)
-	return runProcessOutputToTempFile(arguments, 'aria2c_stdout.txt')
+	return runProcessOutputToTempFile(arguments)
 
 def sevenZipExtract(archive_path, outputDir=None):
 	arguments = [SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"]
 	if outputDir:
 		arguments.append('-o' + outputDir)
-	return runProcessOutputToTempFile(arguments, 'seven_zip_stdout.txt')
+	return runProcessOutputToTempFile(arguments)
 
 ####################################### TKINTER Functions and Classes ##################################################
 # see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
