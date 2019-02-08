@@ -146,7 +146,7 @@ if SEVEN_ZIP_EXECUTABLE is None:
 
 #TODO: capture both stdout and stderr
 def runProcessOutputToTempFile(arguments):
-	print("BEGIN EXECUTING COMMAND: [{}]".format(arguments))
+	print("----- BEGIN EXECUTING COMMAND: [{}] -----".format(" ".join(arguments)))
 
 	# need universal_newlines=True so stdout is opened in normal. However, this might result in garbled japanese(unicode) characters!
 	# to fix this properly, you would need to make a custom class which takes in raw bytes using stdout.read(10)
@@ -175,7 +175,7 @@ def runProcessOutputToTempFile(arguments):
 
 	readUntilEOF(proc, proc.stdout)
 
-	print("--------------- EXECUTION FINISHED ---------------")
+	print("--------------- EXECUTION FINISHED ---------------\n")
 	return proc.returncode
 
 #when calling this function, use named arguments to avoid confusion!

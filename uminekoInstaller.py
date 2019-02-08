@@ -6,11 +6,10 @@ from gameScanner import SubModConfig
 umi_debug_mode = False
 
 def uminekoDownload(downloadTempDir, url_list):
-	print("Downloading:{} to {}".format(url_list, downloadTempDir))
 	makeDirsExistOK(downloadTempDir)
 
 	for url in url_list:
-		print("will try to download {} into {} ".format(url, downloadTempDir))
+		print("Downloading [{}] -> [{}]".format(url, downloadTempDir))
 		if not umi_debug_mode:
 			if aria(downloadTempDir, url=url) != 0:
 				print("ERROR - could not download [{}]. Installation Stopped".format(url))
@@ -169,9 +168,8 @@ def mainUmineko(progressNotifier, conf):
 	downloadList = []
 	extractList = []
 
-	print("\nFiles will be extracted in the following order:")
+	print("\n Retrieving metalinks:")
 	for i, file in enumerate(conf.buildFileListSorted()):
-		print("{}. {} - {}".format(i, file.name, file.url))
 		name, ext = os.path.splitext(file.url)
 
 		# For metafiles, we need to look for filenames within each metafile to know what to extract
