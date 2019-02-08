@@ -1,4 +1,7 @@
 import sys, os, os.path as path, platform, subprocess, json
+import time
+
+import logger
 
 try:
 	import tkinter
@@ -32,6 +35,8 @@ except ImportError:
 # Python 2 Compatibility
 try: input = raw_input
 except NameError: pass
+
+globalLogger = logger.Logger()
 
 def printErrorMessage(text):
 	"""
@@ -138,6 +143,32 @@ if SEVEN_ZIP_EXECUTABLE is None:
 	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 	exitWithError()
 
+def runProcessOutputToTempFile(arguments, tempfilePath):
+	print("BEGIN EXECUTING COMMAND: [{}] stdout=[{}]".format(arguments, tempfilePath))
+	with open(tempfilePath, "w") as stdoutFileWrite:
+		with open(tempfilePath, "r") as stdoutFileRead:
+
+			proc = subprocess.Popen(arguments, stdout=stdoutFileWrite)
+
+			# wait for process to complete
+			while proc.poll() is None:
+				while True:
+					line = stdoutFileRead.readline()
+					if line:
+						print(line)
+					else:
+						break
+
+				time.sleep(.5)
+
+			# do one last poll for more data if there is any
+			line = stdoutFileRead.readline()
+			if line:
+				print(line)
+
+			print("--------------- EXECUTION FINISHED ---------------")
+			return proc.returncode
+
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 	"""
@@ -178,13 +209,15 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 	if url:
 		arguments.append(url)
 
-	return subprocess.call(arguments)
+	# with open('seven_zip_stdout.txt', "w", buffering=100) as outfile:
+	# 	return subprocess.call(arguments, stdout=outfile)
+	return runProcessOutputToTempFile(arguments, 'aria2c_stdout.txt')
 
 def sevenZipExtract(archive_path, outputDir=None):
 	arguments = [SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"]
 	if outputDir:
 		arguments.append('-o' + outputDir)
-	return subprocess.call(arguments)
+	return runProcessOutputToTempFile(arguments, 'seven_zip_stdout.txt')
 
 ####################################### TKINTER Functions and Classes ##################################################
 # see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm

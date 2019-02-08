@@ -1,5 +1,6 @@
 import os
 import queue
+import subprocess
 import threading
 import time
 from queue import Queue
@@ -286,6 +287,7 @@ class InstallerGUI:
 
         self.subModFilterAll = SubModFilter(configList)
 
+        # TODO: remove game family
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which game family you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
         for family in self.subModFilterAll.getFamilyList():
@@ -375,7 +377,7 @@ class InstallerGUI:
         installerFunction = {
             "higurashi" : higurashiInstaller.main,
             "umineko" : uminekoInstaller.mainUmineko
-        }.get(fullInstallSettings.subModConfig.family, default=None)
+        }.get(fullInstallSettings.subModConfig.family, None)
 
         if not installerFunction:
             messagebox.showerror("Error - Unknown Game Family",
@@ -387,3 +389,4 @@ class InstallerGUI:
 
     def mainloop(self):
         self.root.mainloop()
+

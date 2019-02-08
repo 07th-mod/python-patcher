@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
+import common
+import logger
 from common import *
 import higurashiInstaller
 import uminekoInstaller
@@ -10,6 +12,9 @@ from gui import InstallerGUI
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+
+#redirect stdout to both a file and console
+sys.stdout = globalLogger
 
 def check07thModServerConnection():
 	"""
