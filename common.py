@@ -1,4 +1,5 @@
 import sys, os, os.path as path, platform, subprocess, json
+import threading
 import time
 
 import logger
@@ -151,20 +152,28 @@ def runProcessOutputToTempFile(arguments):
 	# to fix this properly, you would need to make a custom class which takes in raw bytes using stdout.read(10)
 	# and then periodically convert newline delimited sections of the text to utf-8 (or whatever encoding), and catch bad encoding errors
 	# See comments on https://stackoverflow.com/a/15374326/848627 and answer https://stackoverflow.com/a/48880977/848627
-	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, universal_newlines=True)
+	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
-	# wait for process to complete
-	while proc.poll() is None:
-		while True:
-			line = proc.stdout.readline()
+	def readUntilEOF(proc, fileLikeObject):
+		while proc.poll() is None:
+			try:
+				fileLikeObject.flush()
+				while True:
+					line = fileLikeObject.readline()
 
-			if line:
-				print(line)
-			else:
-				break
+					if line:
+						print(line)
+					else:
+						break
+			except:
+				#reduce cpu usage if some exception is continously thrown
+				time.sleep(.1)
 
-		time.sleep(.5)
-		proc.stdout.flush()
+	# Monitor stderr on one thread, and monitor stdout on main thread
+	t = threading.Thread(target=readUntilEOF, args=(proc, proc.stderr))
+	t.start()
+
+	readUntilEOF(proc, proc.stdout)
 
 	print("--------------- EXECUTION FINISHED ---------------")
 	return proc.returncode
