@@ -1,7 +1,6 @@
 from common import *
 import os, shutil, subprocess
-from gameScanner import FullInstallConfiguration
-from gameScanner import SubModConfig
+from gameScanner import FullInstallConfiguration, SubModConfig
 from gui import InstallStatusWidget
 
 umi_debug_mode = False

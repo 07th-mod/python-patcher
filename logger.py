@@ -1,4 +1,3 @@
-import subprocess
 import sys
 
 # From https://stackoverflow.com/a/14906787/848627

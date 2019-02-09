@@ -1,13 +1,8 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
-import common
-import logger
 from common import *
-import higurashiInstaller
-import uminekoInstaller
 from gameScanner import SubModConfig
-from gameScanner import scanForFullInstallConfigs
 from gui import InstallerGUI
 
 import pprint
@@ -34,38 +29,20 @@ def check07thModServerConnection():
 
 check07thModServerConnection()
 
-
 # Scan for moddable games on the user's computer before starting installation
-# higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
-#umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
+#modList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
 
 with open('installData.json', 'r', encoding="utf-8") as content_file:
-	umimodList = json.loads(content_file.read())["mods"]
-
-# with open('higurashiInstallData.json', 'r', encoding="utf-8") as content_file:
-# 	higuModList = json.loads(content_file.read())["mods"]
-
-#for now, don't try to load higurashi data. Eventually, merge both json into one
+	modList = json.loads(content_file.read())["mods"]
 
 subModconfigList = []
-for mod in umimodList:
+for mod in modList:
 	for submod in mod['submods']:
 		conf = SubModConfig(mod, submod)
 		print(conf)
 		subModconfigList.append(conf)
 
-# fullInstallConfigs = scanForFullInstallConfigs(subModconfigList)
-
 gui = InstallerGUI(subModconfigList)
 gui.mainloop()
-
-# # class for main installer to provide progress updates, possible on a different thread
-# class ProgressNotifier:
-# 	pass
-#
-# progressNotifier = ProgressNotifier()
-#
-# # for testing, just skip the GUI part
-# uminekoInstaller.mainUmineko(progressNotifier, configs.pop())
 
 exit()

@@ -1,8 +1,6 @@
 import os
 import queue
-import subprocess
 import threading
-import time
 from queue import Queue
 from tkinter import *
 import tkinter as tk
