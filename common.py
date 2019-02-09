@@ -221,7 +221,15 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 	return runProcessOutputToTempFile(arguments)
 
 def sevenZipExtract(archive_path, outputDir=None):
-	arguments = [SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"]
+	arguments = [SEVEN_ZIP_EXECUTABLE,
+				 "x",
+				 archive_path,
+				 "-aoa",  # overwrite All existing files without prompt (-ao means 'overwrite mode', a means 'All')
+				 "-bso1", # redirect standard Output messages to stdout
+				 "-bsp1", # redirect Progress update messages to stdout
+				 "-bse2", # redirect Error messages to stderr
+				 ]
+
 	if outputDir:
 		arguments.append('-o' + outputDir)
 	return runProcessOutputToTempFile(arguments)
