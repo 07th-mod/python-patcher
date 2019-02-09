@@ -286,32 +286,24 @@ class InstallerGUI:
         self.img = PhotoImage(file="earth.gif")
 
         self.subModFilterAll = SubModFilter(configList)
+        self.showModList()
 
-        # TODO: remove game family
-        frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which game family you want to install")
-        btn_list = ImageButtonList(frame, max_per_column=6)
-        for family in self.subModFilterAll.getFamilyList():
-            btn_list.add_button(family, "", self.img, self.setFamilyAndAdvance, family)
-        btn_list.pack()
-
-    def setFamilyAndAdvance(self, family):
-        self.subModFilterByFamily = self.subModFilterAll.filterByFamily(family)
-
+    def showModList(self):
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
 
-        for modName in self.subModFilterByFamily.getModNameList():
+        for modName in self.subModFilterAll.getModNameList():
             btn_list.add_button(modName, "", self.img, self.setModNameAndAdvance, modName)
 
         btn_list.pack()
 
     def setModNameAndAdvance(self, modName):
         print("FILTERING BY", modName)
-        self.subModFilterByFamilyAndModName = self.subModFilterByFamily.filterByModName(modName)
+        self.subModFilterByModName = self.subModFilterAll.filterByModName(modName)
 
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
-        for subMod in self.subModFilterByFamilyAndModName.getSubMods():
+        for subMod in self.subModFilterByModName.getSubMods():
             btn_list.add_button(subMod.submodname, "", self.img, self.setSubModAndAdvance, subMod)
 
         btn_list.pack()
