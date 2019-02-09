@@ -193,10 +193,10 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False):
 		"--file-allocation=none",
 		'--continue=true',
 		'--retry-wait=5',
-		'-m 0',
-		'-x 8',
-		'-s 8',
-		'-j 1',
+		'-m 0', # max number of retries (0=unlimited). In some cases, like server rejects download, aria2c won't retry.
+		'-x 8', # max connections to the same server
+		'-s 8', # Split - Try to use N connections per each download item
+		'-j 1', # max concurrent download items (eg number of separate urls which can be downloaded in parallel)
 	]
 
 	if followMetaLink:
