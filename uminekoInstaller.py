@@ -11,7 +11,7 @@ def uminekoDownload(downloadTempDir, url_list):
 	for url in url_list:
 		print("Downloading [{}] -> [{}]".format(url, downloadTempDir))
 		if not umi_debug_mode:
-			if aria(downloadTempDir, url=url) != 0:
+			if aria(downloadTempDir, url=url, followMetaLink=True) != 0:
 				print("ERROR - could not download [{}]. Installation Stopped".format(url))
 				exitWithError()
 
