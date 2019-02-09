@@ -17,7 +17,7 @@ from gameScanner import SubModConfig
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 #which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 #but I don't think we will encounter them
-from gameScanner import SubModFilter, scanForFullInstallConfigs, subModCompatibleWithPath
+from gameScanner import scanForFullInstallConfigs, subModCompatibleWithPath
 
 """
 Apple 8.5.9
@@ -276,7 +276,11 @@ class InstallWizard2:
 
 
 class InstallerGUI:
-    def __init__(self, configList):
+    def __init__(self, allSubModConfigs):
+        """
+
+        :param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
+        """
         self.root = Tk()
         self.root.minsize(800, 500)
         self.wiz = InstallWizard2(self.root)
@@ -285,25 +289,25 @@ class InstallerGUI:
         #Note: MUST keep a handle to the image, otherwise it will be garbage collected!!!
         self.img = PhotoImage(file="earth.gif")
 
-        self.subModFilterAll = SubModFilter(configList)
+        self.allSubModConfigs = allSubModConfigs
         self.showModList()
 
     def showModList(self):
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod you want to install")
-        btn_list = ImageButtonList(frame, max_per_column=6)
+        btn_list = ImageButtonList(frame, max_per_column=3)
 
-        for modName in self.subModFilterAll.getModNameList():
+        for modName in SubModConfig.getUniqueModNamesInSubModList(self.allSubModConfigs):
             btn_list.add_button(modName, "", self.img, self.setModNameAndAdvance, modName)
 
         btn_list.pack()
 
     def setModNameAndAdvance(self, modName):
+        # type: (str) -> None
         print("FILTERING BY", modName)
-        self.subModFilterByModName = self.subModFilterAll.filterByModName(modName)
 
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
-        for subMod in self.subModFilterByModName.getSubMods():
+        for subMod in [subMod for subMod in self.allSubModConfigs if subMod.modname == modName]:
             btn_list.add_button(subMod.submodname, "", self.img, self.setSubModAndAdvance, subMod)
 
         btn_list.pack()

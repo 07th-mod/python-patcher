@@ -6,7 +6,7 @@ import logger
 from common import *
 import higurashiInstaller
 import uminekoInstaller
-from gameScanner import SubModConfig, SubModFilter
+from gameScanner import SubModConfig
 from gameScanner import scanForFullInstallConfigs
 from gui import InstallerGUI
 
