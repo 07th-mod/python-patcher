@@ -128,12 +128,12 @@ def getMetalinkFilenames(url, downloadDir):
 def mainUmineko(progressNotifier, conf):
 	# type: (ProgressNotifier, FullInstallConfiguration) -> None
 
-	isQuestionArcs = 'question' in conf.subModConfig.modname.lower()
+	isQuestionArcs = 'question' in conf.subModConfig.modName.lower()
 
 	print("CONFIGURATION:")
 	print("Install path", conf.installPath)
-	print("Mod Option", conf.subModConfig.modname)
-	print("Sub Option", conf.subModConfig.submodname)
+	print("Mod Option", conf.subModConfig.modName)
+	print("Sub Option", conf.subModConfig.subModName)
 	print("Is Question Arcs", isQuestionArcs)
 	print("Is Windows", IS_WINDOWS)
 	print("Is Linux", IS_LINUX)

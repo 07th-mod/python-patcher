@@ -307,8 +307,8 @@ class InstallerGUI:
 
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
-        for subMod in [subMod for subMod in self.allSubModConfigs if subMod.modname == modName]:
-            btn_list.add_button(subMod.submodname, "", self.img, self.setSubModAndAdvance, subMod)
+        for subMod in [subMod for subMod in self.allSubModConfigs if subMod.modName == modName]:
+            btn_list.add_button(subMod.subModName, "", self.img, self.setSubModAndAdvance, subMod)
 
         btn_list.pack()
 

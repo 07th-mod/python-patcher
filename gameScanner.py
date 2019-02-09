@@ -53,23 +53,23 @@ class SubModConfig:
 	#object initialized in factory func
 	def __init__(self, mod, submod):
 		self.family = mod['family']
-		self.modname = mod['name']
+		self.modName = mod['name']
 		self.target = mod['target']
 		self.CFBundleName = mod['CFBundleName']
-		self.dataname = mod['dataname']
+		self.dataName = mod['dataname']
 		self.identifiers = mod['identifiers']
-		self.submodname = submod['name']
+		self.subModName = submod['name']
 
 		self.files = []
-		for submodFile in submod['files']:
-			self.files.append(ModFile(name=submodFile['name'], url = submodFile['url'], priority=submodFile['priority']))
+		for subModFile in submod['files']:
+			self.files.append(ModFile(name=subModFile['name'], url = subModFile['url'], priority=subModFile['priority']))
 
 		self.fileOverrides = []
-		for submodFileOverride in submod['fileOverrides']:
-			self.fileOverrides.append(ModFileOverride(name=submodFileOverride['name'], os=submodFileOverride['os'], steam=submodFileOverride['steam'], url=submodFileOverride['url']))
+		for subModFileOverride in submod['fileOverrides']:
+			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
 
 	def __repr__(self):
-		return "Type: [{}] Game Name: [{}]".format(self.modname, self.submodname)
+		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
 
 	# Submod lists may contain many entries with the same modName (eg a list may have [umi-question:voice, umi-question:full, umi-question:1080p])
 	# This function gets the unique modNames. It also preserves the original order of the list.
@@ -79,9 +79,9 @@ class SubModConfig:
 		uniqueModNames = []
 		alreadySeenNames = set()
 		for subMod in subModList:
-			if subMod.modname not in alreadySeenNames:
-				uniqueModNames.append(subMod.modname)
-				alreadySeenNames.add(subMod.modname)
+			if subMod.modName not in alreadySeenNames:
+				uniqueModNames.append(subMod.modName)
+				alreadySeenNames.add(subMod.modName)
 
 		return uniqueModNames
 
@@ -146,20 +146,21 @@ def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
 
 	return False
 
+
 # Returns a list of all possible submods that can be installed on the system.
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
-	# type: ([]) -> []
+	# type: ([], [str]) -> []
 	returnedFullConfigs = []
 	if not possiblePaths:
 		possiblePaths = getMaybeGamePaths()
 
 	for gamePath in possiblePaths:
-		#the contents of each game path is cached for better performance
+		# the contents of each game path is cached for better performance
 		gamePathContentsSet = set(os.listdir(gamePath))
 
 		for subModConfig in subModConfigList:
 			if subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
-				#check whether path is steam or mangagamer type
+				# check whether path is steam or mangagamer type
 				possibleSteamPaths = [
 					os.path.join(gamePath, "steam_api.dll"),
 					os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
