@@ -2,92 +2,6 @@
     "version": 1,
     "mods": [
         {
-            "family": "umineko",
-            "name": "Umineko Question (Ch. 1-4)",
-            "target": "UminekoQuestion",
-            "CFBundleName": "This Field is Not Used",
-            "dataname": "Umineko1to4.app",
-            "identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
-            "submods": [
-                {
-                    "name" : "voice-only",
-                    "files":[
-                        {"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
-                        {"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
-                        {"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
-                    ],
-                    "fileOverrides" : [
-                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
-                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
-                    ]
-                },
-                {
-                    "name" : "1080p",
-                    "files":[
-                        {"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
-                        {"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
-                        {"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
-                        {"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
-                        {"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "priority": 1},
-                        {"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 0}
-                    ],
-                    "fileOverrides" : [
-                        {"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"},
-                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
-                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/0utf_umineko1to4_1080p.zip"}
-                    ]
-                }
-            ]
-        },
-        {
-            "family": "umineko",
-            "name" : "Umineko Answer (Ch. 5-8)",
-            "target": "UminekoAnswer",
-            "CFBundleName": "This Field is Not Used",
-            "dataname": "Umineko5to8.app",
-            "identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
-            "submods": [
-                {
-                    "name" : "voice-only",
-                    "files":[
-                        {"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
-                        {"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
-                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/voices-only/0.utf", "priority": 0},
-                        {"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
-                    ],
-                    "fileOverrides" : [
-                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
-                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
-                    ]
-                },
-                {
-                    "name" : "full",
-                    "files":[
-                        {"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
-                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
-                        {"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
-                    ],
-                    "fileOverrides" : [
-                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
-                    ]
-                },
-                {
-                    "name" : "adv",
-                    "files":[
-                        {"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
-                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
-                        {"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
-                        {"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
-                    ],
-                    "fileOverrides" : [
-                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
-                    ]
-                }
-            ]
-        },
-        {
 			"family": "higurashi",
 			"name": "Onikakushi Ch.1",
             "target": "Onikakushi",
@@ -267,6 +181,92 @@
 					]
 				}
 			]
-		}
-    ]
+		},
+		{
+            "family": "umineko",
+            "name": "Umineko Question (Ch. 1-4)",
+            "target": "UminekoQuestion",
+            "CFBundleName": "This Field is Not Used",
+            "dataname": "Umineko1to4.app",
+            "identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
+            "submods": [
+                {
+                    "name" : "voice-only",
+                    "files":[
+                        {"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
+                        {"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
+                        {"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
+                    ],
+                    "fileOverrides" : [
+                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
+                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
+                    ]
+                },
+                {
+                    "name" : "1080p",
+                    "files":[
+                        {"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
+                        {"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
+                        {"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
+                        {"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
+                        {"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "priority": 1},
+                        {"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 0}
+                    ],
+                    "fileOverrides" : [
+                        {"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"},
+                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
+                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/0utf_umineko1to4_1080p.zip"}
+                    ]
+                }
+            ]
+        },
+        {
+            "family": "umineko",
+            "name" : "Umineko Answer (Ch. 5-8)",
+            "target": "UminekoAnswer",
+            "CFBundleName": "This Field is Not Used",
+            "dataname": "Umineko5to8.app",
+            "identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
+            "submods": [
+                {
+                    "name" : "voice-only",
+                    "files":[
+                        {"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
+                        {"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
+                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/voices-only/0.utf", "priority": 0},
+                        {"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
+                    ],
+                    "fileOverrides" : [
+                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
+                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
+                    ]
+                },
+                {
+                    "name" : "full",
+                    "files":[
+                        {"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
+                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
+                        {"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
+                    ],
+                    "fileOverrides" : [
+                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
+                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
+                    ]
+                },
+                {
+                    "name" : "adv",
+                    "files":[
+                        {"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
+                        {"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
+                        {"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
+                        {"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
+                    ],
+                    "fileOverrides" : [
+                        {"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
+                        {"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
+                    ]
+                }
+            ]
+        }
+	]
 }
