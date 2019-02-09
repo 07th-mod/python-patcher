@@ -16,7 +16,7 @@ def uminekoDownload(downloadTempDir, url_list):
 				exitWithError()
 
 
-def extractOrCopyFile(filename, sourceFolder, destinationFolder):
+def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
 	makeDirsExistOK(destinationFolder)
 	sourcePath = os.path.join(sourceFolder, filename)
 	if umi_debug_mode:
@@ -28,7 +28,7 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder):
 			print("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
 			exitWithError()
 	else:
-		shutil.copy(sourcePath, os.path.join(destinationFolder, filename))
+		shutil.copy(sourcePath, os.path.join(destinationFolder, copiedOutputFileName if copiedOutputFileName else filename))
 
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
@@ -194,9 +194,14 @@ def mainUmineko(progressNotifier, conf):
 	#download all urls to the download temp folder
 	uminekoDownload(downloadTempDir, downloadList)
 
-	#extract all files
-	for file in extractList:
-		extractOrCopyFile(file, downloadTempDir, conf.installPath)
+	#extract or copy all files from the download folder to the game directory
+	for filename in extractList:
+		fileNameNoExt, extension = os.path.splitext(filename)
+
+		extractOrCopyFile(filename,
+						  downloadTempDir,
+						  conf.installPath,
+						  copiedOutputFileName = (fileNameNoExt + '.u') if '.utf' in extension else filename)
 
 	#################################### MAKE EXECUTABLE, WRITE HELPER SCRIPTS #########################################
 	gameBaseName = "Umineko5to8"
@@ -204,8 +209,10 @@ def mainUmineko(progressNotifier, conf):
 		gameBaseName = "Umineko1to4"
 
 	if IS_MAC:
+		print("Un-quarantining game executable")
 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(conf.installPath, gameBaseName + ".app")])
 
+	print("Creating debug mode batch files")
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(conf.installPath, gameBaseName + "_DebugMode.bat"), 'w') as f:
 		f.writelines([gameBaseName + ".exe --debug", "pause"])
@@ -218,12 +225,14 @@ def mainUmineko(progressNotifier, conf):
 		os.path.join(conf.installPath, "Umineko5to8.app/Contents/MacOS/umineko8")
 	]
 
+	print("Making executables ... executable")
 	for exePath in makeExecutableList:
 		if os.path.exists(exePath):
 			makeExecutable(exePath)
 
 	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
 	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
+	print("Creating EnableSteamSync.bat")
 	with open(os.path.join(conf.installPath, "EnableSteamSync.bat"), 'w') as f:
 		f.writelines(["mklink saves mysav /J", "pause"])
 
@@ -231,9 +240,11 @@ def mainUmineko(progressNotifier, conf):
 
 	# Open the temp folder so users can delete/backup any temp install files
 	if IS_WINDOWS:
+		print("Showing download folder for user to delete temp files")
 		tryShowFolder(downloadTempDir)
 
 
+	print("Umineko download script completed!")
 
 
 
