@@ -195,7 +195,6 @@ class InstallWizard2:
 
     #excute the user defined callback, then go back a page
     def back_button_callback(self):
-        print("back callback is ", self.back_callbacks[self.page_count-1])
         if self.back_callbacks[self.page_count-1]:
             self.back_callbacks[self.page_count-1]()
         self.back()
@@ -242,7 +241,6 @@ class InstallWizard2:
     def back(self):
         #delete curent page, and update page count
         page_index = self.page_count-1
-        print("deleting index", page_index)
         self.page_frames[page_index].destroy()
         self.page_frames.pop()
         self.page_texts[page_index].destroy()
@@ -269,7 +267,6 @@ class InstallWizard2:
         #pack the previous frame, so it is shown again
         self.page_frames[page_index].pack()
         self.page_texts[page_index].pack()
-        print("Page count is", self.page_count)
 
     def pack(self):
         self.outer_frame.pack(fill=BOTH, expand=1)
@@ -303,7 +300,7 @@ class InstallerGUI:
 
     def setModNameAndAdvance(self, modName):
         # type: (str) -> None
-        print("FILTERING BY", modName)
+        print("User Chose Mod: [{}]".format(modName))
 
         frame = self.wiz.get_new_frame_and_hide_old_frame("Choose which mod option you want to install")
         btn_list = ImageButtonList(frame, max_per_column=6)
