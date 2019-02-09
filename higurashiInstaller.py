@@ -42,6 +42,8 @@ class Installer:
 		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
 		self.downloadDir = self.info.subModConfig.name + "Download"
 
+		self.downloaderAndExtractor = DownloaderAndExtractor(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
+
 	def backupUI(self):
 		"""
 		Backs up the `sharedassets0.assets` file
@@ -69,8 +71,11 @@ class Installer:
 		if path.isdir(oldCGAlt):
 			shutil.rmtree(oldCGAlt)
 
-	def downloadAndExtract(self):
-		downloadAndExtract(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
+	def download(self):
+		self.downloaderAndExtractor.download()
+
+	def extractFiles(self):
+		self.downloaderAndExtractor.extract()
 
 	def moveFilesIntoPlace(self, fromDir=None, toDir=None):
 		"""

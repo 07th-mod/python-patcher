@@ -106,7 +106,6 @@ def mainUmineko(conf, installStatusWidget):
 	if os.path.isdir(downloadTempDir):
 		print("Information: Temp directories already exist - continued or overwritten install")
 
-
 	makeDirsExistOK(downloadTempDir)
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
@@ -114,12 +113,14 @@ def mainUmineko(conf, installStatusWidget):
 	                               extensions=['7z', 'zip'],
 	                               searchStrings=['graphic', 'voice'])
 
+	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
+	downloaderAndExtractor = DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
+	downloaderAndExtractor.download()
+
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(conf.installPath)
 
-	##################################### BUILD FILE LIST, DOWNLOAD, EXTRACT ###########################################
-
-	downloadAndExtract(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
+	downloaderAndExtractor.extract()
 
 	#################################### MAKE EXECUTABLE, WRITE HELPER SCRIPTS #########################################
 	gameBaseName = "Umineko5to8"

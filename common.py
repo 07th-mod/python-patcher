@@ -523,12 +523,17 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFil
 		except shutil.SameFileError:
 			print("Source and Destination are the same [{}]. No action taken.".format(sourcePath))
 
-def downloadAndExtract(modFileList, downloadTempDir, extractionDir):
-	# type: ([ModFile], str, str) -> None
+
+
+class DownloaderAndExtractor:
 	"""
 	####################################################################################################################
 	#
-	# Downloads a list of ModFile objects
+	# Downloads and/or Extracts a list of ModFile objects
+	#
+	# Usage: Call 'download' then 'extract'.
+	# If you have metalinks in your path, callin only 'extract' may require fetching the metafiles to determine what
+	# to extract
 	#
 	# a ModFile is an object which contains a url and a priority (int). The priority extraction order.
 	# See the modfile class for more information
@@ -561,46 +566,62 @@ def downloadAndExtract(modFileList, downloadTempDir, extractionDir):
 	:return:
 	"""
 
-	# build file list
-	downloadList = []
-	extractList = []
+	def __init__(self, modFileList, downloadTempDir, extractionDir):
+		# type: ([ModFile], str, str) -> None
+		self.modFileList = modFileList
+		self.downloadTempDir = downloadTempDir
+		self.extractionDir = extractionDir
+		self.downloadAndExtractionListsBuilt = False
 
-	print("\n Retrieving metalinks:")
-	for i, file in enumerate(modFileList):
-		name, ext = os.path.splitext(file.url)
+	def buildDownloadAndExtractionList(self):
+		# build file list
+		self.downloadList = []
+		self.extractList = []
 
-		if ext == '.meta4' or ext == '.metalink':
-			metalinkFilenames = getMetalinkFilenames(file.url, downloadTempDir)
-			print("Metalink contains: ", metalinkFilenames)
-			downloadList.append(file.url)
-			extractList.extend(metalinkFilenames)
-		else:
-			downloadList.append(file.url)
-			extractList.append(os.path.basename(file.url))
+		print("\n Building Download and Extraction list:")
+		for i, file in enumerate(self.modFileList):
+			name, ext = os.path.splitext(file.url)
 
+			if ext == '.meta4' or ext == '.metalink':
+				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
+				print("Metalink contains: ", metalinkFilenames)
+				self.downloadList.append(file.url)
+				self.extractList.extend(metalinkFilenames)
+			else:
+				self.downloadList.append(file.url)
+				self.extractList.append(os.path.basename(file.url))
 
-	print("\nFirst these files will be downloaded:")
-	print('\n - '.join([''] + downloadList))
-	print("\nThen these files will be extracted or copied:")
-	print('\n - '.join([''] + extractList))
-	print()
+		print("\nFirst these files will be downloaded:")
+		print('\n - '.join([''] + self.downloadList))
+		print("\nThen these files will be extracted or copied:")
+		print('\n - '.join([''] + self.extractList))
+		print()
 
-	#download all urls to the download temp folder
-	makeDirsExistOK(downloadTempDir)
-	makeDirsExistOK(extractionDir)
+		self.downloadAndExtractionListsBuilt = True
 
-	for url in downloadList:
-		print("Downloading [{}] -> [{}]".format(url, downloadTempDir))
-		if not COMMON_DEBUG_MODE and aria(downloadTempDir, url=url, followMetaLink=True) != 0:
-			print("ERROR - could not download [{}]. Installation Stopped".format(url))
-			exitWithError()
+	def download(self):
+		if not self.downloadAndExtractionListsBuilt:
+			self.buildDownloadAndExtractionList()
 
+		# download all urls to the download temp folder
+		makeDirsExistOK(self.downloadTempDir)
+		makeDirsExistOK(self.extractionDir)
 
-	#extract or copy all files from the download folder to the game directory
-	for filename in extractList:
-		fileNameNoExt, extension = os.path.splitext(filename)
+		for url in self.downloadList:
+			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
+			if not COMMON_DEBUG_MODE and aria(self.downloadTempDir, url=url, followMetaLink=True) != 0:
+				print("ERROR - could not download [{}]. Installation Stopped".format(url))
+				exitWithError()
 
-		extractOrCopyFile(filename,
-						  downloadTempDir,
-						  extractionDir,
-						  copiedOutputFileName = (fileNameNoExt + '.u') if '.utf' in extension else filename)
+	def extract(self):
+		if not self.downloadAndExtractionListsBuilt:
+			self.buildDownloadAndExtractionList()
+
+		# extract or copy all files from the download folder to the game directory
+		for filename in self.extractList:
+			fileNameNoExt, extension = os.path.splitext(filename)
+
+			extractOrCopyFile(filename,
+							  self.downloadTempDir,
+							  self.extractionDir,
+							  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else filename)
