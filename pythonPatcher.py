@@ -39,7 +39,7 @@ check07thModServerConnection()
 # higuModList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstallData.json")
 #umimodList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/uminekoInstallData.json")
 
-with open('uminekoInstallData.json', 'r', encoding="utf-8") as content_file:
+with open('installData.json', 'r', encoding="utf-8") as content_file:
 	umimodList = json.loads(content_file.read())["mods"]
 
 # with open('higurashiInstallData.json', 'r', encoding="utf-8") as content_file:
