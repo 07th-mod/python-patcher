@@ -125,41 +125,9 @@ class Installer:
 			if "CFBundleIdentifier" in self.info and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
-def main(rootWindow):
-	# print("Getting latest mod info...")
-	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstallData.json")
-	# foundGames = [path for path in findPossibleGamePaths("Higurashi") if getGameNameFromGamePath(path, modList) is not None]
-	#
-	# #gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
-	# gameToUse = promptChoice(
-	# 	rootGUIWindow = rootWindow,
-	# 	choiceList=foundGames,
-	# 	guiPrompt="Please choose a game to mod",
-	# 	canOther=True
-	# )
-	#
-	# #target name, for example 'Watanagashi', that the user has selected
-	# targetName = getGameNameFromGamePath(gameToUse, modList)
-	# if not targetName:
-	# 	print(gameToUse + " does not appear to be a supported higurashi game.")
-	# 	printSupportedGames(modList)
-	# 	exitWithError()
-	#
-	# print("targetName", targetName)
-	#
-	# # Using the targetName (eg. 'Watanagashi'), check which mods have a matching name
-	# # Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
-	# possibleMods = [x for x in modList if x["target"] == targetName]
-	# if len(possibleMods) > 1:
-	# 	modName = promptChoice(
-	# 		rootGUIWindow = rootWindow,
-	# 		choiceList=[x["name"] for x in possibleMods],
-	# 		guiPrompt="Please choose a mod to install")
-	# 	mod = [x for x in possibleMods if x["name"] == modName][0]
-	# else:
-	# 	mod = possibleMods[0]
-
-	installer = Installer(gameToUse, mod)
+def main(fullInstallConfiguration, installStatusWidget):
+	# type: (FullInstallConfiguration, InstallStatusWidget) -> None
+	installer = Installer(fullInstallConfiguration, installStatusWidget)
 	print("Downloading...")
 	installer.download()
 	print("Extracting...")
