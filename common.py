@@ -37,8 +37,6 @@ except ImportError:
 try: input = raw_input
 except NameError: pass
 
-globalLogger = logger.Logger()
-
 def printErrorMessage(text):
 	"""
 	Prints message in red if stdout is a tty

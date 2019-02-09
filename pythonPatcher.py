@@ -14,7 +14,9 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 #redirect stdout to both a file and console
-sys.stdout = globalLogger
+#TODO: on MAC using a .app file, not sure if this logfile will be writeable
+#      could do a try-catch, and then only begin logging once the game path has been set?
+sys.stdout = logger.Logger("logfile.log")
 
 def check07thModServerConnection():
 	"""

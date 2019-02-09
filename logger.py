@@ -4,9 +4,9 @@ import sys
 # From https://stackoverflow.com/a/14906787/848627
 # Replace with the standard "https://docs.python.org/2/library/logging.html" module later?
 class Logger(object):
-    def __init__(self):
+    def __init__(self, logPath):
         self.terminal = sys.stdout
-        self.log = open("logfile.log", "w")
+        self.log = open(logPath, "a")
 
     def write(self, message):
         self.terminal.write(message)
