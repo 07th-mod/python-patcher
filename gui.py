@@ -364,8 +364,8 @@ class InstallerGUI:
 
     def advance_to_install_status_page(self, fullInstallSettings):
         frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
-        install_widget = InstallStatusWidget(frame)
-        install_widget.pack()
+        installStatusWidget = InstallStatusWidget(frame)
+        installStatusWidget.pack()
 
         installerFunction = {
             "higurashi" : higurashiInstaller.main,
@@ -377,7 +377,7 @@ class InstallerGUI:
                                  "I don't know how to install [{}] family of games. Please notify 07th-mod developers.")
             return
 
-        t = threading.Thread(target=installerFunction, args=(install_widget, fullInstallSettings), daemon=True)
+        t = threading.Thread(target=installerFunction, args=(fullInstallSettings, installStatusWidget), daemon=True)
         t.start()
 
     def mainloop(self):

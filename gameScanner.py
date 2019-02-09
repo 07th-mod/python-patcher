@@ -33,7 +33,9 @@ class FullInstallConfiguration:
 		#this is because the low priority items should be extracted first, so the high priority items can overwrite them.
 		return sorted(filesDict.values(), key=lambda x: x.priority)
 
-
+# NOTE: the 'priority' indicates the order of extraction:
+# Files are extracted in order 0,1,2,3 ...
+# Therefore, the 'later extracted' files are higher priority, that is archives with priority 3 will overwrite priority 0,1,2 archives
 class ModFile:
 	def __init__(self, name, url, priority):
 		self.name = name
@@ -56,6 +58,7 @@ class SubModConfig:
 		self.modName = mod['name']
 		self.target = mod['target']
 		self.CFBundleName = mod['CFBundleName']
+		self.CFBundleIdentifier = mod['CFBundleIdentifier']
 		self.dataName = mod['dataname']
 		self.identifiers = mod['identifiers']
 		self.subModName = submod['name']

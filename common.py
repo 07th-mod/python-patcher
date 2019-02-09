@@ -1,8 +1,10 @@
+import shutil
 import sys, os, os.path as path, platform, subprocess, json
 import threading
 import time
 
 import logger
+from gameScanner import ModFile
 
 try:
 	import tkinter
@@ -36,6 +38,8 @@ except ImportError:
 # Python 2 Compatibility
 try: input = raw_input
 except NameError: pass
+
+COMMON_DEBUG_MODE = False
 
 def printErrorMessage(text):
 	"""
@@ -480,3 +484,123 @@ def printSupportedGames(modList):
 def makeExecutable(executablePath):
 	current = os.stat(executablePath)
 	os.chmod(executablePath, current.st_mode | 0o111)
+
+def getMetalinkFilenames(url, downloadDir):
+	import xml.etree.ElementTree as ET
+
+	metalinkFileName = os.path.basename(url)
+	metalinkFileFullPath = os.path.join(downloadDir, metalinkFileName)
+
+	aria(downloadDir, url=url)
+
+	tree = ET.parse(metalinkFileFullPath)
+	root = tree.getroot()
+
+	# return the 'name' attribute of each 'file' node.
+	# ignore namespaces by removing the {stuff} part of the tag
+	filenames = []
+	for fileNode in root.iter():
+		tagNoNamespace = fileNode.tag.split('}')[-1]
+		if tagNoNamespace == 'file':
+			filenames.append(fileNode.attrib['name'])
+
+	return filenames
+
+def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
+	makeDirsExistOK(destinationFolder)
+	sourcePath = os.path.join(sourceFolder, filename)
+	if COMMON_DEBUG_MODE:
+		print("Copying or Extracting [{}] into [{}]".format(sourcePath, destinationFolder))
+		return
+
+	if '.7z' in filename.lower() or '.zip' in filename.lower():
+		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
+			print("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
+			exitWithError()
+	else:
+		try:
+			shutil.copy(sourcePath, os.path.join(destinationFolder, copiedOutputFileName if copiedOutputFileName else filename))
+		except shutil.SameFileError:
+			print("Source and Destination are the same [{}]. No action taken.".format(sourcePath))
+
+def downloadAndExtract(modFileList, downloadTempDir, extractionDir):
+	# type: ([ModFile], str, str) -> None
+	"""
+	####################################################################################################################
+	#
+	# Downloads a list of ModFile objects
+	#
+	# a ModFile is an object which contains a url and a priority (int). The priority extraction order.
+	# See the modfile class for more information
+	# You can use the FullInstallConfig.buildFileListSorted() to generate the modFileList, which handles
+	# ordering the ModFiles and using different modfiles on different operating systems/steam/mg installs
+	#
+	# Metafile Handling:
+	# - For metafiles, we need to look for filenames within each metafile to know what to extract
+	# - The order of the download and extraction is maintained through the list ordering.
+	#
+	# Archive Handling:
+	# - Archives will be extracted in to the downloadTempDir folder
+	#
+	# Other file handling:
+	# - Any other types of files will be copied (overwritten) from the downloadTempDir to the extractionDir
+	# - If the path of the file is the same as the destination (a no op), the file won't be copied (it will do nothing)
+	#
+	# Folder Creation:
+	# - All folders will be created if they don't already exist
+	#
+	# Failure Modes:
+	# - if any downloads or extractions fail, the script will terminate
+	# - TODO: could improve success rate by retrying aria downloads multiple times
+	#
+	####################################################################################################################
+
+	:param modFileList:		The a list of ModFile objects which will be downloaded and/or extracted
+	:param downloadTempDir: The folder where downloads will be saved
+	:param extractionDir:	The folder where archives will be extracted to, and where any files will be copied to
+	:return:
+	"""
+
+	# build file list
+	downloadList = []
+	extractList = []
+
+	print("\n Retrieving metalinks:")
+	for i, file in enumerate(modFileList):
+		name, ext = os.path.splitext(file.url)
+
+		if ext == '.meta4' or ext == '.metalink':
+			metalinkFilenames = getMetalinkFilenames(file.url, downloadTempDir)
+			print("Metalink contains: ", metalinkFilenames)
+			downloadList.append(file.url)
+			extractList.extend(metalinkFilenames)
+		else:
+			downloadList.append(file.url)
+			extractList.append(os.path.basename(file.url))
+
+
+	print("\nFirst these files will be downloaded:")
+	print('\n - '.join([''] + downloadList))
+	print("\nThen these files will be extracted or copied:")
+	print('\n - '.join([''] + extractList))
+	print()
+
+	#download all urls to the download temp folder
+	makeDirsExistOK(downloadTempDir)
+	makeDirsExistOK(extractionDir)
+
+	for url in downloadList:
+		print("Downloading [{}] -> [{}]".format(url, downloadTempDir))
+		if not COMMON_DEBUG_MODE and aria(downloadTempDir, url=url, followMetaLink=True) != 0:
+			print("ERROR - could not download [{}]. Installation Stopped".format(url))
+			exitWithError()
+
+
+	#extract or copy all files from the download folder to the game directory
+	for filename in extractList:
+		fileNameNoExt, extension = os.path.splitext(filename)
+
+		extractOrCopyFile(filename,
+						  downloadTempDir,
+						  extractionDir,
+						  copiedOutputFileName = (fileNameNoExt + '.u') if '.utf' in extension else filename)

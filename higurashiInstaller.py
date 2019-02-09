@@ -4,21 +4,27 @@ from common import *
 import os, os.path as path, shutil, subprocess, glob
 
 ########################################## Installer Functions  and Classes ############################################
+from gameScanner import FullInstallConfiguration
+from gui import InstallStatusWidget
+
+
 class Installer:
-	def __init__(self, directory, info):
+	def __init__(self, fullInstallConfiguration, installStatusWidget):
+		# type: (FullInstallConfiguration, InstallStatusWidget) -> None
+
 		"""
 		Installer Init
 
 		:param str directory: The directory of the game
 		:param dict info: The info dictionary from server JSON file for the requested target
 		"""
-		self.directory = directory
-		self.info = info
+		self.info = fullInstallConfiguration
+		self.directory = fullInstallConfiguration.installPath
 
 		if IS_MAC:
 			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
 		else:
-			self.dataDirectory = path.join(self.directory, info["dataname"])
+			self.dataDirectory = path.join(self.directory, self.info.subModConfig.dataName)
 
 		self.assetsDir = path.join(self.dataDirectory, "StreamingAssets")
 
@@ -33,7 +39,8 @@ class Installer:
 			if path.exists(possibleSteamPath):
 				self.isSteam = True
 
-		self.downloadDir = info["name"] + "Download"
+		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
+		self.downloadDir = self.info.subModConfig.name + "Download"
 
 	def backupUI(self):
 		"""
@@ -62,49 +69,8 @@ class Installer:
 		if path.isdir(oldCGAlt):
 			shutil.rmtree(oldCGAlt)
 
-	def download(self):
-		"""
-		Downloads the required files for the mod.
-		- The JSON file contains the list of files for each platform to download (see the constructor of this class).
-		- This function first selects the appropriate section of the JSON file, depending on the current platform
-		- Then, the URLs listed in the JSON file are written out to a file called 'downloadList.txt'
-		- Finally, aria2c is called to download the files listed in 'downloadList.txt'
-		"""
-		if IS_WINDOWS:
-			try:
-				files = self.info["files"]["win"]
-			except KeyError:
-				if self.isSteam:
-					files = self.info["files"]["win-steam"]
-				else:
-					files = self.info["files"]["win-mg"]
-		else:
-			try:
-				files = self.info["files"]["unix"]
-			except KeyError:
-				if self.isSteam:
-					files = self.info["files"]["unix-steam"]
-				else:
-					files = self.info["files"]["unix-mg"]
-		try:
-			os.mkdir(self.downloadDir)
-		except OSError:
-			pass
-		fileList = open("downloadList.txt", "w")
-		for file in files:
-			fileList.write(file + "\n")
-		fileList.close()
-
-		aria(downloadDir=self.downloadDir, inputFile='downloadList.txt')
-
-		os.remove("downloadList.txt")
-
-	def extractFiles(self):
-		"""
-		Extracts downloaded files using 7zip: "Overwrite All existing files without prompt."
-		"""
-		for file in sorted(os.listdir(self.downloadDir)):
-			sevenZipExtract(path.join(self.downloadDir, file))
+	def downloadAndExtract(self):
+		downloadAndExtract(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
 
 	def moveFilesIntoPlace(self, fromDir=None, toDir=None):
 		"""
@@ -113,7 +79,7 @@ class Installer:
 
 		fromDir and toDir are for recursion, leave them at their defaults to start the process
 		"""
-		if fromDir is None: fromDir = self.info["dataname"]
+		if fromDir is None: fromDir = self.info.subModConfig.dataName
 		if toDir is None: toDir = self.dataDirectory
 
 		for file in os.listdir(fromDir):
@@ -142,49 +108,51 @@ class Installer:
 			pass
 
 		if IS_MAC:
+			configCFBundleName = self.info.subModConfig.CFBundleName
+			configCFBundleIdentifier = self.info.subModConfig.CFBundleIdentifier
 			# Allows fixing up application Info.plist file so that the titlebar doesn't show `Higurashi01` as the name of the application
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")
 			infoPlistJSON = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", infoPlist])
 			parsed = json.loads(infoPlistJSON)
-			if "CFBundleName" in self.info and parsed["CFBundleName"] != self.info["CFBundleName"]:
-				subprocess.call(["plutil", "-replace", "CFBundleName", "-string", self.info["CFBundleName"], infoPlist])
-			if "CFBundleIdentifier" in self.info and parsed["CFBundleIdentifier"] != self.info["CFBundleIdentifier"]:
-				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", self.info["CFBundleIdentifier"], infoPlist])
+			if "CFBundleName" in self.info and parsed["CFBundleName"] != configCFBundleName:
+				subprocess.call(["plutil", "-replace", "CFBundleName", "-string", configCFBundleName, infoPlist])
+			if "CFBundleIdentifier" in self.info and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
+				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
 def main(rootWindow):
-	print("Getting latest mod info...")
-	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstallData.json")
-	foundGames = [path for path in findPossibleGamePaths("Higurashi") if getGameNameFromGamePath(path, modList) is not None]
-
-	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
-	gameToUse = promptChoice(
-		rootGUIWindow = rootWindow,
-		choiceList=foundGames,
-		guiPrompt="Please choose a game to mod",
-		canOther=True
-	)
-
-	#target name, for example 'Watanagashi', that the user has selected
-	targetName = getGameNameFromGamePath(gameToUse, modList)
-	if not targetName:
-		print(gameToUse + " does not appear to be a supported higurashi game.")
-		printSupportedGames(modList)
-		exitWithError()
-
-	print("targetName", targetName)
-
-	# Using the targetName (eg. 'Watanagashi'), check which mods have a matching name
-	# Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
-	possibleMods = [x for x in modList if x["target"] == targetName]
-	if len(possibleMods) > 1:
-		modName = promptChoice(
-			rootGUIWindow = rootWindow,
-			choiceList=[x["name"] for x in possibleMods],
-			guiPrompt="Please choose a mod to install")
-		mod = [x for x in possibleMods if x["name"] == modName][0]
-	else:
-		mod = possibleMods[0]
+	# print("Getting latest mod info...")
+	# modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstallData.json")
+	# foundGames = [path for path in findPossibleGamePaths("Higurashi") if getGameNameFromGamePath(path, modList) is not None]
+	#
+	# #gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
+	# gameToUse = promptChoice(
+	# 	rootGUIWindow = rootWindow,
+	# 	choiceList=foundGames,
+	# 	guiPrompt="Please choose a game to mod",
+	# 	canOther=True
+	# )
+	#
+	# #target name, for example 'Watanagashi', that the user has selected
+	# targetName = getGameNameFromGamePath(gameToUse, modList)
+	# if not targetName:
+	# 	print(gameToUse + " does not appear to be a supported higurashi game.")
+	# 	printSupportedGames(modList)
+	# 	exitWithError()
+	#
+	# print("targetName", targetName)
+	#
+	# # Using the targetName (eg. 'Watanagashi'), check which mods have a matching name
+	# # Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
+	# possibleMods = [x for x in modList if x["target"] == targetName]
+	# if len(possibleMods) > 1:
+	# 	modName = promptChoice(
+	# 		rootGUIWindow = rootWindow,
+	# 		choiceList=[x["name"] for x in possibleMods],
+	# 		guiPrompt="Please choose a mod to install")
+	# 	mod = [x for x in possibleMods if x["name"] == modName][0]
+	# else:
+	# 	mod = possibleMods[0]
 
 	installer = Installer(gameToUse, mod)
 	print("Downloading...")

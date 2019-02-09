@@ -2,33 +2,9 @@ from common import *
 import os, shutil, subprocess
 from gameScanner import FullInstallConfiguration
 from gameScanner import SubModConfig
+from gui import InstallStatusWidget
 
 umi_debug_mode = False
-
-def uminekoDownload(downloadTempDir, url_list):
-	makeDirsExistOK(downloadTempDir)
-
-	for url in url_list:
-		print("Downloading [{}] -> [{}]".format(url, downloadTempDir))
-		if not umi_debug_mode:
-			if aria(downloadTempDir, url=url, followMetaLink=True) != 0:
-				print("ERROR - could not download [{}]. Installation Stopped".format(url))
-				exitWithError()
-
-
-def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
-	makeDirsExistOK(destinationFolder)
-	sourcePath = os.path.join(sourceFolder, filename)
-	if umi_debug_mode:
-		print("Copying or Extracting [{}] into [{}]".format(sourcePath, destinationFolder))
-		return
-
-	if '.7z' in filename.lower() or '.zip' in filename.lower():
-		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
-			print("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
-			exitWithError()
-	else:
-		shutil.copy(sourcePath, os.path.join(destinationFolder, copiedOutputFileName if copiedOutputFileName else filename))
 
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
@@ -102,31 +78,9 @@ def backupOrRemoveFiles(folderToBackup):
 			print("backupOrRemoveFiles: backing up", fullFilePath)
 			shutil.move(fullFilePath, backupPath)
 
-
-def getMetalinkFilenames(url, downloadDir):
-	import xml.etree.ElementTree as ET
-
-	metalinkFileName = os.path.basename(url)
-	metalinkFileFullPath = os.path.join(downloadDir, metalinkFileName)
-
-	aria(downloadDir, url=url)
-
-	tree = ET.parse(metalinkFileFullPath)
-	root = tree.getroot()
-
-	# return the 'name' attribute of each 'file' node.
-	# ignore namespaces by removing the {stuff} part of the tag
-	filenames = []
-	for fileNode in root.iter():
-		tagNoNamespace = fileNode.tag.split('}')[-1]
-		if tagNoNamespace == 'file':
-			filenames.append(fileNode.attrib['name'])
-
-	return filenames
-
 #do install given a installer config object
-def mainUmineko(progressNotifier, conf):
-	# type: (ProgressNotifier, FullInstallConfiguration) -> None
+def mainUmineko(conf, installStatusWidget):
+	# type: (FullInstallConfiguration, InstallStatusWidget) -> None
 
 	isQuestionArcs = 'question' in conf.subModConfig.modName.lower()
 
@@ -164,44 +118,8 @@ def mainUmineko(progressNotifier, conf):
 	backupOrRemoveFiles(conf.installPath)
 
 	##################################### BUILD FILE LIST, DOWNLOAD, EXTRACT ###########################################
-	# build file list
-	downloadList = []
-	extractList = []
 
-	print("\n Retrieving metalinks:")
-	for i, file in enumerate(conf.buildFileListSorted()):
-		name, ext = os.path.splitext(file.url)
-
-		# For metafiles, we need to look for filenames within each metafile to know what to extract
-		# Other files can be left as-is
-		# The order of the download and extraction is maintained through the list ordering.
-		if ext == '.meta4' or ext == '.metalink':
-			metalinkFilenames = getMetalinkFilenames(file.url, downloadTempDir)
-			print("metalink contains: ", metalinkFilenames)
-			downloadList.append(file.url)
-			extractList.extend(metalinkFilenames)
-		else:
-			downloadList.append(file.url)
-			extractList.append(os.path.basename(file.url))
-
-
-	print("\nFirst these files will be downloaded:")
-	print('\n - '.join([''] + downloadList))
-	print("\nThen these files will be extracted or copied:")
-	print('\n - '.join([''] + extractList))
-	print()
-
-	#download all urls to the download temp folder
-	uminekoDownload(downloadTempDir, downloadList)
-
-	#extract or copy all files from the download folder to the game directory
-	for filename in extractList:
-		fileNameNoExt, extension = os.path.splitext(filename)
-
-		extractOrCopyFile(filename,
-						  downloadTempDir,
-						  conf.installPath,
-						  copiedOutputFileName = (fileNameNoExt + '.u') if '.utf' in extension else filename)
+	downloadAndExtract(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
 
 	#################################### MAKE EXECUTABLE, WRITE HELPER SCRIPTS #########################################
 	gameBaseName = "Umineko5to8"
