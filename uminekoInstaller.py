@@ -3,9 +3,6 @@ import os, shutil, subprocess
 import gameScanner
 import gui
 
-umi_debug_mode = False
-
-
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 	"""
 	Deletes all files in the specified paths, unless they have both a desired extension and a desired search string.
@@ -43,8 +40,7 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 				print("Keeping file:", fullDeletePath)
 			else:
 				print("Deleting file:", fullDeletePath)
-				if not umi_debug_mode:
-					os.remove(fullDeletePath)
+				os.remove(fullDeletePath)
 
 def backupOrRemoveFiles(folderToBackup):
 	"""
