@@ -105,7 +105,7 @@ def mainUmineko(conf, installStatusWidget):
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir],
-	                               extensions=['7z', 'zip'],
+								   extensions=['7z', 'zip'],
 	                               searchStrings=['graphic', 'voice'])
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################

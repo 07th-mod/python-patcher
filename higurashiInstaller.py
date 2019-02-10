@@ -7,6 +7,7 @@ import os, os.path as path, shutil, subprocess, glob
 import gui
 import gameScanner
 
+
 class Installer:
 	def __init__(self, fullInstallConfiguration, installStatusWidget):
 		# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
@@ -83,7 +84,7 @@ class Installer:
 
 		fromDir and toDir are for recursion, leave them at their defaults to start the process
 		"""
-		if fromDir is None: fromDir = self.info.subModConfig.dataName
+		if fromDir is None: fromDir = os.path.join(self.downloadDir, self.info.subModConfig.dataName)
 		if toDir is None: toDir = self.dataDirectory
 
 		for file in os.listdir(fromDir):
