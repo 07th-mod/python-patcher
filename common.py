@@ -1,3 +1,4 @@
+import re
 import shutil
 import sys, os, platform, subprocess, json
 import threading
@@ -12,6 +13,11 @@ except AttributeError:
 	def decodeStr(string):
 		return string
 
+try:
+	from urllib.request import urlopen, Request
+	from urllib.parse import urlparse
+except ImportError:
+	from urllib2 import urlopen, Request, HTTPError, urlparse
 
 def findWorkingExecutablePath(executable_paths, flags):
 	"""
@@ -345,16 +351,16 @@ class DownloaderAndExtractor:
 
 		print("\n Building Download and Extraction list:")
 		for i, file in enumerate(self.modFileList):
-			name, ext = os.path.splitext(file.url)
-
-			if ext == '.meta4' or ext == '.metalink':
+			print("Querying URL: [{}]".format(file.url))
+			if DownloaderAndExtractor.__urlIsMetalink(file.url):
 				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
 				print("Metalink contains: ", metalinkFilenames)
 				self.downloadList.append(file.url)
 				self.extractList.extend(metalinkFilenames)
 			else:
+				#for all other files, query the download filename from the http header
 				self.downloadList.append(file.url)
-				self.extractList.append(os.path.basename(file.url))
+				self.extractList.append(DownloaderAndExtractor.__getFilenameFromURL(file.url))
 
 		print("\nFirst these files will be downloaded:")
 		print('\n - '.join([''] + self.downloadList))
@@ -374,7 +380,7 @@ class DownloaderAndExtractor:
 
 		for url in self.downloadList:
 			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
-			if aria(self.downloadTempDir, url=url, followMetaLink=True) != 0:
+			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 				print("ERROR - could not download [{}]. Installation Stopped".format(url))
 				exitWithError()
 
@@ -390,3 +396,24 @@ class DownloaderAndExtractor:
 							  self.downloadTempDir,
 							  self.extractionDir,
 							  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else filename)
+
+	@staticmethod
+	def __urlIsMetalink(url):
+		name, ext = os.path.splitext(urlparse(url).path)
+		return ext == '.meta4' or ext == '.metalink'
+
+	@staticmethod
+	def __getFilenameFromURL(url):
+		# default filename is derived from URL
+		filename = os.path.basename(urlparse(url).path)
+
+		# if the url has a contentDisposition header, use that instead
+		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
+		contentDisposition = httpResponse.getheader("Content-Disposition")
+
+		if contentDisposition:
+			result = re.search(r"filename=(.*)", contentDisposition)
+			if result and len(result.groups()) > 0:
+				filename = result[1].strip().strip('"')
+
+		return filename
