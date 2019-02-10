@@ -9,6 +9,12 @@ import logger
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
+# Since we want to properly find things like `./aria2c`, we should move to that path first.
+dirname = os.path.dirname(sys.argv[0])
+if dirname.strip():
+	os.chdir(dirname)
+
 #redirect stdout to both a file and console
 #TODO: on MAC using a .app file, not sure if this logfile will be writeable
 #      could do a try-catch, and then only begin logging once the game path has been set?

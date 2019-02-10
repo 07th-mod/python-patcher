@@ -90,11 +90,6 @@ JSON_VERSION = 1
 
 ###################################### Executable detection and Installation ###########################################
 
-# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
-# Since we want to properly find things like `./aria2c`, we should move to that path first.
-dirname = os.path.dirname(sys.argv[0])
-if dirname.strip():
-	os.chdir(dirname)
 
 # Define constants used throughout the script. Use function calls to enforce variables as const
 IS_WINDOWS = platform.system() == "Windows"
