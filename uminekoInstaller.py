@@ -1,7 +1,7 @@
 from common import *
 import os, shutil, subprocess
-from gameScanner import FullInstallConfiguration, SubModConfig
-from gui import InstallStatusWidget
+import gameScanner
+import gui
 
 umi_debug_mode = False
 
@@ -79,7 +79,7 @@ def backupOrRemoveFiles(folderToBackup):
 
 #do install given a installer config object
 def mainUmineko(conf, installStatusWidget):
-	# type: (FullInstallConfiguration, InstallStatusWidget) -> None
+	# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
 
 	isQuestionArcs = 'question' in conf.subModConfig.modName.lower()
 

@@ -2,12 +2,12 @@ from common import *
 import os, os.path as path, shutil, subprocess, glob
 
 ########################################## Installer Functions  and Classes ############################################
-from gameScanner import FullInstallConfiguration
-from gui import InstallStatusWidget
+import gui
+import gameScanner
 
 class Installer:
 	def __init__(self, fullInstallConfiguration, installStatusWidget):
-		# type: (FullInstallConfiguration, InstallStatusWidget) -> None
+		# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
 
 		"""
 		Installer Init
@@ -125,7 +125,7 @@ class Installer:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
 def main(fullInstallConfiguration, installStatusWidget):
-	# type: (FullInstallConfiguration, InstallStatusWidget) -> None
+	# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
 	installer = Installer(fullInstallConfiguration, installStatusWidget)
 	print("Downloading...")
 	installer.download()

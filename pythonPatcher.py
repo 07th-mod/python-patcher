@@ -2,8 +2,8 @@
 from __future__ import print_function, unicode_literals, with_statement
 
 from common import *
-from gameScanner import SubModConfig
-from gui import InstallerGUI
+import gameScanner
+import installerGUI
 import logger
 
 import pprint
@@ -39,11 +39,11 @@ with open('installData.json', 'r', encoding="utf-8") as content_file:
 subModconfigList = []
 for mod in modList:
 	for submod in mod['submods']:
-		conf = SubModConfig(mod, submod)
+		conf = gameScanner.SubModConfig(mod, submod)
 		print(conf)
 		subModconfigList.append(conf)
 
-gui = InstallerGUI(subModconfigList)
+gui = installerGUI.InstallerGUI(subModconfigList)
 gui.mainloop()
 
 exit()
