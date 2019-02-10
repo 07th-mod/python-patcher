@@ -1,13 +1,21 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
-from common import *
+import json
+import os, sys
+import common
 import gameScanner
 import installerGUI
 import logger
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+
+try:
+	from urllib.request import urlopen, Request
+	from urllib.error import HTTPError
+except ImportError:
+	from urllib2 import urlopen, Request, HTTPError
 
 # If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
 # Since we want to properly find things like `./aria2c`, we should move to that path first.
@@ -32,9 +40,12 @@ def check07thModServerConnection():
 		print(error)
 		print("Couldn't reach 07th Mod Server.  The installer will not be able to download patch files.")
 		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
-		exitWithError()
+		common.exitWithError()
 
 check07thModServerConnection()
+
+
+common.Globals.scanForExecutables()
 
 # Scan for moddable games on the user's computer before starting installation
 #modList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")

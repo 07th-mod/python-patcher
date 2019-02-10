@@ -1,4 +1,6 @@
-from common import *
+import json
+
+import common
 import os, os.path as path, shutil, subprocess, glob
 
 ########################################## Installer Functions  and Classes ############################################
@@ -39,7 +41,7 @@ class Installer:
 		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
 		self.downloadDir = self.info.subModConfig.name + "Download"
 
-		self.downloaderAndExtractor = DownloaderAndExtractor(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
 
 	def backupUI(self):
 		"""
@@ -109,7 +111,7 @@ class Installer:
 		except OSError:
 			pass
 
-		if IS_MAC:
+		if common.Globals.IS_MAC:
 			# Allows fixing up application Info.plist file so that the titlebar doesn't show `Higurashi01` as the name of the application
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")

@@ -1,4 +1,7 @@
-from common import *
+import json
+import common
+import os
+import subprocess
 
 #contains all the install information required to install the game to a given path
 class FullInstallConfiguration:
@@ -18,7 +21,7 @@ class FullInstallConfiguration:
 
 		for fileOverride in self.subModConfig.fileOverrides:
 			#skip overrides where OS doesn't match
-			if OS_STRING not in fileOverride.os:
+			if common.Globals.OS_STRING not in fileOverride.os:
 				continue
 
 			#skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
@@ -130,10 +133,10 @@ def findPossibleGamePaths(gameName):
 	"""
 	allPossibleGamePaths = []
 
-	if IS_WINDOWS:
+	if common.Globals.IS_WINDOWS:
 		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
 
-	if IS_MAC:
+	if common.Globals.IS_MAC:
 		# mdfind is kind of slow, don't run it more than we have to
 		if gameName == "Higurashi":
 			allPossibleGamePaths.extend(
@@ -145,8 +148,8 @@ def findPossibleGamePaths(gameName):
 		elif gameName == "Umineko":
 			for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
 				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
-				gogPath = path.join(gamePath, "Contents/Resources/game")
-				if path.exists(gogPath):
+				gogPath = os.path.join(gamePath, "Contents/Resources/game")
+				if os.path.exists(gogPath):
 					allPossibleGamePaths.append(gogPath)
 		else:
 			print("Warning: ran findPossibleGamePaths with an unknown game")
@@ -167,14 +170,13 @@ def getMaybeGamePaths():
 	"""
 	allPossibleGamePaths = []
 
-	if IS_WINDOWS:
+	if common.Globals.IS_WINDOWS:
 		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
 
-	if IS_MAC:
+	if common.Globals.IS_MAC:
 		# mdfind is kind of slow, don't run it more than we have to
 		allPossibleGamePaths.extend(
-			x for x in subprocess
-				.check_output(["mdfind", "kind:Application", "Higurashi"])
+			x for x in subprocess.check_output(["mdfind", "kind:Application", "Higurashi"])
 				.decode("utf-8")
 				.split("\n") if x
 		)
@@ -182,8 +184,8 @@ def getMaybeGamePaths():
 		for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split(
 					"\n"):
 				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
-				gogPath = path.join(gamePath, "Contents/Resources/game")
-				if path.exists(gogPath):
+				gogPath = os.path.join(gamePath, "Contents/Resources/game")
+				if os.path.exists(gogPath):
 					allPossibleGamePaths.append(gogPath)
 
 	# if all methods fail, return empty list
@@ -196,10 +198,10 @@ def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
 	# type: (SubModConfig, str, set) -> bool
 
 	# Higurashi Mac
-	if IS_MAC and subModConfig.family == 'higurashi':
+	if common.Globals.IS_MAC and subModConfig.family == 'higurashi':
 		try:
 			info = subprocess.check_output(
-				["plutil", "-convert", "json", "-o", "-", path.join(gamePath, "Contents/Info.plist")])
+				["plutil", "-convert", "json", "-o", "-", os.path.join(gamePath, "Contents/Info.plist")])
 			parsed = json.loads(info)
 			name = parsed["CFBundleExecutable"] + "_Data"
 			if name in subModConfig.identifiers:

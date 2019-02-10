@@ -2,7 +2,7 @@ import shutil
 import sys, os, platform, subprocess, json
 import threading
 import time
-from gameScanner import ModFile
+import gameScanner
 
 try:
 	"".decode("utf-8")
@@ -12,57 +12,6 @@ except AttributeError:
 	def decodeStr(string):
 		return string
 
-try:
-	from urllib.request import urlopen, Request
-	from urllib.error import HTTPError
-except ImportError:
-	from urllib2 import urlopen, Request, HTTPError
-
-# Python 2 Compatibility
-try: input = raw_input
-except NameError: pass
-
-COMMON_DEBUG_MODE = False
-
-def printErrorMessage(text):
-	"""
-	Prints message in red if stdout is a tty
-	"""
-	if sys.stdout.isatty:
-		print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
-	else:
-		print(text)
-
-def exitWithError():
-	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
-	print("ERROR: The installer cannot continue. Press any key to exit...")
-	if IS_WINDOWS:
-		input()
-	sys.exit(1)
-
-# You can use the 'exist_ok' of python3 to do this already, but not in python 2
-def makeDirsExistOK(directoryToMake):
-	try:
-		os.makedirs(directoryToMake)
-	except OSError:
-		pass
-
-def tryShowFolder(path):
-	"""
-	Tries to show a given path in the system file browser
-	NOTE: this function call does not block! (uses subprocess.Popen)
-	:param path: the path to show
-	:return: true if successful, false otherwise
-	"""
-	try:
-		if IS_WINDOWS:
-			return subprocess.Popen(["explorer", path]) == 0
-		elif IS_MAC:
-			return subprocess.Popen(["open", path]) == 0
-		else:
-			return subprocess.Popen(["xdg-open", path]) == 0
-	except:
-		return False
 
 def findWorkingExecutablePath(executable_paths, flags):
 	"""
@@ -82,40 +31,93 @@ def findWorkingExecutablePath(executable_paths, flags):
 				pass
 
 	return None
+
+# Python 2 Compatibility
+def read_input():
+	try:
+		return input()
+	except:
+		return raw_input()
+
+def printErrorMessage(text):
+	"""
+	Prints message in red if stdout is a tty
+	"""
+	if sys.stdout.isatty:
+		print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
+	else:
+		print(text)
+
+
 ################################################## Global Variables#####################################################
+class Globals:
+	# The installer info version this installer is compatibile with
+	# Increment it when you make breaking changes to the json files
+	JSON_VERSION = 1
 
-# The installer info version this installer is compatibile with
-# Increment it when you make breaking changes to the json files
-JSON_VERSION = 1
+	# Define constants used throughout the script. Use function calls to enforce variables as const
+	IS_WINDOWS = platform.system() == "Windows"
+	IS_LINUX = platform.system() == "Linux"
+	IS_MAC = platform.system() == "Darwin"
 
-###################################### Executable detection and Installation ###########################################
+	# Set os string matching string used in the JSON file, for convenience
+	OS_STRING = "win"
+	if IS_LINUX:
+		OS_STRING = "linux"
+	elif IS_MAC:
+		OS_STRING = "mac"
+
+	ARIA_EXECUTABLE = None
+	SEVEN_ZIP_EXECUTABLE = None
+
+	@staticmethod
+	def scanForExecutables():
+		# query available executables. If any installation of executables is done in the python script, it must be done
+		# before this executes
+		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "./.aria2c", "aria2c"], '-h')
+		if Globals.ARIA_EXECUTABLE is None:
+			# TODO: automatically download and install dependencies
+			print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
+			exitWithError()
+
+		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "./.7za", "7za", "./7z", "7z"], '-h')
+		if Globals.SEVEN_ZIP_EXECUTABLE is None:
+			# TODO: automatically download and install dependencies
+			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
+			exitWithError()
 
 
-# Define constants used throughout the script. Use function calls to enforce variables as const
-IS_WINDOWS = platform.system() == "Windows"
-IS_LINUX = platform.system() == "Linux"
-IS_MAC = platform.system() == "Darwin"
+def exitWithError():
+	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
+	print("ERROR: The installer cannot continue. Press any key to exit...")
+	if Globals.IS_WINDOWS:
+		read_input()
+	sys.exit(1)
 
-# Set os string matching string used in the JSON file, for convenience
-OS_STRING = "win"
-if IS_LINUX:
-	OS_STRING = "linux"
-elif IS_MAC:
-	OS_STRING = "mac"
+# You can use the 'exist_ok' of python3 to do this already, but not in python 2
+def makeDirsExistOK(directoryToMake):
+	try:
+		os.makedirs(directoryToMake)
+	except OSError:
+		pass
 
-#query available executables. If any installation of executables is done in the python script, it must be done
-#before this executes
-ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "./.aria2c", "aria2c"], '-h')
-if ARIA_EXECUTABLE is None:
-	# TODO: automatically download and install dependencies
-	print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
-	exitWithError()
+def tryShowFolder(path):
+	"""
+	Tries to show a given path in the system file browser
+	NOTE: this function call does not block! (uses subprocess.Popen)
+	:param path: the path to show
+	:return: true if successful, false otherwise
+	"""
+	try:
+		if Globals.IS_WINDOWS:
+			return subprocess.Popen(["explorer", path]) == 0
+		elif Globals.IS_MAC:
+			return subprocess.Popen(["open", path]) == 0
+		else:
+			return subprocess.Popen(["xdg-open", path]) == 0
+	except:
+		return False
 
-SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "./.7za", "7za", "./7z", "7z"], '-h')
-if SEVEN_ZIP_EXECUTABLE is None:
-	# TODO: automatically download and install dependencies
-	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
-	exitWithError()
 
 #TODO: capture both stdout and stderr
 def runProcessOutputToTempFile(arguments):
@@ -162,7 +164,7 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 	:return Returns the exit code of the aria2c call
 	"""
 	arguments = [
-		ARIA_EXECUTABLE,
+		Globals.ARIA_EXECUTABLE,
 		"--file-allocation=none",
 		'--continue=true',
 		'--retry-wait=5',
@@ -196,7 +198,7 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 	return runProcessOutputToTempFile(arguments)
 
 def sevenZipExtract(archive_path, outputDir=None):
-	arguments = [SEVEN_ZIP_EXECUTABLE,
+	arguments = [Globals.SEVEN_ZIP_EXECUTABLE,
 				 "x",
 				 archive_path,
 				 "-aoa",  # overwrite All existing files without prompt (-ao means 'overwrite mode', a means 'All')
@@ -228,10 +230,10 @@ def getModList(jsonURL):
 	file.close()
 	try:
 		version = info["version"]
-		if version > JSON_VERSION:
+		if version > Globals.JSON_VERSION:
 			printErrorMessage("Your installer is out of date.")
 			printErrorMessage("Please download the latest version of the installer and try again.")
-			print("\nYour installer is compatible with mod listings up to version " + str(JSON_VERSION) + " but the latest listing is version " + str(version))
+			print("\nYour installer is compatible with mod listings up to version " + str(Globals.JSON_VERSION) + " but the latest listing is version " + str(version))
 			exitWithError()
 	except KeyError:
 		print("Warning: The mod info listing is missing a version number.  Things might not work.")
@@ -275,9 +277,6 @@ def getMetalinkFilenames(url, downloadDir):
 def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
 	makeDirsExistOK(destinationFolder)
 	sourcePath = os.path.join(sourceFolder, filename)
-	if COMMON_DEBUG_MODE:
-		print("Copying or Extracting [{}] into [{}]".format(sourcePath, destinationFolder))
-		return
 
 	if '.7z' in filename.lower() or '.zip' in filename.lower():
 		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
@@ -333,7 +332,7 @@ class DownloaderAndExtractor:
 	"""
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir):
-		# type: ([ModFile], str, str) -> None
+		# type: ([gameScanner.ModFile], str, str) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.extractionDir = extractionDir
@@ -375,7 +374,7 @@ class DownloaderAndExtractor:
 
 		for url in self.downloadList:
 			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
-			if not COMMON_DEBUG_MODE and aria(self.downloadTempDir, url=url, followMetaLink=True) != 0:
+			if aria(self.downloadTempDir, url=url, followMetaLink=True) != 0:
 				print("ERROR - could not download [{}]. Installation Stopped".format(url))
 				exitWithError()
 

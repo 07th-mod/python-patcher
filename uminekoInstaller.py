@@ -1,4 +1,4 @@
-from common import *
+import common
 import os, shutil, subprocess
 import gameScanner
 import gui
@@ -88,16 +88,16 @@ def mainUmineko(conf, installStatusWidget):
 	print("Mod Option", conf.subModConfig.modName)
 	print("Sub Option", conf.subModConfig.subModName)
 	print("Is Question Arcs", isQuestionArcs)
-	print("Is Windows", IS_WINDOWS)
-	print("Is Linux", IS_LINUX)
-	print("Is Mac", IS_MAC)
+	print("Is Windows", common.Globals.IS_WINDOWS)
+	print("Is Linux", common.Globals.IS_LINUX)
+	print("Is Mac", common.Globals.IS_MAC)
 
 	####################################### VALIDATE AND PREPARE FOLDERS ###############################################
 	# do a quick verification that the directory is correct before starting installer
 	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):
 		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
 		print("ERROR - wrong game path. Installation Stopped.")
-		exitWithError()
+		common.exitWithError()
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = os.path.join(conf.installPath, "temp")
@@ -105,7 +105,7 @@ def mainUmineko(conf, installStatusWidget):
 	if os.path.isdir(downloadTempDir):
 		print("Information: Temp directories already exist - continued or overwritten install")
 
-	makeDirsExistOK(downloadTempDir)
+	common.makeDirsExistOK(downloadTempDir)
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir],
@@ -113,7 +113,7 @@ def mainUmineko(conf, installStatusWidget):
 	                               searchStrings=['graphic', 'voice'])
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
+	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
 	downloaderAndExtractor.download()
 
 	# Backup/clear the .exe and script files
@@ -126,7 +126,7 @@ def mainUmineko(conf, installStatusWidget):
 	if isQuestionArcs:
 		gameBaseName = "Umineko1to4"
 
-	if IS_MAC:
+	if common.Globals.IS_MAC:
 		print("Un-quarantining game executable")
 		subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(conf.installPath, gameBaseName + ".app")])
 
@@ -146,7 +146,7 @@ def mainUmineko(conf, installStatusWidget):
 	print("Making executables ... executable")
 	for exePath in makeExecutableList:
 		if os.path.exists(exePath):
-			makeExecutable(exePath)
+			common.makeExecutable(exePath)
 
 	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
 	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
@@ -157,9 +157,9 @@ def mainUmineko(conf, installStatusWidget):
 	# For now, don't copy save data
 
 	# Open the temp folder so users can delete/backup any temp install files
-	if IS_WINDOWS:
+	if common.Globals.IS_WINDOWS:
 		print("Showing download folder for user to delete temp files")
-		tryShowFolder(downloadTempDir)
+		common.tryShowFolder(downloadTempDir)
 
 
 	print("Umineko download script completed!")
