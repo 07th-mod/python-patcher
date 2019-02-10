@@ -5,7 +5,6 @@ import os, os.path as path, shutil, subprocess, glob
 from gameScanner import FullInstallConfiguration
 from gui import InstallStatusWidget
 
-
 class Installer:
 	def __init__(self, fullInstallConfiguration, installStatusWidget):
 		# type: (FullInstallConfiguration, InstallStatusWidget) -> None
@@ -111,16 +110,18 @@ class Installer:
 			pass
 
 		if IS_MAC:
-			configCFBundleName = self.info.subModConfig.CFBundleName
-			configCFBundleIdentifier = self.info.subModConfig.CFBundleIdentifier
 			# Allows fixing up application Info.plist file so that the titlebar doesn't show `Higurashi01` as the name of the application
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")
 			infoPlistJSON = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", infoPlist])
 			parsed = json.loads(infoPlistJSON)
-			if "CFBundleName" in self.info and parsed["CFBundleName"] != configCFBundleName:
+
+			configCFBundleName = self.info.subModConfig.CFBundleName
+			if configCFBundleName and parsed["CFBundleName"] != configCFBundleName:
 				subprocess.call(["plutil", "-replace", "CFBundleName", "-string", configCFBundleName, infoPlist])
-			if "CFBundleIdentifier" in self.info and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
+
+			configCFBundleIdentifier = self.info.subModConfig.CFBundleIdentifier
+			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
 def main(fullInstallConfiguration, installStatusWidget):

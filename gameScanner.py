@@ -58,7 +58,7 @@ class SubModConfig:
 		self.modName = mod['name']
 		self.target = mod['target']
 		self.CFBundleName = mod['CFBundleName']
-		self.CFBundleIdentifier = mod['CFBundleIdentifier']
+		self.CFBundleIdentifier = None if 'CFBundleIdentifier' not in mod else mod['CFBundleIdentifier']
 		self.dataName = mod['dataname']
 		self.identifiers = mod['identifiers']
 		self.subModName = submod['name']
@@ -88,6 +88,71 @@ class SubModConfig:
 
 		return uniqueModNames
 
+def findPossibleGamePathsWindows():
+	"""
+	Blindly retrieve all game folders in the `Steam\steamappps\common` folder (no filtering is performed)
+	TODO: scan other locations than just the steamapps folder
+	:return: a list of absolute paths, which are the folders in the `Steam\steamappps\common` folder
+	:rtype: list[str]
+	"""
+	try:
+		import winreg
+	except ImportError:
+		import _winreg as winreg
+
+	registrySteamPath = None
+	try:
+		registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
+		registrySteamPath, _regType = winreg.QueryValueEx(registryKey, 'SteamPath')
+		winreg.CloseKey(registryKey)
+	except WindowsError:
+		print("findPossibleGamePaths: Couldn't read Steam registry key - Steam not installed?")
+		return []
+
+	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
+	try:
+		for root, dirs, _files in os.walk(os.path.join(registrySteamPath, r'steamapps\common')):
+			return [os.path.normpath(os.path.join(root, x)) for x in dirs]
+	except:
+		print("findPossibleGamePaths: Couldn't open registry key folder - Steam folder deleted?")
+		return []
+
+
+def findPossibleGamePaths(gameName):
+	"""
+	If supported, searches the computer for things that might be Higurashi games
+	Currently only does things on Mac OS and Windows
+	TODO: Find ways to search for games on Linux
+
+	:param str gameName: The name of the game to search for (should be either "Higurashi" or "Umineko"), used to reduce the time spent searching on Mac OS
+	:return: A list of game paths that might be Higurashi games
+	:rtype: list[str]
+	"""
+	allPossibleGamePaths = []
+
+	if IS_WINDOWS:
+		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
+
+	if IS_MAC:
+		# mdfind is kind of slow, don't run it more than we have to
+		if gameName == "Higurashi":
+			allPossibleGamePaths.extend(
+				x for x in subprocess
+					.check_output(["mdfind", "kind:Application", "Higurashi"])
+					.decode("utf-8")
+					.split("\n") if x
+			)
+		elif gameName == "Umineko":
+			for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
+				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
+				gogPath = path.join(gamePath, "Contents/Resources/game")
+				if path.exists(gogPath):
+					allPossibleGamePaths.append(gogPath)
+		else:
+			print("Warning: ran findPossibleGamePaths with an unknown game")
+
+	#if all methods fail, return empty list
+	return sorted(allPossibleGamePaths)
 
 # Get paths which COULD be game paths.
 def getMaybeGamePaths():

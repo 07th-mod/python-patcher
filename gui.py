@@ -1,15 +1,19 @@
 import os
-import queue
 import threading
-from queue import Queue
-from tkinter import *
-import tkinter as tk
-from tkinter import filedialog, messagebox
-from tkinter.filedialog import askdirectory
-from tkinter.scrolledtext import ScrolledText
 
-import higurashiInstaller
-import uminekoInstaller
+try:
+    import queue
+    from tkinter import *
+    from tkinter.ttk import *
+    from tkinter.scrolledtext import ScrolledText
+except ImportError:
+    import Queue as queue
+    from Tkinter import *
+    from ttk import *
+    import Tkinter as tkinter
+    import tkFileDialog as filedialog
+    import tkMessageBox as messagebox
+
 from gameScanner import SubModConfig
 
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
@@ -32,7 +36,6 @@ if False:
     default_padding = {"padx":3, "pady":3}
     frame_padding = {"padding": 3}
 else:
-    from tkinter.ttk import *
     default_padding = {"padx":3, "pady":3}
     frame_padding = {"padding": 3}
 
@@ -106,7 +109,7 @@ class InstallStatusWidget:
         self.terminal.bind("<Key>", lambda e: "break")
         self.terminal.insert(END, "terminal output goes here")
 
-        self.notification_queue = Queue(maxsize=100000)
+        self.notification_queue = queue.Queue(maxsize=100000)
         self.queue_full_error = False
         root.after(200, self.progress_receiver)
 
@@ -361,6 +364,10 @@ class InstallerGUI:
         start_install_button.pack()
 
     def advance_to_install_status_page(self, fullInstallSettings):
+        #TODO: these imports are here to avoid circular imports. Fix properly later.
+        import higurashiInstaller
+        import uminekoInstaller
+
         frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
         installStatusWidget = InstallStatusWidget(frame)
         installStatusWidget.pack()

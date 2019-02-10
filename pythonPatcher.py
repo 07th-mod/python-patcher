@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals, with_statement
 from common import *
 from gameScanner import SubModConfig
 from gui import InstallerGUI
+import logger
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
