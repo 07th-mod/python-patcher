@@ -61,7 +61,7 @@ class SubModConfig:
 		self.modName = mod['name']
 		self.target = mod['target']
 		self.CFBundleName = mod['CFBundleName']
-		self.CFBundleIdentifier = None if 'CFBundleIdentifier' not in mod else mod['CFBundleIdentifier']
+		self.CFBundleIdentifier = mod.get('CFBundleIdentifier')
 		self.dataName = mod['dataname']
 		self.identifiers = mod['identifiers']
 		self.subModName = submod['name']
