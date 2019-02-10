@@ -20,7 +20,7 @@ class Installer:
 		self.info = fullInstallConfiguration
 		self.directory = fullInstallConfiguration.installPath
 
-		if IS_MAC:
+		if common.Globals.IS_MAC:
 			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
 		else:
 			self.dataDirectory = path.join(self.directory, self.info.subModConfig.dataName)
@@ -39,7 +39,7 @@ class Installer:
 				self.isSteam = True
 
 		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
-		self.downloadDir = self.info.subModConfig.name + "Download"
+		self.downloadDir = self.info.subModConfig.modName + "Download"
 
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
 
