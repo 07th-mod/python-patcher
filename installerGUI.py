@@ -118,13 +118,34 @@ class InstallerGUI:
             status = commandLineParser.tryGetAriaStatusUpdate(message)
             if status:
                 installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
-                installStatusWidget.threadsafe_set_description("Downloading - [{}] ({}%) ETA: {}".format(
+                installStatusWidget.threadsafe_notify_text("Downloading - [{}] ({}%) ETA: {}".format(
                     status.amountCompletedString,
                     status.percentCompleted,
                     status.ETAString
                 ))
-            else:
-                installStatusWidget.threadsafe_set_text(message)
+                return
+
+            status = commandLineParser.tryGetSevenZipStatusUpdate(message)
+            if status:
+                installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
+                installStatusWidget.threadsafe_notify_text("Extracting - {:3}% num: {:8}\nfilename: {}".format(
+                    status.percentCompleted,
+                    status.numItemsCompleted,
+                    status.currentlyProcessingFilename
+                ))
+                return
+
+            status = commandLineParser.tryGetOverallStatus(message)
+            if status:
+                installStatusWidget.threadsafe_set_overall_progress(status.overallPercentage)
+                installStatusWidget.threadsafe_notify_text("Overall Progress: {}% Task: {}".format(
+                    status.overallPercentage,
+                    status.currentTask
+                ))
+                return
+
+            # if the message is not a aria or 7zip message, just show it in the gui log window
+            installStatusWidget.threadsafe_append_log(message)
 
         logger.registerLoggerCallback("console_output_callback", ariaAndSevenZipMonitorCallback)
 

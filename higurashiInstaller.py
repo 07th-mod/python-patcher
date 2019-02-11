@@ -1,5 +1,6 @@
 import json
 
+import commandLineParser
 import common
 import os, os.path as path, shutil, subprocess, glob
 
@@ -140,7 +141,8 @@ def main(fullInstallConfiguration, installStatusWidget):
 	installer.backupUI()
 	installer.cleanOld()
 	installer.extractFiles()
-	print("Moving files into place...")
+	commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
 	installer.moveFilesIntoPlace()
-	print("Done!")
+	commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
 	installer.cleanup()
+	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")

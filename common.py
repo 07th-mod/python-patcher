@@ -3,6 +3,8 @@ import shutil
 import sys, os, platform, subprocess, json
 import threading
 import time
+
+import commandLineParser
 import gameScanner
 
 try:
@@ -344,6 +346,10 @@ class DownloaderAndExtractor:
 		self.extractionDir = extractionDir
 		self.downloadAndExtractionListsBuilt = False
 
+		# These variables indicate how much download and extract should count towards the total reported progress
+		self.downloadProgressAmount = 33
+		self.extractionProgressAmount = 33
+
 	def buildDownloadAndExtractionList(self):
 		# build file list
 		self.downloadList = []
@@ -378,7 +384,9 @@ class DownloaderAndExtractor:
 		makeDirsExistOK(self.downloadTempDir)
 		makeDirsExistOK(self.extractionDir)
 
-		for url in self.downloadList:
+		for i, url in enumerate(self.downloadList):
+			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading")
 			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
 			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 				print("ERROR - could not download [{}]. Installation Stopped".format(url))
@@ -389,7 +397,9 @@ class DownloaderAndExtractor:
 			self.buildDownloadAndExtractionList()
 
 		# extract or copy all files from the download folder to the game directory
-		for filename in self.extractList:
+		for i, filename in enumerate(self.extractList):
+			overallPercentage = self.downloadProgressAmount + int(i*self.extractionProgressAmount/len(self.extractList))
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + filename)
 			fileNameNoExt, extension = os.path.splitext(filename)
 
 			extractOrCopyFile(filename,

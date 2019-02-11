@@ -9,6 +9,23 @@ class AriaStatusUpdate:
 		self.percentCompleted = percentCompleted
 		self.ETAString = ETAString
 
+class SevenZipStatusUpdate:
+	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
+	regexSevenZipUpdate = re.compile(r"(\d+)%\s*(\d+)?\s*-\s*(.*)")
+
+	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
+		self.percentCompleted = percentCompleted
+		self.numItemsCompleted = numItemsCompleted
+		self.currentlyProcessingFilename = currentlyProcessingFileName
+
+class SeventhModStatusUpdate:
+	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(\d+)%\s*-\s*([^>]+) >>>")
+
+	def __init__(self, overallPercentage, currentTask):
+		# type: (int, str) -> None
+		self.overallPercentage = overallPercentage
+		self.currentTask = currentTask
+
 # parse a line like: [#7f0d78 27MiB/910MiB(3%) CN:8 DL:4.2MiB ETA:3m27s]
 #                or: [#99893f 1.1MiB/910MiB(0%) CN:8 DL:1.1MiB ETA:12m50s]
 def tryGetAriaStatusUpdate(ariaStatusUpdateString):
@@ -18,7 +35,7 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 		return None
 
 	amountCompletedString = match[1]
-	percentCompleted = match[2]
+	percentCompleted = int(match[2])
 
 	match = AriaStatusUpdate.regexAriaETA.search(ariaStatusUpdateString)
 	if not match or len(match.groups()) < 1:
@@ -27,3 +44,29 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 	ETAString = match[1]
 
 	return AriaStatusUpdate(amountCompletedString, percentCompleted, ETAString)
+
+# parse a line like: 99% 10211 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200358.txt
+#                or: 99% 10339 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200486.txt
+def tryGetSevenZipStatusUpdate(sevenZipStatusUpdateString):
+	# type: (str) -> SevenZipStatusUpdate
+	match = SevenZipStatusUpdate.regexSevenZipUpdate.search(sevenZipStatusUpdateString)
+	if not match or len(match.groups()) < 3:
+		return None
+
+	numItemsCompleted = 0 if match[2] is None else int(match[2])
+
+	return SevenZipStatusUpdate(percentCompleted=int(match[1]),
+	                            numItemsCompleted=numItemsCompleted,
+	                            currentlyProcessingFileName=match[3])
+
+def tryGetOverallStatus(overallStatusString):
+	match = SeventhModStatusUpdate.regexSeventhModStatus.search(overallStatusString)
+	if not match or len(match.groups()) < 2:
+		return None
+
+	return SeventhModStatusUpdate(overallPercentage=int(match[1]), currentTask=match[2])
+
+# Print a status update which will be recognized by the command line parser
+def printSeventhModStatusUpdate(overallPercentage, currentTask):
+	# type: (int, str) -> None
+	print("<<< Status: {}% - {} >>>".format(overallPercentage, currentTask))

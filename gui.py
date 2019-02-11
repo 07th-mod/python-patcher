@@ -84,7 +84,9 @@ class InstallStatusWidget:
     MSG_TYPE_TEXT = 2
     MSG_TYPE_DESCRIPTION_UPDATE = 3
 
-    def __init__(self, root):
+    def __init__(self, root, ignoreDuplicateBlankLines=True):
+        self.blankLineCount = 0
+
         self.root = root
 
         self.outer_frame = Frame(root)
@@ -123,12 +125,13 @@ class InstallStatusWidget:
     def threadsafe_set_subtask_progress(self, value):
         self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_SUBTASK_PROGRESS, value))
 
-    # call this from other thread
-    def threadsafe_set_text(self, text):
+    # Append some text to the ongoing log
+    def threadsafe_append_log(self, text):
         self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_TEXT, text))
 
-    def threadsafe_set_description(self, description):
-        self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE, description))
+    # Notify the object of some text. On each call, the text is overwritten
+    def threadsafe_notify_text(self, text):
+        self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE, text))
 
     def try_put_in_queue(self, item):
         try:
@@ -144,21 +147,35 @@ class InstallStatusWidget:
             try:
                 msg_type, msg_data = self.notification_queue.get_nowait()
             except queue.Empty:
-                self.root.after(200, self.progress_receiver)
-                return
+                break
 
             if msg_type == InstallStatusWidget.MSG_TYPE_OVERALL_PROGRESS:
                 self.progress_overall["value"] = msg_data
+                # If overall progress is 100%, force subtask progress to 100%
+                if msg_data == 100:
+                    self.progress_subtask["value"] = 100
             elif msg_type == InstallStatusWidget.MSG_TYPE_SUBTASK_PROGRESS:
                 self.progress_subtask["value"] = msg_data
             elif msg_type == InstallStatusWidget.MSG_TYPE_TEXT:
-                self.terminal.insert(END, msg_data)
+                # Do not print more than 3 lines worth of blank lines
+                if msg_data.strip():
+                    self.terminal.insert(END, msg_data)
+                    self.blankLineCount = 0
+                else:
+                    self.blankLineCount += 1
+                    if self.blankLineCount < 3:
+                        self.terminal.insert(END, msg_data)
             elif msg_type == InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE:
                 self.task_description_string.set(msg_data)
             else:
                 print("Error - invalid data received in progress receiver")
 
+        # Force the scrollbar to the end of the window (autoscroll)
+        self.terminal.see(END)
+
+        # Repeat calling this function every 200ms
         self.root.after(200, self.progress_receiver)
+
 
     def pack(self):
         self.outer_frame.pack()
