@@ -1,8 +1,11 @@
 import os
 import threading
+
+import commandLineParser
 import gui
 import gameScanner
 import higurashiInstaller
+import logger
 import uminekoInstaller
 
 try:
@@ -110,6 +113,19 @@ class InstallerGUI:
         frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
         installStatusWidget = gui.InstallStatusWidget(frame)
         installStatusWidget.pack()
+
+        def ariaAndSevenZipMonitorCallback(message):
+            status = commandLineParser.tryGetAriaStatusUpdate(message)
+            if status:
+                installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
+                installStatusWidget.threadsafe_set_text("Aria update - completed:{} percent:{} eta: {}".format(
+                                                        status.amountCompletedString,
+                                                        status.percentCompleted,
+                                                        status.ETAString))
+            else:
+                installStatusWidget.threadsafe_set_text(message)
+
+        logger.registerLoggerCallback("console_output_callback", ariaAndSevenZipMonitorCallback)
 
         installerFunction = {
             "higurashi" : higurashiInstaller.main,
