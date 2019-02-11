@@ -40,9 +40,12 @@ class Installer:
 				self.isSteam = True
 
 		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
-		self.downloadDir = self.info.subModConfig.modName + "Download"
+		self.downloadDir = self.info.subModConfig.modName + " Downloads"
+		self.extractDir = self.info.subModConfig.modName + " Extraction"
 
-		self.downloaderAndExtractor = common.DownloaderAndExtractor(self.info.buildFileListSorted(), self.downloadDir, self.downloadDir)
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(),
+		                                                            downloadTempDir=self.downloadDir,
+		                                                            extractionDir=self.extractDir)
 
 	def backupUI(self):
 		"""
@@ -84,7 +87,7 @@ class Installer:
 
 		fromDir and toDir are for recursion, leave them at their defaults to start the process
 		"""
-		if fromDir is None: fromDir = os.path.join(self.downloadDir, self.info.subModConfig.dataName)
+		if fromDir is None: fromDir = os.path.join(self.extractDir, self.info.subModConfig.dataName)
 		if toDir is None: toDir = self.dataDirectory
 
 		for file in os.listdir(fromDir):
@@ -109,6 +112,7 @@ class Installer:
 		"""
 		try:
 			shutil.rmtree(self.downloadDir)
+			shutil.rmtree(self.extractDir)
 		except OSError:
 			pass
 
