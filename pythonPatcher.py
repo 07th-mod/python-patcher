@@ -27,6 +27,7 @@ if dirname.strip():
 #TODO: on MAC using a .app file, not sure if this logfile will be writeable
 #      could do a try-catch, and then only begin logging once the game path has been set?
 sys.stdout = logger.Logger("logfile.log")
+logger.setGlobalLogger(sys.stdout)
 
 def check07thModServerConnection():
 	"""
