@@ -118,10 +118,11 @@ class InstallerGUI:
             status = commandLineParser.tryGetAriaStatusUpdate(message)
             if status:
                 installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
-                installStatusWidget.threadsafe_set_text("Aria update - completed:{} percent:{} eta: {}".format(
-                                                        status.amountCompletedString,
-                                                        status.percentCompleted,
-                                                        status.ETAString))
+                installStatusWidget.threadsafe_set_description("Downloading - [{}] ({}%) ETA: {}".format(
+                    status.amountCompletedString,
+                    status.percentCompleted,
+                    status.ETAString
+                ))
             else:
                 installStatusWidget.threadsafe_set_text(message)
 

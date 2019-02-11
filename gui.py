@@ -82,6 +82,7 @@ class InstallStatusWidget:
     MSG_TYPE_OVERALL_PROGRESS = 0
     MSG_TYPE_SUBTASK_PROGRESS = 1
     MSG_TYPE_TEXT = 2
+    MSG_TYPE_DESCRIPTION_UPDATE = 3
 
     def __init__(self, root):
         self.root = root
@@ -92,17 +93,22 @@ class InstallStatusWidget:
         self.label_subtask = Label(self.outer_frame, text="SubTask Progress")
         self.progress_subtask = Progressbar(self.outer_frame, length=400)
         self.terminal = ScrolledText(self.outer_frame)  #behaves the same as the text widget, but has a scroll bar.
+        self.task_description_string = StringVar()
+        self.task_description_string.set("Initializing...")
+        label_task_description = Label(self.outer_frame, textvariable=self.task_description_string)
 
         self.label_overall.pack()
         self.progress_overall.pack()
         self.label_subtask.pack()
         self.progress_subtask.pack()
+        label_task_description.pack()
+
         self.terminal.pack(fill=BOTH, expand=1, pady=20)
 
         #hack to make terminal readonly while still letting us freeely insert text and let user copy from text
         #See: https://stackoverflow.com/questions/3842155/is-there-a-way-to-make-the-tkinter-text-widget-read-only
         self.terminal.bind("<Key>", lambda e: "break")
-        self.terminal.insert(END, "terminal output goes here")
+        self.terminal.insert(END, "")
 
         self.notification_queue = queue.Queue(maxsize=100000)
         self.queue_full_error = False
@@ -120,6 +126,9 @@ class InstallStatusWidget:
     # call this from other thread
     def threadsafe_set_text(self, text):
         self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_TEXT, text))
+
+    def threadsafe_set_description(self, description):
+        self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE, description))
 
     def try_put_in_queue(self, item):
         try:
@@ -144,6 +153,8 @@ class InstallStatusWidget:
                 self.progress_subtask["value"] = msg_data
             elif msg_type == InstallStatusWidget.MSG_TYPE_TEXT:
                 self.terminal.insert(END, msg_data)
+            elif msg_type == InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE:
+                self.task_description_string.set(msg_data)
             else:
                 print("Error - invalid data received in progress receiver")
 
