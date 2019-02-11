@@ -8,6 +8,7 @@ import uminekoInstaller
 try:
     from tkinter import *
     from tkinter.ttk import *
+    from tkinter import filedialog
 except ImportError:
     from Tkinter import *
     from ttk import *
