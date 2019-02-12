@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
+import io
 import json
 import os, sys
 import common
@@ -51,7 +52,7 @@ common.Globals.scanForExecutables()
 # Scan for moddable games on the user's computer before starting installation
 #modList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
 
-with open('installData.json', 'r', encoding="utf-8") as content_file:
+with io.open('installData.json', 'r', encoding="utf-8") as content_file:
 	modList = json.loads(content_file.read())["mods"]
 
 subModconfigList = []

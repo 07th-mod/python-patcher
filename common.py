@@ -19,7 +19,8 @@ try:
 	from urllib.request import urlopen, Request
 	from urllib.parse import urlparse
 except ImportError:
-	from urllib2 import urlopen, Request, HTTPError, urlparse
+	from urllib2 import urlopen, Request, HTTPError
+	from urlparse import urlparse
 
 def findWorkingExecutablePath(executable_paths, flags):
 	"""

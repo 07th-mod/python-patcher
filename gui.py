@@ -10,6 +10,7 @@ except ImportError:
     import Tkinter as tkinter
     import tkFileDialog as filedialog
     import tkMessageBox as messagebox
+    from ScrolledText import ScrolledText
 
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 #which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
@@ -78,6 +79,8 @@ class ImageButtonList:
     def get_widget(self):
         return self.frame
 
+# TODO: terminal cannot be manually scrolled
+# TODO: text from terminal cannot be copied out!
 class InstallStatusWidget:
     MSG_TYPE_OVERALL_PROGRESS = 0
     MSG_TYPE_SUBTASK_PROGRESS = 1
