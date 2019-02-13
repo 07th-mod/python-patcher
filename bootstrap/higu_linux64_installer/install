@@ -1,0 +1,4 @@
+#!/bin/sh
+cd "$(dirname "$0")"
+./.aria2c --allow-overwrite=true --auto-file-renaming=false https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstaller.py
+python higurashiInstaller.py
