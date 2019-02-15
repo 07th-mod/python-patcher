@@ -1,5 +1,6 @@
 https://raw.githubusercontent.com/07th-mod/python-patcher/master/commandLineParser.py
 https://raw.githubusercontent.com/07th-mod/python-patcher/master/common.py
+https://raw.githubusercontent.com/07th-mod/python-patcher/master/earth.gif
 https://raw.githubusercontent.com/07th-mod/python-patcher/master/gameScanner.py
 https://raw.githubusercontent.com/07th-mod/python-patcher/master/gui.py
 https://raw.githubusercontent.com/07th-mod/python-patcher/master/higurashiInstaller.py
