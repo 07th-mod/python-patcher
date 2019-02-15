@@ -50,10 +50,7 @@ check07thModServerConnection()
 common.Globals.scanForExecutables()
 
 # Scan for moddable games on the user's computer before starting installation
-#modList = getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
-
-with io.open('installData.json', 'r', encoding="utf-8") as content_file:
-	modList = json.loads(content_file.read())["mods"]
+modList = common.getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
 
 subModconfigList = []
 for mod in modList:
