@@ -1,7 +1,9 @@
 @echo off
 IF NOT EXIST "python/python.exe" 7za x -aoa python_archive.7z
-aria2c --allow-overwrite=true --auto-file-renaming=false https://github.com/07th-mod/resources/raw/master/higurashiInstaller.py
-"python/python.exe" higurashiInstaller.py
+aria2c --allow-overwrite=true --auto-file-renaming=false https://raw.githubusercontent.com/07th-mod/python-patcher/master/scriptDownloadList.txt
+aria2c --allow-overwrite=true --auto-file-renaming=false --input-file=scriptDownloadList.txt --dir=scripts
+del scriptDownloadList.txt
+"python/python.exe" scripts/main.py
 echo ----------------------------------------------------------- 
 echo ------------ Batch file has finished executing ------------
 echo ------------ Press any key to close this window -----------  
