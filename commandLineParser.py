@@ -11,7 +11,7 @@ class AriaStatusUpdate:
 
 class SevenZipStatusUpdate:
 	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
-	regexSevenZipUpdate = re.compile(r"(\d+)%\s*(\d+)?\s*-\s*(.*)")
+	regexSevenZipUpdate = re.compile(r"\s*(\d+)%\s*(\d+)?\s*-\s*(.*)\s*")
 
 	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
 		self.percentCompleted = percentCompleted
@@ -19,7 +19,7 @@ class SevenZipStatusUpdate:
 		self.currentlyProcessingFilename = currentlyProcessingFileName
 
 class SeventhModStatusUpdate:
-	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(\d+)%\s*-\s*([^>]+) >>>")
+	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(\d+)%\s*\[\[\s*([^>]+)\]\] >>>")
 
 	def __init__(self, overallPercentage, currentTask):
 		# type: (int, str) -> None
@@ -49,7 +49,7 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 #                or: 99% 10339 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200486.txt
 def tryGetSevenZipStatusUpdate(sevenZipStatusUpdateString):
 	# type: (str) -> SevenZipStatusUpdate
-	match = SevenZipStatusUpdate.regexSevenZipUpdate.search(sevenZipStatusUpdateString)
+	match = SevenZipStatusUpdate.regexSevenZipUpdate.match(sevenZipStatusUpdateString)
 	if not match or len(match.groups()) < 3:
 		return None
 
@@ -69,4 +69,4 @@ def tryGetOverallStatus(overallStatusString):
 # Print a status update which will be recognized by the command line parser
 def printSeventhModStatusUpdate(overallPercentage, currentTask):
 	# type: (int, str) -> None
-	print("<<< Status: {}% - {} >>>".format(overallPercentage, currentTask))
+	print("<<< Status: {}% [[{}]] >>>".format(overallPercentage, currentTask))

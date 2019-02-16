@@ -113,7 +113,18 @@ class InstallerGUI:
         installStatusWidget = gui.InstallStatusWidget(frame)
         installStatusWidget.pack()
 
+        #NOTE: be careful of the matching order here. if a higher priority parser matches, it will cause the other
+        #      parsers to never match. If you find one of your parsers doesn't work, move it to the top to test priority.
         def ariaAndSevenZipMonitorCallback(message):
+            status = commandLineParser.tryGetOverallStatus(message)
+            if status:
+                installStatusWidget.threadsafe_set_overall_progress(status.overallPercentage)
+                installStatusWidget.threadsafe_notify_text("Overall Progress: {}% Task: {}".format(
+                    status.overallPercentage,
+                    status.currentTask
+                ))
+                return
+
             status = commandLineParser.tryGetAriaStatusUpdate(message)
             if status:
                 installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
@@ -131,15 +142,6 @@ class InstallerGUI:
                     status.percentCompleted,
                     status.numItemsCompleted,
                     status.currentlyProcessingFilename
-                ))
-                return
-
-            status = commandLineParser.tryGetOverallStatus(message)
-            if status:
-                installStatusWidget.threadsafe_set_overall_progress(status.overallPercentage)
-                installStatusWidget.threadsafe_notify_text("Overall Progress: {}% Task: {}".format(
-                    status.overallPercentage,
-                    status.currentTask
                 ))
                 return
 
