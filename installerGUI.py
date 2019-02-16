@@ -15,7 +15,6 @@ try:
 except ImportError:
     from Tkinter import *
     from ttk import *
-    import Tkinter as tkinter
     import tkFileDialog as filedialog
     import tkMessageBox as messagebox
 

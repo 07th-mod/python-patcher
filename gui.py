@@ -7,9 +7,6 @@ except ImportError:
     import Queue as queue
     from Tkinter import *
     from ttk import *
-    import Tkinter as tkinter
-    import tkFileDialog as filedialog
-    import tkMessageBox as messagebox
     from ScrolledText import ScrolledText
 
 #as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
@@ -27,13 +24,8 @@ composite characters (Tk bug 3205153) which has also been fixed in more recent T
 python.org installer that links with ActiveTcl 8.5.15.0. This is an Aqua Cocoa Tk.
 """
 
-#too hard to support tkinter 8.4, so better hope you hvae 8.5 on your computer
-if False:
-    default_padding = {"padx":3, "pady":3}
-    frame_padding = {"padding": 3}
-else:
-    default_padding = {"padx":3, "pady":3}
-    frame_padding = {"padding": 3}
+default_padding = {"padx":3, "pady":3}
+frame_padding = {"padding": 3}
 
 def make_two_line_button(root, upper_text, lower_text, image, callback):
     return make_button(root, "{}\n{}".format(upper_text, lower_text), image, callback)

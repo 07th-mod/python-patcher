@@ -420,11 +420,15 @@ class DownloaderAndExtractor:
 
 		# if the url has a contentDisposition header, use that instead
 		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
-		contentDisposition = httpResponse.getheader("Content-Disposition")
+		contentDisposition = None
+		try:
+			contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
+		except AttributeError:
+			contentDisposition = httpResponse.info().getheader("Content-Disposition")  # python 2
 
 		if contentDisposition:
 			result = re.search(r"filename=(.*)", contentDisposition)
 			if result and len(result.groups()) > 0:
-				filename = result[1].strip().strip('"')
+				filename = result.group(1).strip().strip('"')
 
 		return filename

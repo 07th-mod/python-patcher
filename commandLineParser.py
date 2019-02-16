@@ -34,14 +34,14 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 	if not match or len(match.groups()) < 2:
 		return None
 
-	amountCompletedString = match[1]
-	percentCompleted = int(match[2])
+	amountCompletedString = match.group(1)
+	percentCompleted = int(match.group(2))
 
 	match = AriaStatusUpdate.regexAriaETA.search(ariaStatusUpdateString)
 	if not match or len(match.groups()) < 1:
 		return None
 
-	ETAString = match[1]
+	ETAString = match.group(1)
 
 	return AriaStatusUpdate(amountCompletedString, percentCompleted, ETAString)
 
@@ -53,18 +53,18 @@ def tryGetSevenZipStatusUpdate(sevenZipStatusUpdateString):
 	if not match or len(match.groups()) < 3:
 		return None
 
-	numItemsCompleted = 0 if match[2] is None else int(match[2])
+	numItemsCompleted = 0 if match.group(2) is None else int(match.group(2))
 
-	return SevenZipStatusUpdate(percentCompleted=int(match[1]),
+	return SevenZipStatusUpdate(percentCompleted=int(match.group(1)),
 	                            numItemsCompleted=numItemsCompleted,
-	                            currentlyProcessingFileName=match[3])
+	                            currentlyProcessingFileName=match.group(3))
 
 def tryGetOverallStatus(overallStatusString):
 	match = SeventhModStatusUpdate.regexSeventhModStatus.search(overallStatusString)
 	if not match or len(match.groups()) < 2:
 		return None
 
-	return SeventhModStatusUpdate(overallPercentage=int(match[1]), currentTask=match[2])
+	return SeventhModStatusUpdate(overallPercentage=int(match.group(1)), currentTask=match.group(2))
 
 # Print a status update which will be recognized by the command line parser
 def printSeventhModStatusUpdate(overallPercentage, currentTask):
