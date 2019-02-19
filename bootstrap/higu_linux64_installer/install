@@ -1,6 +1,6 @@
 #!/bin/sh
 cd "$(dirname "$0")"
+cd install_data
 ./.aria2c --allow-overwrite=true --auto-file-renaming=false https://raw.githubusercontent.com/07th-mod/python-patcher/master/scriptDownloadList.txt
-./.aria2c --allow-overwrite=true --auto-file-renaming=false --input-file=scriptDownloadList.txt --dir=scripts
-rm scriptDownloadList.txt
-python ./scripts/main.py
+./.aria2c --allow-overwrite=true --auto-file-renaming=false --input-file=scriptDownloadList.txt
+python ./main.py
