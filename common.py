@@ -340,16 +340,16 @@ class DownloaderAndExtractor:
 	:return:
 	"""
 
-	def __init__(self, modFileList, downloadTempDir, extractionDir):
-		# type: ([gameScanner.ModFile], str, str) -> None
+	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
+		# type: ([gameScanner.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.extractionDir = extractionDir
 		self.downloadAndExtractionListsBuilt = False
 
 		# These variables indicate how much download and extract should count towards the total reported progress
-		self.downloadProgressAmount = 33
-		self.extractionProgressAmount = 33
+		self.downloadProgressAmount = downloadProgressAmount
+		self.extractionProgressAmount = extractionProgressAmount
 
 	def buildDownloadAndExtractionList(self):
 		# build file list

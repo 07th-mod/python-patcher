@@ -1,3 +1,4 @@
+import commandLineParser
 import common
 import os, shutil, subprocess
 import gameScanner
@@ -109,7 +110,7 @@ def mainUmineko(conf, installStatusWidget):
 	                               searchStrings=['graphic', 'voice'])
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath)
+	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.download()
 
 	# Backup/clear the .exe and script files
@@ -157,5 +158,4 @@ def mainUmineko(conf, installStatusWidget):
 		print("Showing download folder for user to delete temp files")
 		common.tryShowFolder(downloadTempDir)
 
-
-	print("Umineko download script completed!")
+	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")
