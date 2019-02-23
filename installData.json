@@ -215,7 +215,7 @@
 					"fileOverrides" : [
 						{"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"},
 						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/0utf_umineko1to4_1080p.zip"}
+						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
 					]
 				}
 			]
@@ -250,7 +250,7 @@
 					],
 					"fileOverrides" : [
 						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
+						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				},
 				{
@@ -263,7 +263,7 @@
 					],
 					"fileOverrides" : [
 						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/0utf_Umineko5to8.app.zip"}
+						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				}
 			]
