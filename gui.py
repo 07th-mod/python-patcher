@@ -12,7 +12,6 @@ except ImportError:
 # as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 # which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 # but I don't think we will encounter them
-from gameScanner import scanForFullInstallConfigs, subModCompatibleWithPath
 
 """
 Apple 8.5.9

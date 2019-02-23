@@ -11,7 +11,7 @@ import uminekoInstaller
 try:
 	from tkinter import *
 	from tkinter.ttk import *
-	from tkinter import filedialog
+	from tkinter import filedialog, messagebox
 except ImportError:
 	from Tkinter import *
 	from ttk import *
