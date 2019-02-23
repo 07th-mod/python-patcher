@@ -7,7 +7,7 @@
 			"target": "Onikakushi",
 			"CFBundleName": "Higurashi When They Cry - Ch.1 Onikakushi",
 			"dataname": "HigurashiEp01_Data",
-			"identifiers" : ["HigurashiEp04_Data", "HigurashiEp04.x86_64", "HigurashiEp04.exe"],
+			"identifiers" : ["HigurashiEp01_Data", "HigurashiEp01.x86_64", "HigurashiEp01.exe"],
 			"submods": [
 				{
 					"name": "full",
