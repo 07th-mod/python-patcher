@@ -10,7 +10,7 @@ except ImportError:
 #contains all the install information required to install the game to a given path
 class FullInstallConfiguration:
 	def __init__(self, subModConfig, path, isSteam):
-		# type: (SubModConfig, str, bool) -> FullInstallConfiguration
+		# type: (SubModConfig, str, bool) -> None
 		self.subModConfig = subModConfig
 		self.installPath = path
 		self.isSteam = isSteam
@@ -18,26 +18,27 @@ class FullInstallConfiguration:
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self):
-		#convert the files list into a dict
+		# type: () -> List[ModFile]
+		# convert the files list into a dict
 		filesDict = {}
 		for file in self.subModConfig.files:
 			filesDict[file.name] = file
 
 		for fileOverride in self.subModConfig.fileOverrides:
-			#skip overrides where OS doesn't match
+			# skip overrides where OS doesn't match
 			if common.Globals.OS_STRING not in fileOverride.os:
 				continue
 
-			#skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
-			if fileOverride.steam and fileOverride.steam != self.isSteam:
+			# skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
+			if fileOverride.steam is not None and fileOverride.steam != self.isSteam:
 				continue
 
-			#for all other overrides, overwrite the value in the filesDict with a new ModFile
+			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
 			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority)
 
-		#sort the priority from Lowest to Highest (eg items with priority '0' will always be at start of the list)
-		#this is because the low priority items should be extracted first, so the high priority items can overwrite them.
+		# sort the priority from Lowest to Highest (eg items with priority '0' will always be at start of the list)
+		# this is because the low priority items should be extracted first, so the high priority items can overwrite them.
 		return sorted(filesDict.values(), key=lambda x: x.priority)
 
 # NOTE: the 'priority' indicates the order of extraction:
@@ -45,6 +46,7 @@ class FullInstallConfiguration:
 # Therefore, the 'later extracted' files are higher priority, that is archives with priority 3 will overwrite priority 0,1,2 archives
 class ModFile:
 	def __init__(self, name, url, priority):
+		# type: (str, str, int) -> None
 		self.name = name
 		self.url = url
 		self.priority = priority #consider renaming this "extractionOrder"?
@@ -60,7 +62,7 @@ class ModFileOverride:
 #directly represents a single submod from the json file
 class SubModConfig:
 	#object initialized in factory func
-	def __init__(self, mod, submod):
+	def __init__(self, mod, subMod):
 		self.family = mod['family'] # type: str
 		self.modName = mod['name']  # type: str
 		self.target = mod['target'] # type: str
@@ -68,14 +70,14 @@ class SubModConfig:
 		self.CFBundleIdentifier = mod.get('CFBundleIdentifier') # type: Optional[str]
 		self.dataName = mod['dataname'] # type: str
 		self.identifiers = mod['identifiers'] # type: List[str]
-		self.subModName = submod['name'] # type: str
+		self.subModName = subMod['name'] # type: str
 
 		self.files = [] # type: List[ModFile]
-		for subModFile in submod['files']:
+		for subModFile in subMod['files']:
 			self.files.append(ModFile(name=subModFile['name'], url = subModFile['url'], priority=subModFile['priority']))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]
-		for subModFileOverride in submod['fileOverrides']:
+		for subModFileOverride in subMod['fileOverrides']:
 			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
 
 	def __repr__(self):
