@@ -248,6 +248,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 						isSteam = True
 
 				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
+				break
 			except KeyError:
 				pass
 
