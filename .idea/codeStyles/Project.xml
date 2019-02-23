@@ -2,7 +2,6 @@
   <code_scheme name="Project" version="173">
     <codeStyleSettings language="JSON">
       <indentOptions>
-        <option name="INDENT_SIZE" value="4" />
         <option name="USE_TAB_CHARACTER" value="true" />
         <option name="SMART_TABS" value="true" />
       </indentOptions>
