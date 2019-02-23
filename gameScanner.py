@@ -2,6 +2,10 @@ import json
 import common
 import os
 import subprocess
+try:
+	from typing import List, Optional
+except ImportError:
+	pass # Just needed for pycharm comments
 
 #contains all the install information required to install the game to a given path
 class FullInstallConfiguration:
@@ -47,7 +51,7 @@ class ModFile:
 
 class ModFileOverride:
 	def __init__(self, name, os, steam, url):
-		# type: (str, [], Optional[bool], str) -> None
+		# type: (str, List[str], Optional[bool], str) -> None
 		self.name = name
 		self.os = os #note: this is an ARRAY, eg ["mac", "linux"]
 		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
@@ -57,20 +61,20 @@ class ModFileOverride:
 class SubModConfig:
 	#object initialized in factory func
 	def __init__(self, mod, submod):
-		self.family = mod['family']
-		self.modName = mod['name']
-		self.target = mod['target']
-		self.CFBundleName = mod['CFBundleName']
-		self.CFBundleIdentifier = mod.get('CFBundleIdentifier')
-		self.dataName = mod['dataname']
-		self.identifiers = mod['identifiers']
-		self.subModName = submod['name']
+		self.family = mod['family'] # type: str
+		self.modName = mod['name']  # type: str
+		self.target = mod['target'] # type: str
+		self.CFBundleName = mod.get('CFBundleName') # type: Optional[str]
+		self.CFBundleIdentifier = mod.get('CFBundleIdentifier') # type: Optional[str]
+		self.dataName = mod['dataname'] # type: str
+		self.identifiers = mod['identifiers'] # type: List[str]
+		self.subModName = submod['name'] # type: str
 
-		self.files = []
+		self.files = [] # type: List[ModFile]
 		for subModFile in submod['files']:
 			self.files.append(ModFile(name=subModFile['name'], url = subModFile['url'], priority=subModFile['priority']))
 
-		self.fileOverrides = []
+		self.fileOverrides = [] # type: List[ModFileOverride]
 		for subModFileOverride in submod['fileOverrides']:
 			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
 
@@ -181,56 +185,55 @@ def getMaybeGamePaths():
 				.split("\n") if x
 		)
 
-		for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split(
-					"\n"):
-				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
-				gogPath = os.path.join(gamePath, "Contents/Resources/game")
-				if os.path.exists(gogPath):
-					allPossibleGamePaths.append(gogPath)
+		for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
+			allPossibleGamePaths.append(gamePath)
+			# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
+			gogPath = os.path.join(gamePath, "Contents/Resources/game")
+			if os.path.exists(gogPath):
+				allPossibleGamePaths.append(gogPath)
 
 	# if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
 
-# Returns a full install config if the given sub mod can be installed to the given path
-# otherwise returns None if the sub mod is incompatible
-# The "gamePathContentsSet" argument is a set containing the
-def subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
-	# type: (SubModConfig, str, set) -> bool
-
-	# Higurashi Mac
-	if common.Globals.IS_MAC and subModConfig.family == 'higurashi':
+def getPossibleIdentifiersFromPath(path):
+	# type: (str) -> List[str]
+	if not os.path.exists(path):
+		return []
+	infoPlist = os.path.join(path, "Contents/Info.plist")
+	if common.Globals.IS_MAC and os.path.exists(infoPlist):
 		try:
 			info = subprocess.check_output(
-				["plutil", "-convert", "json", "-o", "-", os.path.join(gamePath, "Contents/Info.plist")])
+				["plutil", "-convert", "json", "-o", "-", infoPlist]
+			)
 			parsed = json.loads(info)
-			name = parsed["CFBundleExecutable"] + "_Data"
-			if name in subModConfig.identifiers:
-				return True
-		except (OSError, KeyError):
-			return False
-	else:
-		# All other configurations
-		for identifier in subModConfig.identifiers:
-			if identifier in gamePathContentsSet:
-				return True
-
-	return False
-
+			name = parsed["CFBundleExecutable"] + "_Data" # type: str
+			# GoG Umineko installs will be formatted like this but we *don't* want to use it
+			if name.startswith("Higurashi"):
+				return [name]
+			else:
+				return []
+		except (subprocess.CalledProcessError, KeyError):
+			pass
+	return os.listdir(path)
 
 # Returns a list of all possible submods that can be installed on the system.
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
-	# type: ([], [str]) -> []
+	# type: (List[SubModConfig], [str]) -> []
+
 	returnedFullConfigs = []
 	if not possiblePaths:
 		possiblePaths = getMaybeGamePaths()
 
-	for gamePath in possiblePaths:
-		# the contents of each game path is cached for better performance
-		gamePathContentsSet = set(os.listdir(gamePath))
+	subModConfigDictionary = {}
+	for subMod in subModConfigList:
+		for identifier in subMod.identifiers:
+			subModConfigDictionary[identifier] = subMod
 
-		for subModConfig in subModConfigList:
-			if subModCompatibleWithPath(subModConfig, gamePath, gamePathContentsSet):
-				# check whether path is steam or mangagamer type
+	for gamePath in possiblePaths:
+		possibleIdentifiers = getPossibleIdentifiersFromPath(gamePath)
+		for possibleIdentifier in possibleIdentifiers:
+			try:
+				subModConfig = subModConfigDictionary[possibleIdentifier]
 				possibleSteamPaths = [
 					os.path.join(gamePath, "steam_api.dll"),
 					os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
@@ -243,5 +246,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 						isSteam = True
 
 				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
+			except KeyError:
+				pass
 
 	return returnedFullConfigs
