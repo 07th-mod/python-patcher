@@ -111,7 +111,7 @@ class InstallerGUI:
 
 	def advance_to_install_status_page(self, fullInstallSettings):
 		frame = self.wiz.get_new_frame_and_hide_old_frame("Please wait for the installer to finish", disable_back=True)
-		installStatusWidget = gui.InstallStatusWidget(frame)
+		installStatusWidget = gui.InstallStatusWidget(frame, onFinishedCallback=lambda: self.advance_to_install_finished_page(fullInstallSettings))
 		installStatusWidget.pack()
 
 		# NOTE: be careful of the matching order here. if a higher priority parser matches, it will cause the other
@@ -164,6 +164,18 @@ class InstallerGUI:
 		t = threading.Thread(target=installerFunction, args=(fullInstallSettings, installStatusWidget))
 		t.setDaemon(True)  # Use setter for compatability with Python 2
 		t.start()
+
+	def advance_to_install_finished_page(self, fullInstallSettings):
+		frame = self.wiz.get_new_frame_and_hide_old_frame("Installation Finished!", disable_back=True)
+
+		install_location_text = Label(frame, text="Successfully installed game to:\n[{}]".format(fullInstallSettings.installPath))
+		install_location_text.pack()
+
+		log_location_text = Label(frame, text="The install log was saved to:\n[{}]".format(os.path.abspath(logger.getGlobalLogger().logPath)))
+		log_location_text.pack()
+
+		exit_installer_button = Button(frame, text="Exit the Installer", command=lambda: self.root.destroy())
+		exit_installer_button.pack()
 
 	def mainloop(self):
 		self.root.mainloop()

@@ -78,8 +78,12 @@ class InstallStatusWidget:
 	MSG_TYPE_TEXT = 2
 	MSG_TYPE_DESCRIPTION_UPDATE = 3
 
-	def __init__(self, root, ignoreDuplicateBlankLines=True):
+	def __init__(self, root, onFinishedCallback=None):
 		self.blankLineCount = 0
+
+		self.onFinishedCallback = lambda: None
+		if onFinishedCallback:
+			self.onFinishedCallback = onFinishedCallback
 
 		self.root = root
 
@@ -135,6 +139,7 @@ class InstallStatusWidget:
 				self.queue_full_error = True
 				print("WARNING: Install status message queue is full (possibly GUI was closed but console left open)")
 
+	# This function runs on the GUI thread.
 	def progress_receiver(self):
 		# process up to 100 message or until empty
 		for _ in range(0, 100):
@@ -148,6 +153,7 @@ class InstallStatusWidget:
 				# If overall progress is 100%, force subtask progress to 100%
 				if msg_data == 100:
 					self.progress_subtask["value"] = 100
+					self.onFinishedCallback()
 			elif msg_type == InstallStatusWidget.MSG_TYPE_SUBTASK_PROGRESS:
 				self.progress_subtask["value"] = msg_data
 			elif msg_type == InstallStatusWidget.MSG_TYPE_TEXT:

@@ -6,6 +6,7 @@ class Logger(object):
 	globalLogger = None
 
 	def __init__(self, logPath):
+		self.logPath = logPath
 		self.terminal = sys.stdout
 		self.log = open(logPath, "a")
 		self.callbacks = {}
