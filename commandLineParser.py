@@ -1,7 +1,7 @@
 import re
 
 class AriaStatusUpdate:
-	regexAriaCompletionStatus = re.compile(r"\[#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((\d+)%\)")
+	regexAriaCompletionStatus = re.compile(r"#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((\d+)%\)")
 	regexAriaETA = re.compile(r"ETA:([^\]]+)")
 
 	def __init__(self, amountCompletedString, percentCompleted, ETAString):
@@ -12,7 +12,8 @@ class AriaStatusUpdate:
 #Note: Sometimes can get lines like "99% 35615" without the - [filename] part. This will be missed by this parser.
 class SevenZipStatusUpdate:
 	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
-	regexSevenZipUpdate = re.compile(r"\s*(\d+)%\s*(\d+)?\s*-\s*(.*)\s*")
+	regexSevenZipPercentComplete = re.compile(r"(\d+)%")
+	regexSevenZipFileCountAndName = re.compile(r"\s*(\d+ - *.*)\s*")
 
 	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
 		self.percentCompleted = percentCompleted
@@ -46,19 +47,26 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 
 	return AriaStatusUpdate(amountCompletedString, percentCompleted, ETAString)
 
-# parse a line like: 99% 10211 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200358.txt
-#                or: 99% 10339 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200486.txt
-def tryGetSevenZipStatusUpdate(sevenZipStatusUpdateString):
-	# type: (str) -> SevenZipStatusUpdate
-	match = SevenZipStatusUpdate.regexSevenZipUpdate.match(sevenZipStatusUpdateString)
-	if not match or len(match.groups()) < 3:
+#if none of the other types of lines match, and you see a percent number (eg 54%), assume it's 7zip
+def tryGetSevenZipPercent(sevenZipStatusUpdateString):
+	# type: (str) -> int
+	match = SevenZipStatusUpdate.regexSevenZipPercentComplete.search(sevenZipStatusUpdateString)
+	if not match or len(match.groups()) < 1:
 		return None
 
-	numItemsCompleted = 0 if match.group(2) is None else int(match.group(2))
 
-	return SevenZipStatusUpdate(percentCompleted=int(match.group(1)),
-	                            numItemsCompleted=numItemsCompleted,
-	                            currentlyProcessingFileName=match.group(3))
+	return int(match.groups()[0])
+
+#look for 10211 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200358.txt
+#or: 99% 10339 - HigurashiEp02_Data\StreamingAs . ctrum\ps3\s02\02\130200486.txt
+def tryGetSevenZipFilecountAndFileNameString(sevenZipStatusUpdateString):
+	# type: (str) -> str
+	#NOTE: 'match' is used here, not 'search'
+	match = SevenZipStatusUpdate.regexSevenZipFileCountAndName.match(sevenZipStatusUpdateString)
+	if not match or len(match.groups()) < 1:
+		return None
+
+	return match.groups()[0]
 
 def tryGetOverallStatus(overallStatusString):
 	match = SeventhModStatusUpdate.regexSeventhModStatus.search(overallStatusString)

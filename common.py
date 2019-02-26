@@ -129,7 +129,7 @@ def tryShowFolder(path):
 
 
 #TODO: capture both stdout and stderr
-def runProcessOutputToTempFile(arguments):
+def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 	print("----- BEGIN EXECUTING COMMAND: [{}] -----".format(" ".join(arguments)))
 
 	# need universal_newlines=True so stdout is opened in normal. However, this might result in garbled japanese(unicode) characters!
@@ -139,14 +139,35 @@ def runProcessOutputToTempFile(arguments):
 	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
 	def readUntilEOF(proc, fileLikeObject):
+		stringBuffer = []
 		while proc.poll() is None:
 			try:
 				fileLikeObject.flush()
 				while True:
-					line = fileLikeObject.readline()
+					character = fileLikeObject.read(1)
 
-					if line:
-						print(line)
+					if character:
+						stringBuffer.append(character)
+
+						writeOutBuffer = False
+
+						# Write out buffer if newline detected
+						if character == '\n':
+							writeOutBuffer = True
+
+						# Insert newline after ']' characters
+						if ariaMode and character == ']':
+							stringBuffer.append('\n')
+							writeOutBuffer = True
+
+						# Insert newline after % characters
+						if sevenZipMode and character == '%':
+							stringBuffer.append('\n')
+							writeOutBuffer = True
+
+						if writeOutBuffer:
+							print(''.join(stringBuffer), end='')
+							stringBuffer.clear()
 					else:
 						break
 			except:
@@ -204,7 +225,7 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 
 	# with open('seven_zip_stdout.txt', "w", buffering=100) as outfile:
 	# 	return subprocess.call(arguments, stdout=outfile)
-	return runProcessOutputToTempFile(arguments)
+	return runProcessOutputToTempFile(arguments, ariaMode=True)
 
 def sevenZipExtract(archive_path, outputDir=None):
 	arguments = [Globals.SEVEN_ZIP_EXECUTABLE,
@@ -218,7 +239,7 @@ def sevenZipExtract(archive_path, outputDir=None):
 
 	if outputDir:
 		arguments.append('-o' + outputDir)
-	return runProcessOutputToTempFile(arguments)
+	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
 def getModList(jsonURL):
 	"""
