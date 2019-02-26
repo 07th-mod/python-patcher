@@ -12,9 +12,9 @@ class AriaStatusUpdate:
 #Note: Sometimes can get lines like "99% 35615" without the - [filename] part. This will be missed by this parser.
 class SevenZipStatusUpdate:
 	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
-	regexSevenZipPercentComplete = re.compile(r"(\d+)%")
-	regexSevenZipFileCountAndName = re.compile(r"\s*\d+ - *.*\s*")
-	regexSevenZipFileCountOnly = re.compile(r"\s*\d+\s*")
+	regexSevenZipPercentComplete = re.compile(r"(\d+)%")                # use with .search()
+	regexSevenZipFileCountAndName = re.compile(r"^\s*\d+ - *.*\s*$")    # use with .match()
+	regexSevenZipFileCountOnly = re.compile(r"^\s*\d+\s*$")             # use with .match()
 
 	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
 		self.percentCompleted = percentCompleted
@@ -40,11 +40,11 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 	amountCompletedString = match.group(1)
 	percentCompleted = int(match.group(2))
 
-	match = AriaStatusUpdate.regexAriaETA.search(ariaStatusUpdateString)
-	if not match or len(match.groups()) < 1:
-		return None
+	ETAString = "N/A"
 
-	ETAString = match.group(1)
+	match = AriaStatusUpdate.regexAriaETA.search(ariaStatusUpdateString)
+	if match:
+		ETAString = match.groups()[0]
 
 	return AriaStatusUpdate(amountCompletedString, percentCompleted, ETAString)
 
