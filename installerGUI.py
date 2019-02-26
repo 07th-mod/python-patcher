@@ -120,20 +120,13 @@ class InstallerGUI:
 			status = commandLineParser.tryGetOverallStatus(message)
 			if status:
 				installStatusWidget.threadsafe_set_overall_progress(status.overallPercentage)
-				installStatusWidget.threadsafe_notify_text("Overall Progress: {}% Task: {}".format(
-					status.overallPercentage,
-					status.currentTask
-				))
+				installStatusWidget.threadsafe_notify_text("Task: {}".format(status.currentTask))
 				return
 
 			status = commandLineParser.tryGetAriaStatusUpdate(message)
 			if status:
 				installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
-				installStatusWidget.threadsafe_notify_text("Downloading - [{}] ({}%) ETA: {}".format(
-					status.amountCompletedString,
-					status.percentCompleted,
-					status.ETAString
-				))
+				installStatusWidget.threadsafe_notify_text("Downloading - [{}]) ETA: {}".format(status.amountCompletedString, status.ETAString))
 				return
 
 			sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)

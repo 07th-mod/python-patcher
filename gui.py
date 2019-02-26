@@ -118,10 +118,12 @@ class InstallStatusWidget:
 	# call this from other thread
 	def threadsafe_set_overall_progress(self, value):
 		self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_OVERALL_PROGRESS, value))
+		self.label_overall.configure(text="Overall Progress: {:3}%".format(value))
 
 	# call this from other thread
 	def threadsafe_set_subtask_progress(self, value):
 		self.try_put_in_queue((InstallStatusWidget.MSG_TYPE_SUBTASK_PROGRESS, value))
+		self.label_subtask.configure(text = "SubTask Progress: {:3}%".format(value))
 
 	# Append some text to the ongoing log
 	def threadsafe_append_log(self, text):
