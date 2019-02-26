@@ -117,26 +117,37 @@ class InstallerGUI:
 		# NOTE: be careful of the matching order here. if a higher priority parser matches, it will cause the other
 		#      parsers to never match. If you find one of your parsers doesn't work, move it to the top to test priority.
 		def ariaAndSevenZipMonitorCallback(message):
+			# Search for an update like "<<< Status: 45% [[Extracting Umineko-Graphics-1080p.7z]] >>>"
 			status = commandLineParser.tryGetOverallStatus(message)
 			if status:
 				installStatusWidget.threadsafe_set_overall_progress(status.overallPercentage)
 				installStatusWidget.threadsafe_notify_text("Task: {}".format(status.currentTask))
 				return
 
+			# Search the line for parts of a aria status update: "[#7f0d78 27MiB/910MiB(3%) CN:8 DL:4.2MiB ETA:3m27s]"
+			# Searches for "#7f0d78 27MiB/910MiB(3%)" and also "ETA:3m27s" separately
 			status = commandLineParser.tryGetAriaStatusUpdate(message)
 			if status:
 				installStatusWidget.threadsafe_set_subtask_progress(status.percentCompleted)
 				installStatusWidget.threadsafe_notify_text("Downloading - [{}]) ETA: {}".format(status.amountCompletedString, status.ETAString))
 				return
 
+			# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
 			sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
 			if sevenZipMessage:
-				installStatusWidget.threadsafe_notify_text("Extracting: {}".format(sevenZipMessage))
+				installStatusWidget.threadsafe_notify_text("Extracting - {}".format(sevenZipMessage))
 				return
 
+			# Look for a line with just a percent on it (eg 51%)
 			sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
 			if sevenZipPercent:
 				installStatusWidget.threadsafe_set_subtask_progress(sevenZipPercent)
+				return
+
+			# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
+			sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
+			if sevenZipFileCount:
+				installStatusWidget.threadsafe_notify_text("Extracting - {}".format(sevenZipFileCount))
 				return
 
 			# if the message is not a aria or 7zip message, just show it in the gui log window

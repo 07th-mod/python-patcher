@@ -13,7 +13,8 @@ class AriaStatusUpdate:
 class SevenZipStatusUpdate:
 	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
 	regexSevenZipPercentComplete = re.compile(r"(\d+)%")
-	regexSevenZipFileCountAndName = re.compile(r"\s*(\d+ - *.*)\s*")
+	regexSevenZipFileCountAndName = re.compile(r"\s*\d+ - *.*\s*")
+	regexSevenZipFileCountOnly = re.compile(r"\s*\d+\s*")
 
 	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
 		self.percentCompleted = percentCompleted
@@ -62,11 +63,18 @@ def tryGetSevenZipPercent(sevenZipStatusUpdateString):
 def tryGetSevenZipFilecountAndFileNameString(sevenZipStatusUpdateString):
 	# type: (str) -> str
 	#NOTE: 'match' is used here, not 'search'
-	match = SevenZipStatusUpdate.regexSevenZipFileCountAndName.match(sevenZipStatusUpdateString)
-	if not match or len(match.groups()) < 1:
-		return None
+	if SevenZipStatusUpdate.regexSevenZipFileCountAndName.match(sevenZipStatusUpdateString):
+		return sevenZipStatusUpdateString
 
-	return match.groups()[0]
+	return None
+
+def tryGetSevenZipFileCount(sevenZipStatusUpdateString):
+	# type: (str) -> str
+	# NOTE: 'match' is used here, not 'search'
+	if SevenZipStatusUpdate.regexSevenZipFileCountOnly.match(sevenZipStatusUpdateString):
+		return sevenZipStatusUpdateString
+
+	return None
 
 def tryGetOverallStatus(overallStatusString):
 	match = SeventhModStatusUpdate.regexSeventhModStatus.search(overallStatusString)
