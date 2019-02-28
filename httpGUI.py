@@ -2,6 +2,8 @@
 # see https://blog.anvileight.com/posts/simple-python-http-server/
 import os
 
+import common
+
 try:
 	import http.server as server
 	from http.server import HTTPServer
@@ -10,7 +12,7 @@ except:
 	from BaseHTTPServer import HTTPServer
 
 
-def start_server(working_directory, post_handlers):
+def start_server(working_directory, post_handlers, serverStartedCallback=lambda: None):
 	"""
 	Starts a http server which handles POST requests with callbacks by the given 'post_handlers' argument.
 
@@ -82,25 +84,39 @@ def start_server(working_directory, post_handlers):
 	# run the server
 	print("Started HTTP Server GUI @ [{}:{}]".format(INTERFACE_IP, PORT))
 	httpd = HTTPServerNoReuse(SERVER_ADDRESS, CustomHandler)
+
+	# note: calling the http server constructor will immediately start listening for connections,
+	# however it won't give a response until "serve_forever()" is called. This allows running the
+	# serverStartedCallback() before we block by calling serve_forever()
+	serverStartedCallback()
 	httpd.serve_forever()
 
 
-# An example of how this class can be used.
-def server_test():
-	import json
+class InstallerGUI:
+	def __init__(self, allSubModConfigs):
+		"""
+		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
+		"""
+		self.allSubModConfigs = allSubModConfigs
 
-	def handleInstallerData(body_string):
-		# type: (str) -> str
-		received_object = json.loads(body_string)
-		print(("Got Installer Data:", received_object))
+	# An example of how this class can be used.
+	def server_test(self):
+		import json
 
-		retObject = {'asdf': [1, 3, 4, 5, 6]}
+		def handleInstallerData(body_string):
+			# type: (str) -> str
+			received_object = json.loads(body_string)
+			print(("Got Installer Data:", received_object))
 
-		return json.dumps(retObject)
+			retObject = {'asdf': [1, 3, 4, 5, 6]}
 
-	# add handlers for each post URL here. currently only 'installer_data' is used.
-	post_handlers = {
-		'installer_data': handleInstallerData,
-	}
+			return json.dumps(retObject)
 
-	start_server(working_directory='httpGUI', post_handlers=post_handlers)
+		# add handlers for each post URL here. currently only 'installer_data' is used.
+		post_handlers = {
+			'installer_data': handleInstallerData,
+		}
+
+		start_server(working_directory='httpGUI',
+		             post_handlers=post_handlers,
+		             serverStartedCallback=lambda: common.trySystemOpen("http://127.0.0.1:8000"))

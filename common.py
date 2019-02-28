@@ -112,9 +112,10 @@ def makeDirsExistOK(directoryToMake):
 	except OSError:
 		pass
 
-def tryShowFolder(path):
+def trySystemOpen(path):
 	"""
-	Tries to show a given path in the system file browser
+	Tries to open a given path using the system 'open' function
+	The path can be a on-disk folder or a URL
 	NOTE: this function call does not block! (uses subprocess.Popen)
 	:param path: the path to show
 	:return: true if successful, false otherwise
