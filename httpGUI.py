@@ -65,8 +65,14 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 				print("received " + body_as_string + "via post request")
 
 			# print(self.headers)
-
+			# TODO: decide to keep or remove caching. Leave in for development.
+			# Add headers to prevent caching (of ALL files)
+			# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#Preventing_caching
+			# Only 'Cache-Control' is required, but the other two aid in backwards compatibility
 			self.send_response(200)
+			self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+			self.send_header('Pragma', 'no-cache')
+			self.send_header('Expires', '0')
 			self.end_headers()
 			self.wfile.write(response_string.encode('utf-8'))
 
