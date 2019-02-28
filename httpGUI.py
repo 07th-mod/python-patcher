@@ -1,8 +1,11 @@
 # TODO: test on python 2.7
 # see https://blog.anvileight.com/posts/simple-python-http-server/
-import os
+from __future__ import print_function
 
+import os
+import json
 import common
+import traceback
 
 try:
 	import http.server as server
@@ -10,6 +13,20 @@ try:
 except:
 	import SimpleHTTPServer as server
 	from BaseHTTPServer import HTTPServer
+
+
+def _makeJSONResponse(responseType, json_compatible_object):
+	# type: (str, object) -> str
+	return json.dumps({
+		'responseType': responseType,
+		'responseData': json_compatible_object,
+	})
+
+
+def _decodeJSONResponse(jsonString):
+	# type: (str) -> (str, object)
+	json_compatible_dict = json.loads(jsonString)
+	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
 
 
 def start_server(working_directory, post_handlers, serverStartedCallback=lambda: None):
@@ -58,11 +75,18 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 			path_without_slash = self.path.lstrip('/')
 
 			try:
-				response_string = post_handlers[path_without_slash](body_as_string)
+				response_function = post_handlers[path_without_slash]
+				try:
+					response_string = response_function(body_as_string)
+				except:
+					response = 'Exception @ POSTPath: [{}] Data: [{}] - See Terminal'.format(path_without_slash, body_as_string)
+					response_string = _makeJSONResponse('error', response)
+					print(response)
+					traceback.print_exc()
 			except KeyError:
-				response_string = 'Error - Unknown Data given' + body_as_string
-				print("Got Unknown Data - PathWithoutSlash =", path_without_slash)
-				print("received " + body_as_string + "via post request")
+				response = 'Error @ POSTPath: [{}] Data: [{}]'.format(path_without_slash, body_as_string)
+				print(response)
+				response_string = _makeJSONResponse('error', response)
 
 			# print(self.headers)
 			# TODO: decide to keep or remove caching. Leave in for development.
@@ -107,16 +131,25 @@ class InstallerGUI:
 
 	# An example of how this class can be used.
 	def server_test(self):
-		import json
-
 		def handleInstallerData(body_string):
 			# type: (str) -> str
-			received_object = json.loads(body_string)
-			print(("Got Installer Data:", received_object))
+			requestType, requestData = _decodeJSONResponse(body_string)
+			print('Got Request [{}] Data [{}]', requestType, requestData)
 
-			retObject = {'asdf': [1, 3, 4, 5, 6]}
+			# a list of 'handles' to each submod.
+			# This contains just enough information about each submod so that the python script knows
+			# which config was chosen, and which
+			subModHandles = []
+			for i, subModConfig in enumerate(self.allSubModConfigs):
+				subModHandles.append(
+					{
+						'index' : i,
+						'modName' : subModConfig.modName,
+						'subModName' : subModConfig.subModName,
+					}
+				)
 
-			return json.dumps(retObject)
+			return _makeJSONResponse('subModHandles', subModHandles)
 
 		# add handlers for each post URL here. currently only 'installer_data' is used.
 		post_handlers = {
@@ -125,4 +158,4 @@ class InstallerGUI:
 
 		start_server(working_directory='httpGUI',
 		             post_handlers=post_handlers,
-		             serverStartedCallback=lambda: common.trySystemOpen("http://127.0.0.1:8000"))
+		             serverStartedCallback=lambda: common.trySystemOpen('http://127.0.0.1:8000'))

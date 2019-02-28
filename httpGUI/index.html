@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <title>Page Title</title>
@@ -25,17 +25,17 @@ function do_post(object_to_send) {
 }
 
 function button_pressed() {
-	do_post({'a' : 5, 'b' : ['shiba', 'inu']});
+	do_post({'requestType' : 'getSubModHandles', 'requestData' : ['shiba', 'inu']});
 }
 
 </script>
 </head>
 <body>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+<h1>Developers - Please read</h1>
+<p>You may need to manually refresh your browser to see changes</p>
 
-<button type="button" onclick="button_pressed()">Click Me!</button>
+<button type="button" onclick="button_pressed()">Send Dummy Request</button>
  
 </body>
 </html> 
