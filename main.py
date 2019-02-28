@@ -8,6 +8,7 @@ import common
 import gameScanner
 import installerGUI
 import logger
+import httpGUI
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -25,6 +26,7 @@ if dirname.strip():
 	os.chdir(dirname)
 
 if __name__ == "__main__":
+	USE_WEB_GUI = False
 
 	#redirect stdout to both a file and console
 	#TODO: on MAC using a .app file, not sure if this logfile will be writeable
@@ -61,7 +63,11 @@ if __name__ == "__main__":
 			print(conf)
 			subModconfigList.append(conf)
 
-	gui = installerGUI.InstallerGUI(subModconfigList)
-	gui.mainloop()
+	if USE_WEB_GUI:
+		installerGUI = httpGUI.InstallerGUI(subModconfigList)
+		installerGUI.server_test()
+	else:
+		gui = installerGUI.InstallerGUI(subModconfigList)
+		gui.mainloop()
 
 	exit()
