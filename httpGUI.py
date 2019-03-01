@@ -4,6 +4,8 @@ from __future__ import print_function
 
 import os
 import json
+import urlparse
+
 import common
 import traceback
 
@@ -23,7 +25,7 @@ def _makeJSONResponse(responseType, json_compatible_object):
 	})
 
 
-def _decodeJSONResponse(jsonString):
+def _decodeJSONRequest(jsonString):
 	# type: (str) -> (str, object)
 	json_compatible_dict = json.loads(jsonString)
 	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
@@ -59,14 +61,79 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 		# self.wfile.write(indexFile.read())
 
 		# Override the translate_path function to serve files from a specified directory
-		# Python 3 has this ability built-in, but Python 2 does not.
-		def translate_path(self, path):
-			relative_path = os.path.relpath(os.getcwd(), server.SimpleHTTPRequestHandler.translate_path(self, path))
-			return os.path.join(working_directory, relative_path)
+
+
 
 		def list_directory(self, path):
 			self.send_error(404, "No permission to list directory")
 			return None
+
+		def send_head(self):
+			"""
+			Copy and pasted from  SimpleHTTPRequestHandler class because it's difficult
+			to alter the headers without modifying the function directly
+
+			Common code for GET and HEAD commands.
+
+			This sends the response code and MIME headers.
+
+			Return value is either a file object (which has to be copied
+			to the outputfile by the caller unless the command was HEAD,
+			and must be closed by the caller under all circumstances), or
+			None, in which case the caller has nothing further to do.
+
+			"""
+			originalPath = self.translate_path(self.path)
+			# --------- THE FOLLOWING WAS ADDED ---------
+			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
+			relativePath = os.path.relpath(originalPath, os.getcwd())
+			path = os.path.join(working_directory, relativePath)
+			print('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
+			# --------- END ADDED SECTION ---------
+			f = None
+			if os.path.isdir(path):
+				parts = urlparse.urlsplit(self.path)
+				if not parts.path.endswith('/'):
+					# redirect browser - doing basically what apache does
+					self.send_response(301)
+					new_parts = (parts[0], parts[1], parts[2] + '/',
+					             parts[3], parts[4])
+					new_url = urlparse.urlunsplit(new_parts)
+					self.send_header("Location", new_url)
+					self.end_headers()
+					return None
+				for index in "index.html", "index.htm":
+					index = os.path.join(path, index)
+					if os.path.exists(index):
+						path = index
+						break
+				else:
+					return self.list_directory(path)
+			ctype = self.guess_type(path)
+			try:
+				# Always read in binary mode. Opening files in text mode may cause
+				# newline translations, making the actual size of the content
+				# transmitted *less* than the content-length!
+				f = open(path, 'rb')
+			except IOError:
+				self.send_error(404, "File not found")
+				return None
+			try:
+				self.send_response(200)
+				self.send_header("Content-type", ctype)
+				fs = os.fstat(f.fileno())
+				self.send_header("Content-Length", str(fs[6]))
+				self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
+				# --------- THE FOLLOWING WAS ADDED ---------
+				self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+				self.send_header('Pragma', 'no-cache')
+				self.send_header('Expires', '0')
+				# --------- END ADDED SECTION ---------
+				self.end_headers()
+				return f
+			except:
+				f.close()
+				raise
 
 		def do_POST(self):
 			content_length = int(self.headers['Content-Length'])
@@ -135,8 +202,8 @@ class InstallerGUI:
 	def server_test(self):
 		def handleInstallerData(body_string):
 			# type: (str) -> str
-			requestType, requestData = _decodeJSONResponse(body_string)
-			print('Got Request [{}] Data [{}]', requestType, requestData)
+			requestType, requestData = _decodeJSONRequest(body_string)
+			print('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
 			# a list of 'handles' to each submod.
 			# This contains just enough information about each submod so that the python script knows
