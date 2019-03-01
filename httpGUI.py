@@ -97,6 +97,8 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 			self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
 			self.send_header('Pragma', 'no-cache')
 			self.send_header('Expires', '0')
+			# For now, assume all data sent back is JSON
+			self.send_header('Content-Type', 'application/json')
 			self.end_headers()
 			self.wfile.write(response_string.encode('utf-8'))
 
