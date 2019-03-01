@@ -2,40 +2,14 @@
 <html>
 <head>
 <title>Page Title</title>
-<script>
-
-//send any object in JSON format as a POST request to the server.
-//the 'url' will be set to 'installer_data'
-//the 'params' will be a string = JSON.stringify(object_to_send)
-function do_post(object_to_send) {
-	var http = new XMLHttpRequest();
-	var url = 'installer_data'; 		    //in python, is stored in 'self.path' on the handler class
-	var params = JSON.stringify(object_to_send); 	//in python, is retrieved by calling 'self.rfile.read(content_length)', where content_length is in the header (see python code)
-	http.open('POST', url, true);
-
-	//Send the proper header information along with the request
-	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-	http.onreadystatechange = function() {//Call a function when the state changes.
-		if(http.readyState == 4 && http.status == 200) {
-			alert(http.responseText);
-		}
-	}
-	http.send(params);
-}
-
-function button_pressed() {
-	do_post({'requestType' : 'getSubModHandles', 'requestData' : ['shiba', 'inu']});
-}
-
-</script>
+<script src="python-patcher-lib.js"></script> 
 </head>
 <body>
 
 <h1>Developers - Please read</h1>
-<p>You may need to manually refresh your browser to see changes</p>
+<p>You may need to manually refresh your browser to see changes asdf</p>
 
-<button type="button" onclick="button_pressed()">Send Dummy Request</button>
+<button type="button" onclick="buttonPressed()">Send Dummy Request</button>
  
 </body>
 </html> 
