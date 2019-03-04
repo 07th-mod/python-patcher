@@ -218,9 +218,24 @@ def getPossibleIdentifiersFromPath(path):
 			pass
 	return os.listdir(path)
 
-# Returns a list of all possible submods that can be installed on the system.
+
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
-	# type: (List[SubModConfig], [str]) -> []
+	# type: (List[SubModConfig], [str]) -> [FullInstallConfiguration]
+	"""
+	This function has two purposes:
+		- When given a specific game path ('possiblePaths' argument), it checks if any of the given SubModConfig
+		  can be installed into that path. Each SubModConfig which can be installed into that path will be returned
+		  as a FullInstallConfiguration object.
+
+		- When not given a specific game path, it searches the computer for valid installations where the given
+		  SubModConfig could be installed to. Each valid (installation + SubModConfig) combination will be returned
+		  as a FullInstallConfiguration object.
+
+	:param subModConfigList: A **list** of SubModConfig which are to be searched for on disk
+	:param possiblePaths: (Optional) Specify a path to check if the given SubModConfig can be installed into that path.
+	:return:    A list of FullInstallConfig, each representing a valid install path that the
+				given SubModConfig(s) couldbe installed into.
+	"""
 
 	returnedFullConfigs = []
 	if not possiblePaths:
