@@ -61,8 +61,14 @@ class ModFileOverride:
 
 #directly represents a single submod from the json file
 class SubModConfig:
+	subModUniqueIDCounter = 0
+
 	#object initialized in factory func
 	def __init__(self, mod, subMod):
+		# Generate a unique ID for each subModConfig. This variable is not present in the JSON file.
+		self.id = SubModConfig.subModUniqueIDCounter
+		SubModConfig.subModUniqueIDCounter += 1
+
 		self.family = mod['family'] # type: str
 		self.modName = mod['name']  # type: str
 		self.target = mod['target'] # type: str
