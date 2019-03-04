@@ -148,9 +148,9 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 				try:
 					response_string = response_function(body_as_string)
 				except:
-					response = 'Exception @ POSTPath: [{}] Data: [{}] - See Terminal'.format(path_without_slash, body_as_string)
+					errorMessage = traceback.format_exc()
+					response = 'Exception @ POSTPath: [{}] Data: [{}]\n\n{}'.format(path_without_slash, body_as_string, errorMessage)
 					response_string = _makeJSONResponse('error', response)
-					print(response)
 					traceback.print_exc()
 			except KeyError:
 				response = 'Error @ POSTPath: [{}] Data: [{}]'.format(path_without_slash, body_as_string)
