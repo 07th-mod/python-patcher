@@ -199,6 +199,7 @@ class InstallerGUI:
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
 		self.allSubModConfigs = allSubModConfigs
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
 
 	# An example of how this class can be used.
 	def server_test(self):
@@ -215,10 +216,10 @@ class InstallerGUI:
 				# This contains just enough information about each submod so that the python script knows
 				# which config was chosen, and which
 				subModHandles = []
-				for i, subModConfig in enumerate(self.allSubModConfigs):
+				for subModConfig in self.allSubModConfigs:
 					subModHandles.append(
 						{
-							'index': i,
+							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
 						}
@@ -226,16 +227,17 @@ class InstallerGUI:
 
 				return subModHandles
 
-			# requestData: A single number, which is the index of the subMod to install
+			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
 			#               which must be submitted in the final install step.
 			def getGamePathsHandler(requestData):
-				selectedSubMod = self.allSubModConfigs[requestData]
+				selectedSubMod = self.idToSubMod[requestData['id']]
 				fullInstallConfigs = gameScanner.scanForFullInstallConfigs([selectedSubMod])
 				fullInstallConfigHandles = []
 				for fullConfig in fullInstallConfigs:
 					fullInstallConfigHandles.append(
 						{
+							'id' : fullConfig.subModConfig.id,
 							'modName': fullConfig.subModConfig.modName,
 							'subModName': fullConfig.subModConfig.subModName,
 							'path' : fullConfig.installPath,

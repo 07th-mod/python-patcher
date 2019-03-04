@@ -54,6 +54,9 @@ function buttonPressed() {
 
 function getGamePaths() {
   doPost('gamePaths', // request name
-    8, // request data
+    { id: 8 }, // request data
+    (responseData) => { console.log(responseData); }); // function to deal with response data object
+}
+
     (responseData) => { console.log(responseData); }); // function to deal with response data object
 }
