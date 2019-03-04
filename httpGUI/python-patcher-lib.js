@@ -8,9 +8,18 @@ function decodeJSONResponse(jsonString) {
   return [responseObject.responseType, responseObject.responseData];
 }
 
-// send any object in JSON format as a POST request to the server.
-// the 'url' will be set to 'installer_data'
-// the 'params' will be a string = JSON.stringify(object_to_send)
+// Send any object in JSON format as a POST request to the server.
+//
+// Arguments:
+//
+// - requestType (str): The type of request, as a string, sent to the server.
+//    - If incorrect, the server will send a response with type 'error'.
+//    - If correct, the server will send a response with the same type as the request
+//
+// - requestData (object): An object sent to the server with the request.
+//
+// - onSuccessCallback (function(object)): A fn executed when a response is received
+//      from the server. The fn should take the returned object as its only argument
 function doPost(requestType, requestData, onSuccessCallback) {
   const http = new XMLHttpRequest();
   const url = 'installer_data'; // in python, is stored in 'self.path' on the handler class
@@ -25,8 +34,12 @@ function doPost(requestType, requestData, onSuccessCallback) {
   // Call a function when the state changes.
   http.onreadystatechange = function onReadyStateChange() {
     if (http.readyState === 4 && http.status === 200) {
-      const [responseType, responseData] = decodeJSONResponse(http.responseText);
-      onSuccessCallback(responseType, responseData);
+      const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
+      if (responseType !== requestType) {
+        console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
+      }
+
+      onSuccessCallback(responseDataObject);
     }
   };
 
@@ -34,7 +47,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
 }
 
 function buttonPressed() {
-  doPost('getSubModHandles',
-    ['shiba', 'inu'],
-    (responseType, responseData) => { console.log(responseData); });
+  doPost('subModHandles', // request name
+    ['shiba', 'inu'], // request data
+    (responseData) => { console.log(responseData); }); // function to deal with response data object
 }

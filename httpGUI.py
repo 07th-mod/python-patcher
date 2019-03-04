@@ -17,11 +17,11 @@ except:
 	from BaseHTTPServer import HTTPServer
 
 
-def _makeJSONResponse(responseType, json_compatible_object):
+def _makeJSONResponse(responseType, responseDataJson):
 	# type: (str, object) -> str
 	return json.dumps({
 		'responseType': responseType,
-		'responseData': json_compatible_object,
+		'responseData': responseDataJson,
 	})
 
 
@@ -205,20 +205,34 @@ class InstallerGUI:
 			requestType, requestData = _decodeJSONRequest(body_string)
 			print('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
-			# a list of 'handles' to each submod.
-			# This contains just enough information about each submod so that the python script knows
-			# which config was chosen, and which
-			subModHandles = []
-			for i, subModConfig in enumerate(self.allSubModConfigs):
-				subModHandles.append(
-					{
-						'index' : i,
-						'modName' : subModConfig.modName,
-						'subModName' : subModConfig.subModName,
-					}
-				)
+			def getSubModHandlesRequestHandler(requestData):
+				# a list of 'handles' to each submod.
+				# This contains just enough information about each submod so that the python script knows
+				# which config was chosen, and which
+				subModHandles = []
+				for i, subModConfig in enumerate(self.allSubModConfigs):
+					subModHandles.append(
+						{
+							'index': i,
+							'modName': subModConfig.modName,
+							'subModName': subModConfig.subModName,
+						}
+					)
 
-			return _makeJSONResponse('subModHandles', subModHandles)
+				return subModHandles
+
+			def unknownRequestHandler(requestData):
+				return 'Invalid request type [{}]. Should be one ofL [{}]'.format(requestType, requestTypeToRequestHandlers)
+
+			requestTypeToRequestHandlers = {
+				'subModHandles' : getSubModHandlesRequestHandler,
+			}
+
+			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
+			if requestHandler:
+				return _makeJSONResponse(responseType=requestType, responseDataJson=requestHandler(requestData))
+			else:
+				return _makeJSONResponse('error', unknownRequestHandler(requestData))
 
 		# add handlers for each post URL here. currently only 'installer_data' is used.
 		post_handlers = {
