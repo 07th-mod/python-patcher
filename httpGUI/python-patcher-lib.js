@@ -37,9 +37,9 @@ function doPost(requestType, requestData, onSuccessCallback) {
       const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
       if (responseType !== requestType) {
         console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
+      } else {
+        onSuccessCallback(responseDataObject);
       }
-
-      onSuccessCallback(responseDataObject);
     }
   };
 
