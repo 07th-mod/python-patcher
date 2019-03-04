@@ -51,3 +51,9 @@ function buttonPressed() {
     ['shiba', 'inu'], // request data
     (responseData) => { console.log(responseData); }); // function to deal with response data object
 }
+
+function getGamePaths() {
+  doPost('gamePaths', // request name
+    8, // request data
+    (responseData) => { console.log(responseData); }); // function to deal with response data object
+}

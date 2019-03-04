@@ -9,6 +9,8 @@ import urlparse
 import common
 import traceback
 
+import gameScanner
+
 try:
 	import http.server as server
 	from http.server import HTTPServer
@@ -205,6 +207,9 @@ class InstallerGUI:
 			requestType, requestData = _decodeJSONRequest(body_string)
 			print('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
+			# requestData: leave as null. will be ignored.
+			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
+			#               Most important is the index, which must be submitted in the 'getGamePaths' request.
 			def getSubModHandlesRequestHandler(requestData):
 				# a list of 'handles' to each submod.
 				# This contains just enough information about each submod so that the python script knows
@@ -221,11 +226,30 @@ class InstallerGUI:
 
 				return subModHandles
 
+			# requestData: A single number, which is the index of the subMod to install
+			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
+			#               which must be submitted in the final install step.
+			def getGamePathsHandler(requestData):
+				selectedSubMod = self.allSubModConfigs[requestData]
+				fullInstallConfigs = gameScanner.scanForFullInstallConfigs([selectedSubMod])
+				fullInstallConfigHandles = []
+				for fullConfig in fullInstallConfigs:
+					fullInstallConfigHandles.append(
+						{
+							'modName': fullConfig.subModConfig.modName,
+							'subModName': fullConfig.subModConfig.subModName,
+							'path' : fullConfig.installPath,
+							'isSteam' : fullConfig.isSteam,
+						}
+					)
+				return fullInstallConfigHandles
+
 			def unknownRequestHandler(requestData):
-				return 'Invalid request type [{}]. Should be one ofL [{}]'.format(requestType, requestTypeToRequestHandlers)
+				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers)
 
 			requestTypeToRequestHandlers = {
 				'subModHandles' : getSubModHandlesRequestHandler,
+				'gamePaths' : getGamePathsHandler,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
