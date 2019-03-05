@@ -4,7 +4,10 @@ from __future__ import print_function
 
 import os
 import json
-import urlparse
+try:
+	import urlparse
+except:
+	import urllib.parse as urlparse
 
 import common
 import traceback
