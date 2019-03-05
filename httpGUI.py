@@ -4,15 +4,17 @@ from __future__ import print_function
 
 import os
 import json
-try:
-	import urlparse
-except:
-	import urllib.parse as urlparse
-
 import common
 import traceback
 
 import gameScanner
+import commandLineParser
+import logger
+
+try:
+	import urlparse
+except:
+	import urllib.parse as urlparse
 
 try:
 	import http.server as server
@@ -61,6 +63,44 @@ def _decodeJSONRequest(jsonString):
 	json_compatible_dict = json.loads(jsonString)
 	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
 
+
+def _loggerMessageToStatusDict(message):
+	# Search for an update like "<<< Status: 45% [[Extracting Umineko-Graphics-1080p.7z]] >>>"
+	status = commandLineParser.tryGetOverallStatus(message)
+	if status:
+		return {
+			"overallPercentage": status.overallPercentage,
+			"overallTaskDescription": "Task: {}".format(status.currentTask),
+		}
+
+	# Search the line for parts of a aria status update: "[#7f0d78 27MiB/910MiB(3%) CN:8 DL:4.2MiB ETA:3m27s]"
+	# Searches for "#7f0d78 27MiB/910MiB(3%)" and also "ETA:3m27s" separately
+	status = commandLineParser.tryGetAriaStatusUpdate(message)
+	if status:
+		return {
+			"subTaskPercentage": status.percentCompleted,
+			"subTaskDescription": "Downloading - [{}]) ETA: {}".format(status.amountCompletedString, status.ETAString),
+		}
+
+	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
+	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
+	if sevenZipMessage:
+		# installStatusWidget.threadsafe_notify_text("Extracting - {}".format(sevenZipMessage))
+		return {"subTaskDescription": "Extracting - {}".format(sevenZipMessage)}
+
+	# Look for a line with just a percent on it (eg 51%)
+	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
+	if sevenZipPercent:
+		# installStatusWidget.threadsafe_set_subtask_progress(sevenZipPercent)
+		return {"subTaskPercentage": sevenZipPercent}
+
+	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
+	sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
+	if sevenZipFileCount:
+		return {"subTaskDescription": "Extracting - {}".format(sevenZipFileCount)}
+
+	# if the message is not a aria or 7zip message, just show it in the gui log window
+	return {"msg": message}
 
 def start_server(working_directory, post_handlers, serverStartedCallback=lambda: None):
 	"""
@@ -229,15 +269,31 @@ class InstallerGUI:
 		"""
 		self.allSubModConfigs = allSubModConfigs
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
+		self.messageBuffer = []
 
 	def try_start_install(self, subMod, installPath):
+		import higurashiInstaller
+		import uminekoInstaller
+		import threading
+
 		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 		if not fullInstallConfigs:
 			return False
 
-		# start the install with first element
-		print("Installing to", fullInstallConfigs[0].installPath)
-		print("Install path is valid!")
+		fullInstallSettings = fullInstallConfigs[0]
+
+		installerFunction = {
+			"higurashi": higurashiInstaller.main,
+			"umineko": uminekoInstaller.mainUmineko
+		}.get(fullInstallSettings.subModConfig.family, None)
+
+		if not installerFunction:
+			raise Exception("Error - Unknown Game Family - I don't know how to install [{}] family of games. Please notify 07th-mod developers.".format(fullInstallSettings.subModConfig.family))
+
+		t = threading.Thread(target=installerFunction, args=(fullInstallSettings,))
+		t.setDaemon(True)  # Use setter for compatability with Python 2
+		t.start()
+
 		return True
 
 	# An example of how this class can be used.
@@ -245,7 +301,7 @@ class InstallerGUI:
 		def handleInstallerData(body_string):
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
-			print('Got Request [{}] Data [{}]'.format(requestType, requestData))
+			logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
 			# requestData: leave as null. will be ignored.
 			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
@@ -302,13 +358,20 @@ class InstallerGUI:
 
 				return { 'installStarted' : self.try_start_install(subMod, installPath) }
 
+			# requestData: Not necessary - will be ignored
+			# responseData: Returns a dictionary, with different fields depending on the type of status returned.
+			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
+			def statusUpdate(requestData):
+				return {'statusList' : [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]}
+
 			def unknownRequestHandler(requestData):
-				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers)
+				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
 			requestTypeToRequestHandlers = {
 				'subModHandles' : getSubModHandlesRequestHandler,
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
+				'statusUpdate' : statusUpdate,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

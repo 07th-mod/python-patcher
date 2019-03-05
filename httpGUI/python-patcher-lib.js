@@ -46,16 +46,16 @@ function doPost(requestType, requestData, onSuccessCallback) {
   http.send(makeJSONRequest(requestType, requestData));
 }
 
-function buttonPressed() {
+function getSubModHandles() {
   doPost('subModHandles', // request name
     ['shiba', 'inu'], // request data
     (responseData) => { console.log(responseData); }); // function to deal with response data object
 }
 
 function getGamePaths() {
-  doPost('gamePaths', // request name
-    { id: 8 }, // request data
-    (responseData) => { console.log(responseData); }); // function to deal with response data object
+  doPost('gamePaths',
+    { id: 8 },
+    (responseData) => { console.log(responseData); });
 }
 
 // If you already know the game path from the getGamePaths() call,
@@ -65,5 +65,13 @@ function startInstall() {
   doPost('startInstall',
     { id: 8 },
     (responseData) => { console.log(responseData); });
-    (responseData) => { console.log(responseData); }); // function to deal with response data object
+}
+
+// If you already know the game path from the getGamePaths() call,
+// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
+// to the request dict, along with the subModID
+function statusUpdate() {
+  doPost('statusUpdate',
+    { id: 8 },
+    (responseData) => { console.log(responseData); });
 }
