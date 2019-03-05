@@ -10,8 +10,8 @@ import gameScanner
 
 
 class Installer:
-	def __init__(self, fullInstallConfiguration, installStatusWidget):
-		# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
+	def __init__(self, fullInstallConfiguration):
+		# type: (gameScanner.FullInstallConfiguration) -> None
 
 		"""
 		Installer Init
@@ -132,9 +132,9 @@ class Installer:
 			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
-def main(fullInstallConfiguration, installStatusWidget):
-	# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
-	installer = Installer(fullInstallConfiguration, installStatusWidget)
+def main(fullInstallConfiguration):
+	# type: (gameScanner.FullInstallConfiguration) -> None
+	installer = Installer(fullInstallConfiguration)
 	print("Downloading...")
 	installer.download()
 	print("Extracting...")

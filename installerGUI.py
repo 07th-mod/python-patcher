@@ -165,7 +165,7 @@ class InstallerGUI:
 			                     "I don't know how to install [{}] family of games. Please notify 07th-mod developers.")
 			return
 
-		t = threading.Thread(target=installerFunction, args=(fullInstallSettings, installStatusWidget))
+		t = threading.Thread(target=installerFunction, args=fullInstallSettings)
 		t.setDaemon(True)  # Use setter for compatability with Python 2
 		t.start()
 

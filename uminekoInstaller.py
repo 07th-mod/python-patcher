@@ -75,8 +75,8 @@ def backupOrRemoveFiles(folderToBackup):
 			shutil.move(fullFilePath, backupPath)
 
 #do install given a installer config object
-def mainUmineko(conf, installStatusWidget):
-	# type: (gameScanner.FullInstallConfiguration, gui.InstallStatusWidget) -> None
+def mainUmineko(conf):
+	# type: (gameScanner.FullInstallConfiguration) -> None
 
 	isQuestionArcs = 'question' in conf.subModConfig.modName.lower()
 
