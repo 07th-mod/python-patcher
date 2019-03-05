@@ -30,7 +30,9 @@ except ImportError:
 	import tkFileDialog as filedialog
 
 def _TKAskGameExe(subMod):
-	Tk().withdraw()
+	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
+	# TODO: for now, put up with the root window showing when choosing path manually
+	root = Tk()
 
 	# this creates the default option, which allows you to select all identifiers and any extras specified here.
 	extensionList = ["com.apple.application"] + subMod.identifiers
@@ -42,7 +44,7 @@ def _TKAskGameExe(subMod):
 	if os.path.isfile(installFolder):
 		installFolder = os.path.normpath(os.path.join(installFolder, os.pardir))
 
-	Tk().destroy()
+	root.destroy()
 
 	return installFolder
 
