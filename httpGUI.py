@@ -18,6 +18,30 @@ except:
 	import SimpleHTTPServer as server
 	from BaseHTTPServer import HTTPServer
 
+#tk is only required for the below  _askGameExeAndValidate function
+try:
+	from tkinter import Tk
+	from tkinter import filedialog
+except ImportError:
+	from Tkinter import Tk
+	import tkFileDialog as filedialog
+
+def _TKAskGameExe(subMod):
+	Tk().withdraw()
+
+	# this creates the default option, which allows you to select all identifiers and any extras specified here.
+	extensionList = ["com.apple.application"] + subMod.identifiers
+	fileList = [("Game Executable", x) for x in extensionList]
+	fileList.append(("Any In Game Folder", "*.*"))
+
+	# returns empty string if user didn't select any file or folder. If a file is selected, convert it to the parent folder
+	installFolder = filedialog.askopenfilename(filetypes=fileList)
+	if os.path.isfile(installFolder):
+		installFolder = os.path.normpath(os.path.join(installFolder, os.pardir))
+
+	Tk().destroy()
+
+	return installFolder
 
 def _makeJSONResponse(responseType, responseDataJson):
 	# type: (str, object) -> str
@@ -201,6 +225,16 @@ class InstallerGUI:
 		self.allSubModConfigs = allSubModConfigs
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
 
+	def try_start_install(self, subMod, installPath):
+		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+		if not fullInstallConfigs:
+			return False
+
+		# start the install with first element
+		print("Installing to", fullInstallConfigs[0].installPath)
+		print("Install path is valid!")
+		return True
+
 	# An example of how this class can be used.
 	def server_test(self):
 		def handleInstallerData(body_string):
@@ -230,8 +264,11 @@ class InstallerGUI:
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
 			#               which must be submitted in the final install step.
+			# NOTE: the idOfSubMod is not unique in the returned list. You must supply both a submod ID
+			#       and a path to the next stage
 			def getGamePathsHandler(requestData):
-				selectedSubMod = self.idToSubMod[requestData['id']]
+				id = requestData['id']
+				selectedSubMod = self.idToSubMod[id]
 				fullInstallConfigs = gameScanner.scanForFullInstallConfigs([selectedSubMod])
 				fullInstallConfigHandles = []
 				for fullConfig in fullInstallConfigs:
@@ -246,12 +283,27 @@ class InstallerGUI:
 					)
 				return fullInstallConfigHandles
 
+			#TODO: for security reasons, can't get full path from browser. Either need to copy paste, or open a
+			# tk window . Adding a tk window would then require tk dependencies (no problem except requring tk on linux)
+
+			# requestData: The submod ID and install path. If the install path is not specified, then the tkinter
+			#               window chooser will be used
+			# responseData: If the path is valid:
+			#               If the path is invalid: null is returned
+			def startInstallHandler(requestData):
+				id = requestData['id']
+				subMod = self.idToSubMod[id]
+				installPath = requestData.get('installPath', _TKAskGameExe(subMod))
+
+				return { 'installStarted' : self.try_start_install(subMod, installPath) }
+
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers)
 
 			requestTypeToRequestHandlers = {
 				'subModHandles' : getSubModHandlesRequestHandler,
 				'gamePaths' : getGamePathsHandler,
+				'startInstall' : startInstallHandler,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

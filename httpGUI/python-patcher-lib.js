@@ -58,5 +58,12 @@ function getGamePaths() {
     (responseData) => { console.log(responseData); }); // function to deal with response data object
 }
 
+// If you already know the game path from the getGamePaths() call,
+// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
+// to the request dict, along with the subModID
+function startInstall() {
+  doPost('startInstall',
+    { id: 8 },
+    (responseData) => { console.log(responseData); });
     (responseData) => { console.log(responseData); }); // function to deal with response data object
 }
