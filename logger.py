@@ -1,4 +1,8 @@
 import sys
+try:
+	import queue
+except:
+	import Queue as queue
 
 # From https://stackoverflow.com/a/14906787/848627
 # Replace with the standard "https://docs.python.org/2/library/logging.html" module later?
@@ -10,10 +14,15 @@ class Logger(object):
 		self.terminal = sys.stdout
 		self.log = open(logPath, "a")
 		self.callbacks = {}
+		self.queue = queue.Queue(maxsize=100000)
+
+	def writeNoLog(self, message):
+		self.terminal.write(message)
 
 	def write(self, message, runCallbacks=True):
 		self.terminal.write(message)
 		self.log.write(message)
+		self._tryPutInQueue(message)
 
 		#execute all bound callbacks
 		if runCallbacks:
@@ -28,6 +37,32 @@ class Logger(object):
 		#this handles the flush command by doing nothing.
 		#you might want to specify some extra behavior here.
 		pass
+
+	def threadSafeRead(self):
+		# type: () -> str
+		"""
+		:return: the latest message, or None if no more data to read
+		"""
+		try:
+			return self.queue.get_nowait()
+		except queue.Empty:
+			return None
+
+	def threadSafeReadAll(self):
+		# type: () -> [str]
+		"""
+		:return: An array of strings. If nothing to read, returns the empt ylist
+		"""
+		return list(iter(self.threadSafeRead, None))
+
+	def _tryPutInQueue(self, item):
+		# type: (str) -> None
+		try:
+			self.queue.put_nowait(item)
+		except queue.Full:
+			if not self.queue_full_error:
+				self.queue_full_error = True
+				self.terminal.write("WARNING: Install status message queue is full (possibly GUI was closed but console left open)")
 
 def getGlobalLogger():
 	# type: () -> Logger
