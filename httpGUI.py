@@ -354,7 +354,9 @@ class InstallerGUI:
 			def startInstallHandler(requestData):
 				id = requestData['id']
 				subMod = self.idToSubMod[id]
-				installPath = requestData.get('installPath', _TKAskGameExe(subMod))
+				installPath = requestData.get('installPath', None)
+				if installPath is None:
+					installPath = _TKAskGameExe(subMod)
 
 				return { 'installStarted' : self.try_start_install(subMod, installPath) }
 
