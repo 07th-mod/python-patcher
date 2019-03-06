@@ -8,6 +8,16 @@ function decodeJSONResponse(jsonString) {
   return [responseObject.responseType, responseObject.responseData];
 }
 
+// Create a button element with the given label and callback when button is clicked
+// It's the caller's responsiblity to attach the button to the document (eg. to a div container)
+function generateButton(label, callback) {
+  const button = document.createElement('button');
+  button.addEventListener('click', callback);
+  const buttonText = document.createTextNode(label);
+  button.appendChild(buttonText);
+  return button;
+}
+
 // Send any object in JSON format as a POST request to the server.
 //
 // Arguments:
@@ -46,24 +56,57 @@ function doPost(requestType, requestData, onSuccessCallback) {
   http.send(makeJSONRequest(requestType, requestData));
 }
 
+function generateSubModButton(modInfo) {
+  return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => { getGamePaths(modInfo.id); });
+}
+
+function generateStartInstallButton(configHandle) {
+  return generateButton(
+    `${configHandle.modName} - ${configHandle.subModName} path: ${configHandle.path}`,
+    () => { startInstall(configHandle.id, configHandle.path); },
+  );
+}
+
+function clearChildElements(node) {
+  while (node.firstChild) { node.removeChild(node.firstChild); }
+}
+
 function getSubModHandles() {
   doPost('subModHandles', // request name
     ['shiba', 'inu'], // request data
-    (responseData) => { console.log(responseData); }); // function to deal with response data object
+    (responseData) => {
+      console.log(responseData);
+      const subModListDiv = document.getElementById('subModList');
+      const gamePathsListDiv = document.getElementById('gamePathsList');
+      clearChildElements(subModListDiv);
+      clearChildElements(gamePathsListDiv);
+      responseData.forEach((subModHandle) => {
+        subModListDiv.appendChild(generateSubModButton(subModHandle));
+      });
+    });
 }
 
-function getGamePaths() {
+function getGamePaths(subModID) {
   doPost('gamePaths',
-    { id: 8 },
-    (responseData) => { console.log(responseData); });
+    { id: subModID },
+    (responseData) => {
+      console.log(responseData);
+      const gamePathsListDiv = document.getElementById('gamePathsList');
+      clearChildElements(gamePathsListDiv);
+      responseData.forEach((fullInstallConfigHandle) => {
+        gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
+      });
+      // add option to manually choose game path
+      gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => { startInstall(subModID); }));
+    });
 }
 
 // If you already know the game path from the getGamePaths() call,
 // add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
 // to the request dict, along with the subModID
-function startInstall() {
+function startInstall(subModID, installPath) {
   doPost('startInstall',
-    { id: 8 },
+    { id: subModID, installPath },
     (responseData) => { console.log(responseData); });
 }
 
@@ -72,6 +115,10 @@ function startInstall() {
 // to the request dict, along with the subModID
 function statusUpdate() {
   doPost('statusUpdate',
-    { id: 8 },
+    { },
     (responseData) => { console.log(responseData); });
+}
+
+window.onload = function onWindowLoaded() {
+  console.log('window loaded');
 }
