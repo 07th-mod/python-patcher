@@ -107,7 +107,10 @@ function getGamePaths(subModID) {
 function startInstall(subModID, installPath) {
   doPost('startInstall',
     { id: subModID, installPath },
-    (responseData) => { console.log(responseData); });
+    (responseData) => {
+      console.log(responseData);
+      window.setInterval(statusUpdate, 1000);
+    });
 }
 
 // If you already know the game path from the getGamePaths() call,
@@ -121,4 +124,5 @@ function statusUpdate() {
 
 window.onload = function onWindowLoaded() {
   console.log('window loaded');
-}
+  getSubModHandles();
+};
