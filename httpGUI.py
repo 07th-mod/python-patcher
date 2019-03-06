@@ -103,6 +103,7 @@ def _loggerMessageToStatusDict(message):
 	return {"msg": message}
 
 def start_server(working_directory, post_handlers, serverStartedCallback=lambda: None):
+	# type: (str, dict, function) -> None
 	"""
 	Starts a http server which handles POST requests with callbacks by the given 'post_handlers' argument.
 
@@ -115,27 +116,22 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 		- the fn should return the response in the form of a UTF-8 string
 
 	:return: None
-	:exception: see serve_forever() of the TCPServer class. In particular, if you try to run two instances of this
-				server on the same computer, you will get a:
+	:exception: see serve_forever() of the SimpleHTTPRequestHandler class. In particular, if you try to run two
+				instances of this server on the same computer, you will get a:
 				"OSError: [WinError 10048] Only one usage of each socket address is normally permitted"
 	"""
-
-	# use BaseHTTPRequestHandler if you don't want to auto-serve files
-	# use SimpleHTTPRequestHandler to auto serve files from the current dir
 	class CustomHandler(server.SimpleHTTPRequestHandler):
-		# Uncomment this if using BaseHTTPRequestHandler
-		# def do_GET(self):
-		# self.send_response(200)
-		# self.end_headers()
-		#
-		# with open('index.html', 'rb') as indexFile:
-		# self.wfile.write(indexFile.read())
-
-		# Override the translate_path function to serve files from a specified directory
-
-
-
+		"""
+		This class inherits from SimpleHTTPRequestHandler. It acts as a webserver, which serves the files in the
+		working_directory variable captured from the outer scope. On POST requests, it executes the
+		function in the post_handlers dict corresponding to the POST address. The following changes were also made:
+		- The subdirectory working_directory is served, instead of the current working directory
+		- Trying to list a directory gives a 404 instead
+		- All returned files have caching disabled
+		- If an exception occurs while handling a request, the exception is passed to the browser
+		"""
 		def list_directory(self, path):
+			""" This override function always returns a 404 when a directory listing is requested """
 			self.send_error(404, "No permission to list directory")
 			return None
 
@@ -158,7 +154,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 			# --------- THE FOLLOWING WAS ADDED ---------
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
-			path = os.path.join(working_directory, relativePath)
+			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
 			print('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
 			# --------- END ADDED SECTION ---------
 			f = None
@@ -226,7 +222,6 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 				print(response)
 				response_string = _makeJSONResponse('error', response)
 
-			# print(self.headers)
 			# TODO: decide to keep or remove caching. Leave in for development.
 			# Add headers to prevent caching (of ALL files)
 			# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#Preventing_caching
