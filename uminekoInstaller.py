@@ -130,7 +130,7 @@ def mainUmineko(conf):
 	print("Creating debug mode batch files")
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(conf.installPath, gameBaseName + "_DebugMode.bat"), 'w') as f:
-		f.writelines([gameBaseName + ".exe --debug", "pause"])
+		f.writelines([gameBaseName + ".exe --debug\n", "pause"])
 
 	#make the following files executable, if they exist
 	makeExecutableList = [
