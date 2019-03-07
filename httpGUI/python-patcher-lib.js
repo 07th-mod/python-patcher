@@ -1,3 +1,6 @@
+// This variable caches html elements - it is initalized in the window.onload callback
+let el = {};
+
 // Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
 function makeJSONRequest(requestType, requestData) {
   return JSON.stringify({ requestType, requestData });
@@ -42,6 +45,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
   http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
   // Call a function when the state changes.
+  // TODO: add timeout here to notify user if server has crashed or stopped working
   http.onreadystatechange = function onReadyStateChange() {
     if (http.readyState === 4 && http.status === 200) {
       const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
@@ -76,12 +80,10 @@ function getSubModHandles() {
     ['shiba', 'inu'], // request data
     (responseData) => {
       console.log(responseData);
-      const subModListDiv = document.getElementById('subModList');
-      const gamePathsListDiv = document.getElementById('gamePathsList');
-      clearChildElements(subModListDiv);
-      clearChildElements(gamePathsListDiv);
+      clearChildElements(el.subModListDiv);
+      clearChildElements(el.gamePathsListDiv);
       responseData.forEach((subModHandle) => {
-        subModListDiv.appendChild(generateSubModButton(subModHandle));
+        el.subModListDiv.appendChild(generateSubModButton(subModHandle));
       });
     });
 }
@@ -91,13 +93,12 @@ function getGamePaths(subModID) {
     { id: subModID },
     (responseData) => {
       console.log(responseData);
-      const gamePathsListDiv = document.getElementById('gamePathsList');
-      clearChildElements(gamePathsListDiv);
+      clearChildElements(el.gamePathsListDiv);
       responseData.forEach((fullInstallConfigHandle) => {
-        gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
+        el.gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
       });
       // add option to manually choose game path
-      gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => { startInstall(subModID); }));
+      el.gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => { startInstall(subModID); }));
     });
 }
 
@@ -123,6 +124,15 @@ function statusUpdate() {
 }
 
 window.onload = function onWindowLoaded() {
+  el = {
+    subModListDiv: document.getElementById('subModList'),
+    gamePathsListDiv: document.getElementById('gamePathsList'),
+    overallPercentage: document.getElementById('overallPercentage'),
+    overallTaskDescription: document.getElementById('gamePathsList'),
+    subTaskPercentage: document.getElementById('subTaskPercentage'),
+    terminal: document.getElementById('terminal'),
+  };
+
   console.log('window loaded');
   getSubModHandles();
 };
