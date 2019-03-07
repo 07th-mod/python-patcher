@@ -120,18 +120,52 @@ function startInstall(subModID, installPath) {
 function statusUpdate() {
   doPost('statusUpdate',
     { },
-    (responseData) => { console.log(responseData); });
+    (responseData) => {
+      console.log(responseData);
+      responseData.forEach((status) => {
+        if (status.overallPercentage !== undefined) {
+          el.overallPercentageTextNode.nodeValue = `${status.overallPercentage}%`;
+        }
+        if (status.overallTaskDescription !== undefined) {
+          el.overallTaskDescriptionTextNode.nodeValue = status.overallTaskDescription;
+        }
+        if (status.subTaskPercentage !== undefined) {
+          el.subTaskPercentageTextNode.nodeValue = `${status.subTaskPercentage}%`;
+        }
+        if (status.subTaskDescription !== undefined) {
+          el.subTaskDescriptionTextNode.nodeValue = status.subTaskDescription;
+        }
+        if (status.msg !== undefined) {
+          const pNode = document.createElement('p');
+          pNode.appendChild(document.createTextNode(status.msg));
+          el.terminal.appendChild(pNode);
+        }
+      });
+    });
+}
+
+// Adds a text node to the element with the given ID, returning the text node
+function AddAndGetTextNode(elementID) {
+  const textNode = document.createTextNode('');
+  document.getElementById(elementID).appendChild(textNode);
+  return textNode;
 }
 
 window.onload = function onWindowLoaded() {
   el = {
+    overallPercentageTextNode: AddAndGetTextNode('overallPercentage'),
+    overallTaskDescriptionTextNode: AddAndGetTextNode('overallTaskDescription'),
+    subTaskPercentageTextNode: AddAndGetTextNode('subTaskPercentage'),
+    subTaskDescriptionTextNode: AddAndGetTextNode('subTaskDescription'),
     subModListDiv: document.getElementById('subModList'),
     gamePathsListDiv: document.getElementById('gamePathsList'),
-    overallPercentage: document.getElementById('overallPercentage'),
-    overallTaskDescription: document.getElementById('gamePathsList'),
-    subTaskPercentage: document.getElementById('subTaskPercentage'),
     terminal: document.getElementById('terminal'),
   };
+
+  el.overallPercentageTextNode.nodeValue = '0%';
+  el.overallTaskDescriptionTextNode.nodeValue = 'Overall Status';
+  el.subTaskPercentageTextNode.nodeValue = '0%';
+  el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
   console.log('window loaded');
   getSubModHandles();
