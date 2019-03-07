@@ -356,10 +356,11 @@ class InstallerGUI:
 				return { 'installStarted' : self.try_start_install(subMod, installPath) }
 
 			# requestData: Not necessary - will be ignored
-			# responseData: Returns a dictionary, with different fields depending on the type of status returned.
+			# responseData: Returns a list of dictionaries. Each dictionary may have different fields depending on the
+			#               type of status returned.
 			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
 			def statusUpdate(requestData):
-				return {'statusList' : [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]}
+				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
 
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
