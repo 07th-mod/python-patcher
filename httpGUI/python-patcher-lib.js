@@ -64,6 +64,19 @@ function generateSubModButton(modInfo) {
   return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => { getGamePaths(modInfo.id); });
 }
 
+// Creates a new mod button. When clicked, adds buttons allowing you to
+// choose a submod (eg full, voice only etc.) to the 'subModList' div element
+function newModButton(modName, allSubMods) {
+  return generateButton(modName, () => {
+    clearChildElements(el.subModListDiv);
+    clearChildElements(el.gamePathsListDiv);
+    allSubMods.filter(subModHandle => subModHandle.modName === modName).forEach((subModHandle) => {
+      el.subModListDiv.appendChild(generateSubModButton(subModHandle));
+    });
+  });
+}
+
+
 function generateStartInstallButton(configHandle) {
   return generateButton(
     `${configHandle.modName} - ${configHandle.subModName} path: ${configHandle.path}`,
@@ -80,10 +93,16 @@ function getSubModHandles() {
     ['shiba', 'inu'], // request data
     (responseData) => {
       console.log(responseData);
+
+      // Display a list of unique mods. Do not display subMods until user has chosen a mod
+      const uniqueMods = new Set();
+      responseData.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
+
       clearChildElements(el.subModListDiv);
       clearChildElements(el.gamePathsListDiv);
-      responseData.forEach((subModHandle) => {
-        el.subModListDiv.appendChild(generateSubModButton(subModHandle));
+      clearChildElements(el.modListDiv);
+      uniqueMods.forEach((modName) => {
+        el.modListDiv.appendChild(newModButton(modName, responseData));
       });
     });
 }
@@ -158,6 +177,7 @@ window.onload = function onWindowLoaded() {
     subTaskPercentageTextNode: AddAndGetTextNode('subTaskPercentage'),
     subTaskDescriptionTextNode: AddAndGetTextNode('subTaskDescription'),
     subModListDiv: document.getElementById('subModList'),
+    modListDiv: document.getElementById('modList'),
     gamePathsListDiv: document.getElementById('gamePathsList'),
     terminal: document.getElementById('terminal'),
   };
