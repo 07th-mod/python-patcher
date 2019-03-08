@@ -11,16 +11,6 @@ function decodeJSONResponse(jsonString) {
   return [responseObject.responseType, responseObject.responseData];
 }
 
-// Create a button element with the given label and callback when button is clicked
-// It's the caller's responsiblity to attach the button to the document (eg. to a div container)
-function generateButton(label, callback) {
-  const button = document.createElement('button');
-  button.addEventListener('click', callback);
-  const buttonText = document.createTextNode(label);
-  button.appendChild(buttonText);
-  return button;
-}
-
 // Send any object in JSON format as a POST request to the server.
 //
 // Arguments:
@@ -60,77 +50,27 @@ function doPost(requestType, requestData, onSuccessCallback) {
   http.send(makeJSONRequest(requestType, requestData));
 }
 
-function generateSubModButton(modInfo) {
-  return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => getGamePaths(modInfo.id));
-}
-
-// Creates a new mod button. When clicked, adds buttons allowing you to
-// choose a submod (eg full, voice only etc.) to the 'subModList' div element
-function newModButton(modName, allSubMods) {
-  return generateButton(modName, () => {
-    clearChildElements(el.subModListDiv);
-    clearChildElements(el.gamePathsListDiv);
-    allSubMods.filter(subModHandle => subModHandle.modName === modName).forEach((subModHandle) => {
-      el.subModListDiv.appendChild(generateSubModButton(subModHandle));
-    });
-  });
-}
-
-
-function generateStartInstallButton(configHandle) {
-  return generateButton(
-    `${configHandle.modName} - ${configHandle.subModName} path: ${configHandle.path}`,
-    () => startInstall(configHandle.id, configHandle.path),
-  );
-}
-
+// -------------------------------- DOM Modification Functions --------------------------------
+// Clears all child elements of a given node
 function clearChildElements(node) {
   while (node.firstChild) { node.removeChild(node.firstChild); }
 }
 
-function getSubModHandles() {
-  doPost('subModHandles', // request name
-    ['shiba', 'inu'], // request data
-    (responseData) => {
-      console.log(responseData);
-
-      // Display a list of unique mods. Do not display subMods until user has chosen a mod
-      const uniqueMods = new Set();
-      responseData.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
-
-      clearChildElements(el.subModListDiv);
-      clearChildElements(el.gamePathsListDiv);
-      clearChildElements(el.modListDiv);
-      uniqueMods.forEach((modName) => {
-        el.modListDiv.appendChild(newModButton(modName, responseData));
-      });
-    });
+// Create a button element with the given label and callback when button is clicked
+// It's the caller's responsiblity to attach the button to the document (eg. to a div container)
+function generateButton(label, callback) {
+  const button = document.createElement('button');
+  button.addEventListener('click', callback);
+  const buttonText = document.createTextNode(label);
+  button.appendChild(buttonText);
+  return button;
 }
 
-function getGamePaths(subModID) {
-  doPost('gamePaths',
-    { id: subModID },
-    (responseData) => {
-      console.log(responseData);
-      clearChildElements(el.gamePathsListDiv);
-      responseData.forEach((fullInstallConfigHandle) => {
-        el.gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
-      });
-      // add option to manually choose game path
-      el.gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => startInstall(subModID)));
-    });
-}
-
-// If you already know the game path from the getGamePaths() call,
-// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
-// to the request dict, along with the subModID
-function startInstall(subModID, installPath) {
-  doPost('startInstall',
-    { id: subModID, installPath },
-    (responseData) => {
-      console.log(responseData);
-      window.setInterval(statusUpdate, 1000);
-    });
+// Adds a text node to the element with the given ID, returning the text node
+function AddAndGetTextNode(elementID) {
+  const textNode = document.createTextNode('');
+  document.getElementById(elementID).appendChild(textNode);
+  return textNode;
 }
 
 // If you already know the game path from the getGamePaths() call,
@@ -163,11 +103,83 @@ function statusUpdate() {
     });
 }
 
-// Adds a text node to the element with the given ID, returning the text node
-function AddAndGetTextNode(elementID) {
-  const textNode = document.createTextNode('');
-  document.getElementById(elementID).appendChild(textNode);
-  return textNode;
+// -------------------------------- Installer Functions --------------------------------
+// Step 4.
+// If you already know the game path from the getGamePaths() call,
+// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
+// to the request dict, along with the subModID
+function startInstall(subModID, installPath) {
+  doPost('startInstall',
+    { id: subModID, installPath },
+    (responseData) => {
+      console.log(responseData);
+      window.setInterval(statusUpdate, 1000);
+    });
+}
+
+// Step 3.
+// Retrieves a list of game paths where a given subMod can be installed into,
+// Then populates the 'gamePathsList' Div with buttons for each path
+// Also allows user to manually choose path with a 'choose manually' button.
+function getGamePaths(subModID) {
+  doPost('gamePaths',
+    { id: subModID },
+    (responseData) => {
+      function generateStartInstallButton(configHandle) {
+        return generateButton(
+          `${configHandle.modName} - ${configHandle.subModName} path: ${configHandle.path}`,
+          () => startInstall(configHandle.id, configHandle.path),
+        );
+      }
+
+      console.log(responseData);
+      clearChildElements(el.gamePathsListDiv);
+      responseData.forEach((fullInstallConfigHandle) => {
+        el.gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
+      });
+      // add option to manually choose game path
+      el.gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => startInstall(subModID)));
+    });
+}
+
+// Step 2.
+// Creates a new mod button. When clicked, adds buttons allowing you to
+// choose a submod (eg full, voice only etc.) to the 'subModList' div element
+function newModButton(modName, allSubMods) {
+  function generateSubModButton(modInfo) {
+    return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => getGamePaths(modInfo.id));
+  }
+
+  return generateButton(modName, () => {
+    clearChildElements(el.subModListDiv);
+    clearChildElements(el.gamePathsListDiv);
+    allSubMods.filter(subModHandle => subModHandle.modName === modName).forEach((subModHandle) => {
+      el.subModListDiv.appendChild(generateSubModButton(subModHandle));
+    });
+  });
+}
+
+// Step 1.
+// Retrieves a list of subMods which can be installed. Filters out unique mod names,
+// Then populates the 'subModList' Div with buttons for each Mod
+// This allows the user to chose the Mod they want. The subMod is chosen at the next step.
+function getSubModHandles() {
+  doPost('subModHandles', // request name
+    ['shiba', 'inu'], // request data
+    (responseData) => {
+      console.log(responseData);
+
+      // Display a list of unique mods. Do not display subMods until user has chosen a mod
+      const uniqueMods = new Set();
+      responseData.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
+
+      clearChildElements(el.subModListDiv);
+      clearChildElements(el.gamePathsListDiv);
+      clearChildElements(el.modListDiv);
+      uniqueMods.forEach((modName) => {
+        el.modListDiv.appendChild(newModButton(modName, responseData));
+      });
+    });
 }
 
 window.onload = function onWindowLoaded() {
@@ -187,6 +199,5 @@ window.onload = function onWindowLoaded() {
   el.subTaskPercentageTextNode.nodeValue = '0%';
   el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
-  console.log('window loaded');
   getSubModHandles();
 };
