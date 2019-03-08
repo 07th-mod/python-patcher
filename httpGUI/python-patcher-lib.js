@@ -61,7 +61,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
 }
 
 function generateSubModButton(modInfo) {
-  return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => { getGamePaths(modInfo.id); });
+  return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => getGamePaths(modInfo.id));
 }
 
 // Creates a new mod button. When clicked, adds buttons allowing you to
@@ -80,7 +80,7 @@ function newModButton(modName, allSubMods) {
 function generateStartInstallButton(configHandle) {
   return generateButton(
     `${configHandle.modName} - ${configHandle.subModName} path: ${configHandle.path}`,
-    () => { startInstall(configHandle.id, configHandle.path); },
+    () => startInstall(configHandle.id, configHandle.path),
   );
 }
 
@@ -117,7 +117,7 @@ function getGamePaths(subModID) {
         el.gamePathsListDiv.appendChild(generateStartInstallButton(fullInstallConfigHandle));
       });
       // add option to manually choose game path
-      el.gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => { startInstall(subModID); }));
+      el.gamePathsListDiv.appendChild(generateButton('Choose Path Manually', () => startInstall(subModID)));
     });
 }
 
