@@ -61,14 +61,16 @@ function clearChildElements(node) {
 function generateButton(label, callback, opt) {
   const button = document.createElement('button');
 
-  if (opt.imagePath !== undefined) {
-    const iconImage = document.createElement('img');
-    iconImage.src = opt.imagePath;
-    button.appendChild(iconImage);
+  if (opt !== undefined) {
+    if (opt.imagePath !== undefined) {
+      const iconImage = document.createElement('img');
+      iconImage.src = opt.imagePath;
+      button.appendChild(iconImage);
+    }
+    button.className = (opt.class === undefined) ? 'generatedButton' : opt.class;
   }
 
   button.addEventListener('click', callback);
-  button.className = (opt.class === undefined) ? 'generatedButton' : opt.class;
   const buttonText = document.createTextNode(label);
   button.appendChild(buttonText);
   return button;
