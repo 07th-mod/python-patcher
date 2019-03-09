@@ -128,7 +128,7 @@ function startInstall(subModID, installPath) {
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
-        window.setInterval(statusUpdate, 1000);
+        window.setInterval(statusUpdate, 500);
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
