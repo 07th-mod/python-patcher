@@ -120,7 +120,7 @@ function startInstall(subModID, installPath) {
       if (responseData.installStarted) {
         window.setInterval(statusUpdate, 1000);
       } else {
-        alert('The install could not be started. Please ensure you chose a valid path.');
+        alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
     });
 }

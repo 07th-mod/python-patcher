@@ -265,6 +265,7 @@ class InstallerGUI:
 		self.allSubModConfigs = allSubModConfigs
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
 		self.messageBuffer = []
+		self.threadHandle = None
 
 	def try_start_install(self, subMod, installPath):
 		import higurashiInstaller
@@ -285,9 +286,13 @@ class InstallerGUI:
 		if not installerFunction:
 			raise Exception("Error - Unknown Game Family - I don't know how to install [{}] family of games. Please notify 07th-mod developers.".format(fullInstallSettings.subModConfig.family))
 
-		t = threading.Thread(target=installerFunction, args=(fullInstallSettings,))
-		t.setDaemon(True)  # Use setter for compatability with Python 2
-		t.start()
+		# Prevent accidentally starting two installations at once
+		if self.threadHandle and self.threadHandle.is_alive():
+			return False
+
+		self.threadHandle = threading.Thread(target=installerFunction, args=(fullInstallSettings,))
+		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
+		self.threadHandle.start()
 
 		return True
 
