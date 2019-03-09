@@ -5,6 +5,7 @@ import shutil
 import sys, os, platform, subprocess, json
 import threading
 import time
+import traceback
 
 import commandLineParser
 import gameScanner
@@ -170,11 +171,12 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 
 						if writeOutBuffer:
 							print(''.join(stringBuffer), end='')
-							stringBuffer.clear()
+							stringBuffer = []
 					else:
 						break
-			except:
+			except Exception as e:
 				#reduce cpu usage if some exception is continously thrown
+				print("Error in [runProcessOutputToTempFile()]: {}".format(traceback.format_exc(e)))
 				time.sleep(.1)
 
 	# Monitor stderr on one thread, and monitor stdout on main thread
