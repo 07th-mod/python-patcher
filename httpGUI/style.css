@@ -1,0 +1,11 @@
+.modButton {
+    font-size: 1.5em;
+}
+
+.modButton img {
+    height: 8em;
+    width: 8em;
+    text-align: center;
+    display: block;
+    margin: auto;
+}

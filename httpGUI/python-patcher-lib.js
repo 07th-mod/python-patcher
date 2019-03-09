@@ -58,9 +58,17 @@ function clearChildElements(node) {
 
 // Create a button element with the given label and callback when button is clicked
 // It's the caller's responsiblity to attach the button to the document (eg. to a div container)
-function generateButton(label, callback) {
+function generateButton(label, callback, opt) {
   const button = document.createElement('button');
+
+  if (opt.imagePath !== undefined) {
+    const iconImage = document.createElement('img');
+    iconImage.src = opt.imagePath;
+    button.appendChild(iconImage);
+  }
+
   button.addEventListener('click', callback);
+  button.className = (opt.class === undefined) ? 'generatedButton' : opt.class;
   const buttonText = document.createTextNode(label);
   button.appendChild(buttonText);
   return button;
@@ -154,17 +162,21 @@ function getGamePaths(subModID) {
 // Creates a new mod button. When clicked, adds buttons allowing you to
 // choose a submod (eg full, voice only etc.) to the 'subModList' div element
 function newModButton(modName, allSubMods) {
-  function generateSubModButton(modInfo) {
-    return generateButton(`${modInfo.modName} - ${modInfo.subModName}`, () => getGamePaths(modInfo.id));
-  }
-
-  return generateButton(modName, () => {
+  // this callback is executed when a mod button is pressed
+  function onModButtonPressed() {
     clearChildElements(el.subModListDiv);
     clearChildElements(el.gamePathsListDiv);
     allSubMods.filter(subModHandle => subModHandle.modName === modName).forEach((subModHandle) => {
-      el.subModListDiv.appendChild(generateSubModButton(subModHandle));
+      el.subModListDiv.appendChild(
+        generateButton(`${subModHandle.modName} - ${subModHandle.subModName}`, () => getGamePaths(subModHandle.id)),
+      );
     });
-  });
+  }
+
+  // Build the mod button
+  const modButton = generateButton(modName, onModButtonPressed, { imagePath: `images/${modName}.png`, class: 'modButton' });
+
+  return modButton;
 }
 
 // Step 1.
