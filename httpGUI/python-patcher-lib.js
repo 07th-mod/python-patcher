@@ -73,9 +73,11 @@ function AddAndGetTextNode(elementID) {
   return textNode;
 }
 
-// If you already know the game path from the getGamePaths() call,
-// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
-// to the request dict, along with the subModID
+// -------------------------------- Installer Functions --------------------------------
+// Step 5.
+// Retreives the latest status from the python server and updates the DOM with the status
+// Should be called periodically to poll the server for more status updates
+// Note that multiple status objects may be received from the server on each call.
 function statusUpdate() {
   doPost('statusUpdate',
     { },
@@ -103,17 +105,23 @@ function statusUpdate() {
     });
 }
 
-// -------------------------------- Installer Functions --------------------------------
 // Step 4.
-// If you already know the game path from the getGamePaths() call,
-// add the field { installPath: 'PATH_TO_INSTALL' } copied from the previous request
-// to the request dict, along with the subModID
+// Attempts to start the install to the given installPath.
+// If the installPath argument is not given, then the python
+// server will open a file chooser GUI to choose the path.
+// If the install starts successfully, a interval timer wil call
+// the statusUpdate() function every 1s. Otherwise, the user is notified
+// that the install failed to start.
 function startInstall(subModID, installPath) {
   doPost('startInstall',
     { id: subModID, installPath },
     (responseData) => {
       console.log(responseData);
-      window.setInterval(statusUpdate, 1000);
+      if (responseData.installStarted) {
+        window.setInterval(statusUpdate, 1000);
+      } else {
+        alert('The install could not be started. Please ensure you chose a valid path.');
+      }
     });
 }
 
