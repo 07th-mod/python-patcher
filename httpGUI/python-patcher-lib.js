@@ -1,5 +1,6 @@
 // This variable caches html elements - it is initalized in the window.onload callback
 let el = {};
+let numberOfBlankLinesInARow = 0;
 
 // Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
 function makeJSONRequest(requestType, requestData) {
@@ -107,9 +108,17 @@ function statusUpdate() {
           el.subTaskDescriptionTextNode.nodeValue = status.subTaskDescription;
         }
         if (status.msg !== undefined) {
-          const pNode = document.createElement('p');
-          pNode.appendChild(document.createTextNode(status.msg));
-          el.terminal.appendChild(pNode);
+          // Don't print out more than 3 blank lines in a row
+          const lineIsBlank = status.msg.trim().length === 0;
+          numberOfBlankLinesInARow = lineIsBlank ? numberOfBlankLinesInARow + 1 : 0;
+          if (!lineIsBlank || numberOfBlankLinesInARow < 3) {
+            // insert message at top of the terminal, so don't have to implement autoscroll
+            el.terminal.insertBefore(document.createTextNode(status.msg), el.terminal.firstChild);
+            // limit max number of lines to 5000
+            if (el.terminal.childNodes.length > 5000) {
+              el.terminal.removeChild(el.terminal.lastChild);
+            }
+          }
         }
       });
     });
