@@ -8,6 +8,12 @@ You must have Git LFS installed to download the bootstrap files.
 
 You can build the bootstrap archives by running make_archives.py
 
+## Python Development Environment
+
+The python files should run under both Python 2 and 3 (please try to maintain compatability with both when editing the code).
+
+The project is currently setup to use with the IDE `Pycharm`, so use IDE this if possible.
+
 ## HTTPGUI / Web Interface
 
 The web interface component is located in the httpGUI folder.
@@ -21,8 +27,7 @@ To setup the development environment:
 - Install `npm`
 - Install `visual studio code`
 - Install the `markdownlint` plugin for visual studio code (available in the marketplace)
-- Open a terminal in the httpGUI directory
-- Run `npm install eslint`
+- Open a terminal in the `httpGUI` subdirectory, then run `npm install eslint`
 - Open the httpGUI **folder** in Visual Studio Code. Just opening the file by itself won't work.
 - You will likely get a huge number of warnings as the file will have CRLF
   line endings (TODO: fix git settings so it downloads as LF). To fix this,
