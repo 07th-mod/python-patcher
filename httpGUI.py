@@ -301,7 +301,8 @@ class InstallerGUI:
 		def handleInstallerData(body_string):
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
-			logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
+			if requestType != 'statusUpdate':
+				logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
 			# requestData: leave as null. will be ignored.
 			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
