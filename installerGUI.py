@@ -136,12 +136,13 @@ class InstallerGUI:
 			sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
 			if sevenZipMessage:
 				installStatusWidget.threadsafe_notify_text("Extracting - {}".format(sevenZipMessage))
-				return
 
-			# Look for a line with just a percent on it (eg 51%)
+			# Look for a number with percent anywhere in the line(eg 51%)
 			sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
 			if sevenZipPercent:
 				installStatusWidget.threadsafe_set_subtask_progress(sevenZipPercent)
+
+			if sevenZipMessage or sevenZipPercent:
 				return
 
 			# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)

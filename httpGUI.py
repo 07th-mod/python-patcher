@@ -83,16 +83,19 @@ def _loggerMessageToStatusDict(message):
 		}
 
 	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
+	sevenZipMessageAndPercent = {}
+
 	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
 	if sevenZipMessage:
-		# installStatusWidget.threadsafe_notify_text("Extracting - {}".format(sevenZipMessage))
-		return {"subTaskDescription": "Extracting - {}".format(sevenZipMessage)}
+		sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipMessage)
 
 	# Look for a line with just a percent on it (eg 51%)
 	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
 	if sevenZipPercent:
-		# installStatusWidget.threadsafe_set_subtask_progress(sevenZipPercent)
-		return {"subTaskPercentage": sevenZipPercent}
+		sevenZipMessageAndPercent['subTaskPercentage'] = sevenZipPercent
+
+	if sevenZipMessageAndPercent:
+		return sevenZipMessageAndPercent
 
 	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
 	sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
