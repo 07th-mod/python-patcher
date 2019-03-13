@@ -168,7 +168,7 @@ class InstallStatusWidget:
 					if self.blankLineCount < 3:
 						self.terminal.insert(END, msg_data)
 			elif msg_type == InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE:
-				self.task_description_string.set(msg_data)
+				self.task_description_string.set(msg_data if len(msg_data) < 65 else (msg_data[:30] + '...' + msg_data[-30:]))
 			else:
 				print("Error - invalid data received in progress receiver")
 
