@@ -4,6 +4,8 @@ from __future__ import print_function
 
 import os
 import json
+import re
+
 import common
 import traceback
 
@@ -31,6 +33,7 @@ except ImportError:
 	from Tkinter import Tk
 	import tkFileDialog as filedialog
 
+collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskGameExe(subMod):
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
@@ -82,12 +85,17 @@ def _loggerMessageToStatusDict(message):
 			"subTaskDescription": "Downloading - [{}]) ETA: {}".format(status.amountCompletedString, status.ETAString),
 		}
 
-	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
 	sevenZipMessageAndPercent = {}
 
+	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
+	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
 	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
 	if sevenZipMessage:
 		sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipMessage)
+	else:
+		sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
+		if sevenZipFileCount:
+			sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipFileCount)
 
 	# Look for a line with just a percent on it (eg 51%)
 	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
@@ -95,12 +103,10 @@ def _loggerMessageToStatusDict(message):
 		sevenZipMessageAndPercent['subTaskPercentage'] = sevenZipPercent
 
 	if sevenZipMessageAndPercent:
-		return sevenZipMessageAndPercent
+		if 'subTaskDescription' in sevenZipMessageAndPercent:
+			sevenZipMessageAndPercent['subTaskDescription'] = collapseWhiteSpaceRegex.sub(" ", sevenZipMessageAndPercent['subTaskDescription'])
 
-	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
-	sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
-	if sevenZipFileCount:
-		return {"subTaskDescription": "Extracting - {}".format(sevenZipFileCount)}
+		return sevenZipMessageAndPercent
 
 	# if the message is not a aria or 7zip message, just show it in the gui log window
 	return {"msg": message}
