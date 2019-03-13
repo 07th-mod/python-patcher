@@ -150,6 +150,7 @@ class InstallStatusWidget:
 			except queue.Empty:
 				break
 
+
 			if msg_type == InstallStatusWidget.MSG_TYPE_OVERALL_PROGRESS:
 				self.progress_overall["value"] = msg_data
 				# If overall progress is 100%, force subtask progress to 100%
@@ -168,7 +169,8 @@ class InstallStatusWidget:
 					if self.blankLineCount < 3:
 						self.terminal.insert(END, msg_data)
 			elif msg_type == InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE:
-				self.task_description_string.set(msg_data if len(msg_data) < 65 else (msg_data[:30] + '...' + msg_data[-30:]))
+				msg_data = re.sub("[\\s\\b]+", " ", msg_data)
+				self.task_description_string.set(msg_data if len(msg_data) < 75 else (msg_data[:35] + '...' + msg_data[-35:]))
 			else:
 				print("Error - invalid data received in progress receiver")
 
