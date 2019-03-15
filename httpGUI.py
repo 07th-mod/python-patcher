@@ -111,7 +111,7 @@ def _loggerMessageToStatusDict(message):
 	# if the message is not a aria or 7zip message, just show it in the gui log window
 	return {"msg": message}
 
-def start_server(working_directory, post_handlers, serverStartedCallback=lambda: None):
+def start_server(working_directory, post_handlers, serverStartedCallback=lambda _: None):
 	# type: (str, dict, function) -> None
 	"""
 	Starts a http server which handles POST requests with callbacks by the given 'post_handlers' argument.
@@ -251,18 +251,13 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda:
 
 	# This program is only intended to be used on a loopback (non-public facing) interface.
 	# Do not modify the INTERFACE_IP variable.
-	PORT = 8000
-	INTERFACE_IP = "127.0.0.1"
-	SERVER_ADDRESS = (INTERFACE_IP, PORT)
-
-	# run the server
-	print("Started HTTP Server GUI @ [{}:{}]".format(INTERFACE_IP, PORT))
-	httpd = HTTPServerNoReuse(SERVER_ADDRESS, CustomHandler)
+	# Using Port '0' lets the OS choose an unused port
+	httpd = HTTPServerNoReuse(("127.0.0.1", 0), CustomHandler)
 
 	# note: calling the http server constructor will immediately start listening for connections,
 	# however it won't give a response until "serve_forever()" is called. This allows running the
 	# serverStartedCallback() before we block by calling serve_forever()
-	serverStartedCallback()
+	serverStartedCallback(httpd)
 	httpd.serve_forever()
 
 
@@ -398,6 +393,11 @@ class InstallerGUI:
 			'installer_data': handleInstallerData,
 		}
 
+		def on_server_started(web_server):
+			web_server_url = 'http://{}:{}'.format(*web_server.server_address)
+			common.trySystemOpen(web_server_url)
+			print("Please open {} in your browser if it didn't open automatically".format(web_server_url))
+
 		start_server(working_directory='httpGUI',
 		             post_handlers=post_handlers,
-		             serverStartedCallback=lambda: common.trySystemOpen('http://127.0.0.1:8000'))
+		             serverStartedCallback=on_server_started)
