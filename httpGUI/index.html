@@ -4,12 +4,29 @@
 <link rel = "stylesheet" type = "text/css" href = "style.css" />
 <meta charset="UTF-8">
 <title>Page Title</title>
+<script src="vue.js"></script>
 <script src="python-patcher-lib.js"></script>
+
 </head>
 <body>
 
 <p>Developers: You may need to manually refresh your browser to see changes asdf</p>
 
+<div id="app">
+  <vue-mod-button 
+  v-for="mod in modListHandles"
+  v-bind:name ="mod.name">
+  </vue-mod-button>
+
+  <p>Selected mod is {{ selectedMod }} </p>
+
+  <vue-submod-button 
+  v-for="subMod in possibleSubMods"
+  v-bind:name ="subMod">
+  </vue-submod-button>
+</div>
+
+  
 <h2>Mod List</h2>
 <div id="modList"></div>
 

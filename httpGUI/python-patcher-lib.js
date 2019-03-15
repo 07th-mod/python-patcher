@@ -1,3 +1,7 @@
+'use strict';
+
+let app = null;
+
 // This variable caches html elements - it is initalized in the window.onload callback
 let el = {};
 let numberOfBlankLinesInARow = 0;
@@ -210,10 +214,64 @@ function getSubModHandles() {
       uniqueMods.forEach((modName) => {
         el.modListDiv.appendChild(newModButton(modName, responseData));
       });
+
+      app.subModList = responseData;
+
     });
 }
 
 window.onload = function onWindowLoaded() {
+  Vue.component('vue-mod-button', {
+    props: ['name'],
+    data() {
+      return {
+        count: 0,
+      };
+    },
+    methods: {
+      setSelectedMod(modName) { app.selectedMod = modName; },
+      imagePath() { return `images/${this.name}.png`; },
+    },
+    template: '<button class="modButton" v-on:click="setSelectedMod(name)"><img v-bind:src="imagePath()"/> {{ name }} </button>',
+  });
+
+  Vue.component('vue-submod-button', {
+    props: ['name'],
+    data() {
+      return {
+        count: 0,
+      };
+    },
+    methods: {
+      asdf(asdf) { console.log(asdf); },
+    },
+    template: '<button v-on:click="asdf(name)"> {{ name }} </button>',
+  });
+
+  app = new Vue({
+    el: '#app',
+    data: {
+      subModList: [],
+      selectedMod: null,
+    },
+    computed: {
+      modListHandles() {
+        const uniqueMods = new Set();
+        this.subModList.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
+
+        const result = [];
+        uniqueMods.forEach((modName) => {
+          result.push({ name: modName });
+        });
+
+        return result;
+      },
+      possibleSubMods() {
+        return this.subModList.filter(x => x.modName === this.selectedMod);
+      },
+    },
+  });
+
   el = {
     overallPercentageTextNode: AddAndGetTextNode('overallPercentage'),
     overallTaskDescriptionTextNode: AddAndGetTextNode('overallTaskDescription'),
