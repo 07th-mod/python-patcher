@@ -14,16 +14,21 @@
 
 <div id="app">
   <vue-mod-button 
-  v-for="mod in modListHandles"
-  v-bind:name ="mod.name">
+  v-for="mod in modHandles"
+  v-bind:mod-name ="mod.modName">
   </vue-mod-button>
 
   <p>Selected mod is {{ selectedMod }} </p>
 
   <vue-submod-button 
   v-for="subMod in possibleSubMods"
-  v-bind:name ="subMod">
+  v-bind:sub-mod-handle ="subMod">
   </vue-submod-button>
+
+  <vue-install-path-button 
+  v-for="fullInstallConfig in fullInstallConfigs"
+  v-bind:full-install-config ="fullInstallConfig">
+  </vue-install-path-button>
 </div>
 
   

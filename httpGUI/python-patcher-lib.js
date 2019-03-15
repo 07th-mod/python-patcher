@@ -173,6 +173,8 @@ function getGamePaths(subModID) {
     });
 }
 
+
+
 // Step 2.
 // Creates a new mod button. When clicked, adds buttons allowing you to
 // choose a submod (eg full, voice only etc.) to the 'subModList' div element
@@ -222,7 +224,7 @@ function getSubModHandles() {
 
 window.onload = function onWindowLoaded() {
   Vue.component('vue-mod-button', {
-    props: ['name'],
+    props: ['modName'],
     data() {
       return {
         count: 0,
@@ -230,44 +232,75 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       setSelectedMod(modName) { app.selectedMod = modName; },
-      imagePath() { return `images/${this.name}.png`; },
+      imagePath() { return `images/${this.modName}.png`; },
     },
-    template: '<button class="modButton" v-on:click="setSelectedMod(name)"><img v-bind:src="imagePath()"/> {{ name }} </button>',
+    template: '<button class="modButton" v-on:click="setSelectedMod(modName)"><img v-bind:src="imagePath()"/> {{ modName }} </button>',
   });
 
   Vue.component('vue-submod-button', {
-    props: ['name'],
+    props: ['subModHandle'],
     data() {
       return {
         count: 0,
       };
     },
     methods: {
-      asdf(asdf) { console.log(asdf); },
+      doInstall(subModHandle) {
+        console.log(subModHandle);
+        app.selectedSubMod = subModHandle;
+      },
     },
-    template: '<button v-on:click="asdf(name)"> {{ name }} </button>',
+    template: '<button v-on:click="doInstall(subModHandle)"> {{ subModHandle.subModName }} </button>',
+  });
+
+  Vue.component('vue-install-path-button', {
+    props: ['fullInstallConfig'],
+    data() {
+      return {
+        count: 0,
+      };
+    },
+    methods: {
+      doInstall(fullInstallConfig) {
+        console.log(fullInstallConfig);
+        startInstall(fullInstallConfig.id, fullInstallConfig.path);
+      },
+    },
+    template: '<button v-on:click="doInstall(fullInstallConfig)"> {{ fullInstallConfig.path }} </button>',
   });
 
   app = new Vue({
     el: '#app',
     data: {
-      subModList: [],
-      selectedMod: null,
+      subModList: [],         //shouldn't change after window loaded
+      selectedMod: null,      //changes when user chooses a mod 
+      selectedSubMod: null,
+      fullInstallConfigs: [],
     },
     computed: {
-      modListHandles() {
+      modHandles() {
         const uniqueMods = new Set();
         this.subModList.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
 
         const result = [];
         uniqueMods.forEach((modName) => {
-          result.push({ name: modName });
+          result.push({ modName });
         });
 
         return result;
       },
       possibleSubMods() {
         return this.subModList.filter(x => x.modName === this.selectedMod);
+      },
+    },
+    watch: {
+      selectedMod: function onselectedMod(newselectedMod, oldSselectedMod) {
+        this.fullInstallConfigs = [];
+      },
+      selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
+        if (newSelectedSubMod !== null) {
+          doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => { console.log(responseData); this.fullInstallConfigs = responseData; });
+        }
       },
     },
   });
