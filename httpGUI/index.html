@@ -29,6 +29,8 @@
   v-for="fullInstallConfig in fullInstallConfigs"
   v-bind:full-install-config ="fullInstallConfig">
   </vue-install-path-button>
+
+  <button v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>Choose Path Manually</button>
 </div>
 
   

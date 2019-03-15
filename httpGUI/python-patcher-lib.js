@@ -275,6 +275,9 @@ window.onload = function onWindowLoaded() {
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
     },
+    methods: {
+      doInstallManualPath() { startInstall(this.selectedSubMod.id); },
+    },
     computed: {
       modHandles() {
         const uniqueMods = new Set();
@@ -293,11 +296,13 @@ window.onload = function onWindowLoaded() {
     },
     watch: {
       selectedMod: function onselectedMod(newselectedMod, oldSselectedMod) {
-        this.fullInstallConfigs = [];
+        this.selectedSubMod = null;
       },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => { console.log(responseData); this.fullInstallConfigs = responseData; });
+        } else {
+          this.fullInstallConfigs = [];
         }
       },
     },
