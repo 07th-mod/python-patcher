@@ -123,20 +123,6 @@ function startInstall(subModID, installPath) {
     });
 }
 
-// Step 1.
-// Retrieves a list of subMods which can be installed. Filters out unique mod names,
-// Then populates the 'subModList' Div with buttons for each Mod
-// This allows the user to chose the Mod they want. The subMod is chosen at the next step.
-function getSubModHandles() {
-  doPost('subModHandles', // request name
-    ['shiba', 'inu'], // request data
-    (responseData) => {
-      console.log(responseData);
-
-      app.subModList = responseData;
-    });
-}
-
 window.onload = function onWindowLoaded() {
   Vue.component('vue-mod-button', {
     props: ['modName'],
@@ -177,7 +163,7 @@ window.onload = function onWindowLoaded() {
   app = new Vue({
     el: '#app',
     data: {
-      subModList: [], // this does not change after onload
+      subModList: [], // populated in at the end of this function (onWindowLoaded())
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
@@ -228,5 +214,6 @@ window.onload = function onWindowLoaded() {
   el.subTaskPercentageTextNode.nodeValue = '0%';
   el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
-  getSubModHandles();
+  // populate the app.subModList with subMods from the python server
+  doPost('subModHandles', [], (responseData) => { console.log(responseData); app.subModList = responseData; });
 };
