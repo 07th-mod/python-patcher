@@ -123,6 +123,10 @@ function startInstall(subModID, installPath) {
     });
 }
 
+// When the main window is loaded
+// - Vue components are defined
+// - Main Vue instance, called 'app', is initialized
+// - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
   Vue.component('vue-mod-button', {
     props: ['modName'],
@@ -130,22 +134,22 @@ window.onload = function onWindowLoaded() {
       return { };
     },
     methods: {
-      setSelectedMod(modName) { app.selectedMod = modName; },
+      selectMod(modName) { app.selectedMod = modName; },
       imagePath() { return `images/${this.modName}.png`; },
     },
-    template: '<button class="modButton" v-on:click="setSelectedMod(modName)"><img v-bind:src="imagePath()"/> {{ modName }} </button>',
+    template: '<button class="modButton" v-on:click="selectMod(modName)"><img v-bind:src="imagePath()"/> {{ modName }} </button>',
   });
 
   Vue.component('vue-submod-button', {
     props: ['subModHandle'],
     data() { return { }; },
     methods: {
-      doInstall(subModHandle) {
+      selectSubMod(subModHandle) {
         console.log(subModHandle);
         app.selectedSubMod = subModHandle;
       },
     },
-    template: '<button v-on:click="doInstall(subModHandle)"> {{ subModHandle.subModName }} </button>',
+    template: '<button v-on:click="selectSubMod(subModHandle)"> {{ subModHandle.subModName }} </button>',
   });
 
   Vue.component('vue-install-path-button', {
