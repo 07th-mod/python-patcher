@@ -174,7 +174,6 @@ function getGamePaths(subModID) {
 }
 
 
-
 // Step 2.
 // Creates a new mod button. When clicked, adds buttons allowing you to
 // choose a submod (eg full, voice only etc.) to the 'subModList' div element
@@ -218,7 +217,6 @@ function getSubModHandles() {
       });
 
       app.subModList = responseData;
-
     });
 }
 
@@ -272,10 +270,10 @@ window.onload = function onWindowLoaded() {
   app = new Vue({
     el: '#app',
     data: {
-      subModList: [],         //shouldn't change after window loaded
-      selectedMod: null,      //changes when user chooses a mod 
-      selectedSubMod: null,
-      fullInstallConfigs: [],
+      subModList: [], // this does not change after onload
+      selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
+      selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
+      fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
     },
     computed: {
       modHandles() {
