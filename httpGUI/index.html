@@ -14,24 +14,33 @@
 
 <div id="app">
   <h2>Mod List</h2>
+  <div>
   <vue-mod-button 
   v-for="mod in modHandles"
-  v-bind:mod-name ="mod.modName">
+  v-bind:mod-name ="mod.modName"
+  v-bind:key = "mod.key">
   </vue-mod-button>
+  </div>
 
   <p>Selected mod is {{ selectedMod }} </p>
 
   <h2>SubMod List</h2>
+  <div>
   <vue-submod-button 
   v-for="subMod in possibleSubMods"
-  v-bind:sub-mod-handle ="subMod">
+  v-bind:sub-mod-handle ="subMod"
+  v-bind:key="subMod.id">
   </vue-submod-button>
+  </div>
 
   <h2>Game Paths List</h2>
+  <div>
   <vue-install-path-button 
   v-for="fullInstallConfig in fullInstallConfigs"
-  v-bind:full-install-config ="fullInstallConfig">
+  v-bind:full-install-config ="fullInstallConfig"
+  v-bind:key="fullInstallConfig.key">
   </vue-install-path-button>
+  </div>
 
   <button v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>Choose Path Manually</button>
 </div>

@@ -177,15 +177,17 @@ window.onload = function onWindowLoaded() {
     },
     computed: {
       modHandles() {
+        const modHandlesList = [];
         const uniqueMods = new Set();
-        this.subModList.forEach(subModHandle => uniqueMods.add(subModHandle.modName));
 
-        const result = [];
-        uniqueMods.forEach((modName) => {
-          result.push({ modName });
+        this.subModList.forEach((subModHandle) => {
+          if (!uniqueMods.has(subModHandle.modName)) {
+            modHandlesList.push({ modName: subModHandle.modName, key: subModHandle.id });
+            uniqueMods.add(subModHandle.modName);
+          }
         });
 
-        return result;
+        return modHandlesList;
       },
       possibleSubMods() {
         return this.subModList.filter(x => x.modName === this.selectedMod);
