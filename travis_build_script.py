@@ -5,16 +5,11 @@ import shutil
 import subprocess
 import sys
 
-use_shell = False
-copyCommands = ['cp', '-r']
-if sys.platform == "win32":
-	copyCommands = ['xcopy', '/E', '/I']
-	use_shell = True
-
+IS_WINDOWS = sys.platform == "win32"
 
 def call(args):
 	print("running: {}".format(args))
-	retcode = subprocess.call(args, shell=use_shell)
+	retcode = subprocess.call(args, shell=IS_WINDOWS) # use shell on windows
 	if retcode != 0:
 		exit(retcode)
 
@@ -82,15 +77,18 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 	print("processing", osBootStrapPath)
 	# osBootStrapPath = os.path.join(bootStrapRoot, osFolderName)
 	osInstallData = os.path.join(osBootStrapPath, 'install_data')
-	call(copyCommands + [staging_folder, osInstallData])
+	if IS_WINDOWS:
+		call(['xcopy', '/E', '/I', staging_folder, osInstallData])
+	else:
+		call(['cp', '-r', staging_folder + '/.', osInstallData])
 
 # RELATIVE PATHS MUST CONTAIN ./
-tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, 'linux.tar.gz'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, 'windows.zip'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, 'windows32.zip'))
+tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, 'seventh_mod_installer_linux.tar.gz'))
+zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, 'seventh_mod_installer_windows.zip'))
+zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, 'seventh_mod_installer_windows32.zip'))
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
-zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, 'mac.zip'))
+zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, 'seventh_mod_installer_mac.zip'))
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
