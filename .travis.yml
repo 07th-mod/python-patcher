@@ -1,3 +1,4 @@
+if: tag IS present # If you need to run tests etc. on each commit, remove this.
 before_install:
 - sudo apt-get install -y p7zip-full
 language: python
