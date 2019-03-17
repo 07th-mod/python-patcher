@@ -83,12 +83,12 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 		call(['cp', '-r', staging_folder + '/.', osInstallData])
 
 # RELATIVE PATHS MUST CONTAIN ./
-tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, 'seventh_mod_installer_linux.tar.gz'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, 'seventh_mod_installer_windows.zip'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, 'seventh_mod_installer_windows32.zip'))
+tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, 'seventh_mod_inst_linux.tar.gz'))
+zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, 'seventh_mod_inst_windows_64bit.zip'))
+zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, 'seventh_mod_inst_windows_32bit.zip'))
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
-zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, 'seventh_mod_installer_mac.zip'))
+zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, 'seventh_mod_inst_mac.zip'))
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
