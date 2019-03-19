@@ -73,7 +73,7 @@ class Globals:
 	IS_MAC = platform.system() == "Darwin"
 
 	# Set os string matching string used in the JSON file, for convenience
-	OS_STRING = "win"
+	OS_STRING = "windows"
 	if IS_LINUX:
 		OS_STRING = "linux"
 	elif IS_MAC:
