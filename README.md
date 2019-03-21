@@ -16,7 +16,7 @@ The project is currently setup to use with the IDE `Pycharm`, so use IDE this if
 
 ## JSON Mod Definition
 
-The patcher reads the file `installData.json` to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in `JSONValidator/Sources/JSONValidator/JSONValidator.swift`
+The patcher reads the file [installData.json](installData.json) to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in [JSONValidator.swift](JSONValidator/Sources/JSONValidator/JSONValidator.swift)
 
 ## HTTPGUI / Web Interface
 
