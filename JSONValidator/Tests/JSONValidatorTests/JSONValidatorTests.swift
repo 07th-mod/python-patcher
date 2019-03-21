@@ -50,6 +50,23 @@ final class JSONValidatorTests: XCTestCase {
 		}
 	}
 
+	func testOverridesAreValid() {
+		let decoder = PedanticJSONDecoder()
+		guard let installData = try? decoder.decode(InstallDataDefinition.self, from: Data(contentsOf: installData)) else {
+			XCTFail("Failed to decode install data, look at other tests for details")
+			return
+		}
+		for mod in installData.mods {
+			for submod in mod.submods {
+				let files = Set(submod.files.lazy.map { $0.name })
+				XCTAssertEqual(files.count, submod.files.count, "Multiple files were specified with the same name in \(mod.name) \(submod.name)")
+				for override in submod.fileOverrides {
+					XCTAssert(files.contains(override.name), "Override \(override.name) must override a file in the file list of \(mod.name) \(submod.name)")
+				}
+			}
+		}
+	}
+
 	func testURLsExist() {
 		let decoder = PedanticJSONDecoder()
 		guard let installData = try? decoder.decode(InstallDataDefinition.self, from: Data(contentsOf: installData)) else {
@@ -97,6 +114,7 @@ final class JSONValidatorTests: XCTestCase {
 	static var allTests = [
 		("Finds installData.json", testFindInstallData),
 		("Validate JSON", testValidateJSON),
-		("Ensure that all URLs actually exist", testURLsExist)
+		("Ensure all file overrides override something", testOverridesAreValid),
+		("Ensure that all URLs actually exist", testURLsExist),
 	]
 }
