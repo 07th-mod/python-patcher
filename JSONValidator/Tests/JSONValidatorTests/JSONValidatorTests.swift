@@ -65,7 +65,7 @@ final class JSONValidatorTests: XCTestCase {
 			XCTAssertNotNil(url, "The url \"\(urlString)\" was invalid")
 			return url
 		}
-		let expecations = allURLs.map { url -> XCTestExpectation in
+		let expecations = Set(allURLs).map { url -> XCTestExpectation in
 			let e = expectation(description: "\(url) should be retrievable")
 			let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
 			var request = URLRequest(url: url)
