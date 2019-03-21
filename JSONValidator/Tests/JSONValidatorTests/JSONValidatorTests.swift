@@ -65,16 +65,14 @@ final class JSONValidatorTests: XCTestCase {
 			XCTAssertNotNil(url, "The url \"\(urlString)\" was invalid")
 			return url
 		}
-		let expecations = Set(allURLs).map { url -> XCTestExpectation in
+		for url in Set(allURLs) {
 			let e = expectation(description: "\(url) should be retrievable")
-			let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
 			var request = URLRequest(url: url)
 			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
 
 			var task: URLSessionDataTask? = nil
-			task = session.dataTask(with: request) { [weak task] (data, response, error) in
+			task = URLSession.shared.dataTask(with: request) { [weak task] (data, response, error) in
 				task?.cancel()
-				e.fulfill()
 				if let error = error {
 					XCTFail("Failed to download \(url): \(error)")
 				}
@@ -89,11 +87,11 @@ final class JSONValidatorTests: XCTestCase {
 				else {
 					XCTFail("Failed to download \(url): got nil response with no error")
 				}
+				e.fulfill()
 			}
 			task!.resume()
-			return e
 		}
-		wait(for: expecations, timeout: 10)
+		waitForExpectations(timeout: 20)
 	}
 
 	static var allTests = [
