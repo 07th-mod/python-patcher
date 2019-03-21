@@ -14,6 +14,10 @@ The python files should run under both Python 2 and 3 (please try to maintain co
 
 The project is currently setup to use with the IDE `Pycharm`, so use IDE this if possible.
 
+## JSON Mod Definition
+
+The patcher reads the file `installData.json` to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in `JSONValidator/Sources/JSONValidator/JSONValidator.swift`
+
 ## HTTPGUI / Web Interface
 
 The web interface component is located in the httpGUI folder.
