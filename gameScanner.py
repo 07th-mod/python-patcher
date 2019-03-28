@@ -274,3 +274,37 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 				pass
 
 	return returnedFullConfigs
+
+def scanUserSelectedPath(subModConfigList, gameExecutablePath):
+	# type: (List[SubModConfig], [str]) -> ([FullInstallConfiguration], str)
+	"""
+	Scans a user-selected path for configs. Unlike the normal "scanForFullInstallConfigs()" function,
+	this will attempt to search all parent directories, incase a user has selected a subdirectory of the game directory
+	by accident.
+	:param subModConfigList:
+	:param gameExecutablePath:
+	:return: A tuple - The first is an array of valid FullInstallConfigurations.
+					 - The second is an error message (on success a 'success' message is generated)
+	"""
+	if gameExecutablePath:
+		if os.path.isfile(gameExecutablePath):
+			gameExecutablePath = os.path.dirname(gameExecutablePath)
+
+		# Search upwards for the game path, in case user has selected a deep subfolder of the game path
+		alreadyScanned = set()
+		for scanAttempt in range(10):
+			fullInstallConfigs = scanForFullInstallConfigs(subModConfigList=subModConfigList, possiblePaths=[gameExecutablePath])
+			if fullInstallConfigs:
+				return fullInstallConfigs, "scanUserSelectedPath(): Path [{}] Ok".format(gameExecutablePath)
+
+			alreadyScanned.add(gameExecutablePath)
+			gameExecutablePath = os.path.dirname(gameExecutablePath)
+			if gameExecutablePath in alreadyScanned:
+				break
+
+		# Failed to find path. Notify user which paths tried to be searched to find the file.
+		errorStrings = ["scanUserSelectedPath(): Can't install the mod. Searched:"] + sorted(list(alreadyScanned))
+		errorMessage = '\n - '.join(errorStrings)
+		return None, errorMessage
+
+	return None, "scanUserSelectedPath(): game executable path is falsey: [{}]".format(gameExecutablePath)

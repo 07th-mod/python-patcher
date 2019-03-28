@@ -34,7 +34,7 @@ except ImportError:
 	import tkFileDialog as filedialog
 
 collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
-def _TKAskGameExe(subMod):
+def _TKAskPath(subMod):
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
 	root = Tk()
@@ -46,8 +46,6 @@ def _TKAskGameExe(subMod):
 
 	# returns empty string if user didn't select any file or folder. If a file is selected, convert it to the parent folder
 	installFolder = filedialog.askopenfilename(filetypes=fileList)
-	if os.path.isfile(installFolder):
-		installFolder = os.path.normpath(os.path.join(installFolder, os.pardir))
 
 	root.destroy()
 
@@ -271,12 +269,19 @@ class InstallerGUI:
 		self.messageBuffer = []
 		self.threadHandle = None
 
-	def try_start_install(self, subMod, installPath):
+	# TODO: this function should return an error message describing why the install couldn't be started
+	def try_start_install(self, subMod, installPath, pathIsManual):
 		import higurashiInstaller
 		import uminekoInstaller
 		import threading
 
-		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+		# if the path was user selected, do some extra processing on the path
+		if pathIsManual:
+			fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], installPath)
+			print(errorMessage)
+		else:
+			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+
 		if not fullInstallConfigs:
 			return False
 
@@ -359,11 +364,14 @@ class InstallerGUI:
 			def startInstallHandler(requestData):
 				id = requestData['id']
 				subMod = self.idToSubMod[id]
+				pathIsManual = False
 				installPath = requestData.get('installPath', None)
-				if installPath is None:
-					installPath = _TKAskGameExe(subMod)
 
-				return { 'installStarted' : self.try_start_install(subMod, installPath) }
+				if installPath is None:
+					pathIsManual = True
+					installPath = _TKAskPath(subMod)
+
+				return { 'installStarted' : self.try_start_install(subMod, installPath, pathIsManual) }
 
 			# requestData: Not necessary - will be ignored
 			# responseData: Returns a list of dictionaries. Each dictionary may have different fields depending on the

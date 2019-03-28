@@ -63,18 +63,17 @@ class InstallerGUI:
 			fileList = [("Game Executable", x) for x in extensionList]
 			fileList.append(("Any In Game Folder", "*.*"))
 
-			gameExecutablePath = filedialog.askopenfilename(filetypes=fileList)
-			if gameExecutablePath:
-				if not os.path.isdir(gameExecutablePath):
-					gameExecutablePath= os.path.normpath(os.path.join(gameExecutablePath, os.pardir))
+			userSelectedPath = filedialog.askopenfilename(filetypes=fileList)
+			if not userSelectedPath:
+				return
 
-				fullInstallConfigs = gameScanner.scanForFullInstallConfigs(subModConfigList=[subMod], possiblePaths=[gameExecutablePath])
-				if fullInstallConfigs:
-					print("Path Ok: ", gameExecutablePath)
-					self.confirmationPage(fullInstallConfigs[0])
-				else:
-					print("Path INVALID:", gameExecutablePath)
-					messagebox.showerror("Error", "Can't install the mod to the path\n" + gameExecutablePath)
+			fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath(subModConfigList=[subMod], gameExecutablePath=userSelectedPath)
+			print(errorMessage)
+			if fullInstallConfigs:
+				self.confirmationPage(fullInstallConfigs[0])
+				return
+			else:
+				messagebox.showerror("Error", errorMessage)
 
 		# do search over all possible install locations that the selected submod can be installed.
 		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod])
