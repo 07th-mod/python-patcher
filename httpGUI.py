@@ -268,6 +268,7 @@ class InstallerGUI:
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
 		self.messageBuffer = []
 		self.threadHandle = None
+		self.selectedSubModName = None #user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, pathIsManual):
@@ -312,6 +313,12 @@ class InstallerGUI:
 			requestType, requestData = _decodeJSONRequest(body_string)
 			if requestType != 'statusUpdate':
 				logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
+
+			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
+			# responseData: a dictionary indicating if it's a valid selection (true, false)
+			def setModName(requestData):
+				modNames = [config.modName for config in self.allSubModConfigs]
+				return { 'valid': (requestData['modName'] in modNames), 'modNames': modNames }
 
 			# requestData: leave as null. will be ignored.
 			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
@@ -384,6 +391,7 @@ class InstallerGUI:
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
 			requestTypeToRequestHandlers = {
+				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
