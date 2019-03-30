@@ -156,20 +156,31 @@
 												<br>{{selectedSubMod}}
 											</p>
 											<p>To install this version, click on the button below:
-												<br>[install button here]
+												<div>
+													<div 
+													v-for="fullInstallConfig in fullInstallConfigs"
+													v-on:click="doInstall(fullInstallConfig);"
+													v-bind:key="fullInstallConfig.key"
+													>
+														<button class="tab-title">{{ fullInstallConfig.path }} </button>
+												</div>
+
+
+													<button v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>Choose Path Manually</button>
+													</div>
 												<br>
 											</p>
 										</div>
 									</li>
 								</ul>
 		                    </div>
-		                    
 		                </div>
 		            </div>
 		            
 				</div>
-				
-		    </section><section>
+			</section>
+			
+			<section>
 		        <div class="container">
 		            <div class="row">
 		                <div class="col-sm-12">
@@ -199,17 +210,21 @@
 		            
 		        </div>
 		        
-		    </section></div>
+			</section>
+		</div>
 			<h2>Overall percentage and description</h2>
 			<div id="overallPercentage"></div>
-			<div id="overallTaskDescription"></div>
+			<div id="overallTaskDescription">
+		</div>
 			
-			<h2>Subtask percentage and description</h2>
-			<div id="subTaskPercentage"></div>
-			<div id="subTaskDescription"></div>
+		<h2>Subtask percentage and description</h2>
+		<div id="subTaskPercentage"></div>
+		<div id="subTaskDescription"></div>
 			
-			<h2>Terminal:</h2>
-			<div id="terminal"><p>Terminal Output</p></div>
+		<h2>Terminal:</h2>
+		<div id="terminal"><p>Terminal Output</p></div>
+
+
 				
 	<script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

@@ -178,6 +178,10 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       doInstallManualPath() { startInstall(this.selectedSubMod.id); },
+      doInstall(fullInstallConfig) {
+        console.log(fullInstallConfig);
+        startInstall(fullInstallConfig.id, fullInstallConfig.path);
+      },
     },
     computed: {
       modHandles() {
