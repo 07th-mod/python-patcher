@@ -174,7 +174,6 @@ window.onload = function onWindowLoaded() {
       subModList: [], // populated in at the end of this function (onWindowLoaded())
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
-      selectedSubModDescription: 'Put description here',
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
     },
     methods: {

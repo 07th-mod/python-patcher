@@ -339,7 +339,7 @@ class InstallerGUI:
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
-							'description' : 'description goes here',
+							'description' : 'FROM PYTHON httpGUI.py: description goes here',
 						}
 					)
 
