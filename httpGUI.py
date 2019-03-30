@@ -268,7 +268,7 @@ class InstallerGUI:
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
 		self.messageBuffer = []
 		self.threadHandle = None
-		self.selectedSubModName = None #user sets this while navigating the website
+		self.selectedModName = None #user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, pathIsManual):
@@ -317,8 +317,13 @@ class InstallerGUI:
 			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
 			# responseData: a dictionary indicating if it's a valid selection (true, false)
 			def setModName(requestData):
+				userSelectedModToInstall = requestData['modName']
 				modNames = [config.modName for config in self.allSubModConfigs]
-				return { 'valid': (requestData['modName'] in modNames), 'modNames': modNames }
+				modNameValid = userSelectedModToInstall in modNames
+				if modNameValid:
+					self.selectedModName = userSelectedModToInstall
+
+				return { 'valid': modNameValid, 'modNames': modNames }
 
 			# requestData: leave as null. will be ignored.
 			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
@@ -334,10 +339,11 @@ class InstallerGUI:
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
+							'description' : 'description goes here',
 						}
 					)
 
-				return subModHandles
+				return { 'selectedMod' : self.selectedModName, 'subModHandles' : subModHandles }
 
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path

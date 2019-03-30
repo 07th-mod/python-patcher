@@ -142,14 +142,18 @@ window.onload = function onWindowLoaded() {
 
   Vue.component('vue-submod-button', {
     props: ['subModHandle'],
-    data() { return { }; },
+    data() { return { isActive: false }; },
     methods: {
       selectSubMod(subModHandle) {
         console.log(subModHandle);
         app.selectedSubMod = subModHandle;
       },
     },
-    template: '<button v-on:click="selectSubMod(subModHandle)"> {{ subModHandle.subModName }} </button>',
+    template: `
+    <li v-on:click="selectSubMod(subModHandle.subModName);isActive=!isActive;" v-bind:class="{ active: isActive}">
+        <div class="tab-title"><span>{{ subModHandle.subModName }}</span></div>
+    </li>`,
+    //template: '<button v-on:click="selectSubMod(subModHandle)"> {{ subModHandle.subModName }} </button>',
   });
 
   Vue.component('vue-install-path-button', {
@@ -170,6 +174,7 @@ window.onload = function onWindowLoaded() {
       subModList: [], // populated in at the end of this function (onWindowLoaded())
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
+      selectedSubModDescription: 'Put description here',
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
     },
     methods: {
@@ -221,5 +226,9 @@ window.onload = function onWindowLoaded() {
   el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
   // populate the app.subModList with subMods from the python server
-  doPost('subModHandles', [], (responseData) => { console.log(responseData); app.subModList = responseData; });
+  doPost('subModHandles', [], (responseData) => {
+    console.log(responseData);
+    app.subModList = responseData.subModHandles;
+    app.selectedMod = responseData.selectedMod;
+  });
 };

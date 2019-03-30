@@ -13,7 +13,7 @@
     </head>
     <body>
 				
-		<div id="app" class="nav-container">
+		<div class="nav-container">
 		    <nav>
 		        <div class="nav-bar">
 		            <div class="module left">
@@ -109,7 +109,7 @@
 		
 		</div>
 		
-		<div class="main-container">
+		<div id="app" class="main-container">
 		<section class="page-title page-title-4 bg-secondary">
 		        <div class="container">
 		            <div class="row">
@@ -160,9 +160,30 @@
 		                                    <p>To install this version, click on the button below:<br>[install button here] </p>
 		                                </div>
 		                            </li>
-		                            
-		                            
-		                        </ul>
+									<li 
+									v-for="subMod in possibleSubMods"
+									v-on:click="selectedSubMod = subMod"
+									v-bind:class="{ active: selectedSubMod == subMod}"
+									>
+										<div class="tab-title"><span>{{ subMod.subModName }}</span></div>
+									</li>
+								</ul>
+								<ul class="content">
+									<li class="active" v-if="selectedSubMod != null">
+										<div class="tab-content">
+											<h5 class="uppercase">{{selectedSubMod.subModName}}<br></h5>
+											<hr>
+											{{selectedSubModDescription}}
+											<p>This is the recommended setup by the 07th-Mod team. It has all features enabled by default and should give you the best overall experience available.
+												<br>{{selectedSubMod}}
+											</p>
+											<p>To install this version, click on the button below:
+												<br>[install button here]
+												<br>
+											</p>
+										</div>
+									</li>
+								</ul>
 		                    </div>
 		                    
 		                </div>
@@ -201,7 +222,16 @@
 		        </div>
 		        
 		    </section></div>
-		
+			<h2>Overall percentage and description</h2>
+			<div id="overallPercentage"></div>
+			<div id="overallTaskDescription"></div>
+			
+			<h2>Subtask percentage and description</h2>
+			<div id="subTaskPercentage"></div>
+			<div id="subTaskDescription"></div>
+			
+			<h2>Terminal:</h2>
+			<div id="terminal"><p>Terminal Output</p></div>
 				
 	<script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
