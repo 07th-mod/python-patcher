@@ -199,8 +199,9 @@ window.onload = function onWindowLoaded() {
       },
     },
     watch: {
-      selectedMod: function onselectedMod(newselectedMod, oldSselectedMod) {
-        this.selectedSubMod = null;
+      selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
+        // eslint-disable-next-line prefer-destructuring
+        this.selectedSubMod = this.possibleSubMods[0];
       },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
@@ -230,5 +231,6 @@ window.onload = function onWindowLoaded() {
     console.log(responseData);
     app.subModList = responseData.subModHandles;
     app.selectedMod = responseData.selectedMod;
+    console.log(app.selectedSubMod);
   });
 };
