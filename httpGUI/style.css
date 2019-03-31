@@ -16,3 +16,7 @@
     font-family: monospace;
     white-space: pre;
 }
+
+#install-button-tabs {
+    max-width: 100%;
+}
