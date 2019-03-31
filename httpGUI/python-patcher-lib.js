@@ -78,13 +78,13 @@ function statusUpdate() {
           app.overallPercentage = status.overallPercentage;
         }
         if (status.overallTaskDescription !== undefined) {
-          el.overallTaskDescriptionTextNode.nodeValue = status.overallTaskDescription;
+          app.overallTaskDescription = status.overallTaskDescription;
         }
         if (status.subTaskPercentage !== undefined) {
           app.subTaskPercentage = status.subTaskPercentage;
         }
         if (status.subTaskDescription !== undefined) {
-          el.subTaskDescriptionTextNode.nodeValue = status.subTaskDescription;
+          app.subTaskDescription = status.subTaskDescription;
         }
         if (status.msg !== undefined) {
           // Don't print out more than 3 blank lines in a row
@@ -179,6 +179,8 @@ window.onload = function onWindowLoaded() {
       installStarted: false,
       overallPercentage: 0,
       subTaskPercentage: 0,
+      overallTaskDescription: 'Overall Task Description',
+      subTaskDescription: 'Sub Task Description',
     },
     methods: {
       doInstallManualPath() { startInstall(this.selectedSubMod.id); },
@@ -221,13 +223,8 @@ window.onload = function onWindowLoaded() {
   });
 
   el = {
-    overallTaskDescriptionTextNode: AddAndGetTextNode('overallTaskDescription'),
-    subTaskDescriptionTextNode: AddAndGetTextNode('subTaskDescription'),
     terminal: document.getElementById('terminal'),
   };
-
-  el.overallTaskDescriptionTextNode.nodeValue = 'Overall Status';
-  el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {
