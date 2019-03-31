@@ -130,7 +130,7 @@
 					</div>
 				</div>
 			</section>
-			<section>
+			<section v-show="!installStarted">
 		        <div class="container">
 		            <div class="row">
 		                <div class="col-sm-12">
@@ -148,34 +148,33 @@
 								<ul class="content">
 									<li class="active" v-if="selectedSubMod != null">
 										<div class="tab-content">
-											<h5 class="uppercase">{{selectedSubMod.subModName}}<br></h5>
+											<h4 class="uppercase">{{selectedSubMod.subModName}}<br></h4>
 											<hr>
-											{{selectedSubMod.description}}
-											<p>This is the recommended setup by the 07th-Mod team. It has all features enabled by default and should give you the best overall experience available.
-												<br>{{selectedSubMod}}
-											</p>
-											<p>To install this version, click on the button below:
-												<div class="button-tabs vertical">
-													<ul class="tabs" style="max-width: 100%">
-														<li 
-														v-for="fullInstallConfig in fullInstallConfigs"
+											<p>{{selectedSubMod.description}}</p>
+											<h6 class="uppercase">Latest Updates<br></h6>
+											<ul>
+												<li>Update 01/01/2019: added some things</li>
+												<li>Update 01/02/2018: added some things</li>
+											</ul>
+											<br />
+											<div class="button-tabs vertical">
+												<ul class="tabs" style="max-width: 100%">
+													<li v-for="fullInstallConfig in fullInstallConfigs"
 														v-on:click="doInstall(fullInstallConfig);"
-														v-bind:key="fullInstallConfig.key"
-														>
-															<div class="tab-title">
-																Install to "{{ fullInstallConfig.path }}"
-															</div>
-														</li>
+														v-bind:key="fullInstallConfig.key">
+														<div class="tab-title">
+															Install to "{{ fullInstallConfig.path }}"
+														</div>
+													</li>
 
-														<li>
-															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
-																Choose Install Path Manually
-															</div>
-														</li>
-													</ul>
-												</div>
-												<br>
-											</p>
+													<li>
+														<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
+															Choose Install Path Manually
+														</div>
+													</li>
+												</ul>
+											</div>
+
 										</div>
 									</li>
 								</ul>
@@ -185,43 +184,20 @@
 		            
 				</div>
 		</section>
-			<section>
+		<section v-show="installStarted">
 				<div class="container">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="uppercase mb80">Latest updates<br></h4>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-10 col-sm-offset-1">
-							<ul class="accordion accordion-2 one-open">
-								<li>
-									<div class="title">
-										<h4 class="inline-block mb0">Click to show<br></h4>
-									</div>
-									<div class="content">
-										<p>[Changelog goes here]<br></p>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
+					<h2>Overall percentage and description</h2>
+					<div id="overallPercentage"></div>
+					<div id="overallTaskDescription"></div>
+
+					<h2>Subtask percentage and description</h2>
+					<div id="subTaskPercentage"></div>
+					<div id="subTaskDescription"></div>
+
+					<h2>Terminal:</h2>
+					<div id="terminal"><p>Terminal Output</p></div>
 				</div>
 			</section>
-		<section>
-			<div class="container">
-				<h2>Overall percentage and description</h2>
-				<div id="overallPercentage"></div>
-				<div id="overallTaskDescription"></div>
-						
-				<h2>Subtask percentage and description</h2>
-				<div id="subTaskPercentage"></div>
-				<div id="subTaskDescription"></div>
-						
-				<h2>Terminal:</h2>
-				<div id="terminal"><p>Terminal Output</p></div>
-			</div>
-		</section>
 		</div>
 
 				

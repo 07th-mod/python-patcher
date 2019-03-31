@@ -117,6 +117,7 @@ function startInstall(subModID, installPath) {
       console.log(responseData);
       if (responseData.installStarted) {
         window.setInterval(statusUpdate, 500);
+        app.installStarted = true;
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
@@ -175,6 +176,7 @@ window.onload = function onWindowLoaded() {
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
+      installStarted: false,
     },
     methods: {
       doInstallManualPath() { startInstall(this.selectedSubMod.id); },
