@@ -156,18 +156,25 @@
 												<br>{{selectedSubMod}}
 											</p>
 											<p>To install this version, click on the button below:
-												<div>
-													<div 
-													v-for="fullInstallConfig in fullInstallConfigs"
-													v-on:click="doInstall(fullInstallConfig);"
-													v-bind:key="fullInstallConfig.key"
-													>
-														<button class="tab-title">{{ fullInstallConfig.path }} </button>
+												<div class="button-tabs vertical">
+													<ul class="tabs" style="max-width: 100%">
+														<li 
+														v-for="fullInstallConfig in fullInstallConfigs"
+														v-on:click="doInstall(fullInstallConfig);"
+														v-bind:key="fullInstallConfig.key"
+														>
+															<div class="tab-title">
+																Install to "{{ fullInstallConfig.path }}"
+															</div>
+														</li>
+
+														<li>
+															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
+																Choose Install Path Manually
+															</div>
+														</li>
+													</ul>
 												</div>
-
-
-													<button v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>Choose Path Manually</button>
-													</div>
 												<br>
 											</p>
 										</div>
