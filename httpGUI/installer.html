@@ -137,7 +137,7 @@
 		                <div class="col-sm-12">
 		                    <h4 class="uppercase mb80">Choose your patch<br></h4>
 		                    <div class="tabbed-content button-tabs vertical">
-		                        <ul class="tabs">
+		                        <ul class="tabs col-md-3">
 									<li 
 									v-for="subMod in possibleSubMods"
 									v-on:click="selectedSubMod = subMod"
@@ -146,7 +146,7 @@
 										<div class="tab-title"><span>{{ subMod.subModName }}</span></div>
 									</li>
 								</ul>
-								<ul class="content">
+								<ul class="content col-md-9">
 									<li class="active" v-if="selectedSubMod != null">
 										<div class="tab-content">
 											<h4 class="uppercase">{{selectedSubMod.subModName}}<br></h4>
@@ -159,7 +159,7 @@
 											</ul>
 											<br />
 											<div class="button-tabs vertical">
-												<ul class="tabs" id="install-button-tabs">
+												<ul class="tabs">
 													<li v-for="fullInstallConfig in fullInstallConfigs"
 														v-on:click="doInstall(fullInstallConfig);"
 														v-bind:key="fullInstallConfig.key">

@@ -2280,7 +2280,6 @@ button[type="submit"] .form-loading {
   overflow: hidden;
 }
 .button-tabs.vertical > .tabs {
-  max-width: 30%;
   float: left;
 }
 .button-tabs.vertical > .content {
