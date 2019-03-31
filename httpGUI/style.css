@@ -22,6 +22,6 @@ they have zero height. This forces the height to some valid value*/
     font-family: monospace;
     white-space: pre;
     border-style: solid;
-    padding: 1em;
+    padding-left: 1em;
 }
 
