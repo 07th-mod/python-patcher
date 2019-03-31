@@ -75,13 +75,13 @@ function statusUpdate() {
       console.log(responseData);
       responseData.forEach((status) => {
         if (status.overallPercentage !== undefined) {
-          el.overallPercentageTextNode.nodeValue = `${status.overallPercentage}%`;
+          app.overallPercentage = status.overallPercentage;
         }
         if (status.overallTaskDescription !== undefined) {
           el.overallTaskDescriptionTextNode.nodeValue = status.overallTaskDescription;
         }
         if (status.subTaskPercentage !== undefined) {
-          el.subTaskPercentageTextNode.nodeValue = `${status.subTaskPercentage}%`;
+          app.subTaskPercentage = status.subTaskPercentage;
         }
         if (status.subTaskDescription !== undefined) {
           el.subTaskDescriptionTextNode.nodeValue = status.subTaskDescription;
@@ -177,6 +177,8 @@ window.onload = function onWindowLoaded() {
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
       installStarted: false,
+      overallPercentage: 0,
+      subTaskPercentage: 0,
     },
     methods: {
       doInstallManualPath() { startInstall(this.selectedSubMod.id); },
@@ -219,16 +221,12 @@ window.onload = function onWindowLoaded() {
   });
 
   el = {
-    overallPercentageTextNode: AddAndGetTextNode('overallPercentage'),
     overallTaskDescriptionTextNode: AddAndGetTextNode('overallTaskDescription'),
-    subTaskPercentageTextNode: AddAndGetTextNode('subTaskPercentage'),
     subTaskDescriptionTextNode: AddAndGetTextNode('subTaskDescription'),
     terminal: document.getElementById('terminal'),
   };
 
-  el.overallPercentageTextNode.nodeValue = '0%';
   el.overallTaskDescriptionTextNode.nodeValue = 'Overall Status';
-  el.subTaskPercentageTextNode.nodeValue = '0%';
   el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
 
   // populate the app.subModList with subMods from the python server

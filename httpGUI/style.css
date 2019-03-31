@@ -10,6 +10,12 @@
     margin: auto;
 }
 
+/* When bootstrap progress bars are used with this template,
+they have zero height. This forces the height to some valid value*/
+.installer-progress-bar {
+    height: 40px;
+}
+
 #terminal {
     overflow-y:scroll;
     height: 30em;
@@ -17,6 +23,8 @@
     white-space: pre;
 }
 
+/* By default the 'tabs' class (from the Foundry template)
+only takes up 30% width. This forces 100% for the install buttons*/
 #install-button-tabs {
     max-width: 100%;
 }
