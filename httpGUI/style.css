@@ -25,3 +25,6 @@ they have zero height. This forces the height to some valid value*/
     padding-left: 1em;
 }
 
+[v-cloak] {
+    display: none;
+}
