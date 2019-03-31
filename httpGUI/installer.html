@@ -187,7 +187,7 @@
 		</section>
 		<section v-show="installStarted">
 				<div class="container">
-					<h2>Overall Progress: {{ overallPercentage }}% </h2>
+					<h3> Overall Progress: {{ overallPercentage }}% </h3>
 					<h5> {{ overallTaskDescription }} </h5>
 					<div class="progress">
 						<div id="overallProgressBar" class="progress-bar installer-progress-bar" :style="{width: overallPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="overallPercentage" aria-valuemin="0" aria-valuemax="100" >
@@ -195,7 +195,7 @@
 						</div>
 					</div>
 
-					<h2>Subtask Progress: {{ subTaskPercentage }}% </h2>
+					<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
 					<h5> {{ subTaskDescription }} </h5>
 					<div class="progress">
 						<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
@@ -203,7 +203,7 @@
 						</div>
 					</div>
 
-					<h2>Terminal:</h2>
+					<h3>Terminal:</h3>
 					<div id="terminal"><p>Terminal Output</p></div>
 				</div>
 			</section>

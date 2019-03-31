@@ -13,7 +13,7 @@
 /* When bootstrap progress bars are used with this template,
 they have zero height. This forces the height to some valid value*/
 .installer-progress-bar {
-    height: 40px;
+    height: 30px;
 }
 
 #terminal {
@@ -21,6 +21,8 @@ they have zero height. This forces the height to some valid value*/
     height: 30em;
     font-family: monospace;
     white-space: pre;
+    border-style: solid;
+    padding: 1em;
 }
 
 /* By default the 'tabs' class (from the Foundry template)
