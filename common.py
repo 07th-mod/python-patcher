@@ -254,7 +254,10 @@ def getModList(jsonURL):
 	:rtype: list[dict]
 	"""
 	try:
-		file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+		if jsonURL[0:4] == "http":
+			file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+		else:
+			file = open(jsonURL, "r")
 	except HTTPError as error:
 		print(error)
 		print("Couldn't reach 07th Mod Server to download patch info")
