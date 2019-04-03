@@ -55,9 +55,12 @@ def printErrorMessage(text):
 	"""
 	Prints message in red if stdout is a tty
 	"""
-	if sys.stdout.isatty:
-		print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
-	else:
+	try:
+		if sys.stdout.isatty:
+			print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
+		else:
+			print(text)
+	except AttributeError:
 		print(text)
 
 
@@ -65,7 +68,7 @@ def printErrorMessage(text):
 class Globals:
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
-	JSON_VERSION = 1
+	JSON_VERSION = 2
 
 	# Define constants used throughout the script. Use function calls to enforce variables as const
 	IS_WINDOWS = platform.system() == "Windows"

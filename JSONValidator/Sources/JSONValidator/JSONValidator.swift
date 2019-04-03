@@ -56,7 +56,8 @@ public struct FileDefinition: Codable {
 	/// A name to identify this file for use in overrides
 	public var name: String
 	/// The url for this file
-	public var url: String
+	/// - If null, this file must be overridden or the install will fail
+	public var url: String?
 	/// The priority of this file.  Higher priority files are installed later so they will overwrite lower priority files
 	public var priority: Int
 }
@@ -67,6 +68,9 @@ public struct FileOverrideDefinition: Codable {
 	public var name: String
 	/// The OSes this override should be applied on
 	public var os: [OS]
+	/// - If non-null, will apply to the game if they have the given Unity version (Higurashi only)
+	/// - If null or missing, will apply always
+	public var unity: String?
 	/// - If true, this override will only be applied if the game is a steam version.
 	/// - If false, this override will only be applied if the game is not a steam version.
 	/// - If null, this override will be applied regardless of whether the game is a steam version.
@@ -75,7 +79,7 @@ public struct FileOverrideDefinition: Codable {
 	public var url: String
 }
 
-public enum OS: String, Codable {
+public enum OS: String, Codable, CaseIterable {
 	case mac
 	case linux
 	case windows

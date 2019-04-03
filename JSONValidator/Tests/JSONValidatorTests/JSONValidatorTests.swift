@@ -58,6 +58,17 @@ final class JSONValidatorTests: XCTestCase {
 		}
 		for mod in installData.mods {
 			for submod in mod.submods {
+				for file in submod.files where file.url == nil {
+					for os in OS.allCases {
+						for steam in [true, false] {
+							if !submod.fileOverrides.contains(where: { override in
+								override.name == file.name && override.os.contains(os) && (override.steam ?? steam == steam)
+							}) {
+								XCTFail("\(mod.name) \(submod.name) \(file.name) must be overridden but a user with the os \(os) and steam \(steam) will have no overrides available")
+							}
+						}
+					}
+				}
 				let files = Set(submod.files.lazy.map { $0.name })
 				XCTAssertEqual(files.count, submod.files.count, "Multiple files were specified with the same name in \(mod.name) \(submod.name)")
 				for override in submod.fileOverrides {
@@ -75,7 +86,7 @@ final class JSONValidatorTests: XCTestCase {
 		}
 		let allURLs = installData.mods.flatMap({ mod -> [String] in
 			return mod.submods.flatMap { submod -> [String] in
-				return submod.files.map { $0.url } + submod.fileOverrides.map { $0.url }
+				return submod.files.compactMap { $0.url } + submod.fileOverrides.map { $0.url }
 			}
 		}).compactMap { urlString -> URL? in
 			let url = URL(string: urlString)
