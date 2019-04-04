@@ -9,6 +9,7 @@ import gameScanner
 import installerGUI
 import logger
 import httpGUI
+from gui import _TKAskYesNo
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -26,8 +27,6 @@ if dirname.strip():
 	os.chdir(dirname)
 
 if __name__ == "__main__":
-	USE_WEB_GUI = False
-
 	#redirect stdout to both a file and console
 	#TODO: on MAC using a .app file, not sure if this logfile will be writeable
 	#      could do a try-catch, and then only begin logging once the game path has been set?
@@ -63,7 +62,7 @@ if __name__ == "__main__":
 			print(conf)
 			subModconfigList.append(conf)
 
-	if USE_WEB_GUI:
+	if _TKAskYesNo('Use the new Web Interface?\n(Press yes if unsure)', 'GUI Type Selection'):
 		installerGUI = httpGUI.InstallerGUI(subModconfigList)
 		installerGUI.server_test()
 	else:
