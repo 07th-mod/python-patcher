@@ -82,46 +82,6 @@ function startInstall(subModID, installPath) {
 // - Main Vue instance, called 'app', is initialized
 // - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
-  Vue.component('vue-mod-button', {
-    props: ['modName'],
-    data() {
-      return { };
-    },
-    methods: {
-      selectMod(modName) { app.selectedMod = modName; },
-      imagePath() { return `images/${this.modName}.png`; },
-    },
-    template: '<button class="modButton" v-on:click="selectMod(modName)"><img v-bind:src="imagePath()"/> {{ modName }} </button>',
-  });
-
-  Vue.component('vue-submod-button', {
-    props: ['subModHandle'],
-    data() { return { isActive: false }; },
-    methods: {
-      selectSubMod(subModHandle) {
-        console.log(subModHandle);
-        app.selectedSubMod = subModHandle;
-      },
-    },
-    template: `
-    <li v-on:click="selectSubMod(subModHandle.subModName);isActive=!isActive;" v-bind:class="{ active: isActive}">
-        <div class="tab-title"><span>{{ subModHandle.subModName }}</span></div>
-    </li>`,
-    //template: '<button v-on:click="selectSubMod(subModHandle)"> {{ subModHandle.subModName }} </button>',
-  });
-
-  Vue.component('vue-install-path-button', {
-    props: ['fullInstallConfig'],
-    data() { return { }; },
-    methods: {
-      doInstall(fullInstallConfig) {
-        console.log(fullInstallConfig);
-        startInstall(fullInstallConfig.id, fullInstallConfig.path);
-      },
-    },
-    template: '<button v-on:click="doInstall(fullInstallConfig)"> {{ fullInstallConfig.path }} </button>',
-  });
-
   app = new Vue({
     el: '#app',
     data: {
