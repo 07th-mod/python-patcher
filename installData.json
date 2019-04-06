@@ -24,7 +24,26 @@
 						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Onikakushi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+		    "modOptionGroups": [
+                {
+                    "name" : "OST Options",
+                    "radio": [
+                        {"name": "Anime OST", "data":"https://07th-mod.com/rikachama/Onikakushi-animeOST.zip"},
+                        {"name": "Console OST", "data":"https://07th-mod.com/rikachama/Onikakushi-consoleOST.zip"},
+                        {"name": "AudioRollback OST", "data":"https://07th-mod.com/rikachama/Onikakushi-audioRollback.zip"}
+                    ],
+                    "checkBox": [
+                        {"name": "ItaloKnox OST Remake", "data":"https://07th-mod.com/rikachama/Onikakushi-italoKnoxRemake.zip"}
+                    ]
+                },
+                {
+                    "name" : "Other Options",
+                    "checkBox": [
+                        {"name": "Keep Downloads"}
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",

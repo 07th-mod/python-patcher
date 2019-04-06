@@ -59,6 +59,35 @@ class ModFileOverride:
 		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
 		self.url = url
 
+class ModOptionGroup:
+	def __init__(self, name, radioOptions, checkBoxOptions):
+		# type: (str, List[ModOption], List[ModOption]) -> None
+		"""
+		Holds mod options.The options should be applicable to any submod within a mod
+		:param name: The name of the group. Used as an identifier in the installer, and also displayed on the GUI
+		:param radioOptions: List of ModOption which are mutually exclusive.
+		:param checkBoxOptions: List of ModOption where you can choose any (or none)
+		NOTE: the radioOptions and checkBoxOptions will be empty lists if they do not exist in the JSON.
+		"""
+		self.name = name # type: str
+		self.radioOptions = radioOptions # type: List[ModOption]
+		self.checkBoxOptions = checkBoxOptions # type: List[ModOption]
+
+class ModOption:
+	def __init__(self, name, data):
+		# type: (str, str) -> None
+		"""
+		A single mod option, used within a ModOptionGroup.
+		:param name: the name of the mod option
+		:param data: the data associated with the option (for example, a URL). Can be None if no data is required
+		:param value: This field is not populated in the JSON. It's used to indicate whether the user has activated
+					  the option or not.
+					  TODO: figure out a cleaner way to do this? I don't like having this mutable.
+		"""
+		self.name = name # type: str
+		self.data = data # type: Optional[str]
+		self.value = False # type: bool
+
 #directly represents a single submod from the json file
 class SubModConfig:
 	subModUniqueIDCounter = 0
@@ -85,6 +114,18 @@ class SubModConfig:
 		self.fileOverrides = [] # type: List[ModFileOverride]
 		for subModFileOverride in subMod['fileOverrides']:
 			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
+
+		self.modOptions = [] # type: List[ModOptionGroup]
+
+		def jsonModOptionListToPythonModOptionList(jOptionList):
+			return [ModOption(jOption['name'], jOption.get('data', None)) for jOption in jOptionList]
+
+		for jsonModOptionGroup in mod.get('modOptionGroups', []):
+			self.modOptions.append(
+				ModOptionGroup(jsonModOptionGroup['name'],
+				               jsonModOptionListToPythonModOptionList(jsonModOptionGroup.get('radio', [])),
+				               jsonModOptionListToPythonModOptionList(jsonModOptionGroup.get('checkBox',[])))
+			)
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
