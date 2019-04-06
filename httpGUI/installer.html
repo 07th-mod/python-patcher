@@ -170,9 +170,25 @@
 															Choose Install Path Manually
 														</div>
 													</li>
+
+													<div v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+														<h5> {{ modOptionGroup.name }} </h5>
+														<div v-for="radioOption in modOptionGroup.radio">
+															<input class="form-check-input" type="radio" name="exampleRadios" v-bind:id="radioOption.name" v-bind:value="radioOption.name" v-model="modOptionGroup.selectedRadio">
+															<label class="form-check-label" v-bind:for="radioOption.name">
+																{{ radioOption.name }}
+															</label>
+														</div>
+														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
+															<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.name" v-bind:value="checkBoxOption.name" v-model="modOptionGroup.selectedCheckBoxes">
+															<label class="form-check-label" v-bind:for="checkBoxOption.name">
+																{{ checkBoxOption.name }}
+															</label>
+														</div>
+														<p>radio option: {{ modOptionGroup.selectedRadio }} checked options: {{ modOptionGroup.selectedCheckBoxes }}</p>
+													</div>
 												</ul>
 											</div>
-
 										</div>
 									</li>
 								</ul>

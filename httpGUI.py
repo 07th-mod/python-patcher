@@ -334,12 +334,24 @@ class InstallerGUI:
 				# which config was chosen, and which
 				subModHandles = []
 				for subModConfig in self.allSubModConfigs:
+					modOptionGroups = []
+					for modOptionGroup in subModConfig.modOptions:
+						modOptionGroups.append({
+							'name': modOptionGroup.name,
+							'radio': [{'name' : r.name} for r in modOptionGroup.radioOptions],
+							'checkBox': [{'name': c.name} for c in modOptionGroup.checkBoxOptions],
+							# these two variables are provided to be filled in by the webpage.
+							'selectedCheckBoxes': [],
+							'selectedRadio': None,
+						})
+
 					subModHandles.append(
 						{
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
 							'description' : 'FROM PYTHON httpGUI.py: description goes here',
+							'modOptionGroups': modOptionGroups,
 						}
 					)
 
