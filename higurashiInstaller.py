@@ -44,7 +44,7 @@ class Installer:
 		self.downloadDir = self.info.subModConfig.modName + " Downloads"
 		self.extractDir = self.info.subModConfig.modName + " Extraction"
 
-		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(),
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
