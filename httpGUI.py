@@ -436,6 +436,9 @@ class InstallerGUI:
 				subMod = self.idToSubMod[id]
 
 				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
+				print("\nUser selected options for install:")
+				for modOption in subMod.modOptions:
+					print(modOption)
 
 				pathIsManual = False
 				installPath = requestData.get('installPath', None)

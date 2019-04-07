@@ -69,6 +69,9 @@ class ModOption:
 		self.data = data # type: str
 		self.value = False # type: bool
 
+	def __repr__(self):
+		return "Option ID: [{}] Value: [{}]".format(self.id, self.value)
+
 #directly represents a single submod from the json file
 class SubModConfig:
 	subModUniqueIDCounter = 0
