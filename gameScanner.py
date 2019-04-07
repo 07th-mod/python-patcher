@@ -59,33 +59,14 @@ class ModFileOverride:
 		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
 		self.url = url
 
-class ModOptionGroup:
-	def __init__(self, name, radioOptions, checkBoxOptions):
-		# type: (str, List[ModOption], List[ModOption]) -> None
-		"""
-		Holds mod options.The options should be applicable to any submod within a mod
-		:param name: The name of the group. Used as an identifier in the installer, and also displayed on the GUI
-		:param radioOptions: List of ModOption which are mutually exclusive.
-		:param checkBoxOptions: List of ModOption where you can choose any (or none)
-		NOTE: the radioOptions and checkBoxOptions will be empty lists if they do not exist in the JSON.
-		"""
-		self.name = name # type: str
-		self.radioOptions = radioOptions # type: List[ModOption]
-		self.checkBoxOptions = checkBoxOptions # type: List[ModOption]
-
 class ModOption:
-	def __init__(self, name, data):
-		# type: (str, str) -> None
-		"""
-		A single mod option, used within a ModOptionGroup.
-		:param name: the name of the mod option
-		:param data: the data associated with the option (for example, a URL). Can be None if no data is required
-		:param value: This field is not populated in the JSON. It's used to indicate whether the user has activated
-					  the option or not.
-					  TODO: figure out a cleaner way to do this? I don't like having this mutable.
-		"""
+	def __init__(self, name, group, isRadio, data):
+		# unique ID for each mod option
+		self.id = group + '-' + name # type: str
 		self.name = name # type: str
-		self.data = data # type: Optional[str]
+		self.group = group # type: str
+		self.isRadio = isRadio # type: bool
+		self.data = data # type: str
 		self.value = False # type: bool
 
 #directly represents a single submod from the json file
@@ -115,17 +96,18 @@ class SubModConfig:
 		for subModFileOverride in subMod['fileOverrides']:
 			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
 
-		self.modOptions = [] # type: List[ModOptionGroup]
+		self.modOptions = [] # type: List[ModOption]
 
-		def jsonModOptionListToPythonModOptionList(jOptionList):
-			return [ModOption(jOption['name'], jOption.get('data', None)) for jOption in jOptionList]
+		def jsonAddModOptionsFromList(jsonModOptionList, isRadio):
+			for jsonModOption in jsonModOptionList:
+				self.modOptions.append(ModOption(name=jsonModOption['name'],
+				                                 group=jsonModOptionGroup['name'],
+				                                 isRadio=isRadio,
+				                                 data=jsonModOption.get('data', None)))
 
 		for jsonModOptionGroup in mod.get('modOptionGroups', []):
-			self.modOptions.append(
-				ModOptionGroup(jsonModOptionGroup['name'],
-				               jsonModOptionListToPythonModOptionList(jsonModOptionGroup.get('radio', [])),
-				               jsonModOptionListToPythonModOptionList(jsonModOptionGroup.get('checkBox',[])))
-			)
+			jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
+			jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)

@@ -12,6 +12,7 @@ import traceback
 import gameScanner
 import commandLineParser
 import logger
+from gameScanner import SubModConfig
 
 try:
 	import urlparse
@@ -32,6 +33,11 @@ try:
 except ImportError:
 	from Tkinter import Tk
 	import tkFileDialog as filedialog
+
+try:
+	from typing import List, Optional
+except ImportError:
+	pass # Just needed for pycharm comments
 
 collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskPath(subMod):
@@ -258,6 +264,52 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 	serverStartedCallback(httpd)
 	httpd.serve_forever()
 
+def modOptionsToWebFormat(modOptions):
+	"""
+	Returns a list of dicts of the following format, to be used in the web interface:
+	[{
+		'name': str - name of the group
+		'radio': List[{'name': str, 'id': str }] - a list of options to be displayed. the id is the unique id of each option
+		'checkBox': List[{'name': str, 'id': str }] - a list of options to be displayed. the id is the unique id of each option
+		'selectedCheckBoxes': List[str] - Sent to web interface as the empty list. The web interface should fill this with checkbox IDs which have been ticked.
+		'selectedRadio': Optional[str] - Sent to web interface as 'None'. The web interface should set this to the ID of the radio button which has been selected
+	}]
+
+	:param modOptions: List[modOption] - a list of mod options to be converted to web format
+	:return: a list of dicts in the above format
+	"""
+	groups = {}
+
+	# group modOptions by groupname ('group by modOption.group' operation)
+	for modOption in modOptions:
+		if modOption.group not in groups:
+			groups[modOption.group] = []
+		groups[modOption.group].append(modOption)
+
+	modOptionGroups = []
+	for groupName, modOptions in groups.items():
+		modOptionGroups.append({
+			'name': groupName,
+			'radio': [{'name': r.name, 'id':r.id} for r in modOptions if r.isRadio],
+			'checkBox': [{'name': c.name, 'id':c.id} for c in modOptions if not c.isRadio],
+			# these two variables are provided to be filled in by the webpage.
+			'selectedCheckBoxes': [],
+			'selectedRadio': None,
+		})
+
+	return modOptionGroups
+
+def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
+	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
+
+	for modOptionGroup in webFormatModOptions:
+		selectedRadioID = modOptionGroup['selectedRadio']
+		if selectedRadioID is not None:
+			modOptions[selectedRadioID].value = True
+
+		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
+			modOptions[checkBoxID].value = True
+
 
 class InstallerGUI:
 	def __init__(self, allSubModConfigs):
@@ -265,7 +317,7 @@ class InstallerGUI:
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
 		self.allSubModConfigs = allSubModConfigs
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: List[SubModConfig]
 		self.messageBuffer = []
 		self.threadHandle = None
 		self.selectedModName = None #user sets this while navigating the website
@@ -334,24 +386,13 @@ class InstallerGUI:
 				# which config was chosen, and which
 				subModHandles = []
 				for subModConfig in self.allSubModConfigs:
-					modOptionGroups = []
-					for modOptionGroup in subModConfig.modOptions:
-						modOptionGroups.append({
-							'name': modOptionGroup.name,
-							'radio': [{'name' : r.name} for r in modOptionGroup.radioOptions],
-							'checkBox': [{'name': c.name} for c in modOptionGroup.checkBoxOptions],
-							# these two variables are provided to be filled in by the webpage.
-							'selectedCheckBoxes': [],
-							'selectedRadio': None,
-						})
-
 					subModHandles.append(
 						{
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
 							'description' : 'FROM PYTHON httpGUI.py: description goes here',
-							'modOptionGroups': modOptionGroups,
+							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
 						}
 					)
 
@@ -387,8 +428,15 @@ class InstallerGUI:
 			# responseData: If the path is valid:
 			#               If the path is invalid: null is returned
 			def startInstallHandler(requestData):
-				id = requestData['id']
+				# this is not a 'proper' submod - just a handle returned form getSubModHandlesRequestHandler()
+				webSubModHandle = requestData['subMod']
+				webModOptionGroups = webSubModHandle['modOptionGroups']
+				id = webSubModHandle['id']
+
 				subMod = self.idToSubMod[id]
+
+				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
+
 				pathIsManual = False
 				installPath = requestData.get('installPath', None)
 

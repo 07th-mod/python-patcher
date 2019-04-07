@@ -63,9 +63,9 @@ function statusUpdate() {
 // If the install starts successfully, a interval timer wil call
 // the statusUpdate() function every 1s. Otherwise, the user is notified
 // that the install failed to start.
-function startInstall(subModID, installPath) {
+function startInstall(subModToInstall, installPath) {
   doPost('startInstall',
-    { id: subModID, installPath },
+    { subMod: subModToInstall, installPath },
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
@@ -96,10 +96,11 @@ window.onload = function onWindowLoaded() {
       subTaskDescription: 'Sub Task Description',
     },
     methods: {
-      doInstallManualPath() { startInstall(this.selectedSubMod.id); },
-      doInstall(fullInstallConfig) {
-        console.log(fullInstallConfig);
-        startInstall(fullInstallConfig.id, fullInstallConfig.path);
+      doInstallManualPath() { startInstall(this.selectedSubMod); },
+      doInstall(subModToInstall, pathToInstall) {
+        console.log(`Trying to start install to ${pathToInstall} Submod:`);
+        console.log(subModToInstall);
+        startInstall(subModToInstall, pathToInstall);
       },
     },
     computed: {
