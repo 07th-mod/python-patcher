@@ -168,7 +168,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			print('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
+			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -364,7 +364,7 @@ class InstallerGUI:
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
 			if requestType != 'statusUpdate':
-				logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
+				print('Got Request [{}] Data [{}]\n'.format(requestType, requestData))
 
 			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
 			# responseData: a dictionary indicating if it's a valid selection (true, false)
