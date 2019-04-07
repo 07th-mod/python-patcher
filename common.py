@@ -20,10 +20,11 @@ except AttributeError:
 
 try:
 	from urllib.request import urlopen, Request
-	from urllib.parse import urlparse
+	from urllib.parse import urlparse, quote
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 	from urlparse import urlparse
+	from urllib import quote
 
 def findWorkingExecutablePath(executable_paths, flags):
 	"""
@@ -246,6 +247,20 @@ def sevenZipExtract(archive_path, outputDir=None):
 	if outputDir:
 		arguments.append('-o' + outputDir)
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
+
+def tryGetRemoteNews(newsName):
+	"""
+	:param changelogName: the name of the changelog to retrieve, without file extension
+	There should be one for each mod, and one called 'news' for the index.html page
+	:return:
+	"""
+	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
+	try:
+		file = urlopen(Request(url, headers={"User-Agent": ""}))
+	except HTTPError as error:
+		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
+
+	return file.read().decode('utf-8')
 
 def getModList(jsonURL):
 	"""

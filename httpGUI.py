@@ -456,6 +456,9 @@ class InstallerGUI:
 			def statusUpdate(requestData):
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
 
+			def getNews(requestData):
+				return common.tryGetRemoteNews(requestData)
+
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
@@ -465,6 +468,7 @@ class InstallerGUI:
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
 				'statusUpdate' : statusUpdate,
+				'getNews' : getNews
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
