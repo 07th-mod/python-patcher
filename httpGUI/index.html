@@ -135,14 +135,7 @@
 							<div class="col-md-6 text-center">
 								<div class="feature bordered hidden-xs hidden-sm boxed">
 									<h1 class="uppercase mb40 mb-xs-24">News</h1>
-									<p>
-										<strong>[date here]
-											<br> [what happened]</strong>
-									</p>
-									<p>
-										<strong>[date here]
-											<br> [what happened]</strong>
-									</p>
+									<div id="globalNews" class="rendered-markdown"></div>
 								</div>
 							</div>
 						</div>
@@ -263,11 +256,15 @@
 			
 					
 		<script src="js/jquery.min.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-			<script src="js/masonry.min.js"></script>
-			<script src="js/parallax.js"></script>
-      <script src="js/scripts.js"></script>
-      <script src="python-patcher-rest-lib.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/masonry.min.js"></script>
+		<script src="js/parallax.js"></script>
+		<script src="js/scripts.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script>
+			replaceElementWithNews('globalNews', 'news');
+		</script>
 		</body>
 	</html>
 	

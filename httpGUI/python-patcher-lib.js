@@ -146,5 +146,7 @@ window.onload = function onWindowLoaded() {
     app.subModList = responseData.subModHandles;
     app.selectedMod = responseData.selectedMod;
     console.log(app.selectedSubMod);
+
+    replaceElementWithNews('modNews', app.selectedMod);
   });
 };

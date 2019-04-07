@@ -62,3 +62,9 @@ function setModNameAndNavigate(modName) {
     }
   });
 }
+
+function replaceElementWithNews(elementID, newsName) {
+  doPost('getNews', newsName, (response) => {
+    document.getElementById(elementID).innerHTML = marked(response, { sanitize: true });
+  });
+}
