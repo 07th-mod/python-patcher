@@ -130,7 +130,7 @@
 						</div>
 					</div>
 			</section>
-			<section v-show="!installStarted">
+			<section class="section-small-padding" v-show="!installStarted">
 					<div class="container">
 						<div class="row">
 							<div class="col-sm-12">
@@ -194,7 +194,7 @@
 						</div>
 					</div>
 			</section>
-			<section v-show="installStarted">
+			<section class="section-small-padding" v-show="installStarted">
 					<div class="container">
 						<h3> Overall Progress: {{ overallPercentage }}% </h3>
 						<h5> {{ overallTaskDescription }} </h5>
@@ -216,8 +216,7 @@
 						<div id="terminal"><p>Terminal Output</p></div>
 					</div>
 			</section>
-			<hr>
-			<section>
+			<section class="section-small-padding bg-secondary">
 			<div class="container">
 				<div id="modNews" class="installer-markdown"></div>
 			</div>

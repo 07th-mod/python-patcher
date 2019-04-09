@@ -67,3 +67,6 @@ they have zero height. This forces the height to some valid value*/
     line-height: 16px;
 }
 
+.section-small-padding {
+    padding: 30px;
+}
