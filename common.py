@@ -257,9 +257,13 @@ def tryGetRemoteNews(newsName):
 	There should be one for each mod, and one called 'news' for the index.html page
 	:return:
 	"""
+	localPath = 'news/' + newsName + '.md'
 	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
 	try:
-		file = urlopen(Request(url, headers={"User-Agent": ""}))
+		if os.path.exists(localPath):
+			file = open(localPath, 'r')
+		else:
+			file = urlopen(Request(url, headers={"User-Agent": ""}))
 	except HTTPError as error:
 		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
 

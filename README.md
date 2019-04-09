@@ -18,6 +18,13 @@ The project is currently setup to use with the IDE `Pycharm`, so use IDE this if
 
 The patcher reads the file [installData.json](installData.json) to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in [JSONValidator.swift](JSONValidator/Sources/JSONValidator/JSONValidator.swift)
 
+## Developer's note about remote files
+
+The installer will prefer local files (on disk) if they are present, instead of remote files (from github). Specifically: 
+
+- `installData.json`
+- all .md files in the `news` folder
+
 ## HTTPGUI / Web Interface
 
 The web interface component is located in the httpGUI folder.

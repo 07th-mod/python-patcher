@@ -44,7 +44,7 @@ output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
 
 # No wildcards allowed in these paths to be ignored
-ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__']
+ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__', 'news']
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
 def ignore_filter(folderPath, folderContents):
