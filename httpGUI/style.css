@@ -28,3 +28,23 @@ they have zero height. This forces the height to some valid value*/
 [v-cloak] {
     display: none;
 }
+
+.rendered-markdown h1 {
+    text-transform: uppercase;
+    letter-spacing: 17px;
+    font-weight:400;
+    margin-bottom: 10px;
+}
+
+.rendered-markdown h2 {
+    text-align: left;
+    font-weight:400;
+    font-size: 2em;
+    margin-bottom: 0;
+}
+
+.rendered-markdown p {
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 16px;
+}
