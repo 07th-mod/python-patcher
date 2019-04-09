@@ -56,9 +56,12 @@ def printErrorMessage(text):
 	"""
 	Prints message in red if stdout is a tty
 	"""
-	if sys.stdout.isatty:
-		print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
-	else:
+	try:
+		if sys.stdout.isatty:
+			print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
+		else:
+			print(text)
+	except AttributeError:
 		print(text)
 
 
@@ -67,7 +70,7 @@ class Globals:
 	githubMasterBaseURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
-	JSON_VERSION = 1
+	JSON_VERSION = 2
 
 	# Define constants used throughout the script. Use function calls to enforce variables as const
 	IS_WINDOWS = platform.system() == "Windows"
@@ -270,7 +273,10 @@ def getModList(jsonURL):
 	:rtype: list[dict]
 	"""
 	try:
-		file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+		if jsonURL[0:4] == "http":
+			file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+		else:
+			file = open(jsonURL, "r")
 	except HTTPError as error:
 		print(error)
 		print("Couldn't reach 07th Mod Server to download patch info")

@@ -352,7 +352,14 @@ class InstallerGUI:
 		if self.threadHandle and self.threadHandle.is_alive():
 			return False
 
-		self.threadHandle = threading.Thread(target=installerFunction, args=(fullInstallSettings,))
+		def errorPrintingInstaller(args):
+			try:
+				installerFunction(args)
+			except Exception as e:
+				print("Install failed due to error: " + str(e))
+				raise
+
+		self.threadHandle = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
 

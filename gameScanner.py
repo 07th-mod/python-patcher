@@ -7,22 +7,66 @@ try:
 except ImportError:
 	pass # Just needed for pycharm comments
 
+class OldUnityException(Exception):
+	def __init__(self, version):
+		# type: (str) -> None
+		self.version = version # type: str
+
+	def __str__(self):
+		return "Your game uses Unity "  + self.version + " which isn't supported by this mod.  Please update your game to a newer version."
+
+class FailedFileOverrideException(Exception):
+	def __init__(self, name, candidates, unity, steam):
+		# type: (str, List[ModFileOverride], Optional[str], bool) -> None
+		self.name = name
+		self.candidates = candidates # type: List[ModFileOverride]
+		self.unity = unity
+		self.steam = steam
+
+	def describe(self, candidate):
+		# type: (ModFileOverride) -> str
+		out = "("
+		if candidate.steam is not None:
+			out += "steam: " + str(candidate.steam)
+		if candidate.unity is not None:
+			if len(out) > 1:
+				out += ", "
+			out += "unity: " + candidate.unity
+		return out + ")"
+
+	def __str__(self):
+		hasUnity = any(x.unity is not None for x in self.candidates)
+		out = "Failed to find a " + self.name + " file to use, your game has the properties (steam: " + str(self.steam)
+		if hasUnity:
+			out += ", unity: " + self.unity
+		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
+		return out
+
 #contains all the install information required to install the game to a given path
 class FullInstallConfiguration:
 	def __init__(self, subModConfig, path, isSteam):
 		# type: (SubModConfig, str, bool) -> None
-		self.subModConfig = subModConfig
-		self.installPath = path
-		self.isSteam = isSteam
+		self.subModConfig = subModConfig # type: SubModConfig
+		self.installPath = path # type: str
+		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 
 	#applies the fileOverrides to the files to
-	def buildFileListSorted(self):
-		# type: () -> List[ModFile]
+	def buildFileListSorted(self, datadir=""):
+		# type: (str) -> List[ModFile]
 		# convert the files list into a dict
 		filesDict = {}
 		for file in self.subModConfig.files:
 			filesDict[file.name] = file
+
+		unityVersion = None
+		assetsbundlePath = os.path.join(datadir, "sharedassets0.assets")
+		if os.path.exists(assetsbundlePath):
+			with open(assetsbundlePath, "rb") as assetsBundle:
+				unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
+				print("Read unity version " + unityVersion)
+				if int(unityVersion[0]) < 5:
+					raise OldUnityException(unityVersion)
 
 		for fileOverride in self.subModConfig.fileOverrides:
 			# skip overrides where OS doesn't match
@@ -33,9 +77,19 @@ class FullInstallConfiguration:
 			if fileOverride.steam is not None and fileOverride.steam != self.isSteam:
 				continue
 
+			if fileOverride.unity is not None and fileOverride.unity != unityVersion:
+				continue
+
 			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
 			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority)
+
+		# Look for override-required files that weren't overridden
+		for key, value in filesDict.items():
+			if value.url is not None:
+				continue
+			candidates = [x for x in self.subModConfig.fileOverrides if x.name == key and common.Globals.OS_STRING in x.os]
+			raise FailedFileOverrideException(key, candidates, unity=unityVersion, steam=self.isSteam)
 
 		# sort the priority from Lowest to Highest (eg items with priority '0' will always be at start of the list)
 		# this is because the low priority items should be extracted first, so the high priority items can overwrite them.
@@ -46,17 +100,18 @@ class FullInstallConfiguration:
 # Therefore, the 'later extracted' files are higher priority, that is archives with priority 3 will overwrite priority 0,1,2 archives
 class ModFile:
 	def __init__(self, name, url, priority):
-		# type: (str, str, int) -> None
+		# type: (str, Optional[str], int) -> None
 		self.name = name
 		self.url = url
 		self.priority = priority #consider renaming this "extractionOrder"?
 
 class ModFileOverride:
-	def __init__(self, name, os, steam, url):
-		# type: (str, List[str], Optional[bool], str) -> None
+	def __init__(self, name, os, steam, unity, url):
+		# type: (str, List[str], Optional[bool], Optional[str], str) -> None
 		self.name = name
 		self.os = os #note: this is an ARRAY, eg ["mac", "linux"]
 		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
+		self.unity = unity
 		self.url = url
 
 class ModOption:
@@ -93,11 +148,17 @@ class SubModConfig:
 
 		self.files = [] # type: List[ModFile]
 		for subModFile in subMod['files']:
-			self.files.append(ModFile(name=subModFile['name'], url = subModFile['url'], priority=subModFile['priority']))
+			self.files.append(ModFile(name=subModFile['name'], url = subModFile.get('url'), priority=subModFile['priority']))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]
 		for subModFileOverride in subMod['fileOverrides']:
-			self.fileOverrides.append(ModFileOverride(name=subModFileOverride['name'], os=subModFileOverride['os'], steam=subModFileOverride['steam'], url=subModFileOverride['url']))
+			self.fileOverrides.append(ModFileOverride(
+				name=subModFileOverride['name'],
+				os=subModFileOverride['os'],
+				steam=subModFileOverride.get('steam'),
+				unity=subModFileOverride.get('unity'),
+				url=subModFileOverride['url']
+			))
 
 		self.modOptions = [] # type: List[ModOption]
 

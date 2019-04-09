@@ -160,12 +160,19 @@ class InstallerGUI:
 			"umineko": uminekoInstaller.mainUmineko
 		}.get(fullInstallSettings.subModConfig.family, None)
 
+		def errorPrintingInstaller(args):
+			try:
+				installerFunction(args)
+			except Exception as e:
+				print("Install failed due to error: " + str(e))
+				raise
+
 		if not installerFunction:
 			messagebox.showerror("Error - Unknown Game Family",
 			                     "I don't know how to install [{}] family of games. Please notify 07th-mod developers.")
 			return
 
-		t = threading.Thread(target=installerFunction, args=(fullInstallSettings,))
+		t = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))
 		t.setDaemon(True)  # Use setter for compatability with Python 2
 		t.start()
 

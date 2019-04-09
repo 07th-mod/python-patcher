@@ -149,7 +149,7 @@ def mainUmineko(conf):
 	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
 	print("Creating EnableSteamSync.bat")
 	with open(os.path.join(conf.installPath, "EnableSteamSync.bat"), 'w') as f:
-		f.writelines(["mklink saves mysav /J", "pause"])
+		f.writelines(["mklink saves mysav /J\n", "pause"])
 
 	# For now, don't copy save data
 

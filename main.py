@@ -53,7 +53,11 @@ if __name__ == "__main__":
 	common.Globals.scanForExecutables()
 
 	# Scan for moddable games on the user's computer before starting installation
-	modList = common.getModList(common.Globals.githubMasterBaseURL + "installData.json")
+	if os.path.exists("installData.json"):
+		# Use local `installData.json` if it's there (if cloned from github)
+		modList = common.getModList("installData.json")
+	else:
+		modList = common.getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
 
 	subModconfigList = []
 	for mod in modList:

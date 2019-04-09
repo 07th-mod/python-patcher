@@ -1,5 +1,5 @@
 {
-	"version": 1,
+	"version": 2,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -20,8 +20,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Onikakushi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Onikakushi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Onikakushi-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Onikakushi-UI_UNIX.7z"}
 					]
 				}
 			],
@@ -64,8 +64,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Watanagashi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Watanagashi-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z"}
 					]
 				}
 			]
@@ -85,14 +85,15 @@
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",          "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/Tatarigoroshi-Voices.7z",         "priority": 0},
-						{"name": "ui",      "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI.7z",             "priority": 0},
+						{"name": "ui",      "url": null,                                                            "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 0}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["linux", "mac"], "steam": null,  "url":"https://07th-mod.com/rikachama/Tatarigoroshi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["windows"], 	    "steam": false, "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_MG.7z"},
-						{"name": "ui",      "os": ["linux", "mac"], "steam": true,  "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX.7z"},
-						{"name": "ui",      "os": ["linux", "mac"], "steam": false, "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX-MG.7z"}
+						{"name": "ui",      "os": ["windows"], 	    "unity": "5.4.0f1", "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI.7z"},
+						{"name": "ui",      "os": ["windows"], 	    "unity": "5.3.4p1", "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_MG.7z"},
+						{"name": "ui",      "os": ["linux", "mac"], "unity": "5.4.0f1", "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX.7z"},
+						{"name": "ui",      "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX-MG.7z"}
 					]
 				}
 			]
@@ -117,8 +118,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Himatsubushi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Himatsubushi-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z"}
 					]
 				}
 			]
@@ -142,8 +143,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Meakashi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Meakashi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Meakashi-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Meakashi-UI_UNIX.7z"}
 					]
 				}
 			]
@@ -167,8 +168,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-UI_UNIX.7z"}
 					]
 				}
 			]
@@ -195,8 +196,8 @@
 						{"name": "script",    "url":"https://07th-mod.com/latest.php?repository=higurashi-console-arcs", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "movie",   "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/ConsoleArcs-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "steam": null, "url":"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z"}
+						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/ConsoleArcs-Movie_UNIX.7z"},
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z"}
 					]
 				}
 			]
@@ -217,8 +218,8 @@
 						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
 					]
 				},
 				{
@@ -233,8 +234,8 @@
 					],
 					"fileOverrides" : [
 						{"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"},
-						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
 					]
 				}
 			]
@@ -256,8 +257,8 @@
 						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
 					]
 				},
 				{
@@ -268,8 +269,8 @@
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern/Umineko5to8"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				},
 				{
@@ -281,8 +282,8 @@
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8"},
-						{"name": "exe", "os":["mac"], "steam": null, "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern/Umineko5to8"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				}
 			]
