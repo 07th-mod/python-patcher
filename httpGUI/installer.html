@@ -134,15 +134,15 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-sm-12">
-								<h4 class="uppercase mb80">Choose your patch<br></h4>
 								<div class="tabbed-content button-tabs vertical">
 									<ul class="tabs col-md-3">
+										<h4 class="uppercase mb40">Choose Patch</h4>
 										<li
 										v-for="subMod in possibleSubMods"
 										v-on:click="selectedSubMod = subMod"
 										v-bind:class="{ active: selectedSubMod == subMod}"
 										>
-											<div class="tab-title"><span>{{ subMod.subModName }}</span></div>
+											<div class="tab-title"><span>{{ subMod.subModName }} Patch</span></div>
 										</li>
 									</ul>
 									<ul class="content col-md-9">
@@ -168,7 +168,7 @@
 													</div>
 												</div>
 												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
-												<div class="mt40 button-tabs vertical">
+												<div class="button-tabs vertical">
 													<h4 class="uppercase">Choose an install path</h4>
 													<ul class="tabs">
 														<li v-for="fullInstallConfig in fullInstallConfigs"
