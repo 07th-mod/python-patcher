@@ -109,112 +109,113 @@
 		    </nav>
 		
 		</div>
-		
+
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
 		<div id="app" class="main-container" v-cloak>
 			<section class="page-title page-title-4 bg-secondary">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8">
-							<h3 class="uppercase mb0">{{ selectedMod }}</h3>
-						</div>
-						<div class="col-md-4 text-right">
-							<ol class="breadcrumb breadcrumb-2">
-								<li>
-									<a href="index.html" target="_self">Home</a>
-								</li>
-								<li class="active">{{ selectedMod }}<br></li>
-							</ol>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8">
+								<h3 class="uppercase mb0">{{ selectedMod }}</h3>
+							</div>
+							<div class="col-md-4 text-right">
+								<ol class="breadcrumb breadcrumb-2">
+									<li>
+										<a href="index.html" target="_self">Home</a>
+									</li>
+									<li class="active">{{ selectedMod }}<br></li>
+								</ol>
+							</div>
 						</div>
 					</div>
-				</div>
 			</section>
 			<section v-show="!installStarted">
-		        <div class="container">
-		            <div class="row">
-		                <div class="col-sm-12">
-		                    <h4 class="uppercase mb80">Choose your patch<br></h4>
-		                    <div class="tabbed-content button-tabs vertical">
-		                        <ul class="tabs col-md-3">
-									<li 
-									v-for="subMod in possibleSubMods"
-									v-on:click="selectedSubMod = subMod"
-									v-bind:class="{ active: selectedSubMod == subMod}"
-									>
-										<div class="tab-title"><span>{{ subMod.subModName }}</span></div>
-									</li>
-								</ul>
-								<ul class="content col-md-9">
-									<li class="active" v-if="selectedSubMod != null">
-										<div class="tab-content">
-											<h4 class="uppercase">{{selectedSubMod.subModName}}<br></h4>
-											<hr>
-											<p>{{selectedSubMod.description}}</p>
-											<h6 class="uppercase">Latest Updates<br></h6>
-											<div id="modNews" class="rendered-markdown"></div>
-											<br />
-											<div class="button-tabs vertical">
-												<ul class="tabs">
-													<li v-for="fullInstallConfig in fullInstallConfigs"
-														v-on:click="doInstall(selectedSubMod, fullInstallConfig.path);"
-														v-bind:key="fullInstallConfig.key">
-														<div class="tab-title">
-															Install to "{{ fullInstallConfig.path }}"
-														</div>
-													</li>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="uppercase mb80">Choose your patch<br></h4>
+								<div class="tabbed-content button-tabs vertical">
+									<ul class="tabs col-md-3">
+										<li
+										v-for="subMod in possibleSubMods"
+										v-on:click="selectedSubMod = subMod"
+										v-bind:class="{ active: selectedSubMod == subMod}"
+										>
+											<div class="tab-title"><span>{{ subMod.subModName }}</span></div>
+										</li>
+									</ul>
+									<ul class="content col-md-9">
+										<li class="active" v-if="selectedSubMod != null">
+											<div class="tab-content">
+												<h4 class="uppercase">{{selectedSubMod.subModName}}<br></h4>
+												<hr>
+												<p>{{selectedSubMod.description}}</p>
+												<h6 class="uppercase">Latest Updates<br></h6>
+												<div id="modNews" class="rendered-markdown"></div>
+												<br />
+												<div class="button-tabs vertical">
+													<ul class="tabs">
+														<li v-for="fullInstallConfig in fullInstallConfigs"
+															v-on:click="doInstall(selectedSubMod, fullInstallConfig.path);"
+															v-bind:key="fullInstallConfig.key">
+															<div class="tab-title">
+																Install to "{{ fullInstallConfig.path }}"
+															</div>
+														</li>
 
-													<li>
-														<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
-															Choose Install Path Manually
-														</div>
-													</li>
+														<li>
+															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
+																Choose Install Path Manually
+															</div>
+														</li>
 
-													<div v-for="modOptionGroup in selectedSubMod.modOptionGroups">
-														<h5> {{ modOptionGroup.name }} </h5>
-														<div v-for="radioOption in modOptionGroup.radio">
-															<input class="form-check-input" type="radio" name="exampleRadios" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
-															<label class="form-check-label" v-bind:for="radioOption.name">
-																{{ radioOption.name }}
-															</label>
+														<div v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+															<h5> {{ modOptionGroup.name }} </h5>
+															<div v-for="radioOption in modOptionGroup.radio">
+																<input class="form-check-input" type="radio" name="exampleRadios" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
+																<label class="form-check-label" v-bind:for="radioOption.name">
+																	{{ radioOption.name }}
+																</label>
+															</div>
+															<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
+																<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
+																<label class="form-check-label" v-bind:for="checkBoxOption.name">
+																	{{ checkBoxOption.name }}
+																</label>
+															</div>
 														</div>
-														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
-															<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
-															<label class="form-check-label" v-bind:for="checkBoxOption.name">
-																{{ checkBoxOption.name }}
-															</label>
-														</div>
-													</div>
-												</ul>
+													</ul>
+												</div>
 											</div>
-										</div>
-									</li>
-								</ul>
-		                    </div>
-		                </div>
-		            </div>
-		            
-				</div>
-		</section>
-		<section v-show="installStarted">
-				<div class="container">
-					<h3> Overall Progress: {{ overallPercentage }}% </h3>
-					<h5> {{ overallTaskDescription }} </h5>
-					<div class="progress">
-						<div id="overallProgressBar" class="progress-bar installer-progress-bar" :style="{width: overallPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="overallPercentage" aria-valuemin="0" aria-valuemax="100" >
-							<span class="sr-only">{{ overallPercentage }}% Complete</span>
+										</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
-					<h5> {{ subTaskDescription }} </h5>
-					<div class="progress">
-						<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
-							<span class="sr-only">{{ subTaskPercentage }}% Complete</span>
+			</section>
+			<section v-show="installStarted">
+					<div class="container">
+						<h3> Overall Progress: {{ overallPercentage }}% </h3>
+						<h5> {{ overallTaskDescription }} </h5>
+						<div class="progress">
+							<div id="overallProgressBar" class="progress-bar installer-progress-bar" :style="{width: overallPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="overallPercentage" aria-valuemin="0" aria-valuemax="100" >
+								<span class="sr-only">{{ overallPercentage }}% Complete</span>
+							</div>
 						</div>
-					</div>
 
-					<h3>Terminal:</h3>
-					<div id="terminal"><p>Terminal Output</p></div>
-				</div>
+						<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
+						<h5> {{ subTaskDescription }} </h5>
+						<div class="progress">
+							<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
+								<span class="sr-only">{{ subTaskPercentage }}% Complete</span>
+							</div>
+						</div>
+
+						<h3>Terminal:</h3>
+						<div id="terminal"><p>Terminal Output</p></div>
+					</div>
 			</section>
 		</div>
 
