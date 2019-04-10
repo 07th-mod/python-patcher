@@ -466,6 +466,13 @@ class InstallerGUI:
 			def getNews(requestData):
 				return common.tryGetRemoteNews(requestData)
 
+			def getDonationStatus(requestData):
+				monthsRemaining, progressPercent = common.getDonationStatus()
+				return  {
+					'monthsRemaining': monthsRemaining,
+					'progressPercent': progressPercent,
+				}
+
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
@@ -475,7 +482,8 @@ class InstallerGUI:
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
 				'statusUpdate' : statusUpdate,
-				'getNews' : getNews
+				'getNews' : getNews,
+				'getDonationStatus' : getDonationStatus,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

@@ -26,6 +26,11 @@ except ImportError:
 	from urlparse import urlparse
 	from urllib import quote
 
+try:
+	from typing import Optional
+except:
+	pass
+
 def findWorkingExecutablePath(executable_paths, flags):
 	"""
 	Try to execute each path in executable_paths to see which one can be called and returns exit code 0
@@ -268,6 +273,26 @@ def tryGetRemoteNews(newsName):
 		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
 
 	return file.read().decode('utf-8')
+
+def getDonationStatus():
+	# type: () -> (Optional[str], Optional[str])
+	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*until\s*<b>\s*([^<]+)", re.IGNORECASE)
+	progressAmountRegex = re.compile(r"progress\s*value=(\d+)", re.IGNORECASE)
+
+	try:
+		file = urlopen(Request(r"http://07th-mod.com/wiki/", headers={"User-Agent": ""}))
+	except HTTPError as error:
+		return None, None
+
+	entirePage = file.read().decode('utf-8')
+
+	match = serverTimeRemainingRegex.search(entirePage)
+	monthsRemainingString = None if match is None else match.group(1)
+
+	match = progressAmountRegex.search(entirePage)
+	progressPercentString = None if match is None else match.group(1)
+
+	return monthsRemainingString, progressPercentString
 
 def getModList(jsonURL):
 	"""
