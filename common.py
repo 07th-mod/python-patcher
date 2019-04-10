@@ -261,7 +261,7 @@ def tryGetRemoteNews(newsName):
 	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
 	try:
 		if os.path.exists(localPath):
-			file = open(localPath, 'r')
+			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3
 		else:
 			file = urlopen(Request(url, headers={"User-Agent": ""}))
 	except HTTPError as error:
