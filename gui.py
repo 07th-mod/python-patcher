@@ -1,13 +1,17 @@
+import common
+
 try:
 	import queue
 	from tkinter import *
 	from tkinter.ttk import *
 	from tkinter.scrolledtext import ScrolledText
+	from tkinter import filedialog, messagebox
 except ImportError:
 	import Queue as queue
 	from Tkinter import *
 	from ttk import *
 	from ScrolledText import ScrolledText
+	import tkMessageBox as messagebox
 
 # as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 # which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
@@ -168,6 +172,10 @@ class InstallStatusWidget:
 					self.blankLineCount += 1
 					if self.blankLineCount < 3:
 						self.terminal.insert(END, msg_data)
+
+				if msg_data.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX):
+					messagebox.showerror("Error", msg_data)
+
 			elif msg_type == InstallStatusWidget.MSG_TYPE_DESCRIPTION_UPDATE:
 				msg_data = re.sub("[\\s\\b]+", " ", msg_data)
 				self.task_description_string.set(msg_data if len(msg_data) < 75 else (msg_data[:35] + '...' + msg_data[-35:]))
