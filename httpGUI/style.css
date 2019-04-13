@@ -72,3 +72,12 @@ they have zero height. This forces the height to some valid value*/
     padding-top: 50px;
     padding-bottom: 30px;
 }
+
+/* These classes are used by Vue for transitions - see https://vuejs.org/v2/guide/transitions.html */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .25s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}

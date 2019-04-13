@@ -130,6 +130,7 @@
 						</div>
 					</div>
 			</section>
+			<transition name="fade">
 			<section class="section-small-padding" v-show="!installStarted">
 					<div class="container">
 						<div class="row">
@@ -194,6 +195,8 @@
 						</div>
 					</div>
 			</section>
+			</transition>
+			<transition name="fade">
 			<section class="section-small-padding" v-show="installStarted">
 					<div class="container">
 						<h3> Overall Progress: {{ overallPercentage }}% </h3>
@@ -216,6 +219,7 @@
 						<div id="terminal"><p>Terminal Output</p></div>
 					</div>
 			</section>
+			</transition>
 			<section class="section-small-padding bg-secondary">
 			<div class="container">
 				<div id="modNews" class="installer-markdown"></div>
