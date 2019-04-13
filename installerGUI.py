@@ -2,6 +2,7 @@ import os
 import threading
 
 import commandLineParser
+import common
 import gui
 import gameScanner
 import higurashiInstaller
@@ -164,7 +165,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print("Install failed due to error: " + str(e))
+				print(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX + str(e))
 				raise
 
 		if not installerFunction:

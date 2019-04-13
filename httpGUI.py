@@ -113,7 +113,8 @@ def _loggerMessageToStatusDict(message):
 		return sevenZipMessageAndPercent
 
 	# if the message is not a aria or 7zip message, just show it in the gui log window
-	return {"msg": message}
+	return {"msg": message,
+	        "error": True if message.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX) else False}
 
 def start_server(working_directory, post_handlers, serverStartedCallback=lambda _: None):
 	# type: (str, dict, function) -> None
@@ -356,7 +357,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print("Install failed due to error: " + str(e))
+				print(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX + str(e))
 				raise
 
 		self.threadHandle = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))

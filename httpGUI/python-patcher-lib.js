@@ -51,6 +51,10 @@ function statusUpdate() {
               el.terminal.removeChild(el.terminal.lastChild);
             }
           }
+          // If status.msg is defined, status.error will also be defined
+          if (status.error) {
+            alert(status.msg);
+          }
         }
       });
     });
