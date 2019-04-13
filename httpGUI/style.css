@@ -81,3 +81,8 @@ they have zero height. This forces the height to some valid value*/
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
+
+.install-finished-div p {
+    line-height: 16px;
+    margin-bottom: 0;
+}

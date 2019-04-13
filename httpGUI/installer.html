@@ -131,6 +131,29 @@
 					</div>
 			</section>
 			<transition name="fade">
+			<div class="container text-center mt40 install-finished-div" v-show="installFinished">
+			<hr>
+			<!-- Displayed when the install finishes successfully -->
+			<section class="section-small-padding" v-show="!installFailed">
+				<h1 style="color: green;">The install has finished!</h1>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
+					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
+					<p>Please run "EnableSteamSync.bat" file in the game folder if you really want to enable it</p>
+				</div>
+				<div v-else>
+					<p>Higurashi specific information goes here</p>
+				</div>
+			</section>
+			<!-- Displayed when the install fails-->
+			<section class="section-small-padding" v-show="installFailed">
+				<h1 style="color: red;">The install failed :(</h1>
+				<p> Please check the last few mesages in the terminal output for more information. </p>
+			</section>
+			<hr>
+			</div>
+			</transition>
+			<transition name="fade">
 			<section class="section-small-padding" v-show="!installStarted">
 					<div class="container">
 						<div class="row">

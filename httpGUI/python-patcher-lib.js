@@ -29,6 +29,9 @@ function statusUpdate() {
       responseData.forEach((status) => {
         if (status.overallPercentage !== undefined) {
           app.overallPercentage = status.overallPercentage;
+          if (status.overallPercentage === 100) {
+            app.installFinished = true;
+          }
         }
         if (status.overallTaskDescription !== undefined) {
           app.overallTaskDescription = status.overallTaskDescription;
@@ -54,6 +57,8 @@ function statusUpdate() {
           // If status.msg is defined, status.error will also be defined
           if (status.error) {
             alert(status.msg);
+            app.installFailed = true;
+            app.installFinished = true;
           }
         }
       });
@@ -94,6 +99,8 @@ window.onload = function onWindowLoaded() {
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
       installStarted: false,
+      installFinished: false,
+      installFailed: false,
       overallPercentage: 0,
       subTaskPercentage: 0,
       overallTaskDescription: 'Overall Task Description',
