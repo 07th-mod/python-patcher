@@ -85,6 +85,9 @@ class Globals:
 	ARIA_EXECUTABLE = None
 	SEVEN_ZIP_EXECUTABLE = None
 
+	#Print this string from the installer thread to notify of an error during the installation.
+	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
