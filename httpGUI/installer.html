@@ -140,16 +140,30 @@
 					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
 					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
 					<p>Please run "EnableSteamSync.bat" file in the game folder if you really want to enable it</p>
+					<p>Please check out our <a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a> for common problems</p>
 				</div>
 				<div v-else>
-					<p>Higurashi specific information goes here</p>
+					<p>Warning: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
+					<p>This is normal, however if the game freezes on a <b>black screen</b> it's likely something went wrong - please contact us on Discord if this happens.</p>
+					<p>Please check out our <a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a> for common problems</p>
 				</div>
 			</section>
 			<!-- Displayed when the install fails-->
 			<section class="section-small-padding" v-show="installFailed">
 				<h1 style="color: red;">The install failed :(</h1>
 				<p> Please check the last few mesages in the terminal output for more information. </p>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<p>Common Umineko install failure reasons go here.</p>
+				</div>
+				<div v-else>
+					<p>A common reason for the Higurashi installation to fail is that you have an <b>old version of the game</b>.</p>
+					<p>The installer would have detected this and mentioned you have an old Unity version. Please make sure your game is up to date before installing the game.</p>
+				</div>
 			</section>
+			<!-- Displayed always the install fails-->
+			<div class="mb40">
+				<p>If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a></p>
+			</div>
 			<hr>
 			</div>
 			</transition>
