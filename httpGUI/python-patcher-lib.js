@@ -133,10 +133,12 @@ window.onload = function onWindowLoaded() {
       },
     },
     watch: {
-      selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
-        // eslint-disable-next-line prefer-destructuring
-        this.selectedSubMod = this.possibleSubMods[0];
-      },
+      // This sets the app.selectedSubMod to the first subMod in the subModList.
+      // However it is disabled for now, so the default value is 'null'.
+      // When the app.selectedSubMod is 'null', the "Intro/Troubleshooting" page is displayed.
+      // selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
+      //   this.selectedSubMod = this.possibleSubMods[0];
+      // },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => { console.log(responseData); this.fullInstallConfigs = responseData; });
