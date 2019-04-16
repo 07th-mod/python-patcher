@@ -136,9 +136,9 @@ window.onload = function onWindowLoaded() {
       // This sets the app.selectedSubMod to the first subMod in the subModList.
       // However it is disabled for now, so the default value is 'null'.
       // When the app.selectedSubMod is 'null', the "Intro/Troubleshooting" page is displayed.
-      // selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
-      //   this.selectedSubMod = this.possibleSubMods[0];
-      // },
+      selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
+        this.selectedSubMod = this.possibleSubMods[0];
+      },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => { console.log(responseData); this.fullInstallConfigs = responseData; });
@@ -157,6 +157,8 @@ window.onload = function onWindowLoaded() {
   doPost('subModHandles', [], (responseData) => {
     console.log(responseData);
     app.subModList = responseData.subModHandles;
+    // NOTE: when app.selectedMod is changed, the selectedMod 'watch' automatically updates
+    // the app.selectedSubMod to the first value in the possibleSubMods list
     app.selectedMod = responseData.selectedMod;
     console.log(app.selectedSubMod);
 

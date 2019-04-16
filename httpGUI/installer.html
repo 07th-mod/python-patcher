@@ -177,33 +177,30 @@
 									<ul class="tabs col-md-3">
 										<h4 class="uppercase mb40">Choose Patch</h4>
 										<li
-										v-on:click="selectedSubMod = null"
-										v-bind:class="{ active: selectedSubMod == null}"
-										>
-											<div class="tab-title"><span> Troubleshooting </span></div>
-										</li>
-										<li
 										v-for="subMod in possibleSubMods"
 										v-on:click="selectedSubMod = subMod"
 										v-bind:class="{ active: selectedSubMod == subMod}"
 										>
 											<div class="tab-title"><span> Install {{ subMod.subModName }} Patch</span></div>
 										</li>
+
+										<li><br><hr></li>
+										<li v-on:click="selectedSubMod = null"
+											v-bind:class="{ active: selectedSubMod == null}">
+										<div class="tab-title" ><span>Show Troubleshooting</span></div>
+										</li>
 									</ul>
+									<!-- Right Hand Column: Display Troubleshooting Help (only when troubleshooting button clicked) -->
 									<div class="content col-md-9" v-if="selectedSubMod == null">
-										<h4 class="uppercase">Introduction</h4>
-										<hr>
-										<p> If you're trying to install the game, choose an option on the left.</p>
-										<p> The options on the left determine what variant of the mod you want to install. </p>
-										<h4 class="uppercase">Troubleshooting Tools</h4>
+										<h4 class="uppercase">Troubleshooting</h4>
 										<hr>
 										<p>If you have problems running or installing the game, see the below troubleshooting tools:</p>
 									</div>
-									<!-- Right Hand Column displaying submod description, install options, and 'start install' buttons -->
+									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">
 										<div v-if="selectedSubMod != null">
 											<div class="tab-content">
-												<h4 class="uppercase">{{selectedSubMod.subModName}}</h4>
+												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
 												<p>{{selectedSubMod.description}}</p>
 												<!-- Install options, displayed as radio buttons and checkboxes -->
