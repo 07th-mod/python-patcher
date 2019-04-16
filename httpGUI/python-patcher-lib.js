@@ -101,6 +101,7 @@ window.onload = function onWindowLoaded() {
       installStarted: false,
       installFinished: false,
       installFailed: false,
+      showTroubleshooting: false,
       overallPercentage: 0,
       subTaskPercentage: 0,
       overallTaskDescription: 'Overall Task Description',

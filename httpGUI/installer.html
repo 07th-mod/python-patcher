@@ -178,27 +178,28 @@
 										<h4 class="uppercase mb40">Choose Patch</h4>
 										<li
 										v-for="subMod in possibleSubMods"
-										v-on:click="selectedSubMod = subMod"
+										v-on:click="selectedSubMod = subMod; showTroubleshooting = false;"
 										v-bind:class="{ active: selectedSubMod === subMod}"
 										>
 											<div class="tab-title"><span> Install {{ subMod.subModName }} Patch</span></div>
 										</li>
 
 										<li><br><hr></li>
-										<li v-on:click="selectedSubMod = null"
-											v-bind:class="{ active: selectedSubMod === null}">
-										<div class="tab-title" ><span>Show Troubleshooting</span></div>
+										<li v-if="selectedSubMod !== null"
+											v-on:click="showTroubleshooting = !showTroubleshooting;"
+											v-bind:class="{ active: showTroubleshooting}">
+										<div class="tab-title" ><span>"{{ selectedSubMod.subModName }} patch"  Troubleshooting</span></div>
 										</li>
 									</ul>
 									<!-- Right Hand Column: Display Troubleshooting Help (only when troubleshooting button clicked) -->
-									<div class="content col-md-9" v-if="selectedSubMod === null">
-										<h4 class="uppercase">Troubleshooting</h4>
+									<div class="content col-md-9" v-if="showTroubleshooting && (selectedSubMod !== null)">
+										<h4 class="uppercase">"{{ selectedSubMod.subModName }} patch" Troubleshooting</h4>
 										<hr>
 										<p>If you have problems running or installing the game, see the below troubleshooting tools:</p>
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">
-										<div v-if="selectedSubMod !== null">
+										<div v-if="(showTroubleshooting == false) && (selectedSubMod !== null)">
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
