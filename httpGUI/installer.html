@@ -201,7 +201,7 @@
 									</div>
 									<!-- Right Hand Column displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">
-										<li class="active" v-if="selectedSubMod != null">
+										<div v-if="selectedSubMod != null">
 											<div class="tab-content">
 												<h4 class="uppercase">{{selectedSubMod.subModName}}</h4>
 												<hr>
@@ -244,7 +244,7 @@
 													</ul>
 												</div>
 											</div>
-										</li>
+										</div>
 									</ul>
 								</div>
 							</div>
