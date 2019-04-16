@@ -173,6 +173,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="tabbed-content button-tabs vertical">
+									<!-- Left Hand Column displaying list of submods that can be installed (eg "Full Patch", "Voice Only") -->
 									<ul class="tabs col-md-3">
 										<h4 class="uppercase mb40">Choose Patch</h4>
 										<li
@@ -183,12 +184,14 @@
 											<div class="tab-title"><span>{{ subMod.subModName }} Patch</span></div>
 										</li>
 									</ul>
+									<!-- Right Hand Column displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">
 										<li class="active" v-if="selectedSubMod != null">
 											<div class="tab-content">
 												<h4 class="uppercase">{{selectedSubMod.subModName}}</h4>
 												<hr>
 												<p>{{selectedSubMod.description}}</p>
+												<!-- Install options, displayed as radio buttons and checkboxes -->
 												<h4 class="uppercase">Choose Mod Options</h4>
 												<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
 													<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
@@ -206,6 +209,7 @@
 													</div>
 												</div>
 												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
+												<!-- Section allowing you to start install or choose game path to install -->
 												<div class="button-tabs vertical">
 													<h4 class="uppercase">Choose an install path</h4>
 													<ul class="tabs">
