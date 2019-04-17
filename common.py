@@ -95,6 +95,9 @@ class Globals:
 	#Print this string from the installer thread to notify of an error during the installation.
 	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
 
+	LOG_FILE_PATH = "07th-mod-install.log"
+	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done

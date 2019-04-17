@@ -114,6 +114,12 @@ window.onload = function onWindowLoaded() {
         console.log(subModToInstall);
         startInstall(subModToInstall, pathToInstall);
       },
+      getLogsZip() {
+        doPost('getLogsZip', [], (responseData) => {
+          console.log(responseData);
+          window.location.href = responseData.filePath;
+        });
+      },
     },
     computed: {
       modHandles() {

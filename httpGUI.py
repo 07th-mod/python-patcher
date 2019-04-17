@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 import json
 import re
+import zipfile
 
 import common
 import traceback
@@ -368,6 +369,9 @@ class InstallerGUI:
 
 	# An example of how this class can be used.
 	def server_test(self):
+		# the directory where files will be served from
+		workingDirectory = 'httpGUI'
+
 		def handleInstallerData(body_string):
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
@@ -477,6 +481,13 @@ class InstallerGUI:
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
+			def getLogsZip(requestData):
+				with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
+					myzip.write(common.Globals.LOG_FILE_PATH)
+				return {
+					'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
+				}
+
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
@@ -485,6 +496,7 @@ class InstallerGUI:
 				'statusUpdate' : statusUpdate,
 				'getNews' : getNews,
 				'getDonationStatus' : getDonationStatus,
+				'getLogsZip' : getLogsZip,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
@@ -503,6 +515,6 @@ class InstallerGUI:
 			common.trySystemOpen(web_server_url)
 			print("Please open {} in your browser if it didn't open automatically".format(web_server_url))
 
-		start_server(working_directory='httpGUI',
+		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,
 		             serverStartedCallback=on_server_started)

@@ -162,7 +162,11 @@
 			</section>
 			<!-- Displayed always the install fails-->
 			<div class="mb40">
-				<p>If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a></p>
+				<p>
+					The install path was ""<br>
+					The install log was saved to ""<br><br>
+					If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
+				</p>
 			</div>
 			<hr>
 			</div>
@@ -196,6 +200,26 @@
 										<h4 class="uppercase">"{{ selectedSubMod.subModName }} patch" Troubleshooting</h4>
 										<hr>
 										<p>If you have problems running or installing the game, see the below troubleshooting tools:</p>
+										<h4>Discord Server</h4>
+										<p>
+											We have a discord server where you can request for support on the game. Please submit the following information:<br>
+											- The Installer and Game Log (see below section)
+											- Check the pinned message by clicking the 
+											<svg name="Pin" class="iconInactive-g2AXfB icon-1R19_H" width="32" height="32" viewBox="0 0 26 26"><g fill="none" fill-rule="evenodd"><path d="M1 1h24v24H1"></path><path class="iconForeground-3y9f0B" fill="currentColor" d="M15 15V6h-4v9h-.50899482C10.22788048 15 10 15.2238576 10 15.5c0 .2680664.2198305.5.49100518.5h5.01798964C15.77211952 16 16 15.7761424 16 15.5c0-.2680664-.2198305-.5-.49100518-.5H15zm2-9h1V4H8v2h1v8l-2 2v2h5.2v4h1.6v-4H19v-2l-2-2V6z"></path></g></svg>
+											button at the top right of the <b>#umi_support</b> or <b>#higu_support</b> channel
+										</p>
+										<a href="https://discord.gg/pf5VhF9" target="_blank"><div class="tab-title mb40" ><span>Open Our Discord Server</span></div></a>
+										<h4>Get Installer and Game Log</h4>
+										<p>
+											There are two logs:<br>
+											- The installer logs (produced by this installer). This may be useful if your install didn't fully complete or seems stuck.<br>
+											- The game log (produced by the game). This may be useful if your game freezes or crashes.<br><br>
+											The button below will generate a .zip file containing both of these logs.
+											Please note that the game log <b>only records one session</b>, so make sure you have just recreated the bug in the most recent session.<br><br>
+											You should submit this to our Discord in the Umineko <b>#umi_support</b> or Higurashi <b>#higu_support</b> channel when asking for help.
+										</p>
+										<!-- If the user only has one installation, only have one button "get logs". Otherwise need a different button for each install user has. -->
+										<div class="tab-title mb40" v-on:click="getLogsZip()"><span>Download Installer Log and Game Log .zip file</span></div>
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">

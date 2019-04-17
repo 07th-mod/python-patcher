@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	#redirect stdout to both a file and console
 	#TODO: on MAC using a .app file, not sure if this logfile will be writeable
 	#      could do a try-catch, and then only begin logging once the game path has been set?
-	sys.stdout = logger.Logger("logfile.log")
+	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
 
 	def check07thModServerConnection():
