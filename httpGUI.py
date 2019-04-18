@@ -412,6 +412,7 @@ class InstallerGUI:
 							'subModName': subModConfig.subModName,
 							'description' : 'FROM PYTHON httpGUI.py: description goes here',
 							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
+							'family': subModConfig.family,
 						}
 					)
 
@@ -490,47 +491,59 @@ class InstallerGUI:
 
 			# This function takes identical arguments to 'startInstallHandler(...)'
 			# TODO: Add correct paths for Linux and Mac
-			def getLogsZip(requestData):
+			def troubleshoot(requestData):
+				action = requestData['action']
+
 				id = requestData['subMod']['id']
 				subMod = self.idToSubMod[id]
-				installPath = requestData.get('installPath', None)
-				if installPath is None:
-					userSelectedPath = os.path.dirname(_TKAskPath(subMod))
-					fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
-					installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
 
-				higurashi_log_file_name = 'output_log.txt'
-				gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
-				gameLogExists = os.path.exists(gameLogPath)
-				with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
-					if os.path.exists(common.Globals.LOG_FILE_PATH):
-						myzip.write(common.Globals.LOG_FILE_PATH)
-					if gameLogExists:
-						myzip.write(gameLogPath, higurashi_log_file_name)
+				# If the requestData included the install path, use that. Otherwise, open a dialog to choose the path
+				# returns the empty string if user cancels selecting a path
+				def _getInstallPath():
+					_installPath = requestData.get('installPath', None)
+					if _installPath is None:
+						userSelectedPath = os.path.dirname(_TKAskPath(subMod))
+						fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
+						_installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
+					return _installPath
 
-				print('Game Log [{}] {}'.format(gameLogPath, "was found" if gameLogExists else "WAS NOT FOUND"))
+				if action == 'getLogsZip':
+					installPath = _getInstallPath()
+					higurashi_log_file_name = 'output_log.txt'
+					gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
+					gameLogExists = os.path.exists(gameLogPath)
+					with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
+						if os.path.exists(common.Globals.LOG_FILE_PATH):
+							myzip.write(common.Globals.LOG_FILE_PATH)
+						if gameLogExists:
+							myzip.write(gameLogPath, higurashi_log_file_name)
 
-				return {
-					'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
-					'gameLogFound' : gameLogExists
-				}
+					print('Game Log [{}] {}'.format(gameLogPath, "was found" if gameLogExists else "WAS NOT FOUND"))
 
-			# TODO: Add correct paths for Linux and Mac
-			def openSaveFolder(subModId):
-				subMod = self.idToSubMod[subModId]
-				result = re.findall(r'\d\d', subMod.dataName)
+					return {
+						'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
+						'gameLogFound' : gameLogExists
+					}
+				elif action == 'openSaveFolder':
+					if subMod.family == 'higurashi':
+						result = re.findall(r'\d\d', subMod.dataName)
+						if result:
+							saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
+						else:
+							raise InstallerGUIException('Sorry, cant figure out higurashi episode number :(')
+					elif subMod.family == 'umineko':
+						saveFolderName = os.path.join(_getInstallPath(), 'mysav')
+					else:
+						raise InstallerGUIException('Cant open save folder: Unknown game family {}'.format(subMod.family))
 
-				if result:
-					saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
 					if os.path.exists(saveFolderName):
 						print('Trying to open [{}]'.format(saveFolderName))
-						common.trySystemOpen(saveFolderName)
+						common.trySystemOpen(saveFolderName, normalizePath=True)
 					else:
-						raise InstallerGUIException('Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
-				else:
-					raise InstallerGUIException('Sorry, cant figure out higurashi episode number :(')
+						raise InstallerGUIException(
+							'Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
 
-				return {}
+					return {}
 
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
@@ -540,8 +553,7 @@ class InstallerGUI:
 				'statusUpdate' : statusUpdate,
 				'getNews' : getNews,
 				'getDonationStatus' : getDonationStatus,
-				'getLogsZip' : getLogsZip,
-				'openSaveFolder' : openSaveFolder,
+				'troubleshoot' : troubleshoot,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

@@ -116,13 +116,13 @@ window.onload = function onWindowLoaded() {
       },
       // If argument 'installPath' is null, then a file chooser will let user choose game path
       getLogsZip(subModToInstall, installPath) {
-        doPost('getLogsZip', { subMod: subModToInstall, installPath }, (responseData) => {
+        doPost('troubleshoot', { action: 'getLogsZip', subMod: subModToInstall, installPath }, (responseData) => {
           console.log(responseData);
           window.location.href = responseData.filePath;
         });
       },
-      openSaveFolder(selectedSubMod) {
-        doPost('openSaveFolder', selectedSubMod.id, () => {});
+      openSaveFolder(subModToInstall, installPath) {
+        doPost('troubleshoot', { action: 'openSaveFolder', subMod: subModToInstall, installPath }, () => {});
       },
     },
     computed: {

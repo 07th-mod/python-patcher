@@ -129,15 +129,19 @@ def makeDirsExistOK(directoryToMake):
 	except OSError:
 		pass
 
-def trySystemOpen(path):
+def trySystemOpen(path, normalizePath=False):
 	"""
 	Tries to open a given path using the system 'open' function
 	The path can be a on-disk folder or a URL
 	NOTE: this function call does not block! (uses subprocess.Popen)
+	NOTE: paths won't open properly on windows if they contain backslashes. Set 'normalizePath' to handle this problem.
 	:param path: the path to show
 	:return: true if successful, false otherwise
 	"""
 	try:
+		if normalizePath:
+			path = os.path.normpath(path)
+
 		if Globals.IS_WINDOWS:
 			return subprocess.Popen(["explorer", path]) == 0
 		elif Globals.IS_MAC:

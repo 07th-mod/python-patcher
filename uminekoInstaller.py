@@ -156,6 +156,6 @@ def mainUmineko(conf):
 	# Open the temp folder so users can delete/backup any temp install files
 	if common.Globals.IS_WINDOWS:
 		print("Showing download folder for user to delete temp files")
-		common.trySystemOpen(downloadTempDir)
+		common.trySystemOpen(downloadTempDir, normalizePath=True)
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")

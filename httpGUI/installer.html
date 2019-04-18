@@ -233,8 +233,15 @@
 											In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
 											Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
 											Click the button below to show the save folder. If you are deleting your saves, **please make a backup first**.<br>
+											<div class="tab-title mb40"
+												v-if="selectedSubMod.family !== 'higurashi'"
+												v-for="fullInstallConfig in fullInstallConfigs"
+												v-on:click="openSaveFolder(selectedSubMod, fullInstallConfig.path)">
+												<span>Open Save Folder</span><br>
+												Game Path: {{ fullInstallConfig.path }}
+											</div>
 											<div class="tab-title" v-on:click="openSaveFolder(selectedSubMod)">
-												<span>Open Save Folder</span>
+												<span>Open Save Folder {{ selectedSubMod.family === 'higurashi' ? '' : '(Choose Path Manually)' }} </span>
 											</div>
 										</p>
 									</div>
