@@ -121,6 +121,9 @@ window.onload = function onWindowLoaded() {
           window.location.href = responseData.filePath;
         });
       },
+      openSaveFolder(selectedSubMod) {
+        doPost('openSaveFolder', selectedSubMod.id, () => {});
+      },
     },
     computed: {
       modHandles() {

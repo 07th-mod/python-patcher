@@ -225,9 +225,18 @@
 												<span>Download .zip file of Logs</span><br>
 												Game Path: {{ fullInstallConfig.path }}
 										</div>
-										<div class="tab-title" v-on:click="getLogsZip(selectedSubMod)">
+										<div class="tab-title mb40" v-on:click="getLogsZip(selectedSubMod)">
 											<span>Download .zip file of Logs<br>(Select Path Manually)</span>
 										</div>
+										<h4> Open Save Folder </h4>
+										<p>
+											In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
+											Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
+											Click the button below to show the save folder. If you are deleting your saves, **please make a backup first**.<br>
+											<div class="tab-title" v-on:click="openSaveFolder(selectedSubMod)">
+												<span>Open Save Folder</span>
+											</div>
+										</p>
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">

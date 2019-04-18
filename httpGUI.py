@@ -482,8 +482,9 @@ class InstallerGUI:
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
 			# This function takes identical arguments to 'startInstallHandler(...)'
-			def getLogsZip(webSubModHandle):
-				id = webSubModHandle['subMod']['id']
+			# TODO: Add correct paths for Linux and Mac
+			def getLogsZip(requestData):
+				id = requestData['subMod']['id']
 				subMod = self.idToSubMod[id]
 				installPath = requestData.get('installPath', None)
 				if installPath is None:
@@ -507,6 +508,20 @@ class InstallerGUI:
 					'gameLogFound' : gameLogExists
 				}
 
+			# TODO: Add correct paths for Linux and Mac
+			def openSaveFolder(subModId):
+				subMod = self.idToSubMod[subModId]
+				result = re.findall(r'\d\d', subMod.dataName)
+				if result:
+					saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
+					if os.path.exists(saveFolderName):
+						print('Trying to open [{}]'.format(saveFolderName))
+						common.trySystemOpen(saveFolderName)
+					else:
+						print('Save folder [{}] doesnt exist!'.format(saveFolderName))
+				else:
+					print('Cant figure out higurashi episode number!')
+
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
@@ -516,6 +531,7 @@ class InstallerGUI:
 				'getNews' : getNews,
 				'getDonationStatus' : getDonationStatus,
 				'getLogsZip' : getLogsZip,
+				'openSaveFolder' : openSaveFolder,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
