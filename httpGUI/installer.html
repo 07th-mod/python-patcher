@@ -218,8 +218,16 @@
 											Please note that the game log <b>only records one session</b>, so make sure you have just recreated the bug in the most recent session.<br><br>
 											You should submit this to our Discord in the Umineko <b>#umi_support</b> or Higurashi <b>#higu_support</b> channel when asking for help.
 										</p>
-										<!-- If the user only has one installation, only have one button "get logs". Otherwise need a different button for each install user has. -->
-										<div class="tab-title mb40" v-on:click="getLogsZip()"><span>Download Installer Log and Game Log .zip file</span></div>
+										<!-- Add one button for each detected installation. Otherwise need a different button for each install user has. -->
+										<div 	class="tab-title mb40"
+												v-for="fullInstallConfig in fullInstallConfigs"
+												v-on:click="getLogsZip(selectedSubMod, fullInstallConfig.path)">
+												<span>Download .zip file of Logs</span><br>
+												Game Path: {{ fullInstallConfig.path }}
+										</div>
+										<div class="tab-title" v-on:click="getLogsZip(selectedSubMod)">
+											<span>Download .zip file of Logs<br>(Select Path Manually)</span>
+										</div>
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">

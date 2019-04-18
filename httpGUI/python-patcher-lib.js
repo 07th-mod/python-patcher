@@ -114,8 +114,9 @@ window.onload = function onWindowLoaded() {
         console.log(subModToInstall);
         startInstall(subModToInstall, pathToInstall);
       },
-      getLogsZip() {
-        doPost('getLogsZip', [], (responseData) => {
+      // If argument 'installPath' is null, then a file chooser will let user choose game path
+      getLogsZip(subModToInstall, installPath) {
+        doPost('getLogsZip', { subMod: subModToInstall, installPath }, (responseData) => {
           console.log(responseData);
           window.location.href = responseData.filePath;
         });

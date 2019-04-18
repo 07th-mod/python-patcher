@@ -481,11 +481,30 @@ class InstallerGUI:
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
-			def getLogsZip(requestData):
+			# This function takes identical arguments to 'startInstallHandler(...)'
+			def getLogsZip(webSubModHandle):
+				id = webSubModHandle['subMod']['id']
+				subMod = self.idToSubMod[id]
+				installPath = requestData.get('installPath', None)
+				if installPath is None:
+					userSelectedPath = os.path.dirname(_TKAskPath(subMod))
+					fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
+					installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
+
+				higurashi_log_file_name = 'output_log.txt'
+				gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
+				gameLogExists = os.path.exists(gameLogPath)
 				with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
-					myzip.write(common.Globals.LOG_FILE_PATH)
+					if os.path.exists(common.Globals.LOG_FILE_PATH):
+						myzip.write(common.Globals.LOG_FILE_PATH)
+					if gameLogExists:
+						myzip.write(gameLogPath, higurashi_log_file_name)
+
+				print('Game Log [{}] {}'.format(gameLogPath, "was found" if gameLogExists else "WAS NOT FOUND"))
+
 				return {
 					'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
+					'gameLogFound' : gameLogExists
 				}
 
 			requestTypeToRequestHandlers = {
