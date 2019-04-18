@@ -38,7 +38,10 @@ function doPost(requestType, requestData, onSuccessCallback) {
   http.onreadystatechange = function onReadyStateChange() {
     if (http.readyState === 4 && http.status === 200) {
       const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
-      if (responseType !== requestType) {
+      if (responseType === 'error') {
+        console.log(`Error: ${responseDataObject.errorReason}`);
+        alert(responseDataObject.errorReason);
+      } else if (responseType === 'unknownRequest' || responseType !== requestType) {
         console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
       } else {
         onSuccessCallback(responseDataObject);

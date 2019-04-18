@@ -313,6 +313,13 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
 			modOptions[checkBoxID].value = True
 
+class InstallerGUIException(Exception):
+	def __init__(self, errorReason):
+		# type: (str) -> None
+		self.errorReason = errorReason  # type: str
+
+	def __str__(self):
+		return self.errorReason
 
 class InstallerGUI:
 	def __init__(self, allSubModConfigs):
@@ -512,15 +519,18 @@ class InstallerGUI:
 			def openSaveFolder(subModId):
 				subMod = self.idToSubMod[subModId]
 				result = re.findall(r'\d\d', subMod.dataName)
+
 				if result:
 					saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
 					if os.path.exists(saveFolderName):
 						print('Trying to open [{}]'.format(saveFolderName))
 						common.trySystemOpen(saveFolderName)
 					else:
-						print('Save folder [{}] doesnt exist!'.format(saveFolderName))
+						raise InstallerGUIException('Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
 				else:
-					print('Cant figure out higurashi episode number!')
+					raise InstallerGUIException('Sorry, cant figure out higurashi episode number :(')
+
+				return {}
 
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
@@ -535,10 +545,21 @@ class InstallerGUI:
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
-			if requestHandler:
-				return _makeJSONResponse(responseType=requestType, responseDataJson=requestHandler(requestData))
-			else:
-				return _makeJSONResponse('error', unknownRequestHandler(requestData))
+
+			# Check for unknown request
+			if not requestHandler:
+				return _makeJSONResponse('unknownRequest', unknownRequestHandler(requestData))
+
+			# Try and execute the request. If an exception is thrown, display the reason to the user on the web GUI
+			try:
+				responseDataJson = requestHandler(requestData)
+			except InstallerGUIException as installerGUIException:
+				print('Exception Thrown handling request {}: {}'.format(requestType, installerGUIException))
+				return _makeJSONResponse('error', {
+					'errorReason': '{}: {}'.format(requestType, str(installerGUIException))
+				})
+
+			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
 
 		# add handlers for each post URL here. currently only 'installer_data' is used.
 		post_handlers = {
