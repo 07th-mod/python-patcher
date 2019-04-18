@@ -9,6 +9,7 @@ import zipfile
 
 import common
 import traceback
+import threading
 
 import gameScanner
 import commandLineParser
@@ -36,7 +37,7 @@ except ImportError:
 	import tkFileDialog as filedialog
 
 try:
-	from typing import List, Optional
+	from typing import List, Optional, Dict
 except ImportError:
 	pass # Just needed for pycharm comments
 
@@ -318,17 +319,16 @@ class InstallerGUI:
 		"""
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
-		self.allSubModConfigs = allSubModConfigs
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: List[SubModConfig]
+		self.allSubModConfigs = allSubModConfigs # type: List[SubModConfig]
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, SubModConfig]
 		self.messageBuffer = []
-		self.threadHandle = None
-		self.selectedModName = None #user sets this while navigating the website
+		self.threadHandle = None # type: Optional[threading.Thread]
+		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, pathIsManual):
 		import higurashiInstaller
 		import uminekoInstaller
-		import threading
 
 		# if the path was user selected, do some extra processing on the path
 		if pathIsManual:
