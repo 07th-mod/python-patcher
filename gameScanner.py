@@ -115,10 +115,11 @@ class ModFileOverride:
 		self.url = url
 
 class ModOption:
-	def __init__(self, name, group, isRadio, data):
+	def __init__(self, name, description, group, isRadio, data):
 		# unique ID for each mod option
 		self.id = group + '-' + name # type: str
 		self.name = name # type: str
+		self.description = description # type: str
 		self.group = group # type: str
 		self.isRadio = isRadio # type: bool
 		self.data = data # type: str
@@ -165,6 +166,7 @@ class SubModConfig:
 		def jsonAddModOptionsFromList(jsonModOptionList, isRadio):
 			for jsonModOption in jsonModOptionList:
 				self.modOptions.append(ModOption(name=jsonModOption['name'],
+				                                 description=jsonModOption['description'],
 				                                 group=jsonModOptionGroup['name'],
 				                                 isRadio=isRadio,
 				                                 data=jsonModOption.get('data', None)))

@@ -29,18 +29,15 @@
                 {
                     "name" : "OST Options",
                     "radio": [
-                        {"name": "Anime OST", "data":"https://07th-mod.com/rikachama/Onikakushi-animeOST.zip"},
-                        {"name": "Console OST", "data":"https://07th-mod.com/rikachama/Onikakushi-consoleOST.zip"},
-                        {"name": "AudioRollback OST", "data":"https://07th-mod.com/rikachama/Onikakushi-audioRollback.zip"}
-                    ],
-                    "checkBox": [
-                        {"name": "ItaloKnox OST Remake", "data":"https://07th-mod.com/rikachama/Onikakushi-italoKnoxRemake.zip"}
+                        {"name": "Anime OST", "description": "Music from the Anime", "data":"https://07th-mod.com/rikachama/Onikakushi-animeOST.zip"},
+                        {"name": "Console OST", "description": "Music from the PS3 Game", "data":"https://07th-mod.com/rikachama/Onikakushi-consoleOST.zip"},
+                        {"name": "AudioRollback OST", "description": "Revert the music to before the Steam Update", "data":"https://07th-mod.com/rikachama/Onikakushi-audioRollback.zip"}
                     ]
                 },
                 {
-                    "name" : "Other Options",
+                    "name" : "Additional Downloads",
                     "checkBox": [
-                        {"name": "Keep Downloads"}
+                        {"name": "ItaloKnox OST Remake", "description": "Italo's remake of the music", "data":"https://07th-mod.com/rikachama/Onikakushi-italoKnoxRemake.zip"}
                     ]
                 }
             ]

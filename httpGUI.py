@@ -268,12 +268,13 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 	httpd.serve_forever()
 
 def modOptionsToWebFormat(modOptions):
+	# type: (List[gameScanner.ModOption]) -> List[Dict]
 	"""
 	Returns a list of dicts of the following format, to be used in the web interface:
 	[{
 		'name': str - name of the group
-		'radio': List[{'name': str, 'id': str }] - a list of options to be displayed. the id is the unique id of each option
-		'checkBox': List[{'name': str, 'id': str }] - a list of options to be displayed. the id is the unique id of each option
+		'radio': List[{'name': str, 'id': str , 'description': str}] - a list of options to be displayed. the id is the unique id of each option
+		'checkBox': List[{'name': str, 'id': str, 'description': str}] - a list of options to be displayed. the id is the unique id of each option
 		'selectedCheckBoxes': List[str] - Sent to web interface as the empty list. The web interface should fill this with checkbox IDs which have been ticked.
 		'selectedRadio': Optional[str] - Sent to web interface as 'None'. The web interface should set this to the ID of the radio button which has been selected
 	}]
@@ -293,8 +294,8 @@ def modOptionsToWebFormat(modOptions):
 	for groupName, modOptions in groups.items():
 		modOptionGroups.append({
 			'name': groupName,
-			'radio': [{'name': r.name, 'id':r.id} for r in modOptions if r.isRadio],
-			'checkBox': [{'name': c.name, 'id':c.id} for c in modOptions if not c.isRadio],
+			'radio': [{'name': r.name, 'id':r.id, 'description':r.description} for r in modOptions if r.isRadio],
+			'checkBox': [{'name': c.name, 'id':c.id, 'description':c.description} for c in modOptions if not c.isRadio],
 			# these two variables are provided to be filled in by the webpage.
 			'selectedCheckBoxes': [],
 			'selectedRadio': None,
