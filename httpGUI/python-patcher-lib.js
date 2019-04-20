@@ -79,6 +79,11 @@ function statusUpdate() {
 // the statusUpdate() function every 1s. Otherwise, the user is notified
 // that the install failed to start.
 function startInstall(subModToInstall, installPath) {
+  if (app.installStarted) {
+    alert("Installer is already running!");
+    return;
+  }
+
   doPost('startInstall',
     { subMod: subModToInstall, installPath },
     (responseData) => {
@@ -86,6 +91,7 @@ function startInstall(subModToInstall, installPath) {
       if (responseData.installStarted) {
         statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
         app.installStarted = true;
+        window.scrollTo(0, 0);
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
