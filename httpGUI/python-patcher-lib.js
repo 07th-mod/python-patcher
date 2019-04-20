@@ -6,6 +6,9 @@ let app = null;
 let el = {};
 let numberOfBlankLinesInARow = 0;
 
+// This is a handle to the setWindow(statusUpdate()) timer
+let statusUpdateTimerHandle = null;
+
 // <python-pather-rest-lib.js should be included before this file> TODO: use proper javascript import
 
 // -------------------------------- DOM Modification Functions --------------------------------
@@ -21,6 +24,7 @@ function AddAndGetTextNode(elementID) {
 // Retreives the latest status from the python server and updates the DOM with the status
 // Should be called periodically to poll the server for more status updates
 // Note that multiple status objects may be received from the server on each call.
+// TODO: should stop polling if connection is lost
 function statusUpdate() {
   doPost('statusUpdate',
     { },
@@ -31,6 +35,7 @@ function statusUpdate() {
           app.overallPercentage = status.overallPercentage;
           if (status.overallPercentage === 100) {
             app.installFinished = true;
+            window.clearInterval(statusUpdateTimerHandle);
           }
         }
         if (status.overallTaskDescription !== undefined) {
@@ -59,6 +64,7 @@ function statusUpdate() {
             alert(status.msg);
             app.installFailed = true;
             app.installFinished = true;
+            window.clearInterval(statusUpdateTimerHandle);
           }
         }
       });
@@ -78,7 +84,7 @@ function startInstall(subModToInstall, installPath) {
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
-        window.setInterval(statusUpdate, 500);
+        statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
         app.installStarted = true;
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
