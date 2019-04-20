@@ -111,6 +111,8 @@ def mainUmineko(conf):
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	downloaderAndExtractor.buildDownloadAndExtractionList()
+	downloaderAndExtractor.printPreview()
 	downloaderAndExtractor.download()
 
 	# Backup/clear the .exe and script files

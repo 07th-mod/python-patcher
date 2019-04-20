@@ -468,8 +468,6 @@ class DownloaderAndExtractor:
 				self.extractList.append(DownloaderAndExtractor.ExtractableItem(
 					filename=DownloaderAndExtractor.__getFilenameFromURL(file.url), destinationPath=self.defaultExtractionDir))
 
-		self.printPreview()
-
 		self.downloadAndExtractionListsBuilt = True
 
 	def download(self):
@@ -506,7 +504,8 @@ class DownloaderAndExtractor:
 
 	def addItemManually(self, url, extractionDir):
 		"""
-		Use this function to manually ad a file to download and extract, with a custom extraction directory
+		Use this function to manually add a file to download and extract, with a custom extraction directory
+		Does not support metalink files.
 		:param url:
 		:param extractionDir:
 		:return:
