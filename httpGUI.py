@@ -345,7 +345,7 @@ class InstallerGUI:
 			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 		if not fullInstallConfigs:
-			return False
+			raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
 
 		fullInstallSettings = fullInstallConfigs[0]
 
@@ -359,7 +359,7 @@ class InstallerGUI:
 
 		# Prevent accidentally starting two installations at once
 		if self.threadHandle and self.threadHandle.is_alive():
-			return False
+			raise Exception("Can't start install - installer already running.")
 
 		def errorPrintingInstaller(args):
 			try:
