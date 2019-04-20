@@ -48,6 +48,16 @@ class Installer:
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
+		print('MOD OPTIONS:\n')
+		for modOption in self.info.subModConfig.modOptions:
+			print('  - ' + str(modOption))
+			if modOption.value:
+				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
+					self.downloaderAndExtractor.addItemManually(
+						url=modOption.data['url'],
+						extractionDir=os.path.join(self.directory, modOption.data['relativeExtractionPath']),
+					)
+
 	def backupUI(self):
 		"""
 		Backs up the `sharedassets0.assets` file

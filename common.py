@@ -27,7 +27,7 @@ except ImportError:
 	from urllib import quote
 
 try:
-	from typing import Optional
+	from typing import Optional, List
 except:
 	pass
 
@@ -426,23 +426,34 @@ class DownloaderAndExtractor:
 	:param extractionDir:	The folder where archives will be extracted to, and where any files will be copied to
 	:return:
 	"""
+	class ExtractableItem:
+		def __init__(self, filename, destinationPath):
+			self.filename = filename
+			self.destinationPath = os.path.normpath(destinationPath)
+
+		def __repr__(self):
+			return 'ExtractableItem: Extracting file [{}] to [{}]'.format(self.filename, self.destinationPath)
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
-		self.extractionDir = extractionDir
+		self.defaultExtractionDir = extractionDir
 		self.downloadAndExtractionListsBuilt = False
 
 		# These variables indicate how much download and extract should count towards the total reported progress
 		self.downloadProgressAmount = downloadProgressAmount
 		self.extractionProgressAmount = extractionProgressAmount
 
-	def buildDownloadAndExtractionList(self):
-		# build file list
-		self.downloadList = []
-		self.extractList = []
+		self.downloadList = [] # type: List[str]
+		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
+	def buildDownloadAndExtractionList(self):
+		"""
+		This function fills in the self.downloadList and self.extractList lists, based on the self.modFileList
+		If there are existing values in the self.downloadList or self.extractList, they are retained
+		:return:
+		"""
 		print("\n Building Download and Extraction list:")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
@@ -450,17 +461,14 @@ class DownloaderAndExtractor:
 				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
 				print("Metalink contains: ", metalinkFilenames)
 				self.downloadList.append(file.url)
-				self.extractList.extend(metalinkFilenames)
+				self.extractList.extend([DownloaderAndExtractor.ExtractableItem(filename=x, destinationPath=self.defaultExtractionDir) for x in metalinkFilenames])
 			else:
 				#for all other files, query the download filename from the http header
 				self.downloadList.append(file.url)
-				self.extractList.append(DownloaderAndExtractor.__getFilenameFromURL(file.url))
+				self.extractList.append(DownloaderAndExtractor.ExtractableItem(
+					filename=DownloaderAndExtractor.__getFilenameFromURL(file.url), destinationPath=self.defaultExtractionDir))
 
-		print("\nFirst these files will be downloaded:")
-		print('\n - '.join([''] + self.downloadList))
-		print("\nThen these files will be extracted or copied:")
-		print('\n - '.join([''] + self.extractList))
-		print()
+		self.printPreview()
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -470,7 +478,7 @@ class DownloaderAndExtractor:
 
 		# download all urls to the download temp folder
 		makeDirsExistOK(self.downloadTempDir)
-		makeDirsExistOK(self.extractionDir)
+		makeDirsExistOK(self.defaultExtractionDir)
 
 		for i, url in enumerate(self.downloadList):
 			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
@@ -485,15 +493,33 @@ class DownloaderAndExtractor:
 			self.buildDownloadAndExtractionList()
 
 		# extract or copy all files from the download folder to the game directory
-		for i, filename in enumerate(self.extractList):
+		for i, extractableItem in enumerate(self.extractList):
 			overallPercentage = self.downloadProgressAmount + int(i*self.extractionProgressAmount/len(self.extractList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + filename)
-			fileNameNoExt, extension = os.path.splitext(filename)
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + str(extractableItem))
+			fileNameNoExt, extension = os.path.splitext(extractableItem.filename)
 
-			extractOrCopyFile(filename,
-							  self.downloadTempDir,
-							  self.extractionDir,
-							  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else filename)
+			#TODO: the '.u' and '.utf' logic is specific to umineko - shouldn't be in this class
+			extractOrCopyFile(extractableItem.filename,
+			                  self.downloadTempDir,
+			                  extractableItem.destinationPath,
+			                  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else extractableItem.filename)
+
+	def addItemManually(self, url, extractionDir):
+		"""
+		Use this function to manually ad a file to download and extract, with a custom extraction directory
+		:param url:
+		:param extractionDir:
+		:return:
+		"""
+		self.downloadList.append(url)
+		self.extractList.append(DownloaderAndExtractor.ExtractableItem(DownloaderAndExtractor.__getFilenameFromURL(url), extractionDir))
+
+	def printPreview(self):
+		print("\nFirst these files will be downloaded:")
+		print('\n - '.join([''] + self.downloadList))
+		print("\nThen these files will be extracted or copied:")
+		print('\n - '.join([''] + [str(x) for x in self.extractList]))
+		print()
 
 	@staticmethod
 	def __urlIsMetalink(url):
