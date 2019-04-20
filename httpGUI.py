@@ -2,6 +2,7 @@
 # see https://blog.anvileight.com/posts/simple-python-http-server/
 from __future__ import print_function
 
+import itertools
 import os
 import json
 import re
@@ -282,26 +283,24 @@ def modOptionsToWebFormat(modOptions):
 	:param modOptions: List[modOption] - a list of mod options to be converted to web format
 	:return: a list of dicts in the above format
 	"""
-	groups = {}
+	def convertOptionToHTTPFormat(opt):
+		return {'name': opt.name, 'id': opt.id, 'description': opt.description}
 
-	# group modOptions by groupname ('group by modOption.group' operation)
-	for modOption in modOptions:
-		if modOption.group not in groups:
-			groups[modOption.group] = []
-		groups[modOption.group].append(modOption)
-
-	modOptionGroups = []
-	for groupName, modOptions in groups.items():
-		modOptionGroups.append({
+	httpFormattedOptions = []
+	for groupName, groupOptionsIterator in itertools.groupby(modOptions, key=lambda x: x.group):
+		groupOptions = list(groupOptionsIterator)
+		radioOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if o.isRadio]
+		checkBoxOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if not o.isRadio]
+		httpFormattedOptions.append({
 			'name': groupName,
-			'radio': [{'name': r.name, 'id':r.id, 'description':r.description} for r in modOptions if r.isRadio],
-			'checkBox': [{'name': c.name, 'id':c.id, 'description':c.description} for c in modOptions if not c.isRadio],
+			'radio': radioOptions,
+			'checkBox': checkBoxOptions,
 			# these two variables are provided to be filled in by the webpage.
 			'selectedCheckBoxes': [],
-			'selectedRadio': None,
+			'selectedRadio': None if not radioOptions else radioOptions[0]['id'], #note: the ID is of the form "BGM Options-Old BGM" - see definition of ModOption
 		})
 
-	return modOptionGroups
+	return httpFormattedOptions
 
 def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
