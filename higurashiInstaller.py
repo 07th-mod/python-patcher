@@ -48,6 +48,8 @@ class Installer:
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
+		self.downloaderAndExtractor.buildDownloadAndExtractionList()
+
 		print('MOD OPTIONS:\n')
 		for modOption in self.info.subModConfig.modOptions:
 			print('  - ' + str(modOption))
