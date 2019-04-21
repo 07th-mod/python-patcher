@@ -128,12 +128,10 @@ window.onload = function onWindowLoaded() {
         console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
         console.log(app.selectedSubMod);
         startInstall(app.selectedSubMod, app.selectedInstallPath);
-        app.showConfirmation = false;
       },
       onConfirmButtonClicked(pathToInstall) {
         app.selectedInstallPath = pathToInstall;
         app.showConfirmation = true;
-        window.scrollTo(0, 0);
       },
       // If argument 'installPath' is null, then a file chooser will let user choose game path
       getLogsZip(subModToInstall, installPath) {
