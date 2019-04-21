@@ -100,28 +100,54 @@ class Installer:
 	def extractFiles(self):
 		self.downloaderAndExtractor.extract()
 
-	def moveFilesIntoPlace(self, fromDir=None, toDir=None):
+	def moveFilesIntoPlace(self):
 		"""
 		Moves files from the directory they were extracted to
 		to the game data folder
-
-		fromDir and toDir are for recursion, leave them at their defaults to start the process
 		"""
-		if fromDir is None: fromDir = os.path.join(self.extractDir, self.info.subModConfig.dataName)
-		if toDir is None: toDir = self.dataDirectory
+		self._moveDirectoryIntoPlace(
+			fromDir = os.path.join(self.extractDir, self.info.subModConfig.dataName),
+			toDir = self.dataDirectory
+		)
+		if common.Globals.IS_WINDOWS:
+			self._moveFileIntoPlace(
+				fromPath = os.path.join(self.extractDir, self.info.subModConfig.dataName[:-5] + ".exe"),
+				toPath = self.directory
+			)
+		elif common.Globals.IS_MAC:
+			self._moveFileIntoPlace(
+				fromPath = os.path.join(self.extractDir, "Contents/Resources/PlayerIcon.icns"),
+				toPath = os.path.join(self.directory, "Contents/Resources/PlayerIcon.icns")
+			)
 
+
+	def _moveDirectoryIntoPlace(self, fromDir, toDir):
+		# type: (str, str) -> None
+		"""
+		Recursive function that does the actual moving for `moveFilesIntoPlace`
+		"""
 		for file in os.listdir(fromDir):
 			src = path.join(fromDir, file)
 			target = path.join(toDir, file)
 			if path.isdir(src):
 				if not path.exists(target):
 					os.mkdir(target)
-				self.moveFilesIntoPlace(fromDir=src, toDir=target)
+				self._moveDirectoryIntoPlace(fromDir=src, toDir=target)
 			else:
 				if path.exists(target):
 					os.remove(target)
 				shutil.move(src, target)
 		os.rmdir(fromDir)
+
+	def _moveFileIntoPlace(self, fromPath, toPath):
+		# type: (str, str) -> None
+		"""
+		Moves a single file from `fromPath` to `toPath`
+		"""
+		if path.exists(fromPath):
+			if path.exists(toPath):
+				os.remove(toPath)
+			shutil.move(fromPath, toPath)
 
 	def cleanup(self):
 		"""
