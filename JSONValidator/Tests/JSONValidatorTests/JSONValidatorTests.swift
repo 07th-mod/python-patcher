@@ -75,6 +75,13 @@ final class JSONValidatorTests: XCTestCase {
 					XCTAssert(files.contains(override.name), "Override \(override.name) must override a file in the file list of \(mod.name) \(submod.name)")
 				}
 			}
+			for option in mod.modOptionGroups ?? [] {
+				let numNonNil = [option.radio, option.checkBox].lazy.filter({ $0 != nil }).count
+				if numNonNil != 1 {
+					XCTFail("\(mod.name) option \(option.name) must have either a radio button or checkBox but not both")
+				}
+				option.checkBox?.forEach { XCTAssertNotNil($0.data, "CheckBoxes must have data but \(mod.name) option \(option.name) doesn't!") }
+			}
 		}
 	}
 
@@ -84,17 +91,12 @@ final class JSONValidatorTests: XCTestCase {
 			XCTFail("Failed to decode install data, look at other tests for details")
 			return
 		}
-		let allURLs = installData.mods.flatMap({ mod -> [String] in
-			return mod.submods.flatMap { submod -> [String] in
-				return submod.files.compactMap { $0.url } + submod.fileOverrides.map { $0.url }
+		func testDownload(_ urlString: String, codingPath: String) {
+			guard let url = URL(string: urlString) else {
+				XCTFail("The url \"\(urlString)\" was invalid")
+				return
 			}
-		}).compactMap { urlString -> URL? in
-			let url = URL(string: urlString)
-			XCTAssertNotNil(url, "The url \"\(urlString)\" was invalid")
-			return url
-		}
-		for url in Set(allURLs) {
-			let e = expectation(description: "\(url) should be retrievable")
+			let e = expectation(description: "\(url) (at \(codingPath)) was invalid")
 			var request = URLRequest(url: url)
 			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
 
@@ -102,23 +104,44 @@ final class JSONValidatorTests: XCTestCase {
 			task = URLSession.shared.dataTask(with: request) { [weak task] (data, response, error) in
 				task?.cancel()
 				if let error = error {
-					XCTFail("Failed to download \(url): \(error)")
+					XCTFail("Failed to download \(url) (at \(codingPath)): \(error)")
 				}
 				else if let response = response as? HTTPURLResponse {
 					if response.statusCode != 200 && response.statusCode != 206 {
-						XCTFail("Failed to download \(url): response code was \(response.statusCode)")
+						XCTFail("Failed to download \(url) (at \(codingPath)): response code was \(response.statusCode)")
 					}
 				}
 				else if let response = response {
-					XCTFail("Failed to download \(url): unexpected response: \(response)")
+					XCTFail("Failed to download \(url) (at \(codingPath)): unexpected response: \(response)")
 				}
 				else {
-					XCTFail("Failed to download \(url): got nil response with no error")
+					XCTFail("Failed to download \(url) (at \(codingPath)): got nil response with no error")
 				}
 				e.fulfill()
 			}
 			task!.resume()
 		}
+
+		for mod in installData.mods {
+			for submod in mod.submods {
+				for file in submod.files {
+					if let url = file.url {
+						testDownload(url, codingPath: "\(mod.name) → \(submod.name) → \(file.name)")
+					}
+				}
+				for (index, file) in submod.fileOverrides.enumerated() {
+					testDownload(file.url, codingPath: "\(mod.name) → \(submod.name) → override \(index) / \(submod.name)")
+				}
+			}
+			for option in mod.modOptionGroups ?? [] {
+				if let entry = option.radio ?? option.checkBox {
+					for item in entry where item.data != nil {
+						testDownload(item.data!.url, codingPath: "\(mod.name) → option \(option.name) → \(item.name)")
+					}
+				}
+			}
+		}
+
 		waitForExpectations(timeout: 20)
 	}
 

@@ -33,6 +33,8 @@ public struct ModDefinition: Codable {
 	public var identifiers: [String]
 	/// The list of submods this mod has
 	public var submods: [SubmodDefinition]
+	/// A list of selectable mod options that can apply to any submod
+	public var modOptionGroups: [ModOptionGroup]?
 	/// If this exists and the user is on macOS, the installer will overwrite the CFBundleName of the target application with the name given here.  This will change the name that shows up when the application is launched.
 	public var CFBundleName: String?
 	/// If this exists and the user is on macOS, the installer will overwrite the CFBundleIdentifier of the target application with the name given here.  This will change the save directory used on Higurashi games.
@@ -83,4 +85,37 @@ public enum OS: String, Codable, CaseIterable {
 	case mac
 	case linux
 	case windows
+}
+
+public struct ModOptionGroup: Codable {
+	/// The name of this group
+	public var name: String
+	/// The type (currently only one option)
+	public var type: ModOptionType
+	/// Data for if this is a radio button.  Mutually exclusive with checkBox
+	public var radio: [ModOptionEntry]?
+	/// Data for if this is a checkBox.  Mutually exclusive with radio
+	public var checkBox: [ModOptionEntry]?
+}
+
+public enum ModOptionType: String, Codable {
+	case downloadAndExtract
+}
+
+public struct ModOptionEntry: Codable {
+	/// The name of this option
+	public var name: String
+	/// A longer description of the option
+	public var description: String
+	/// The data to download if this option is selected (null indicates a radio button that is just there to be "not the others" and doesn't actually add anything)
+	public var data: ModOptionFileDefinition?
+}
+
+public struct ModOptionFileDefinition: Codable {
+	/// The url for the mod option
+	public var url: String
+	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
+	public var relativeExtractionPath: String
+	/// The priority of this file (same system as above priorities)
+	public var priority: Int
 }
