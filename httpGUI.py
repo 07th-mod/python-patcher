@@ -7,6 +7,7 @@ import os
 import json
 import re
 import zipfile
+import subprocess
 
 import common
 import traceback
@@ -46,6 +47,8 @@ collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskPath(subMod):
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
+	if common.Globals.IS_MAC:
+		return subprocess.check_output(["osascript", "-e",  "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"Please choose a game to install to\")"]).strip().decode("utf-8")
 	root = Tk()
 
 	# this creates the default option, which allows you to select all identifiers and any extras specified here.
