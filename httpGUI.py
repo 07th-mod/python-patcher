@@ -419,7 +419,7 @@ class InstallerGUI:
 						}
 					)
 
-				return { 'selectedMod' : self.selectedModName, 'subModHandles' : subModHandles }
+				return { 'selectedMod' : self.selectedModName, 'subModHandles' : subModHandles, 'logFilePath': os.path.abspath(common.Globals.LOG_FILE_PATH) }
 
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
