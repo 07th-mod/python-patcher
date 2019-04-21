@@ -66,11 +66,7 @@ if __name__ == "__main__":
 			print(conf)
 			subModconfigList.append(conf)
 
-	if _TKAskYesNo('Use the new Web Interface?\n(Press yes if unsure)', 'GUI Type Selection'):
-		installerGUI = httpGUI.InstallerGUI(subModconfigList)
-		installerGUI.server_test()
-	else:
-		gui = installerGUI.InstallerGUI(subModconfigList)
-		gui.mainloop()
+	installerGUI = httpGUI.InstallerGUI(subModconfigList)
+	installerGUI.server_test()
 
 	exit()
