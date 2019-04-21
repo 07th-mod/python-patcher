@@ -24,7 +24,38 @@
 						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Onikakushi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+		    "modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "Additional Downloads", "type": "downloadAndExtract",
+                    "checkBox": [
+                        {
+	                        "name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "StreamingAssets", "priority": 20}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",
@@ -49,7 +80,38 @@
 						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+		    "modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "Additional Downloads", "type": "downloadAndExtract",
+                    "checkBox": [
+                        {
+	                        "name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "StreamingAssets", "priority": 20}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",
@@ -77,7 +139,38 @@
 						{"name": "ui",      "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://07th-mod.com/rikachama/Tatarigoroshi-UI_UNIX-MG.7z"}
 					]
 				}
-			]
+			],
+		    "modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "Additional Downloads", "type": "downloadAndExtract",
+                    "checkBox": [
+                        {
+	                        "name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "StreamingAssets", "priority": 20}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",
@@ -103,7 +196,38 @@
 						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Himatsubushi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+		    "modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "Additional Downloads", "type": "downloadAndExtract",
+                    "checkBox": [
+                        {
+	                        "name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "StreamingAssets", "priority": 20}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",
@@ -128,7 +252,29 @@
 						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Meakashi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+			"modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",
@@ -153,7 +299,29 @@
 						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-UI_UNIX.7z"}
 					]
 				}
-			]
+			],
+			"modOptionGroups": [
+                {
+                    "name" : "BGM Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default BGM", "description": "Use the default Background Music"},
+                        {
+	                        "name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+	                        "data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                },
+                {
+                    "name" : "SE Options", "type": "downloadAndExtract",
+                    "radio": [
+                        {"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+                        {
+	                        "name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+	                        "data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "StreamingAssets", "priority": 10}
+                        }
+                    ]
+                }
+            ]
 		},
 		{
 			"family": "higurashi",

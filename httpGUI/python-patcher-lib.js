@@ -6,54 +6,10 @@ let app = null;
 let el = {};
 let numberOfBlankLinesInARow = 0;
 
-// Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
-function makeJSONRequest(requestType, requestData) {
-  return JSON.stringify({ requestType, requestData });
-}
+// This is a handle to the setWindow(statusUpdate()) timer
+let statusUpdateTimerHandle = null;
 
-function decodeJSONResponse(jsonString) {
-  const responseObject = JSON.parse(jsonString);
-  return [responseObject.responseType, responseObject.responseData];
-}
-
-// Send any object in JSON format as a POST request to the server.
-//
-// Arguments:
-//
-// - requestType (str): The type of request, as a string, sent to the server.
-//    - If incorrect, the server will send a response with type 'error'.
-//    - If correct, the server will send a response with the same type as the request
-//
-// - requestData (object): An object sent to the server with the request.
-//
-// - onSuccessCallback (function(object)): A fn executed when a response is received
-//      from the server. The fn should take the returned object as its only argument
-function doPost(requestType, requestData, onSuccessCallback) {
-  const http = new XMLHttpRequest();
-  const url = 'installer_data'; // in python, is stored in 'self.path' on the handler class
-
-  // in python, is retrieved by calling 'self.rfile.read(content_length)',
-  // where content_length is in the header (see python code)
-  http.open('POST', url, true);
-
-  // Send the proper header information along with the request
-  http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-  // Call a function when the state changes.
-  // TODO: add timeout here to notify user if server has crashed or stopped working
-  http.onreadystatechange = function onReadyStateChange() {
-    if (http.readyState === 4 && http.status === 200) {
-      const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
-      if (responseType !== requestType) {
-        console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
-      } else {
-        onSuccessCallback(responseDataObject);
-      }
-    }
-  };
-
-  http.send(makeJSONRequest(requestType, requestData));
-}
+// <python-pather-rest-lib.js should be included before this file> TODO: use proper javascript import
 
 // -------------------------------- DOM Modification Functions --------------------------------
 // Adds a text node to the element with the given ID, returning the text node
@@ -68,6 +24,7 @@ function AddAndGetTextNode(elementID) {
 // Retreives the latest status from the python server and updates the DOM with the status
 // Should be called periodically to poll the server for more status updates
 // Note that multiple status objects may be received from the server on each call.
+// TODO: should stop polling if connection is lost
 function statusUpdate() {
   doPost('statusUpdate',
     { },
@@ -75,16 +32,21 @@ function statusUpdate() {
       console.log(responseData);
       responseData.forEach((status) => {
         if (status.overallPercentage !== undefined) {
-          el.overallPercentageTextNode.nodeValue = `${status.overallPercentage}%`;
+          app.overallPercentage = status.overallPercentage;
+          if (status.overallPercentage === 100) {
+            app.installFinished = true;
+            window.clearInterval(statusUpdateTimerHandle);
+            alert("Install Finished! Before closing the installer, launch the game to make sure it works correctly. Click the troubleshooting button for help if something goes wrong.");
+          }
         }
         if (status.overallTaskDescription !== undefined) {
-          el.overallTaskDescriptionTextNode.nodeValue = status.overallTaskDescription;
+          app.overallTaskDescription = status.overallTaskDescription;
         }
         if (status.subTaskPercentage !== undefined) {
-          el.subTaskPercentageTextNode.nodeValue = `${status.subTaskPercentage}%`;
+          app.subTaskPercentage = status.subTaskPercentage;
         }
         if (status.subTaskDescription !== undefined) {
-          el.subTaskDescriptionTextNode.nodeValue = status.subTaskDescription;
+          app.subTaskDescription = status.subTaskDescription;
         }
         if (status.msg !== undefined) {
           // Don't print out more than 3 blank lines in a row
@@ -101,6 +63,9 @@ function statusUpdate() {
           // If status.msg is defined, status.error will also be defined
           if (status.error) {
             alert(status.msg);
+            app.installFailed = true;
+            app.installFinished = true;
+            window.clearInterval(statusUpdateTimerHandle);
           }
         }
       });
@@ -114,13 +79,20 @@ function statusUpdate() {
 // If the install starts successfully, a interval timer wil call
 // the statusUpdate() function every 1s. Otherwise, the user is notified
 // that the install failed to start.
-function startInstall(subModID, installPath) {
+function startInstall(subModToInstall, installPath) {
+  if (app.installStarted) {
+    alert("Installer is already running!");
+    return;
+  }
+
   doPost('startInstall',
-    { id: subModID, installPath },
+    { subMod: subModToInstall, installPath },
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
-        window.setInterval(statusUpdate, 500);
+        statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
+        app.installStarted = true;
+        window.scrollTo(0, 0);
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
@@ -132,42 +104,6 @@ function startInstall(subModID, installPath) {
 // - Main Vue instance, called 'app', is initialized
 // - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
-  Vue.component('vue-mod-button', {
-    props: ['modName'],
-    data() {
-      return { };
-    },
-    methods: {
-      selectMod(modName) { app.selectedMod = modName; },
-      imagePath() { return `images/${this.modName}.png`; },
-    },
-    template: '<button class="modButton" v-on:click="selectMod(modName)"><img v-bind:src="imagePath()"/> {{ modName }} </button>',
-  });
-
-  Vue.component('vue-submod-button', {
-    props: ['subModHandle'],
-    data() { return { }; },
-    methods: {
-      selectSubMod(subModHandle) {
-        console.log(subModHandle);
-        app.selectedSubMod = subModHandle;
-      },
-    },
-    template: '<button v-on:click="selectSubMod(subModHandle)"> {{ subModHandle.subModName }} </button>',
-  });
-
-  Vue.component('vue-install-path-button', {
-    props: ['fullInstallConfig'],
-    data() { return { }; },
-    methods: {
-      doInstall(fullInstallConfig) {
-        console.log(fullInstallConfig);
-        startInstall(fullInstallConfig.id, fullInstallConfig.path);
-      },
-    },
-    template: '<button v-on:click="doInstall(fullInstallConfig)"> {{ fullInstallConfig.path }} </button>',
-  });
-
   app = new Vue({
     el: '#app',
     data: {
@@ -175,9 +111,32 @@ window.onload = function onWindowLoaded() {
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
+      installStarted: false,
+      installFinished: false,
+      installFailed: false,
+      showTroubleshooting: false,
+      overallPercentage: 0,
+      subTaskPercentage: 0,
+      overallTaskDescription: 'Overall Task Description',
+      subTaskDescription: 'Sub Task Description',
     },
     methods: {
-      doInstallManualPath() { startInstall(this.selectedSubMod.id); },
+      doInstallManualPath() { startInstall(this.selectedSubMod); },
+      doInstall(subModToInstall, pathToInstall) {
+        console.log(`Trying to start install to ${pathToInstall} Submod:`);
+        console.log(subModToInstall);
+        startInstall(subModToInstall, pathToInstall);
+      },
+      // If argument 'installPath' is null, then a file chooser will let user choose game path
+      getLogsZip(subModToInstall, installPath) {
+        doPost('troubleshoot', { action: 'getLogsZip', subMod: subModToInstall, installPath }, (responseData) => {
+          console.log(responseData);
+          window.location.href = responseData.filePath;
+        });
+      },
+      openSaveFolder(subModToInstall, installPath) {
+        doPost('troubleshoot', { action: 'openSaveFolder', subMod: subModToInstall, installPath }, () => {});
+      },
     },
     computed: {
       modHandles() {
@@ -198,8 +157,11 @@ window.onload = function onWindowLoaded() {
       },
     },
     watch: {
-      selectedMod: function onselectedMod(newselectedMod, oldSselectedMod) {
-        this.selectedSubMod = null;
+      // This sets the app.selectedSubMod to the first subMod in the subModList.
+      // However it is disabled for now, so the default value is 'null'.
+      // When the app.selectedSubMod is 'null', the "Intro/Troubleshooting" page is displayed.
+      selectedMod: function onselectedMod(newselectedMod, oldSelectedMod) {
+        this.selectedSubMod = this.possibleSubMods[0];
       },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
@@ -212,18 +174,18 @@ window.onload = function onWindowLoaded() {
   });
 
   el = {
-    overallPercentageTextNode: AddAndGetTextNode('overallPercentage'),
-    overallTaskDescriptionTextNode: AddAndGetTextNode('overallTaskDescription'),
-    subTaskPercentageTextNode: AddAndGetTextNode('subTaskPercentage'),
-    subTaskDescriptionTextNode: AddAndGetTextNode('subTaskDescription'),
     terminal: document.getElementById('terminal'),
   };
 
-  el.overallPercentageTextNode.nodeValue = '0%';
-  el.overallTaskDescriptionTextNode.nodeValue = 'Overall Status';
-  el.subTaskPercentageTextNode.nodeValue = '0%';
-  el.subTaskDescriptionTextNode.nodeValue = 'Sub Task Status';
-
   // populate the app.subModList with subMods from the python server
-  doPost('subModHandles', [], (responseData) => { console.log(responseData); app.subModList = responseData; });
+  doPost('subModHandles', [], (responseData) => {
+    console.log(responseData);
+    app.subModList = responseData.subModHandles;
+    // NOTE: when app.selectedMod is changed, the selectedMod 'watch' automatically updates
+    // the app.selectedSubMod to the first value in the possibleSubMods list
+    app.selectedMod = responseData.selectedMod;
+    console.log(app.selectedSubMod);
+
+    replaceElementWithNews('modNews', app.selectedMod);
+  });
 };

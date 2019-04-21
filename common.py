@@ -20,10 +20,16 @@ except AttributeError:
 
 try:
 	from urllib.request import urlopen, Request
-	from urllib.parse import urlparse
+	from urllib.parse import urlparse, quote
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 	from urlparse import urlparse
+	from urllib import quote
+
+try:
+	from typing import Optional, List
+except:
+	pass
 
 def findWorkingExecutablePath(executable_paths, flags):
 	"""
@@ -66,6 +72,7 @@ def printErrorMessage(text):
 
 ################################################## Global Variables#####################################################
 class Globals:
+	githubMasterBaseURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
 	JSON_VERSION = 2
@@ -87,6 +94,9 @@ class Globals:
 
 	#Print this string from the installer thread to notify of an error during the installation.
 	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
+
+	LOG_FILE_PATH = "07th-mod-install.log"
+	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"
 
 	@staticmethod
 	def scanForExecutables():
@@ -119,15 +129,19 @@ def makeDirsExistOK(directoryToMake):
 	except OSError:
 		pass
 
-def trySystemOpen(path):
+def trySystemOpen(path, normalizePath=False):
 	"""
 	Tries to open a given path using the system 'open' function
 	The path can be a on-disk folder or a URL
 	NOTE: this function call does not block! (uses subprocess.Popen)
+	NOTE: paths won't open properly on windows if they contain backslashes. Set 'normalizePath' to handle this problem.
 	:param path: the path to show
 	:return: true if successful, false otherwise
 	"""
 	try:
+		if normalizePath:
+			path = os.path.normpath(path)
+
 		if Globals.IS_WINDOWS:
 			return subprocess.Popen(["explorer", path]) == 0
 		elif Globals.IS_MAC:
@@ -252,6 +266,44 @@ def sevenZipExtract(archive_path, outputDir=None):
 		arguments.append('-o' + outputDir)
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
+def tryGetRemoteNews(newsName):
+	"""
+	:param changelogName: the name of the changelog to retrieve, without file extension
+	There should be one for each mod, and one called 'news' for the index.html page
+	:return:
+	"""
+	localPath = 'news/' + newsName + '.md'
+	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
+	try:
+		if os.path.exists(localPath):
+			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3
+		else:
+			file = urlopen(Request(url, headers={"User-Agent": ""}))
+	except HTTPError as error:
+		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
+
+	return file.read().decode('utf-8')
+
+def getDonationStatus():
+	# type: () -> (Optional[str], Optional[str])
+	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*until\s*<b>\s*([^<]+)", re.IGNORECASE)
+	progressAmountRegex = re.compile(r"progress\s*value=(\d+)", re.IGNORECASE)
+
+	try:
+		file = urlopen(Request(r"http://07th-mod.com/wiki/", headers={"User-Agent": ""}))
+	except HTTPError as error:
+		return None, None
+
+	entirePage = file.read().decode('utf-8')
+
+	match = serverTimeRemainingRegex.search(entirePage)
+	monthsRemainingString = None if match is None else match.group(1)
+
+	match = progressAmountRegex.search(entirePage)
+	progressPercentString = None if match is None else match.group(1)
+
+	return monthsRemainingString, progressPercentString
+
 def getModList(jsonURL):
 	"""
 	Gets the list of available mods from the 07th Mod server
@@ -374,23 +426,34 @@ class DownloaderAndExtractor:
 	:param extractionDir:	The folder where archives will be extracted to, and where any files will be copied to
 	:return:
 	"""
+	class ExtractableItem:
+		def __init__(self, filename, destinationPath):
+			self.filename = filename
+			self.destinationPath = os.path.normpath(destinationPath)
+
+		def __repr__(self):
+			return 'ExtractableItem: Extracting file [{}] to [{}]'.format(self.filename, self.destinationPath)
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
-		self.extractionDir = extractionDir
+		self.defaultExtractionDir = extractionDir
 		self.downloadAndExtractionListsBuilt = False
 
 		# These variables indicate how much download and extract should count towards the total reported progress
 		self.downloadProgressAmount = downloadProgressAmount
 		self.extractionProgressAmount = extractionProgressAmount
 
-	def buildDownloadAndExtractionList(self):
-		# build file list
-		self.downloadList = []
-		self.extractList = []
+		self.downloadList = [] # type: List[str]
+		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
+	def buildDownloadAndExtractionList(self):
+		"""
+		This function fills in the self.downloadList and self.extractList lists, based on the self.modFileList
+		If there are existing values in the self.downloadList or self.extractList, they are retained
+		:return:
+		"""
 		print("\n Building Download and Extraction list:")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
@@ -398,17 +461,12 @@ class DownloaderAndExtractor:
 				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
 				print("Metalink contains: ", metalinkFilenames)
 				self.downloadList.append(file.url)
-				self.extractList.extend(metalinkFilenames)
+				self.extractList.extend([DownloaderAndExtractor.ExtractableItem(filename=x, destinationPath=self.defaultExtractionDir) for x in metalinkFilenames])
 			else:
 				#for all other files, query the download filename from the http header
 				self.downloadList.append(file.url)
-				self.extractList.append(DownloaderAndExtractor.__getFilenameFromURL(file.url))
-
-		print("\nFirst these files will be downloaded:")
-		print('\n - '.join([''] + self.downloadList))
-		print("\nThen these files will be extracted or copied:")
-		print('\n - '.join([''] + self.extractList))
-		print()
+				self.extractList.append(DownloaderAndExtractor.ExtractableItem(
+					filename=DownloaderAndExtractor.__getFilenameFromURL(file.url), destinationPath=self.defaultExtractionDir))
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -418,7 +476,7 @@ class DownloaderAndExtractor:
 
 		# download all urls to the download temp folder
 		makeDirsExistOK(self.downloadTempDir)
-		makeDirsExistOK(self.extractionDir)
+		makeDirsExistOK(self.defaultExtractionDir)
 
 		for i, url in enumerate(self.downloadList):
 			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
@@ -433,15 +491,34 @@ class DownloaderAndExtractor:
 			self.buildDownloadAndExtractionList()
 
 		# extract or copy all files from the download folder to the game directory
-		for i, filename in enumerate(self.extractList):
+		for i, extractableItem in enumerate(self.extractList):
 			overallPercentage = self.downloadProgressAmount + int(i*self.extractionProgressAmount/len(self.extractList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + filename)
-			fileNameNoExt, extension = os.path.splitext(filename)
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + str(extractableItem))
+			fileNameNoExt, extension = os.path.splitext(extractableItem.filename)
 
-			extractOrCopyFile(filename,
-							  self.downloadTempDir,
-							  self.extractionDir,
-							  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else filename)
+			#TODO: the '.u' and '.utf' logic is specific to umineko - shouldn't be in this class
+			extractOrCopyFile(extractableItem.filename,
+			                  self.downloadTempDir,
+			                  extractableItem.destinationPath,
+			                  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else extractableItem.filename)
+
+	def addItemManually(self, url, extractionDir):
+		"""
+		Use this function to manually add a file to download and extract, with a custom extraction directory
+		Does not support metalink files.
+		:param url:
+		:param extractionDir:
+		:return:
+		"""
+		self.downloadList.append(url)
+		self.extractList.append(DownloaderAndExtractor.ExtractableItem(DownloaderAndExtractor.__getFilenameFromURL(url), extractionDir))
+
+	def printPreview(self):
+		print("\nFirst these files will be downloaded:")
+		print('\n - '.join([''] + self.downloadList))
+		print("\nThen these files will be extracted or copied:")
+		print('\n - '.join([''] + [str(x) for x in self.extractList]))
+		print()
 
 	@staticmethod
 	def __urlIsMetalink(url):

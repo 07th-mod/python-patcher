@@ -13,6 +13,11 @@ except ImportError:
 	from ScrolledText import ScrolledText
 	import tkMessageBox as messagebox
 
+try:
+	import tkMessageBox as messagebox
+except ImportError:
+	from tkinter import messagebox
+
 # as per https://legacy.python.org/getit/mac/tcltk/ tkinter "Apple 8.5.9" should ship with mac 10.8,
 # which is the minimum MAC version for higurashi. It has some bugs relating to inputing certain characters,
 # but I don't think we will encounter them
@@ -42,6 +47,15 @@ def make_button(root, text, image, callback):
 	label = Label(frame, text=text)
 	label.pack(side=LEFT)
 	return frame
+
+def _TKAskYesNo(questionText, windowTitle='Question'):
+	root = Tk()
+
+	result = messagebox.askquestion(windowTitle, questionText) == 'yes'
+
+	root.destroy()
+
+	return result
 
 class ImageButtonList:
 	def __init__(self, root, max_per_column):

@@ -48,6 +48,25 @@ class Installer:
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
+		self.downloaderAndExtractor.buildDownloadAndExtractionList()
+
+		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
+		print('MOD OPTIONS:\n')
+		downloadAndExtractOptions = []
+		for modOption in self.info.subModConfig.modOptions:
+			print('  - ' + str(modOption))
+			if modOption.value:
+				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
+					downloadAndExtractOptions.append(modOption)
+
+		for opt in sorted(downloadAndExtractOptions, key=lambda opt: opt.data['priority']):
+			self.downloaderAndExtractor.addItemManually(
+				url=opt.data['url'],
+				extractionDir=os.path.join(self.dataDirectory, opt.data['relativeExtractionPath']),
+			)
+
+		self.downloaderAndExtractor.printPreview()
+
 	def backupUI(self):
 		"""
 		Backs up the `sharedassets0.assets` file

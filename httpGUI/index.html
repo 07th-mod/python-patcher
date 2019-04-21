@@ -1,60 +1,283 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel = "stylesheet" type = "text/css" href = "style.css" />
-<meta charset="UTF-8">
-<title>Page Title</title>
-<script src="vue.js"></script>
-<script src="python-patcher-lib.js"></script>
 
-</head>
-<body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Installer Index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/flexslider.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+				
+		<div class="nav-container">
+		    
+		    
+		
+		    
+		    <nav>
+		        <div class="nav-bar">
+		            <div class="module left">
+		                <a href="index.html">
+		                    <img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+		                </a>
+		            </div>
+		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+		                <i class="ti-menu"></i>
+		            </div>
+		            <div class="module-group right">
+		                <div class="module left">
+		                    <ul class="menu">
+		                        
+		                        <li class="has-dropdown">
+		                            <a href="higurashi.html" target="_self">Higurashi When They Cry</a>
+		                            <ul class="mega-menu">
+		                                <li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Question Arcs</span>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Onikakushi Ch.1')" target="_self">Ch.1 Onikakushi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Watanagashi Ch.2')" target="_self">Ch.2 Watanagashi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Tatarigoroshi Ch.3')" target="_self">Ch.3 Tatarigoroshi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Himatsubushi Ch.4')" target="_self">Ch.4 Himatsubushi</a>
+		                                        </li>
+		                                    </ul>
+		                                </li>
+		                                <li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Answer Arcs</span>
+												</li>
+												<li>
+		                                            <a onclick="setModNameAndNavigate('Meakashi Ch.5')" target="_self">Ch.5 Meakashi</a>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Tsumihoroboshi Ch.6')" target="_self">Ch.6 Tsumihoroboshi</a>
+		                                        </li>
+		                                    </ul>
+										</li>
+										<li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Console Arcs</span>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Console Arcs')" target="_self">All Chapters</a>
+		                                        </li>
+		                                    </ul>
+		                                </li>
+		                            </ul>
+								</li>
+								<li class="has-dropdown">
+		                            <a href="umineko.html">Umineko When They Cry</a>
+		                            <ul>
+		                                <li>
+		                                    <a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">Question Arcs</a>
+		                                </li>
+		                                <li>
+		                                    <a onclick="setModNameAndNavigate('Umineko Answer (Ch. 5-8)')">Answer Arcs</a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                        
+		                    </ul>
+		                </div>
+		                
+		                <div class="module widget-handle language left">
+		                    <ul class="menu">
+		                        <li class="has-dropdown">
+		                            <a href="#">More</a>
+		                            <ul>
+		                                <li>
+		                                    <a href="updater.html" target="_self">Patch updater</a>
+		                                </li>
+		                                <li>
+		                                    <a href="troubleshoot.html" target="_self">Troubleshoot</a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                </div>
+		            </div>
+		            
+		        </div>
+		    </nav>
+		
+		    
+		    
+		
+		    
+		    
+		
+		</div>
+		
+		<div class="main-container">
+			<section class="page-title page-title-2 image-bg overlay parallax">
+					<div class="background-image-holder">
+						<img alt="Background Image" class="background-image" src="img/games/consolearcs.jpg">
+					</div>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6">
+								<h2 class="uppercase mb8">Higurashi Console Arcs</h2>
+								<p class="lead mb0">New chapter: Tsukiotoshi-hen<br></br></p>
+								<a class="btn btn-lg" onclick="setModNameAndNavigate('Console Arcs')">INSTALL</a>
+							</div>
+							<div class="col-md-6 text-center">
+								<div class="feature bordered hidden-xs hidden-sm boxed">
+									<div id="globalNews" class="rendered-markdown"></div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+				</section><section class="projects pt48">
+					<div class="container">
+						<div class="row pb24">
+							<div class="col-sm-12 text-center">
+								<ul class="filters mb0">
+								</ul>
+							</div>
+						</div>
+						
+						<div class="row masonry-loader">
+							<div class="col-sm-12 text-center">
+								<div class="spinner"></div>
+							</div>
+						</div>
+						<div class="row masonry masonryFlyIn">
+							<div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">
+										<img alt="Umineko" src="img/games/umineko-question.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Umineko</h5>
+											<span>Question Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Umineko Answer (Ch. 5-8)')">
+										<img alt="Umineko Chiru" src="img/games/umineko-answer.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Umineko Chiru</h5>
+											<span>Answer Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Console Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Console Arcs')">
+										<img alt="Console Arcs" src="img/games/console.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Console Arcs</h5>
+											<span>All Chapters</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Onikakushi Ch.1')">
+										<img alt="Onikakushi" src="img/games/header1.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Onikakushi</h5>
+											<span>Chapter 1 - Question Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Watanagashi Ch.2')">
+										<img alt="Watanagashi" src="img/games/header2.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Watanagashi</h5>
+											<span>Chapter 2 - Question Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Tatarigoroshi Ch.3')">
+										<img alt="Tatarigoroshi" src="img/games/header3.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Tatarigoroshi</h5>
+											<span>Chapter 3 - Question Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Himatsubushi Ch.4')">
+										<img alt="Himatsubushi" src="img/games/header4.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Himatsubushi</h5>
+											<span>Chapter 4 - Question Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Meakashi Ch.5')">
+										<img alt="Meakashi" src="img/games/header5.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Meakashi</h5>
+											<span>Chapter 5 - Answer Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
+								<div class="image-tile inner-title hover-reveal text-center">
+									<a onclick="setModNameAndNavigate('Tsumihoroboshi Ch.6')">
+										<img alt="Tsumihoroboshi" src="img/games/header6.jpg">
+										<div class="title">
+											<h5 class="uppercase mb0">Tsumihoroboshi</h5>
+											<span>Chapter 6 - Answer Arcs</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+				</section>
+				<section class="section-small-padding bg-secondary">
+					<div class="container">
+						<h5>Donation Status</h5>
+						<p>
+							Server time remaining: until <b id="donationMonthsRemaining"></b>.
+							<a href="http://07th-mod.com/wiki/Donations/">Click Here</a> to Donate!
+						</p>
+						<p>This year's funding goal is <b id="donationProgress"></b>% complete</p>
+					</div>
+				</section>
+			</div>
 
-<p>Developers: You may need to manually refresh your browser to see changes asdf</p>
-
-<div id="app">
-  <h2>Mod List</h2>
-  <div>
-  <vue-mod-button 
-  v-for="mod in modHandles"
-  v-bind:mod-name ="mod.modName"
-  v-bind:key = "mod.key">
-  </vue-mod-button>
-  </div>
-
-  <p>Selected mod is {{ selectedMod }} </p>
-
-  <h2>SubMod List</h2>
-  <div>
-  <vue-submod-button 
-  v-for="subMod in possibleSubMods"
-  v-bind:sub-mod-handle ="subMod"
-  v-bind:key="subMod.id">
-  </vue-submod-button>
-  </div>
-
-  <h2>Game Paths List</h2>
-  <div>
-  <vue-install-path-button 
-  v-for="fullInstallConfig in fullInstallConfigs"
-  v-bind:full-install-config ="fullInstallConfig"
-  v-bind:key="fullInstallConfig.key">
-  </vue-install-path-button>
-  </div>
-
-  <button v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>Choose Path Manually</button>
-</div>
-
-<h2>Overall percentage and description</h2>
-<div id="overallPercentage"></div>
-<div id="overallTaskDescription"></div>
-
-<h2>Subtask percentage and description</h2>
-<div id="subTaskPercentage"></div>
-<div id="subTaskDescription"></div>
-
-<h2>Terminal:</h2>
-<div id="terminal"><p>Terminal Output</p></div>
-
-</body>
-</html> 
+			
+					
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/masonry.min.js"></script>
+		<script src="js/parallax.js"></script>
+		<script src="js/scripts.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script>
+			replaceElementWithNews('globalNews', 'news');
+			replaceDonationStatus('donationMonthsRemaining', 'donationProgress');
+		</script>
+		</body>
+	</html>
+	

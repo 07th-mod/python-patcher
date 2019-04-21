@@ -2,16 +2,20 @@
 # see https://blog.anvileight.com/posts/simple-python-http-server/
 from __future__ import print_function
 
+import itertools
 import os
 import json
 import re
+import zipfile
 
 import common
 import traceback
+import threading
 
 import gameScanner
 import commandLineParser
 import logger
+from gameScanner import SubModConfig
 
 try:
 	import urlparse
@@ -32,6 +36,11 @@ try:
 except ImportError:
 	from Tkinter import Tk
 	import tkFileDialog as filedialog
+
+try:
+	from typing import List, Optional, Dict
+except ImportError:
+	pass # Just needed for pycharm comments
 
 collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskPath(subMod):
@@ -163,7 +172,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			print('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
+			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -259,22 +268,74 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 	serverStartedCallback(httpd)
 	httpd.serve_forever()
 
+def modOptionsToWebFormat(modOptions):
+	# type: (List[gameScanner.ModOption]) -> List[Dict]
+	"""
+	Returns a list of dicts of the following format, to be used in the web interface:
+	[{
+		'name': str - name of the group
+		'radio': List[{'name': str, 'id': str , 'description': str}] - a list of options to be displayed. the id is the unique id of each option
+		'checkBox': List[{'name': str, 'id': str, 'description': str}] - a list of options to be displayed. the id is the unique id of each option
+		'selectedCheckBoxes': List[str] - Sent to web interface as the empty list. The web interface should fill this with checkbox IDs which have been ticked.
+		'selectedRadio': Optional[str] - Sent to web interface as 'None'. The web interface should set this to the ID of the radio button which has been selected
+	}]
+
+	:param modOptions: List[modOption] - a list of mod options to be converted to web format
+	:return: a list of dicts in the above format
+	"""
+	def convertOptionToHTTPFormat(opt):
+		return {'name': opt.name, 'id': opt.id, 'description': opt.description}
+
+	httpFormattedOptions = []
+	for groupName, groupOptionsIterator in itertools.groupby(modOptions, key=lambda x: x.group):
+		groupOptions = list(groupOptionsIterator)
+		radioOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if o.isRadio]
+		checkBoxOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if not o.isRadio]
+		httpFormattedOptions.append({
+			'name': groupName,
+			'radio': radioOptions,
+			'checkBox': checkBoxOptions,
+			# these two variables are provided to be filled in by the webpage.
+			'selectedCheckBoxes': [],
+			'selectedRadio': None if not radioOptions else radioOptions[0]['id'], #note: the ID is of the form "BGM Options-Old BGM" - see definition of ModOption
+		})
+
+	return httpFormattedOptions
+
+def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
+	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
+
+	for modOptionGroup in webFormatModOptions:
+		selectedRadioID = modOptionGroup['selectedRadio']
+		if selectedRadioID is not None:
+			modOptions[selectedRadioID].value = True
+
+		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
+			modOptions[checkBoxID].value = True
+
+class InstallerGUIException(Exception):
+	def __init__(self, errorReason):
+		# type: (str) -> None
+		self.errorReason = errorReason  # type: str
+
+	def __str__(self):
+		return self.errorReason
 
 class InstallerGUI:
 	def __init__(self, allSubModConfigs):
 		"""
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
-		self.allSubModConfigs = allSubModConfigs
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs}
+		self.allSubModConfigs = allSubModConfigs # type: List[SubModConfig]
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, SubModConfig]
 		self.messageBuffer = []
-		self.threadHandle = None
+		self.threadHandle = None # type: Optional[threading.Thread]
+		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, pathIsManual):
 		import higurashiInstaller
 		import uminekoInstaller
-		import threading
 
 		# if the path was user selected, do some extra processing on the path
 		if pathIsManual:
@@ -284,7 +345,7 @@ class InstallerGUI:
 			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 		if not fullInstallConfigs:
-			return False
+			raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
 
 		fullInstallSettings = fullInstallConfigs[0]
 
@@ -298,7 +359,7 @@ class InstallerGUI:
 
 		# Prevent accidentally starting two installations at once
 		if self.threadHandle and self.threadHandle.is_alive():
-			return False
+			raise Exception("Can't start install - installer already running.")
 
 		def errorPrintingInstaller(args):
 			try:
@@ -315,11 +376,25 @@ class InstallerGUI:
 
 	# An example of how this class can be used.
 	def server_test(self):
+		# the directory where files will be served from
+		workingDirectory = 'httpGUI'
+
 		def handleInstallerData(body_string):
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
 			if requestType != 'statusUpdate':
-				logger.getGlobalLogger().writeNoLog('Got Request [{}] Data [{}]'.format(requestType, requestData))
+				print('Got Request [{}] Data [{}]\n'.format(requestType, requestData))
+
+			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
+			# responseData: a dictionary indicating if it's a valid selection (true, false)
+			def setModName(requestData):
+				userSelectedModToInstall = requestData['modName']
+				modNames = [config.modName for config in self.allSubModConfigs]
+				modNameValid = userSelectedModToInstall in modNames
+				if modNameValid:
+					self.selectedModName = userSelectedModToInstall
+
+				return { 'valid': modNameValid, 'modNames': modNames }
 
 			# requestData: leave as null. will be ignored.
 			# responseData: A dictionary containing basic information about each subModConfig, along with it's index.
@@ -335,10 +410,13 @@ class InstallerGUI:
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
+							'description' : 'FROM PYTHON httpGUI.py: description goes here',
+							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
+							'family': subModConfig.family,
 						}
 					)
 
-				return subModHandles
+				return { 'selectedMod' : self.selectedModName, 'subModHandles' : subModHandles }
 
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
@@ -370,8 +448,18 @@ class InstallerGUI:
 			# responseData: If the path is valid:
 			#               If the path is invalid: null is returned
 			def startInstallHandler(requestData):
-				id = requestData['id']
+				# this is not a 'proper' submod - just a handle returned form getSubModHandlesRequestHandler()
+				webSubModHandle = requestData['subMod']
+				webModOptionGroups = webSubModHandle['modOptionGroups']
+				id = webSubModHandle['id']
+
 				subMod = self.idToSubMod[id]
+
+				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
+				print("\nUser selected options for install:")
+				for modOption in subMod.modOptions:
+					print(modOption)
+
 				pathIsManual = False
 				installPath = requestData.get('installPath', None)
 
@@ -388,21 +476,102 @@ class InstallerGUI:
 			def statusUpdate(requestData):
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
 
+			def getNews(requestData):
+				return common.tryGetRemoteNews(requestData)
+
+			def getDonationStatus(requestData):
+				monthsRemaining, progressPercent = common.getDonationStatus()
+				return  {
+					'monthsRemaining': monthsRemaining,
+					'progressPercent': progressPercent,
+				}
+
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
 
+			# This function takes identical arguments to 'startInstallHandler(...)'
+			# TODO: Add correct paths for Linux and Mac
+			def troubleshoot(requestData):
+				action = requestData['action']
+
+				id = requestData['subMod']['id']
+				subMod = self.idToSubMod[id]
+
+				# If the requestData included the install path, use that. Otherwise, open a dialog to choose the path
+				# returns the empty string if user cancels selecting a path
+				def _getInstallPath():
+					_installPath = requestData.get('installPath', None)
+					if _installPath is None:
+						userSelectedPath = os.path.dirname(_TKAskPath(subMod))
+						fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
+						_installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
+					return _installPath
+
+				if action == 'getLogsZip':
+					installPath = _getInstallPath()
+					higurashi_log_file_name = 'output_log.txt'
+					gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
+					gameLogExists = os.path.exists(gameLogPath)
+					with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
+						if os.path.exists(common.Globals.LOG_FILE_PATH):
+							myzip.write(common.Globals.LOG_FILE_PATH)
+						if gameLogExists:
+							myzip.write(gameLogPath, higurashi_log_file_name)
+
+					print('Game Log [{}] {}'.format(gameLogPath, "was found" if gameLogExists else "WAS NOT FOUND"))
+
+					return {
+						'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
+						'gameLogFound' : gameLogExists
+					}
+				elif action == 'openSaveFolder':
+					if subMod.family == 'higurashi':
+						result = re.findall(r'\d\d', subMod.dataName)
+						if result:
+							saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
+						else:
+							raise InstallerGUIException('Sorry, cant figure out higurashi episode number :(')
+					elif subMod.family == 'umineko':
+						saveFolderName = os.path.join(_getInstallPath(), 'mysav')
+					else:
+						raise InstallerGUIException('Cant open save folder: Unknown game family {}'.format(subMod.family))
+
+					if os.path.exists(saveFolderName):
+						print('Trying to open [{}]'.format(saveFolderName))
+						common.trySystemOpen(saveFolderName, normalizePath=True)
+					else:
+						raise InstallerGUIException(
+							'Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
+
+					return {}
+
 			requestTypeToRequestHandlers = {
+				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
 				'statusUpdate' : statusUpdate,
+				'getNews' : getNews,
+				'getDonationStatus' : getDonationStatus,
+				'troubleshoot' : troubleshoot,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
-			if requestHandler:
-				return _makeJSONResponse(responseType=requestType, responseDataJson=requestHandler(requestData))
-			else:
-				return _makeJSONResponse('error', unknownRequestHandler(requestData))
+
+			# Check for unknown request
+			if not requestHandler:
+				return _makeJSONResponse('unknownRequest', unknownRequestHandler(requestData))
+
+			# Try and execute the request. If an exception is thrown, display the reason to the user on the web GUI
+			try:
+				responseDataJson = requestHandler(requestData)
+			except InstallerGUIException as installerGUIException:
+				print('Exception Thrown handling request {}: {}'.format(requestType, installerGUIException))
+				return _makeJSONResponse('error', {
+					'errorReason': '{}: {}'.format(requestType, str(installerGUIException))
+				})
+
+			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
 
 		# add handlers for each post URL here. currently only 'installer_data' is used.
 		post_handlers = {
@@ -414,6 +583,6 @@ class InstallerGUI:
 			common.trySystemOpen(web_server_url)
 			print("Please open {} in your browser if it didn't open automatically".format(web_server_url))
 
-		start_server(working_directory='httpGUI',
+		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,
 		             serverStartedCallback=on_server_started)

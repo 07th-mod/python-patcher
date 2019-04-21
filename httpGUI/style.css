@@ -10,9 +10,79 @@
     margin: auto;
 }
 
+/* When bootstrap progress bars are used with this template,
+they have zero height. This forces the height to some valid value*/
+.installer-progress-bar {
+    height: 30px;
+}
+
 #terminal {
     overflow-y:scroll;
     height: 30em;
     font-family: monospace;
     white-space: pre;
+    border-style: solid;
+    padding-left: 1em;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.installer-markdown h1 {
+    font-size: 3em;
+    margin-bottom: 0px;
+}
+
+.installer-markdown h2 {
+    font-size: 2em;
+    margin-bottom: 0px;
+}
+
+.installer-markdown p {
+    line-height: 16px;
+}
+
+.installer-options-group {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rendered-markdown h1 {
+    text-transform: uppercase;
+    letter-spacing: 17px;
+    font-weight:400;
+    margin-bottom: 10px;
+}
+
+.rendered-markdown h2 {
+    text-align: left;
+    font-weight:400;
+    font-size: 2em;
+    margin-bottom: 0;
+}
+
+.rendered-markdown p {
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 16px;
+}
+
+.section-small-padding {
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+
+/* These classes are used by Vue for transitions - see https://vuejs.org/v2/guide/transitions.html */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .25s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.install-finished-div p {
+    line-height: 16px;
+    margin-bottom: 0;
 }

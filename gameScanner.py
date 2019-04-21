@@ -108,11 +108,37 @@ class ModFile:
 class ModFileOverride:
 	def __init__(self, name, os, steam, unity, url):
 		# type: (str, List[str], Optional[bool], Optional[str], str) -> None
-		self.name = name
-		self.os = os #note: this is an ARRAY, eg ["mac", "linux"]
-		self.steam = steam	#this can be 'none' if the override applies to both mac and steam
-		self.unity = unity
-		self.url = url
+		self.name = name # type: str
+		self.os = os # type: List[str]
+		"""This is an List, describing all operating systems where this override applies eg ["mac", "linux"]"""
+		self.steam = steam	#type: Optional[bool]
+		"""This can be 'None' if the override applies to both mac and steam"""
+		self.unity = unity #type: Optional[str]
+		self.url = url # type: str
+
+class ModOption:
+	def __init__(self, name, description, group, type, isRadio, data):
+		self.id = group + '-' + name # type: str # unique ID for each mod option, for example "SE Options-Old OST"
+		self.name = name # type: str
+		self.description = description # type: str
+		"""A textual description of the mod option, only used for display"""
+		self.group = group # type: str
+		"""Defined at Group Level: This defines what named group the mod option is categorized under"""
+		self.type = type # type: str
+		"""Defined at Group Level: This is the type of mod option. It can be used instead of the (group, name) pair to filter out actions.
+		For example, all mod options of type 'downloadAndExtract' type should contain a 'url' and 'relativeExtractionPath'
+		field in their data dictionary, and thus can be processed in python the same way."""
+		self.isRadio = isRadio # type: bool
+		"""Defines whether the option is """
+		self.data = data # type: dict
+		"""This contains any data required to execute this mod option. It is deliberately an untyped dict to
+		accommodate various kinds of fields/data required by various kinds of options. You must refer to the JSON to
+		check what kinds of values it contains for a given type of mod option."""
+		self.value = False # type: bool
+		"""This represents whether the user has enabled or disabled this mod option"""
+
+	def __repr__(self):
+		return "Option ID: [{}] Value: [{}]".format(self.id, self.value)
 
 #directly represents a single submod from the json file
 class SubModConfig:
@@ -146,6 +172,22 @@ class SubModConfig:
 				unity=subModFileOverride.get('unity'),
 				url=subModFileOverride['url']
 			))
+
+		# If no mod options are specified in the JSON, the 'self.modOptions' field defaults to the empty list ([])
+		self.modOptions = [] # type: List[ModOption]
+
+		def jsonAddModOptionsFromList(jsonModOptionList, isRadio):
+			for jsonModOption in jsonModOptionList:
+				self.modOptions.append(ModOption(name=jsonModOption['name'],
+				                                 description=jsonModOption['description'],
+				                                 group=jsonModOptionGroup['name'],
+				                                 type=jsonModOptionGroup['type'],
+				                                 isRadio=isRadio,
+				                                 data=jsonModOption.get('data', None)))
+
+		for jsonModOptionGroup in mod.get('modOptionGroups', []):
+			jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
+			jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)

@@ -1,0 +1,365 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chapter Install: Umineko Question Arcs</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+				
+		<div class="nav-container">
+		    <nav>
+		        <div class="nav-bar">
+		            <div class="module left">
+		                <a href="index.html">
+		                    <img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+		                </a>
+		            </div>
+		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+		                <i class="ti-menu"></i>
+		            </div>
+		            <div class="module-group right">
+		                <div class="module left">
+		                    <ul class="menu">
+		                        
+		                        <li class="has-dropdown">
+		                            <a href="higurashi.html" target="_self">Higurashi When They Cry</a>
+		                            <ul class="mega-menu">
+		                                <li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Question Arcs</span>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Onikakushi Ch.1')" target="_self">Ch.1 Onikakushi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Watanagashi Ch.2')" target="_self">Ch.2 Watanagashi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Tatarigoroshi Ch.3')" target="_self">Ch.3 Tatarigoroshi</a>
+		                                        </li><li>
+		                                            <a onclick="setModNameAndNavigate('Himatsubushi Ch.4')" target="_self">Ch.4 Himatsubushi</a>
+		                                        </li>
+		                                    </ul>
+		                                </li>
+		                                <li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Answer Arcs</span>
+												</li>
+												<li>
+		                                            <a onclick="setModNameAndNavigate('Meakashi Ch.5')" target="_self">Ch.5 Meakashi</a>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Tsumihoroboshi Ch.6')" target="_self">Ch.6 Tsumihoroboshi</a>
+		                                        </li>
+		                                    </ul>
+										</li>
+										<li>
+		                                    <ul>
+		                                        <li>
+		                                            <span class="title">Console Arcs</span>
+		                                        </li>
+		                                        <li>
+		                                            <a onclick="setModNameAndNavigate('Console Arcs')" target="_self">All Chapters</a>
+		                                        </li>
+		                                    </ul>
+		                                </li>
+		                            </ul>
+								</li>
+								<li class="has-dropdown">
+		                            <a href="umineko.html">Umineko When They Cry</a>
+		                            <ul>
+		                                <li>
+		                                    <a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">Question Arcs</a>
+		                                </li>
+		                                <li>
+		                                    <a onclick="setModNameAndNavigate('Umineko Answer (Ch. 5-8)')">Answer Arcs</a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                        
+		                    </ul>
+		                </div>
+		                
+		                <div class="module widget-handle language left">
+		                    <ul class="menu">
+		                        <li class="has-dropdown">
+		                            <a href="#">More</a>
+		                            <ul>
+		                                <li>
+		                                    <a href="updater.html" target="_self">Patch updater</a>
+		                                </li>
+		                                <li>
+		                                    <a href="troubleshoot.html" target="_self">Troubleshoot</a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                </div>
+		            </div>
+		            
+		        </div>
+		    </nav>
+		
+		</div>
+
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
+		<div id="app" class="main-container" v-cloak>
+			<section class="page-title page-title-4 bg-secondary">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8">
+								<h3 class="uppercase mb0">{{ selectedMod }}</h3>
+							</div>
+							<div class="col-md-4 text-right">
+								<ol class="breadcrumb breadcrumb-2">
+									<li>
+										<a href="index.html" target="_self">Home</a>
+									</li>
+									<li class="active">{{ selectedMod }}<br></li>
+								</ol>
+							</div>
+						</div>
+					</div>
+			</section>
+			<transition name="fade">
+			<div class="container text-center mt40 install-finished-div" v-show="installFinished">
+			<hr>
+			<!-- Displayed when the install finishes successfully -->
+			<section class="section-small-padding" v-show="!installFailed">
+				<h1 style="color: green;">The install has finished!</h1>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
+					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
+					<p>Please run "EnableSteamSync.bat" file in the game folder if you really want to enable it</p>
+					<p>Please check out our <a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a> for common problems</p>
+				</div>
+				<div v-else>
+					<p>Warning: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
+					<p>This is normal, however if the game freezes on a <b>black screen</b> it's likely something went wrong - please contact us on Discord if this happens.</p>
+					<p>Please check out our <a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a> for common problems</p>
+				</div>
+				<p><strong>Please try to launch the game at least once to validate it works correctly!</strong><br>
+					 If it does not, click the "troubleshooting" button on the left to troubleshoot the install</p>
+			</section>
+			<!-- Displayed when the install fails-->
+			<section class="section-small-padding" v-show="installFailed">
+				<h1 style="color: red;">The install failed :(</h1>
+				<p> Please check the last few mesages in the terminal output for more information. </p>
+				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
+					<p>Common Umineko install failure reasons go here.</p>
+				</div>
+				<div v-else>
+					<p>A common reason for the Higurashi installation to fail is that you have an <b>old version of the game</b>.</p>
+					<p>The installer would have detected this and mentioned you have an old Unity version. Please make sure your game is up to date before installing the game.</p>
+				</div>
+			</section>
+			<!-- Displayed always the install fails-->
+			<div class="mb40">
+				<p>
+					The install path was ""<br>
+					The install log was saved to ""<br><br>
+					If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
+				</p>
+			</div>
+			<hr>
+			</div>
+			</transition>
+			<transition name="fade">
+				<section class="section-small-padding" v-show="installStarted">
+						<div class="container">
+							<h3> Overall Progress: {{ overallPercentage }}% </h3>
+							<h5> {{ overallTaskDescription }} </h5>
+							<div class="progress">
+								<div id="overallProgressBar" class="progress-bar installer-progress-bar" :style="{width: overallPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="overallPercentage" aria-valuemin="0" aria-valuemax="100" >
+									<span class="sr-only">{{ overallPercentage }}% Complete</span>
+								</div>
+							</div>
+
+							<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
+							<h5> {{ subTaskDescription }} </h5>
+							<div class="progress">
+								<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
+									<span class="sr-only">{{ subTaskPercentage }}% Complete</span>
+								</div>
+							</div>
+
+							<h3>Terminal:</h3>
+
+							<div id="terminal"><p>Terminal Output</p></div>
+							Note: New terminal output displayed at top, old terminal output displayed at bottom.
+						</div>
+				</section>
+			</transition>
+			<transition name="fade">
+			<section class="section-small-padding">
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="tabbed-content button-tabs vertical">
+									<!-- Left Hand Column displaying list of submods that can be installed (eg "Full Patch", "Voice Only") -->
+									<ul class="tabs col-md-3">
+										<h4 class="uppercase mb40">Choose Patch</h4>
+										<li
+										v-for="subMod in possibleSubMods"
+										v-on:click="selectedSubMod = subMod; showTroubleshooting = false;"
+										v-bind:class="{ active: selectedSubMod === subMod}"
+										>
+											<div class="tab-title"><span> Install {{ subMod.subModName }} Patch</span></div>
+										</li>
+
+										<li><br><hr></li>
+										<li v-if="selectedSubMod !== null"
+											v-on:click="showTroubleshooting = !showTroubleshooting;"
+											v-bind:class="{ active: showTroubleshooting}">
+										<div class="tab-title" ><span>"{{ selectedSubMod.subModName }} patch"  Troubleshooting</span></div>
+										</li>
+									</ul>
+									<!-- Right Hand Column: Display Troubleshooting Help (only when troubleshooting button clicked) -->
+									<div class="content col-md-9" v-if="showTroubleshooting && (selectedSubMod !== null)">
+										<h4 class="uppercase">"{{ selectedSubMod.subModName }} patch" Troubleshooting</h4>
+										<hr>
+										<h4>FAQ and Troubleshooting Information</h4>
+										<p>Click on the links below to visit the FAQ of our wiki:<br>
+										<a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi Wiki FAQ</a><br>
+										<a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko Wiki FAQ</a><br>
+										</p>
+										<h4>Discord Server</h4>
+										<p>
+											We have a discord server where you can request for support on the game. Make sure to do the following<br>
+											- Submit your Installer and Game Log (see below section)<br>
+											- Check the pinned message on the channel by clicking on the 
+											<svg name="Pin" class="iconInactive-g2AXfB icon-1R19_H" width="24" height="24" viewBox="0 0 26 26"><g fill="none" fill-rule="evenodd"><path d="M1 1h24v24H1"></path><path class="iconForeground-3y9f0B" fill="currentColor" d="M15 15V6h-4v9h-.50899482C10.22788048 15 10 15.2238576 10 15.5c0 .2680664.2198305.5.49100518.5h5.01798964C15.77211952 16 16 15.7761424 16 15.5c0-.2680664-.2198305-.5-.49100518-.5H15zm2-9h1V4H8v2h1v8l-2 2v2h5.2v4h1.6v-4H19v-2l-2-2V6z"></path></g></svg>
+											icon at the top right of the <b>#umi_support</b> or <b>#higu_support</b> channel. It will tell you other information that you should submit to us.
+										</p>
+										<a href="https://discord.gg/pf5VhF9" target="_blank"><div class="tab-title mb40" ><span>Open Our Discord Server</span></div></a>
+										<h4>Get Installer and Game Log (Windows)</h4>
+										<p>
+											There are two logs:<br>
+											- The installer logs (produced by this installer). This may be useful if your install didn't fully complete or seems stuck.<br>
+											- The game log (produced by the game). This may be useful if your game freezes or crashes.<br><br>
+											The button below will generate a .zip file containing both of these logs.
+											Please note that the game log <b>only records one session</b>, so make sure you have just recreated the bug in the most recent session.<br><br>
+											You should submit this to our Discord in the Umineko <b>#umi_support</b> or Higurashi <b>#higu_support</b> channel when asking for help.
+										</p>
+										<!-- Add one button for each detected installation. Otherwise need a different button for each install user has. -->
+										<div 	class="tab-title mb40"
+												v-for="fullInstallConfig in fullInstallConfigs"
+												v-on:click="getLogsZip(selectedSubMod, fullInstallConfig.path)">
+												<span>Download .zip file of Logs</span><br>
+												Game Path: {{ fullInstallConfig.path }}
+										</div>
+										<div class="tab-title mb40" v-on:click="getLogsZip(selectedSubMod)">
+											<span>Download .zip file of Logs<br>(Select Path Manually)</span>
+										</div>
+										<h4> Open Save Folder (Windows)</h4>
+										<p>
+											In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
+											Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
+											Click the button below to show the save folder. If you are deleting your saves, <b>please make a backup first</b>.<br>
+											<div class="tab-title mb40"
+												v-if="selectedSubMod.family !== 'higurashi'"
+												v-for="fullInstallConfig in fullInstallConfigs"
+												v-on:click="openSaveFolder(selectedSubMod, fullInstallConfig.path)">
+												<span>Open Save Folder</span><br>
+												Game Path: {{ fullInstallConfig.path }}
+											</div>
+											<div class="tab-title" v-on:click="openSaveFolder(selectedSubMod)">
+												<span>Open Save Folder {{ selectedSubMod.family === 'higurashi' ? '' : '(Choose Path Manually)' }} </span>
+											</div>
+										</p>
+										<!-- Drojf - this should probably be in the wiki, unless the installer can automatically opent he location on linux -->
+										<h4>Other Useful Information</h4>
+<p><pre>
+	Mac game log location: '/Users/<yourusername>/Library/Logs/Unity/Player.log'
+	Linux save file locations:
+	~/.config/unity3d/Mangagamer/Higurashi When They Cry _ Ch_1 Onikakushi
+	~/.config/unity3d/MangaGamer/Higurashi When They Cry _ Ch_1 Onikakushi
+	~/.config/unity3d/MangaGamer/ Higurashi When They Cry - Ch.1 Onikakushi</pre></p>
+										<!-- Drojf - not sure whether should add this informat
+										<h4> Delete CompiledUpdateScripts Folder</h4>
+										<p>Sometimes it can help to force a rebuild of the compiled update scripts. The folder is located in "Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets\CompiledUpdateScripts"</p>-->
+										<!--<h4> Log Autoscan</h4>
+										<p>Add scan script for errors here.</p> -->
+									</div>
+									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
+									<ul class="content col-md-9">
+										<div v-if="(showTroubleshooting == false) && (selectedSubMod !== null)">
+											<div class="tab-content">
+												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
+												<hr>
+												<p>{{selectedSubMod.description}}</p>
+												<!-- Install options, displayed as radio buttons and checkboxes -->
+												<h4 class="uppercase">Choose Mod Options</h4>
+												<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+													<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
+													<div v-for="radioOption in modOptionGroup.radio">
+														<input class="form-check-input" type="radio" v-bind:name="modOptionGroup.name" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
+														<label class="form-check-label" v-bind:for="radioOption.name">
+															{{ radioOption.name }}
+														</label>
+														<p>{{ radioOption.description }}</p>
+													</div>
+													<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
+														<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
+														<label class="form-check-label" v-bind:for="checkBoxOption.name">
+															{{ checkBoxOption.name }}
+														</label>
+														<p>{{ checkBoxOption.description }}</p>
+													</div>
+												</div>
+												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
+												<!-- Section allowing you to start install or choose game path to install -->
+												<div class="button-tabs vertical">
+													<h4 class="uppercase">Choose an install path</h4>
+													<ul class="tabs">
+														<li v-for="fullInstallConfig in fullInstallConfigs"
+															v-on:click="doInstall(selectedSubMod, fullInstallConfig.path);"
+															v-bind:key="fullInstallConfig.key">
+															<div class="tab-title">
+																Start Installation to "{{ fullInstallConfig.path }}"
+															</div>
+														</li>
+
+														<li>
+															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
+																Choose Install Path Manually
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+			</section>
+			</transition>
+			<section class="section-small-padding bg-secondary">
+			<div class="container">
+				<div id="modNews" class="installer-markdown"></div>
+			</div>
+			</section>
+		</div>
+
+				
+		<script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/parallax.js"></script>
+        <script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-lib.js"></script>
+    </body>
+</html>
