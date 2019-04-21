@@ -92,7 +92,6 @@ function startInstall(subModToInstall, installPath) {
       if (responseData.installStarted) {
         statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
         app.installStarted = true;
-        app.selectedInstallPath = installPath;
         window.scrollTo(0, 0);
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
@@ -112,6 +111,7 @@ window.onload = function onWindowLoaded() {
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
+      showConfirmation: false,
       installStarted: false,
       installFinished: false,
       installFailed: false,
@@ -124,11 +124,16 @@ window.onload = function onWindowLoaded() {
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
     },
     methods: {
-      doInstallManualPath() { startInstall(this.selectedSubMod); },
-      doInstall(subModToInstall, pathToInstall) {
-        console.log(`Trying to start install to ${pathToInstall} Submod:`);
-        console.log(subModToInstall);
-        startInstall(subModToInstall, pathToInstall);
+      doInstall() {
+        console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
+        console.log(app.selectedSubMod);
+        startInstall(app.selectedSubMod, app.selectedInstallPath);
+        app.showConfirmation = false;
+      },
+      onConfirmButtonClicked(pathToInstall) {
+        app.selectedInstallPath = pathToInstall;
+        app.showConfirmation = true;
+        window.scrollTo(0, 0);
       },
       // If argument 'installPath' is null, then a file chooser will let user choose game path
       getLogsZip(subModToInstall, installPath) {

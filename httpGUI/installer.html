@@ -174,6 +174,27 @@
 			</div>
 			</transition>
 			<transition name="fade">
+			<section class="section-small-padding">
+			<div class="container mt40" v-if="showConfirmation">
+				<h4>Please confirm your install settings:</h4>
+				<div class="mb40">
+					Mod Name: "{{ selectedMod }}" <br>
+					Patch Type: "{{ selectedSubMod.subModName }}" <br>
+					Install Path: "{{ selectedInstallPath === null ? "Not Selected" : selectedInstallPath }}" <br><br>
+					<strong>Options</strong>
+					<div v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+						{{ modOptionGroup.selectedRadio === null && modOptionGroup.selectedCheckBoxes.length == 0 ? modOptionGroup.name + ': None' : (modOptionGroup.selectedRadio || '') + modOptionGroup.selectedCheckBoxes.join(', ')  }} 
+					</div>
+				</div>
+				<ul class="tabs button-tabs">
+					<li><div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstall()>
+						<span>Start the installation!</span>
+					</div></li>
+				</ul>
+			</div>
+			</section>
+			</transition>
+			<transition name="fade">
 				<section class="section-small-padding" v-show="installStarted">
 						<div class="container">
 							<h3> Overall Progress: {{ overallPercentage }}% </h3>
@@ -322,15 +343,15 @@
 													<h4 class="uppercase">Choose an install path</h4>
 													<ul class="tabs">
 														<li v-for="fullInstallConfig in fullInstallConfigs"
-															v-on:click="doInstall(selectedSubMod, fullInstallConfig.path);"
+															v-on:click="onConfirmButtonClicked(fullInstallConfig.path);"
 															v-bind:key="fullInstallConfig.key">
 															<div class="tab-title">
-																Start Installation to "{{ fullInstallConfig.path }}"
+																Set install path to: "{{ fullInstallConfig.path }}"
 															</div>
 														</li>
 
 														<li>
-															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstallManualPath()>
+															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onConfirmButtonClicked()>
 																Choose Install Path Manually
 															</div>
 														</li>

@@ -118,7 +118,7 @@ class ModFileOverride:
 
 class ModOption:
 	def __init__(self, name, description, group, type, isRadio, data):
-		self.id = group + '-' + name # type: str # unique ID for each mod option, for example "SE Options-Old OST"
+		self.id = group + ': ' + name # type: str # unique ID for each mod option, for example "SE Options-Old OST"
 		self.name = name # type: str
 		self.description = description # type: str
 		"""A textual description of the mod option, only used for display"""
