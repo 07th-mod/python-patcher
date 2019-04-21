@@ -92,6 +92,7 @@ function startInstall(subModToInstall, installPath) {
       if (responseData.installStarted) {
         statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
         app.installStarted = true;
+        app.selectedInstallPath = installPath;
         window.scrollTo(0, 0);
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
@@ -119,6 +120,8 @@ window.onload = function onWindowLoaded() {
       subTaskPercentage: 0,
       overallTaskDescription: 'Overall Task Description',
       subTaskDescription: 'Sub Task Description',
+      selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
+      logFilePath: null, // When window loaded, this script queries the installer as to the log file path
     },
     methods: {
       doInstallManualPath() { startInstall(this.selectedSubMod); },
@@ -184,6 +187,7 @@ window.onload = function onWindowLoaded() {
     // NOTE: when app.selectedMod is changed, the selectedMod 'watch' automatically updates
     // the app.selectedSubMod to the first value in the possibleSubMods list
     app.selectedMod = responseData.selectedMod;
+    app.logFilePath = responseData.logFilePath;
     console.log(app.selectedSubMod);
 
     replaceElementWithNews('modNews', app.selectedMod);
