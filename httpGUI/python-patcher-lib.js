@@ -36,6 +36,7 @@ function statusUpdate() {
           if (status.overallPercentage === 100) {
             app.installFinished = true;
             window.clearInterval(statusUpdateTimerHandle);
+            alert("Install Finished! Before closing the installer, launch the game to make sure it works correctly. Click the troubleshooting button for help if something goes wrong.");
           }
         }
         if (status.overallTaskDescription !== undefined) {
