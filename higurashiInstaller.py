@@ -62,7 +62,7 @@ class Installer:
 		for opt in sorted(downloadAndExtractOptions, key=lambda opt: opt.data['priority']):
 			self.downloaderAndExtractor.addItemManually(
 				url=opt.data['url'],
-				extractionDir=os.path.join(self.dataDirectory, opt.data['relativeExtractionPath']),
+				extractionDir=os.path.join(self.extractDir, opt.data['relativeExtractionPath']),
 			)
 
 		self.downloaderAndExtractor.printPreview()
