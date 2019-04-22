@@ -289,7 +289,7 @@ def tryGetRemoteNews(newsName):
 
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
-	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*<b>\s*([^<]+)", re.IGNORECASE)
+	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*<b>\s*(\d+)[^<]+", re.IGNORECASE)
 	progressAmountRegex = re.compile(r"progress\s*value=(\d+)", re.IGNORECASE)
 
 	try:
