@@ -21,6 +21,7 @@ except AttributeError:
 try:
 	from urllib.request import urlopen, Request
 	from urllib.parse import urlparse, quote
+	from urllib.error import HTTPError
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 	from urlparse import urlparse
