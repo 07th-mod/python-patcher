@@ -25,6 +25,8 @@ public struct ModDefinition: Codable {
 	public var family: ModFamily
 	/// The name of the mod (will be displayed to the user)
 	public var name: String
+	/// This variable sets which description to display on the web GUI. The actual description text is stored on the webpage, not in the JSON or python side.
+	public var descriptionID: String
 	/// The name of the game this mod installs onto
 	public var target: String
 	/// The name of the folder that contains the game data (e.g. HigurashiEp02_Data)
