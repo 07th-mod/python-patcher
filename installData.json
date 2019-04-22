@@ -17,12 +17,12 @@
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CGAlt.7z",             "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
-						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Onikakushi-UI_win_steam.7z",                "priority": 0},
+						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Onikakushi-UI_steam_win.7z",                "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 0}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
-						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/Onikakushi-UI_steam_unix.7z"}
+						{"name": "ui",      "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/ui/Onikakushi-UI_steam_unix.7z"}
 					]
 				}
 			],
