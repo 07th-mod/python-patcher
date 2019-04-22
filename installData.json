@@ -360,18 +360,6 @@
 			"identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
 			"submods": [
 				{
-					"name" : "voice-only",
-					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
-						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
-						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
-					],
-					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
-						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
-					]
-				},
-				{
 					"name" : "1080p",
 					"files":[
 						{"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
@@ -386,6 +374,18 @@
 						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
 						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
 					]
+				},
+				{
+					"name" : "voice-only",
+					"files":[
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
+						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
+					],
+					"fileOverrides" : [
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
+					]
 				}
 			]
 		},
@@ -397,19 +397,6 @@
 			"dataname": "Umineko5to8.app",
 			"identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
 			"submods": [
-				{
-					"name" : "voice-only",
-					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
-						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/voices-only/0.utf", "priority": 0},
-						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
-					],
-					"fileOverrides" : [
-						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
-						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
-					]
-				},
 				{
 					"name" : "full",
 					"files":[
@@ -433,6 +420,19 @@
 					"fileOverrides" : [
 						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern/Umineko5to8"},
 						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
+					]
+				},
+				{
+					"name" : "voice-only",
+					"files":[
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
+						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/voices-only/0.utf", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
+					],
+					"fileOverrides" : [
+						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
+						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
 					]
 				}
 			]
