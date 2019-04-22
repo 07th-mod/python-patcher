@@ -406,8 +406,16 @@
 															Patch Type: "{{ selectedSubMod.subModName }}" <br>
 															Install Path: "{{ selectedInstallPath === null ? "Not Selected" : selectedInstallPath }}" <br><br>
 															<strong>Options</strong>
-															<div v-for="modOptionGroup in selectedSubMod.modOptionGroups">
-																{{ modOptionGroup.selectedRadio === null && modOptionGroup.selectedCheckBoxes.length == 0 ? modOptionGroup.name + ': None' : (modOptionGroup.selectedRadio || '') + modOptionGroup.selectedCheckBoxes.join(', ')  }} 
+															<div v-if="selectedSubMod.modOptionGroups.length == 0">
+																There are no mod options for this mod.
+															</div>
+															<div v-else v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+																<div v-if="modOptionGroup.selectedRadio === null && modOptionGroup.selectedCheckBoxes.length == 0">
+																	{{ modOptionGroup.name + ': None' }}
+																</div>
+																<div v-else>
+																	{{ (modOptionGroup.selectedRadio || '') + modOptionGroup.selectedCheckBoxes.join(', ') }}
+																</div>
 															</div>
 														</div>
 														<ul class="tabs button-tabs">
