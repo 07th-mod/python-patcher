@@ -27,6 +27,11 @@ if dirname.strip():
 	os.chdir(dirname)
 
 if __name__ == "__main__":
+	# Enable developer mode if we detect the program is run from the git repository
+	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
+	if os.path.exists("installData.json"):
+		common.Globals.DEVELOPER_MODE = True
+
 	#redirect stdout to both a file and console
 	#TODO: on MAC using a .app file, not sure if this logfile will be writeable
 	#      could do a try-catch, and then only begin logging once the game path has been set?
@@ -53,7 +58,7 @@ if __name__ == "__main__":
 	common.Globals.scanForExecutables()
 
 	# Scan for moddable games on the user's computer before starting installation
-	if os.path.exists("installData.json"):
+	if common.Globals.DEVELOPER_MODE and os.path.exists("installData.json"):
 		# Use local `installData.json` if it's there (if cloned from github)
 		modList = common.getModList("installData.json")
 	else:

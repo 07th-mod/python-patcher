@@ -99,6 +99,8 @@ class Globals:
 	LOG_FILE_PATH = "07th-mod-install.log"
 	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"
 
+	DEVELOPER_MODE = False
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -276,7 +278,7 @@ def tryGetRemoteNews(newsName):
 	localPath = 'news/' + newsName + '.md'
 	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
 	try:
-		if os.path.exists(localPath):
+		if Globals.DEVELOPER_MODE and os.path.exists(localPath):
 			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3
 		else:
 			file = urlopen(Request(url, headers={"User-Agent": ""}))
