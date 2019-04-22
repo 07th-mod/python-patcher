@@ -11,6 +11,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Onikakushi-CG.7z",                "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Onikakushi-CGAlt.7z",             "priority": 0},
@@ -67,6 +68,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Watanagashi-CG.7z",               "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Watanagashi-CGAlt.7z",            "priority": 0},
@@ -123,6 +125,7 @@
 			"submods": [
 				{
 					"name" : "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Tatarigoroshi-CG.7z",             "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Tatarigoroshi-CGAlt.7z",          "priority": 0},
@@ -183,6 +186,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Himatsubushi-CG.7z",              "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Himatsubushi-CGAlt.7z",           "priority": 0},
@@ -239,6 +243,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Meakashi-CG.7z",                  "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Meakashi-CGAlt.7z",               "priority": 0},
@@ -286,6 +291,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-CG.7z",            "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/Tsumihoroboshi-CGAlt.7z",         "priority": 0},
@@ -334,6 +340,7 @@
 			"submods": [
 				{
 					"name": "full",
+					"descriptionID": "higurashiFull",
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/ConsoleArcs-CG.7z",               "priority": 0},
 						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/ConsoleArcs-BGM.7z",              "priority": 0},
@@ -361,6 +368,7 @@
 			"submods": [
 				{
 					"name" : "1080p",
+					"descriptionID": "uminekoQuestionFull",
 					"files":[
 						{"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
@@ -377,6 +385,7 @@
 				},
 				{
 					"name" : "voice-only",
+					"descriptionID": "uminekoVoiceOnly",
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
@@ -399,6 +408,7 @@
 			"submods": [
 				{
 					"name" : "full",
+					"descriptionID": "uminekoAnswerFull",
 					"files":[
 						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
@@ -411,6 +421,7 @@
 				},
 				{
 					"name" : "adv",
+					"descriptionID": "uminekoAnswerADV",
 					"files":[
 						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
@@ -424,6 +435,7 @@
 				},
 				{
 					"name" : "voice-only",
+					"descriptionID": "uminekoVoiceOnly",
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},

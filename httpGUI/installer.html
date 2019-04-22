@@ -296,7 +296,69 @@
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
-												<p>{{selectedSubMod.description}}</p>
+												<!-- Show the appropriate description depending on the descriptionID -->
+												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
+													This option combines all the patches available to create the best experience possible. It contains:
+													<ul class="bullets">
+														<li>Full voiceover</li>
+														<li>PS3 backgrounds and CGs in Full HD</li>
+														<li>PS3 sprites with lipsync in 1440p</li>
+														<li>Updated MangaGamer sprites in 1440p</li>
+														<li>Upgraded user interface</li>
+														<li>Opening videos</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoVoiceOnly'">
+													This option only installs voice related options. No graphics are changed.<br>
+													<ul class="bullets">
+														<li>Full voiceover</li>
+														<li>Mod menu added to adjust voice/music volume</li>
+														<li>Playing with japanese text is not supported!</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
+													This patch installs all PS3 content that the team has ported so far:
+													<ul class="bullets">
+														<li>NEW: Has ADV mode (text is shown in a textbox at the bottom of the screen) which can be toggled on or off at any time</li>
+														<li>NEW: Playing with Japanese Text is supported</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>Remake of original OP in 1080p OR PS3 OP movie (user option on startup)</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerFull'">
+													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
+													Please select the "ADV Patch" option if you want to play with ADV mode.<br><br>
+													This patch installs all PS3 content that the team has ported so far:<br>
+													<ul class="bullets">
+														<li>NEW: Playing with Japanese Text is supported</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>Remake of original OP in 1080p OR PS3 OP movie (user option on startup)</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerADV'">
+													This patch is the same as the "full" variant except it adds ADV mode:
+													<ul class="bullets">
+														<li>NEW: Playing with Japanese Text is supported</li>
+														<li>Has <b>ADV mode</b> (text is shown in a textbox at the bottom of the screen)</li>
+														<li>PS3 voices</li>
+														<li>PS3 sprites</li>
+														<li>PS3 CGs (event images)</li>
+														<li>PS3 Backgrounds</li>
+														<li>Remake of original OP in 1080p OR PS3 OP movie (user option on startup)</li>
+														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
+													</ul>
+												</div>
+												<div v-else>
+													No description for {{ selectedSubMod.descriptionID }} :(
+												</div>
 												<!-- Install options, displayed as radio buttons and checkboxes -->
 												<h4 class="uppercase">Choose Mod Options</h4>
 												<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">

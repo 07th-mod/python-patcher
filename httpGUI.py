@@ -413,7 +413,7 @@ class InstallerGUI:
 							'id': subModConfig.id,
 							'modName': subModConfig.modName,
 							'subModName': subModConfig.subModName,
-							'description' : 'FROM PYTHON httpGUI.py: description goes here',
+							'descriptionID' : subModConfig.descriptionID,
 							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
 							'family': subModConfig.family,
 						}
