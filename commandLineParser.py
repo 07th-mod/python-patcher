@@ -1,7 +1,7 @@
 import re
 
 class AriaStatusUpdate:
-	regexAriaCompletionStatus = re.compile(r"#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((\d+)%\)")
+	regexAriaCompletionStatus = re.compile(r"#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((100|\d\d|\d)%\)")
 	regexAriaETA = re.compile(r"ETA:([^\]]+)")
 
 	def __init__(self, amountCompletedString, percentCompleted, ETAString):
@@ -12,7 +12,7 @@ class AriaStatusUpdate:
 #Note: Sometimes can get lines like "99% 35615" without the - [filename] part. This will be missed by this parser.
 class SevenZipStatusUpdate:
 	#Note: extracted file count is OPTIONAL - if few files, 7zip omits it. In that case, match[2] = None
-	regexSevenZipPercentComplete = re.compile(r"(\d+)%")                # use with .search()
+	regexSevenZipPercentComplete = re.compile(r"(100|\d\d|\d)%")                # use with .search()
 	regexSevenZipFileCountAndName = re.compile(r"^\s*\d+ - *.*\s*$")    # use with .match()
 	regexSevenZipFileCountOnly = re.compile(r"^\s*\d+\s*$")             # use with .match()
 
@@ -22,7 +22,7 @@ class SevenZipStatusUpdate:
 		self.currentlyProcessingFilename = currentlyProcessingFileName
 
 class SeventhModStatusUpdate:
-	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(\d+)%\s*\[\[\s*([^>]+)\]\] >>>")
+	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(100|\d\d|\d)%\s*\[\[\s*([^>]+)\]\] >>>")
 
 	def __init__(self, overallPercentage, currentTask):
 		# type: (int, str) -> None
