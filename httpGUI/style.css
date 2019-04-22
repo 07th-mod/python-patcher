@@ -86,3 +86,7 @@ they have zero height. This forces the height to some valid value*/
     line-height: 16px;
     margin-bottom: 0;
 }
+
+body {
+    overflow-y: scroll;
+}

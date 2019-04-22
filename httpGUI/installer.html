@@ -292,7 +292,7 @@
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="content col-md-9">
-										<div v-if="(showTroubleshooting == false) && (selectedSubMod !== null)">
+										<div v-if="(showTroubleshooting === false) && (selectedSubMod !== null)">
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
@@ -360,7 +360,7 @@
 													No description for {{ selectedSubMod.descriptionID }} :(
 												</div>
 												<!-- Install options, displayed as radio buttons and checkboxes -->
-												<h4 class="uppercase">Choose Mod Options</h4>
+												<h4 class="uppercase mt40">Choose Mod Options</h4>
 												<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
 													<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
 													<div v-for="radioOption in modOptionGroup.radio">
@@ -381,7 +381,7 @@
 												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div class="button-tabs vertical">
-													<h4 class="uppercase">Choose an install path</h4>
+													<h4 class="uppercase mt40">Choose an install path</h4>
 													<ul class="tabs">
 														<li v-for="fullInstallConfig in fullInstallConfigs"
 															v-on:click="onConfirmButtonClicked(fullInstallConfig.path);"
