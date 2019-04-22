@@ -568,10 +568,11 @@ class InstallerGUI:
 			# Try and execute the request. If an exception is thrown, display the reason to the user on the web GUI
 			try:
 				responseDataJson = requestHandler(requestData)
-			except InstallerGUIException as installerGUIException:
-				print('Exception Thrown handling request {}: {}'.format(requestType, installerGUIException))
+			except Exception as exception:
+				print('Exception Thrown handling request {}: {}'.format(requestType, exception))
+				traceback.print_exc()
 				return _makeJSONResponse('error', {
-					'errorReason': '{}: {}'.format(requestType, str(installerGUIException))
+					'errorReason': 'Exception handling [{}] request: {}'.format(requestType, str(exception))
 				})
 
 			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
