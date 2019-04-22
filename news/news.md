@@ -1,7 +1,7 @@
-# News 
+# News
 
-## News 07/04/2019
+## News 22/04/2019
 
-This news.md is displayed on the 'main' index.html page.
+Higurashi OST fix/remake mod options added!
 
-Can contain information about a new mod release, etc.
+New installer released.

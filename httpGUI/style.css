@@ -58,8 +58,10 @@ they have zero height. This forces the height to some valid value*/
 .rendered-markdown h2 {
     text-align: left;
     font-weight:400;
-    font-size: 2em;
-    margin-bottom: 0;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    line-height: 20px;
 }
 
 .rendered-markdown p {
@@ -89,4 +91,9 @@ they have zero height. This forces the height to some valid value*/
 
 body {
     overflow-y: scroll;
+}
+
+#globalNews {
+    overflow-y: auto;
+    height: 280px;
 }
