@@ -4,6 +4,23 @@ try:
 except:
 	import Queue as queue
 
+class StdErrRedirector():
+	"""
+	Use to redirect stderr to a Logger object. You could also just do `stderr = Logger(...)`, but this way
+	lets you add special behavior when stderr output is received (like logging to a special 'error' file)
+	"""
+	def __init__(self, attachedLogger):
+		self.attachedLogger = attachedLogger
+
+	def writeNoLog(self, message):
+		self.attachedLogger.write(message)
+
+	def write(self, message):
+		self.attachedLogger.write(message)
+
+	def flush(self):
+		pass
+
 # From https://stackoverflow.com/a/14906787/848627
 # Replace with the standard "https://docs.python.org/2/library/logging.html" module later?
 class Logger(object):

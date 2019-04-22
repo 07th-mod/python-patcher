@@ -37,6 +37,7 @@ if __name__ == "__main__":
 	#      could do a try-catch, and then only begin logging once the game path has been set?
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
+	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
 	def check07thModServerConnection():
 		"""
