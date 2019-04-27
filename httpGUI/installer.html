@@ -261,10 +261,10 @@
 											<span>Download .zip file of Logs<br>(Select Path Manually)</span>
 										</div>
 										<h4> Open Save Folder (Windows)</h4>
-										<p>
+										<div>
 											In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
 											Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
-											Click the button below to show the save folder. If you are deleting your saves, <b>please make a backup first</b>.<br>
+											Click the button below to show the save folder. If you are deleting your saves, <b>please make a backup first</b>.<br><br>
 											<div class="tab-title mb40"
 												v-if="selectedSubMod.family !== 'higurashi'"
 												v-for="fullInstallConfig in fullInstallConfigs"
@@ -272,18 +272,18 @@
 												<span>Open Save Folder</span><br>
 												Game Path: {{ fullInstallConfig.path }}
 											</div>
-											<div class="tab-title" v-on:click="openSaveFolder(selectedSubMod)">
+											<div class="tab-title mb40" v-on:click="openSaveFolder(selectedSubMod)">
 												<span>Open Save Folder {{ selectedSubMod.family === 'higurashi' ? '' : '(Choose Path Manually)' }} </span>
 											</div>
-										</p>
+										</div>
 										<!-- Drojf - this should probably be in the wiki, unless the installer can automatically opent he location on linux -->
 										<h4>Other Useful Information</h4>
-<p><pre>
-	Mac game log location: '/Users/<yourusername>/Library/Logs/Unity/Player.log'
+<pre>
+	Mac game log location: '/Users/[yourusername]/Library/Logs/Unity/Player.log'
 	Linux save file locations:
 	~/.config/unity3d/Mangagamer/Higurashi When They Cry _ Ch_1 Onikakushi
 	~/.config/unity3d/MangaGamer/Higurashi When They Cry _ Ch_1 Onikakushi
-	~/.config/unity3d/MangaGamer/ Higurashi When They Cry - Ch.1 Onikakushi</pre></p>
+	~/.config/unity3d/MangaGamer/ Higurashi When They Cry - Ch.1 Onikakushi</pre>
 										<!-- Drojf - not sure whether should add this informat
 										<h4> Delete CompiledUpdateScripts Folder</h4>
 										<p>Sometimes it can help to force a rebuild of the compiled update scripts. The folder is located in "Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets\CompiledUpdateScripts"</p>-->
