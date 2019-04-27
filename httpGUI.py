@@ -336,16 +336,16 @@ class InstallerGUI:
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
-	def try_start_install(self, subMod, installPath, pathIsManual):
+	def try_start_install(self, subMod, installPath):
 		import higurashiInstaller
 		import uminekoInstaller
 
-		# if the path was user selected, do some extra processing on the path
-		if pathIsManual:
+		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+
+		# If normal scan fails, then scan the path using the more in-depth 'scanUserSelectedPath(...)' function
+		if not fullInstallConfigs:
 			fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], installPath)
 			print(errorMessage)
-		else:
-			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 		if not fullInstallConfigs:
 			raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
@@ -463,14 +463,9 @@ class InstallerGUI:
 				for modOption in subMod.modOptions:
 					print(modOption)
 
-				pathIsManual = False
 				installPath = requestData.get('installPath', None)
 
-				if installPath is None:
-					pathIsManual = True
-					installPath = _TKAskPath(subMod)
-
-				return { 'installStarted' : self.try_start_install(subMod, installPath, pathIsManual) }
+				return { 'installStarted' : self.try_start_install(subMod, installPath) }
 
 			# requestData: Not necessary - will be ignored
 			# responseData: Returns a list of dictionaries. Each dictionary may have different fields depending on the
@@ -488,6 +483,15 @@ class InstallerGUI:
 					'monthsRemaining': monthsRemaining,
 					'progressPercent': progressPercent,
 				}
+
+			# This causes a TKInter window to open allowing the user to choose a game path.
+			# The request data should be the submod ID.
+			# This is required so that the correct file filter can be applied to the tkinter file chooser.
+			# The function returns None (Javascript null) if the user failed to select a path by pressing 'cancel'.
+			def showFileChooser(requestDataSubModID):
+				subMod = self.idToSubMod[requestDataSubModID]
+				selectedPath = _TKAskPath(subMod)
+				return { 'path': selectedPath if selectedPath else None }
 
 			def unknownRequestHandler(requestData):
 				return 'Invalid request type [{}]. Should be one of [{}]'.format(requestType, requestTypeToRequestHandlers.items())
@@ -557,6 +561,7 @@ class InstallerGUI:
 				'getNews' : getNews,
 				'getDonationStatus' : getDonationStatus,
 				'troubleshoot' : troubleshoot,
+				'showFileChooser' : showFileChooser,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

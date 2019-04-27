@@ -129,9 +129,20 @@ window.onload = function onWindowLoaded() {
         console.log(app.selectedSubMod);
         startInstall(app.selectedSubMod, app.selectedInstallPath);
       },
-      onConfirmButtonClicked(pathToInstall) {
-        app.selectedInstallPath = pathToInstall;
-        app.showConfirmation = true;
+      onChoosePathButtonClicked(pathToInstall) {
+        if (pathToInstall === undefined) {
+          doPost('showFileChooser', app.selectedSubMod.id, (responseData) => {
+            if (responseData.path === null) {
+              alert("You didn't select a path!");
+            } else {
+              app.selectedInstallPath = responseData.path;
+              app.showConfirmation = true;
+            }
+          });
+        } else {
+          app.selectedInstallPath = pathToInstall;
+          app.showConfirmation = true;
+        }
       },
       // If argument 'installPath' is null, then a file chooser will let user choose game path
       getLogsZip(subModToInstall, installPath) {
