@@ -384,7 +384,7 @@
 													<h4 class="uppercase mt40">Choose an install path</h4>
 													<ul class="tabs">
 														<li v-for="fullInstallConfig in fullInstallConfigs"
-															v-on:click="onConfirmButtonClicked(fullInstallConfig.path);"
+															v-on:click="onChoosePathButtonClicked(fullInstallConfig.path);"
 															v-bind:key="fullInstallConfig.key">
 															<div class="tab-title">
 																Set install path to: "{{ fullInstallConfig.path }}"
@@ -392,10 +392,11 @@
 														</li>
 
 														<li>
-															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onConfirmButtonClicked()>
-																Choose Install Path Manually
+															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onChoosePathButtonClicked()>
+																Choose Install Path Manually (Open File Dialog)
 															</div>
 														</li>
+														Currently Chosen Path: <input style="width:70%" v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work" >
 													</ul>
 												</div>
 												<transition name="fade">

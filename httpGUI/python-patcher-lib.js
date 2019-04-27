@@ -187,6 +187,11 @@ window.onload = function onWindowLoaded() {
           this.fullInstallConfigs = [];
         }
       },
+      selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
+        if (newPath !== null) {
+          app.showConfirmation = true;
+        }
+      },
     },
   });
 
