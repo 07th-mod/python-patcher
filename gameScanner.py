@@ -376,7 +376,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 		  as a FullInstallConfiguration object.
 
 	:param subModConfigList: A **list** of SubModConfig which are to be searched for on disk
-	:param possiblePaths: (Optional) Specify a path to check if the given SubModConfig can be installed into that path.
+	:param possiblePaths: (Optional) Specify folders to check if the given SubModConfig can be installed into that path.
 	:return:    A list of FullInstallConfig, each representing a valid install path that the
 				given SubModConfig(s) couldbe installed into.
 	"""
@@ -420,7 +420,7 @@ def scanUserSelectedPath(subModConfigList, gameExecutablePath):
 	this will attempt to search all parent directories, incase a user has selected a subdirectory of the game directory
 	by accident.
 	:param subModConfigList:
-	:param gameExecutablePath:
+	:param gameExecutablePath: A path to the game executable, or to a folder containing the game.
 	:return: A tuple - The first is an array of valid FullInstallConfigurations.
 					 - The second is an error message (on success a 'success' message is generated)
 	"""

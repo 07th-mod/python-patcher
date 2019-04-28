@@ -340,7 +340,9 @@ class InstallerGUI:
 		import higurashiInstaller
 		import uminekoInstaller
 
-		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+		fullInstallConfigs = None
+		if os.path.isdir(installPath):
+			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 		# If normal scan fails, then scan the path using the more in-depth 'scanUserSelectedPath(...)' function
 		if not fullInstallConfigs:
