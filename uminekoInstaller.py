@@ -112,6 +112,15 @@ def mainUmineko(conf):
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
+
+	parser = gameScanner.ModOptionParser(conf)
+
+	for opt in parser.downloadAndExtractOptionsByPriority:
+		downloaderAndExtractor.addItemManually(
+			url=opt.url,
+			extractionDir=os.path.join(conf.installPath, opt.relativeExtractionPath),
+		)
+
 	downloaderAndExtractor.printPreview()
 	downloaderAndExtractor.download()
 

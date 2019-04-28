@@ -396,6 +396,18 @@
 						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
 					]
 				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Use the default Background Music"},
+						{
+							"name": "Restore BGM", "description": "Restores censored system0.ogg BGM",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				}
 			]
 		},
 		{
@@ -445,6 +457,18 @@
 					"fileOverrides" : [
 						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
 						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
+					]
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Use the default Background Music"},
+						{
+							"name": "Restore BGM", "description": "Restores censored system0.ogg BGM",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
 					]
 				}
 			]
