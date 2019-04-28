@@ -50,19 +50,12 @@ class Installer:
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
-		print('MOD OPTIONS:\n')
-		downloadAndExtractOptions = []
-		for modOption in self.info.subModConfig.modOptions:
-			print('  - ' + str(modOption))
-			if modOption.value:
-				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
-					downloadAndExtractOptions.append(modOption)
+		parser = gameScanner.ModOptionParser(self.info)
 
-		for opt in sorted(downloadAndExtractOptions, key=lambda opt: opt.data['priority']):
+		for opt in parser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
-				url=opt.data['url'],
-				extractionDir=os.path.join(self.extractDir, opt.data['relativeExtractionPath']),
+				url=opt.url,
+				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
 			)
 
 		self.downloaderAndExtractor.printPreview()

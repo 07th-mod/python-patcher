@@ -140,6 +140,38 @@ class ModOption:
 	def __repr__(self):
 		return "Option ID: [{}] Value: [{}]".format(self.id, self.value)
 
+class DownloadAndExtractOption:
+	def __init__(self, name, description, url, relativeExtractionPath, priority):
+		self.name = name # type: str
+		self.description = description # type: str
+		self.url = url # type: str
+		self.relativeExtractionPath = relativeExtractionPath # type: str
+		self.priority = priority # type: int
+
+class ModOptionParser:
+	def __init__(self, fullInstallConfiguration):
+		self.config = fullInstallConfiguration # type: FullInstallConfiguration
+		self.downloadAndExtractOptionsByPriority = [] # type: List[DownloadAndExtractOption]
+
+		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
+		print('MOD OPTIONS:\n')
+		for modOption in self.config.subModConfig.modOptions:
+			print('  - ' + str(modOption))
+			if modOption.value:
+				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
+					self.downloadAndExtractOptionsByPriority.append(
+						DownloadAndExtractOption(
+							modOption.name,
+							modOption.description,
+							modOption.data['url'],
+							modOption.data['relativeExtractionPath'],
+							modOption.data['priority']
+						)
+					)
+
+		# Make sure download and extraction options are sorted
+		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
+
 #directly represents a single submod from the json file
 class SubModConfig:
 	subModUniqueIDCounter = 0
