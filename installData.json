@@ -42,7 +42,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -99,7 +99,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -159,7 +159,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -217,7 +217,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -274,7 +274,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -322,7 +322,7 @@
 					"radio": [
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
-							"name": "Old OST", "description": "Restores the SE from the original release (pre-2019)",
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						}
 					]
