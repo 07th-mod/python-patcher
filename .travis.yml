@@ -1,12 +1,10 @@
 before_install:
 - sudo apt-get install -y p7zip-full
-- bash travis_install_swift.sh
 language: python
 python:
 - '3.6'
 script:
 - python travis_build_script.py
-- bash travis_validate_json.sh
 deploy:
   provider: releases
   api_key:
