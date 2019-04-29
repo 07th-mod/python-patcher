@@ -403,7 +403,7 @@
 					"radio": [
 						{"name": "No BGM Changes", "description": "Use the default Background Music"},
 						{
-							"name": "Restore BGM", "description": "Restores censored system0.ogg BGM",
+							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -466,7 +466,7 @@
 					"radio": [
 						{"name": "No BGM Changes", "description": "Use the default Background Music"},
 						{
-							"name": "Restore BGM", "description": "Restores censored system0.ogg BGM",
+							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
