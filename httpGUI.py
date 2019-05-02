@@ -175,7 +175,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Delivered [{}]'.format(originalPath, path))
+			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Delivered [{}]\n'.format(originalPath, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -221,6 +221,10 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			except:
 				f.close()
 				raise
+
+		# Suppress log requests - use own logging. Errors logged with "log_error" will still be printed.
+		def log_request(self, code='-', size='-'):
+			pass
 
 		def do_POST(self):
 			content_length = int(self.headers['Content-Length'])
