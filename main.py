@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
+import datetime
 import io
 import json
 import os, sys
@@ -38,6 +39,8 @@ if __name__ == "__main__":
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
+
+	print("\n\n------------------ Install Started On {} ------------------ ".format(datetime.datetime.now()))
 
 	def check07thModServerConnection():
 		"""
