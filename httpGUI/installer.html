@@ -197,6 +197,11 @@
 
 							<div id="terminal"><p>Terminal Output</p></div>
 							Note: New terminal output displayed at top, old terminal output displayed at bottom.
+							<div class="tabbed-content button-tabs vertical">
+								<div class="tab-title mb40" style='width:200px;float:right;' v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">
+									<span>Download Log</span>
+								</div>
+							</div>
 						</div>
 				</section>
 			</transition>
