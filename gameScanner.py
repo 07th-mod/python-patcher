@@ -291,12 +291,12 @@ def findPossibleGamePaths(gameName):
 		if gameName == "Higurashi":
 			allPossibleGamePaths.extend(
 				x for x in subprocess
-					.check_output(["mdfind", "kind:Application", "Higurashi"])
+					.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Higurashi*'"])
 					.decode("utf-8")
 					.split("\n") if x
 			)
 		elif gameName == "Umineko":
-			for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
+			for gamePath in subprocess.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Umineko*'"]).decode("utf-8").split("\n"):
 				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
 				gogPath = os.path.join(gamePath, "Contents/Resources/game")
 				if os.path.exists(gogPath):
