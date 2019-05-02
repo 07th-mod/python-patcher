@@ -19,3 +19,9 @@ If you still have problems, please post your CPU and GPU specs and a description
 the lag appears on our Discord (click the troubleshooting button) for us to analyse.
 
 If you figure out what's causing the problem, please let us know as we really want to sort this issue out.
+
+### High Resolution Monitors
+
+High resolution screens (greater than 1080p) can also cause problems (mainly on integrated graphics). Forcing your desktop
+screen resolution lower may help. You can test if this is a problem by playing in windowed mode with a small
+window - performance will usually improve.
