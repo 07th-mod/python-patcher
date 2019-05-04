@@ -51,7 +51,7 @@
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
 							"data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 20}
 						}
 					]
@@ -108,7 +108,7 @@
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
 							"data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 20}
 						}
 					]
@@ -168,7 +168,7 @@
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
 							"data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 20}
 						}
 					]
@@ -226,7 +226,7 @@
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019)",
+							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
 							"data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 20}
 						}
 					]

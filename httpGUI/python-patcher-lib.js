@@ -154,6 +154,9 @@ window.onload = function onWindowLoaded() {
       openSaveFolder(subModToInstall, installPath) {
         doPost('troubleshoot', { action: 'openSaveFolder', subMod: subModToInstall, installPath }, () => {});
       },
+      renderMarkdown(markdownText) {
+        return marked(markdownText, { sanitize: true });
+      },
     },
     computed: {
       modHandles() {

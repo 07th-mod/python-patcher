@@ -373,14 +373,14 @@
 														<label class="form-check-label" v-bind:for="radioOption.name">
 															{{ radioOption.name }}
 														</label>
-														<p>{{ radioOption.description }}</p>
+														<p><span v-html="renderMarkdown(radioOption.description)"></span></p>
 													</div>
 													<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
 														<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
 														<label class="form-check-label" v-bind:for="checkBoxOption.name">
 															{{ checkBoxOption.name }}
 														</label>
-														<p>{{ checkBoxOption.description }}</p>
+														<p><span v-html="renderMarkdown(checkBoxOption.description)"></span></p>
 													</div>
 												</div>
 												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
