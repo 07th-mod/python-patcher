@@ -401,11 +401,11 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Use the default Background Music"},
 						{
 							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
+						},
+						{"name": "No BGM Changes", "description": "Use the default Background Music"}
 					]
 				}
 			]
@@ -464,11 +464,11 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Use the default Background Music"},
 						{
-							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
+							"name": "Restore and Repair BGM", "description": "Restores uncensored system0.ogg BGM and repairs damaged kuina.ogg at 53 second mark",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
+						},
+						{"name": "No BGM Changes", "description": "Use the default Background Music"}
 					]
 				}
 			]
