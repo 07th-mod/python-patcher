@@ -92,9 +92,8 @@ def mainUmineko(conf):
 	####################################### VALIDATE AND PREPARE FOLDERS ###############################################
 	# do a quick verification that the directory is correct before starting installer
 	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):
-		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
-		print("ERROR - wrong game path. Installation Stopped.")
-		common.exitWithError()
+		raise Exception("ERROR - wrong game path. Installation Stopped.\n"
+		                "There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = os.path.join(conf.installPath, "temp")

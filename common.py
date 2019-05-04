@@ -379,8 +379,8 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFil
 
 	if '.7z' in filename.lower() or '.zip' in filename.lower():
 		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
-			print("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
-			exitWithError()
+			raise Exception("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
+
 	else:
 		try:
 			shutil.copy(sourcePath, os.path.join(destinationFolder, copiedOutputFileName if copiedOutputFileName else filename))
@@ -486,8 +486,7 @@ class DownloaderAndExtractor:
 			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading")
 			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
 			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
-				print("ERROR - could not download [{}]. Installation Stopped".format(url))
-				exitWithError()
+				raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
 
 	def extract(self):
 		if not self.downloadAndExtractionListsBuilt:
