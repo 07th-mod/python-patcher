@@ -17,4 +17,4 @@ deploy:
   on:
     repo: 07th-mod/python-patcher
     tags: true
-  body: "Windows Users - Most likely you want the 64-bit version."
+
