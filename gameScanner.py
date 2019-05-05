@@ -270,6 +270,7 @@ def findPossibleGamePathsWindows():
 		print("findPossibleGamePaths: Couldn't open registry key folder - Steam folder deleted?")
 		return []
 
+	return []
 
 def findPossibleGamePaths(gameName):
 	"""
