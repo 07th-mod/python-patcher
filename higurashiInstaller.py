@@ -1,4 +1,5 @@
 import json
+import traceback
 
 import commandLineParser
 import common
@@ -78,14 +79,26 @@ class Installer:
 		oldCGAlt = path.join(self.assetsDir, "CGAlt")
 		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
 
-		for mg in glob.glob(compiledScriptsPattern):
-			os.remove(mg)
+		try:
+			for mg in glob.glob(compiledScriptsPattern):
+				os.remove(mg)
+		except Exception:
+			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
+			traceback.print_exc()
 
-		if path.isdir(oldCG):
-			shutil.rmtree(oldCG)
+		try:
+			if path.isdir(oldCG):
+				shutil.rmtree(oldCG)
+		except Exception:
+			print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
+			traceback.print_exc()
 
-		if path.isdir(oldCGAlt):
-			shutil.rmtree(oldCGAlt)
+		try:
+			if path.isdir(oldCGAlt):
+				shutil.rmtree(oldCGAlt)
+		except Exception:
+			print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
+			traceback.print_exc()
 
 	def download(self):
 		self.downloaderAndExtractor.download()
