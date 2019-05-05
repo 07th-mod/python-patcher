@@ -84,8 +84,8 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 
 # RELATIVE PATHS MUST CONTAIN ./
 tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win32.zip'))
+# zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
+zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))

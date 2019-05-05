@@ -111,7 +111,7 @@ class Globals:
 			print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 			exitWithError()
 
-		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "./.7za", "7za", "./7z", "7z"], '-h')
+		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], '-h')
 		if Globals.SEVEN_ZIP_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
