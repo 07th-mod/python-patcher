@@ -116,9 +116,10 @@ class Installer:
 			toDir = self.dataDirectory
 		)
 		if common.Globals.IS_WINDOWS:
+			exePath = self.info.subModConfig.dataName[:-5] + ".exe"
 			self._moveFileIntoPlace(
-				fromPath = os.path.join(self.extractDir, self.info.subModConfig.dataName[:-5] + ".exe"),
-				toPath = self.directory
+				fromPath = os.path.join(self.extractDir, exePath),
+				toPath = os.path.join(self.directory, exePath),
 			)
 		elif common.Globals.IS_MAC:
 			self._moveFileIntoPlace(
