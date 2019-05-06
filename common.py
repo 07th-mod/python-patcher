@@ -483,8 +483,7 @@ class DownloaderAndExtractor:
 
 		for i, url in enumerate(self.downloadList):
 			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading")
-			print("Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
 			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 				raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
 
