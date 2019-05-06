@@ -137,6 +137,7 @@
 			<!-- Displayed when the install finishes successfully -->
 			<section class="section-small-padding" v-show="!installFailed">
 				<h1 style="color: green;">The install has finished!</h1>
+				<h1 style="color: green;">The install was successful!</h1>
 				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
 					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
 					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
@@ -144,13 +145,17 @@
 					<p>Please check out our <a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a> for common problems</p>
 				</div>
 				<div v-else>
-					<p>Warning: Unmodded saves are not compatible with the mod! If you have made old saves, do not press 'continue' or load, please start a new game. Otherwise, you may get a black screen or the game will crash.</p>
-					<p>Warning: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
+					<p><strong>Warning</strong>: Unmodded saves are not compatible with the mod!</p>
+					<p>If you have made old saves, do not press 'continue' or load, please start a new game. Otherwise, you may get a black screen or the game may crash.</p>
+					<br>
+					<p><strong>Warning</strong>: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
 					<p>This is normal, however if the game freezes on a <b>black screen</b> it's likely something went wrong - please contact us on Discord if this happens.</p>
-					<p>Please check out our <a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a> for common problems</p>
+					<br>
+					<p><strong>Please try to launch the game at least once to validate it works correctly!</strong><br>
+						If it does not, click the "troubleshooting" button on the left to troubleshoot the install</p>
+					<br>
+					<p>Please also check out our <a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a> for common problems</p>
 				</div>
-				<p><strong>Please try to launch the game at least once to validate it works correctly!</strong><br>
-					 If it does not, click the "troubleshooting" button on the left to troubleshoot the install</p>
 			</section>
 			<!-- Displayed when the install fails-->
 			<section class="section-small-padding" v-show="installFailed">
@@ -164,10 +169,12 @@
 					<p>The installer would have detected this and mentioned you have an old Unity version. Please make sure your game is up to date before installing the game.</p>
 				</div>
 			</section>
-			<!-- Displayed always the install fails-->
+			<!-- Displayed always-->
+			<hr>
 			<div class="mb40">
+				<h4>Install Information and Links</h4>
 				<p>
-					The game path was [{{ selectedInstallPath }}]<br>
+					The mod was installed to [{{ selectedInstallPath }}]<br>
 					The install log was saved to [{{ logFilePath }}]<br><br>
 					If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
 				</p>
