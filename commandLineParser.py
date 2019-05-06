@@ -22,7 +22,7 @@ class SevenZipStatusUpdate:
 		self.currentlyProcessingFilename = currentlyProcessingFileName
 
 class SeventhModStatusUpdate:
-	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(100|\d\d|\d)%\s*\[\[\s*([^>]+)\]\] >>>")
+	regexSeventhModStatus = re.compile(r"<<< \s*Status:\s*(100|\d\d|\d)%\s*(.+) >>>")
 
 	def __init__(self, overallPercentage, currentTask):
 		# type: (int, str) -> None
@@ -86,4 +86,4 @@ def tryGetOverallStatus(overallStatusString):
 # Print a status update which will be recognized by the command line parser
 def printSeventhModStatusUpdate(overallPercentage, currentTask):
 	# type: (int, str) -> None
-	print("<<< Status: {}% [[{}]] >>>".format(overallPercentage, currentTask))
+	print("<<< Status: {}% {} >>>".format(overallPercentage, currentTask))
