@@ -457,7 +457,7 @@ class DownloaderAndExtractor:
 		If there are existing values in the self.downloadList or self.extractList, they are retained
 		:return:
 		"""
-		print("\n Building Download and Extraction list:")
+		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
 			if DownloaderAndExtractor.__urlIsMetalink(file.url):
