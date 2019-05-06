@@ -175,7 +175,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Delivered [{}]\n'.format(originalPath, path))
+			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Trying to deliver [{}]\n'.format(originalPath, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -204,6 +204,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 				f = open(path, 'rb')
 			except IOError:
 				self.send_error(404, "File not found")
+				logger.getGlobalLogger().writeNoLog('404 Error: Cant deliver [{}] - file not found!\n'.format(path))
 				return None
 			try:
 				self.send_response(200)
