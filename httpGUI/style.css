@@ -97,3 +97,7 @@ body {
     overflow-y: auto;
     height: 280px;
 }
+
+.background-image-holder.fadeIn {
+    -webkit-filter: brightness(50%); filter: brightness(50%)
+}
