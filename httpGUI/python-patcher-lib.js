@@ -121,6 +121,7 @@ window.onload = function onWindowLoaded() {
       overallTaskDescription: 'Overall Task Description',
       subTaskDescription: 'Sub Task Description',
       selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
+      installPathValid: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
     },
@@ -158,6 +159,13 @@ window.onload = function onWindowLoaded() {
       renderMarkdown(markdownText) {
         return marked(markdownText, { sanitize: true });
       },
+      validateInstallPath() {
+        // Just validate the install - don't actually start the installation
+        doPost('startInstall', { subMod: app.selectedSubMod, installPath: app.selectedInstallPath, validateOnly: true },
+          (responseData) => {
+            app.installPathValid = responseData.installStarted;
+          });
+      },
     },
     computed: {
       modHandles() {
@@ -194,8 +202,13 @@ window.onload = function onWindowLoaded() {
       selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
         if (newPath !== null) {
           app.showConfirmation = true;
+          app.debouncedValidateInstallPath();
         }
       },
+    },
+    created() {
+      // This prevents excessively scanning whether the selected install path is valid
+      this.debouncedValidateInstallPath = _.debounce(this.validateInstallPath, 500);
     },
   });
 

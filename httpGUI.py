@@ -341,7 +341,7 @@ class InstallerGUI:
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 	# TODO: this function should return an error message describing why the install couldn't be started
-	def try_start_install(self, subMod, installPath):
+	def try_start_install(self, subMod, installPath, validateOnly):
 		import higurashiInstaller
 		import uminekoInstaller
 
@@ -354,8 +354,11 @@ class InstallerGUI:
 			fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], installPath)
 			print(errorMessage)
 
-		if not fullInstallConfigs:
-			raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
+		if validateOnly:
+			return True if fullInstallConfigs else False
+		else:
+			if not fullInstallConfigs:
+				raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
 
 		fullInstallSettings = fullInstallConfigs[0]
 
@@ -467,6 +470,7 @@ class InstallerGUI:
 				webSubModHandle = requestData['subMod']
 				webModOptionGroups = webSubModHandle['modOptionGroups']
 				id = webSubModHandle['id']
+				validateOnly = requestData.get('validateOnly', False)
 
 				subMod = self.idToSubMod[id]
 
@@ -477,7 +481,7 @@ class InstallerGUI:
 
 				installPath = requestData.get('installPath', None)
 
-				return { 'installStarted' : self.try_start_install(subMod, installPath) }
+				return { 'installStarted' : self.try_start_install(subMod, installPath, validateOnly) }
 
 			# requestData: Not necessary - will be ignored
 			# responseData: Returns a list of dictionaries. Each dictionary may have different fields depending on the

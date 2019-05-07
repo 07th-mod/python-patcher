@@ -419,7 +419,8 @@
 														<table style="width:100%">
 															<tr>
 																<th style="width:23%;">Currently Chosen Path:</th>
-																<th><input style="width:100%; margin-bottom: 0px;" v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work" ></th>
+																<th><input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}" 
+																	v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work"></th>
 															</tr>
 															<tr>
 																<td colspan="2">
@@ -475,7 +476,7 @@
 			</section>
 		</div>
 
-				
+		<script src="js/lodash.js"></script>
 		<script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/parallax.js"></script>
