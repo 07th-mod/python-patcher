@@ -379,25 +379,26 @@
 													No description for {{ selectedSubMod.descriptionID }} :(
 												</div>
 												<!-- Install options, displayed as radio buttons and checkboxes -->
-												<h4 class="uppercase mt40">Choose Mod Options</h4>
-												<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
-													<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
-													<div v-for="radioOption in modOptionGroup.radio">
-														<input class="form-check-input" type="radio" v-bind:name="modOptionGroup.name" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
-														<label class="form-check-label" v-bind:for="radioOption.name">
-															{{ radioOption.name }}
-														</label>
-														<p><span v-html="renderMarkdown(radioOption.description)"></span></p>
-													</div>
-													<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
-														<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
-														<label class="form-check-label" v-bind:for="checkBoxOption.name">
-															{{ checkBoxOption.name }}
-														</label>
-														<p><span v-html="renderMarkdown(checkBoxOption.description)"></span></p>
+												<div v-if="selectedSubMod.modOptionGroups.length > 0">
+													<h4 class="uppercase mt40">Choose Mod Options</h4>
+													<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
+														<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
+														<div v-for="radioOption in modOptionGroup.radio">
+															<input class="form-check-input" type="radio" v-bind:name="modOptionGroup.name" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
+															<label class="form-check-label" v-bind:for="radioOption.name">
+																{{ radioOption.name }}
+															</label>
+															<p><span v-html="renderMarkdown(radioOption.description)"></span></p>
+														</div>
+														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
+															<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
+															<label class="form-check-label" v-bind:for="checkBoxOption.name">
+																{{ checkBoxOption.name }}
+															</label>
+															<p><span v-html="renderMarkdown(checkBoxOption.description)"></span></p>
+														</div>
 													</div>
 												</div>
-												<div v-if="!selectedSubMod.modOptionGroups.length"> There are no options for this mod variant. </div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div class="button-tabs vertical">
 													<h4 class="uppercase mt40">Choose an install path</h4>
