@@ -593,7 +593,7 @@ class InstallerGUI:
 				print('Exception Thrown handling request {}: {}'.format(requestType, exception))
 				traceback.print_exc()
 				return _makeJSONResponse('error', {
-					'errorReason': 'Exception handling [{}] request: {}'.format(requestType, str(exception))
+					'errorReason': 'Exception handling [{}] request: {}'.format(requestType, traceback.format_exc())
 				})
 
 			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
