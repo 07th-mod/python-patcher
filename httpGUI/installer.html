@@ -413,15 +413,28 @@
 
 														<li>
 															<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onChoosePathButtonClicked()>
-																Choose Install Path Manually (Open File Dialog)
+																Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[os] }} Manually (Open File Dialog)
 															</div>
 														</li>
-														Currently Chosen Path: <input style="width:70%" v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work" >
+														<table style="width:100%">
+															<tr>
+																<th style="width:23%;">Currently Chosen Path:</th>
+																<th><input style="width:100%; margin-bottom: 0px;" v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work" ></th>
+															</tr>
+															<tr>
+																<td colspan="2">
+																	<div v-if="os === 'mac'">
+																		<strong>MAC USERS: You must select a .app file. For example:<pre>/Users/[USERNAME]/library/application support/steam/steamapps/common/Higurashi When They Cry/HigurashiEp01.app</pre> </strong>
+																	</div>
+																	Your folder should contain one of the following: {{ selectedSubMod.identifiers }}
+																</td>
+															</tr>
+														</table>
 													</ul>
 												</div>
 												<transition name="fade">
-													<div class="container mt40" v-if="showConfirmation">
-														<h4>Please confirm your install settings:</h4>
+													<div v-if="showConfirmation">
+														<h4 class="uppercase mt40">Please confirm your install settings:</h4>
 														<div class="mb40">
 															Mod Name: "{{ selectedMod }}" <br>
 															Patch Type: "{{ selectedSubMod.subModName }}" <br>
