@@ -18,7 +18,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Onikakushi-UI_steam_win.7z",                "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
@@ -75,7 +75,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Watanagashi-UI_steam_win.7z",               "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -132,7 +132,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
 						{"name": "ui",      "url": null,                                                            "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["linux", "mac"], "steam": null,  "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -193,7 +193,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Himatsubushi-UI_steam_win.7z",              "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -250,7 +250,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Meakashi-UI_steam_win.7z",                  "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -298,7 +298,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",         "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Tsumihoroboshi-UI_steam_win.7z",            "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 0}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
@@ -349,7 +349,7 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/ConsoleArcs-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":"https://07th-mod.com/rikachama/ui/Himatsubushi-UI_steam_win.7z",              "priority": 0},
 						{"name": "system",  "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System.7z",           "priority": 0},
-						{"name": "script",    "url":"https://07th-mod.com/latest.php?repository=higurashi-console-arcs", "priority": 0}
+						{"name": "script",    "url":"https://07th-mod.com/latest.php?repository=higurashi-console-arcs", "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z"},
