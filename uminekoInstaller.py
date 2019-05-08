@@ -20,6 +20,12 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 			continue
 
 		for fileAnyCase in os.listdir(path):
+			fullDeletePath = os.path.join(path, fileAnyCase)
+
+			if os.path.isdir(fullDeletePath):
+				print("removeFilesWithExtensions: Skipping folder [{}]".format(fullDeletePath))
+				continue
+
 			splitFileName = fileAnyCase.lower().split('.')
 
 			hasCorrectExtension = False
@@ -36,7 +42,6 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 						hasCorrectSearchString = True
 
 			# Keep the file if it has both the correct extension and search string. Otherwise, delete it
-			fullDeletePath = os.path.join(path, fileAnyCase)
 			if hasCorrectExtension and hasCorrectSearchString:
 				print("Keeping file:", fullDeletePath)
 			else:
