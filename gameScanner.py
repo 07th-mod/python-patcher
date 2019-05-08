@@ -1,3 +1,4 @@
+import glob
 import json
 import common
 import os
@@ -383,15 +384,31 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 	"""
 
 	returnedFullConfigs = []
-	if not possiblePaths:
-		possiblePaths = getMaybeGamePaths()
+	pathsToBeScanned = possiblePaths
 
+	if not pathsToBeScanned:
+		pathsToBeScanned = getMaybeGamePaths()
+
+	# Build a mapping from subModIdentifier -> subMod
+	# In all our games, the identifiers are the same for each subMod (but different for each Mod),
+	# but it is easier to work with in the installer if we work with subMods
 	subModConfigDictionary = {}
 	for subMod in subModConfigList:
 		for identifier in subMod.identifiers:
 			subModConfigDictionary[identifier] = subMod
 
-	for gamePath in possiblePaths:
+	extraPaths = []
+	for gamePath in pathsToBeScanned:
+		# MacOS: Any subpath with '.app' is also checked in case the containing path was manually entered
+		extraPaths.extend(glob.glob(os.path.join(gamePath, "*.app")))
+		# GOG Linux: Higurashi might be inside a 'game' subfolder
+		extraPaths.extend(glob.glob(os.path.join(gamePath, "game")))
+
+	pathsToBeScanned += extraPaths
+
+	print("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
+
+	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromPath(gamePath)
 		for possibleIdentifier in possibleIdentifiers:
 			try:
