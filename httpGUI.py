@@ -342,6 +342,7 @@ class InstallerGUI:
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, validateOnly):
+		#type: (SubModConfig, str, bool) -> (bool, gameScanner.FullInstallConfiguration)
 		import higurashiInstaller
 		import uminekoInstaller
 
@@ -355,7 +356,7 @@ class InstallerGUI:
 			print(errorMessage)
 
 		if validateOnly:
-			return True if fullInstallConfigs else False
+			return (True, fullInstallConfigs[0]) if fullInstallConfigs else (False, '')
 		else:
 			if not fullInstallConfigs:
 				raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
@@ -385,7 +386,7 @@ class InstallerGUI:
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
 
-		return True
+		return (True, fullInstallSettings)
 
 	# An example of how this class can be used.
 	def server_test(self):
@@ -480,8 +481,11 @@ class InstallerGUI:
 					print(modOption)
 
 				installPath = requestData.get('installPath', None)
-
-				return { 'installStarted' : self.try_start_install(subMod, installPath, validateOnly) }
+				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
+				retval = { 'installStarted': installValid }
+				if installValid:
+					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
+				return retval
 
 			# requestData: Not necessary - will be ignored
 			# responseData: Returns a list of dictionaries. Each dictionary may have different fields depending on the
