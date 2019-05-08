@@ -34,8 +34,10 @@ function statusUpdate() {
         if (status.overallPercentage !== undefined) {
           app.overallPercentage = status.overallPercentage;
           if (status.overallPercentage === 100) {
-            app.installFinished = true;
             window.clearInterval(statusUpdateTimerHandle);
+            app.installFinished = true;
+            app.subTaskDescription = 'Install Finished!';
+            app.subTaskPercentage = 100;
             alert("Install Finished! Before closing the installer, launch the game to make sure it works correctly. Click the troubleshooting button for help if something goes wrong.");
           }
         }
