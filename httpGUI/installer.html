@@ -418,9 +418,17 @@
 														</li>
 														<table style="width:100%">
 															<tr>
-																<th style="width:23%;">Currently Chosen Path:</th>
-																<th><input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}" 
-																	v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work"></th>
+																<td style="width:23%;">Currently Chosen Path:</td>
+																<td><input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}"
+																	v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work"
+																	@focus="installPathFocussed = true" @blur="installPathFocussed = false">
+																</td>
+															</tr>
+															<tr>
+																<td style="width:23%;"></td>
+																<td>
+																	<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser above doesn't work)</strong></div>
+																</td>
 															</tr>
 															<tr>
 																<td colspan="2">

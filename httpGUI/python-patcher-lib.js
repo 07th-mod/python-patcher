@@ -122,6 +122,7 @@ window.onload = function onWindowLoaded() {
       subTaskDescription: 'Sub Task Description',
       selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
       installPathValid: false,
+      installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
     },
