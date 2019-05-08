@@ -111,7 +111,6 @@ window.onload = function onWindowLoaded() {
       selectedMod: null, // changes when user chooses a [mod] by pressing a vue-mod-button
       selectedSubMod: null, // changes when user chooses a [subMod] by pression a vue-submod-button
       fullInstallConfigs: [], // updates when when a [selectedSubMod] is changes, cleared when [selectedMod] changes
-      showConfirmation: false,
       installStarted: false,
       installFinished: false,
       installFailed: false,
@@ -121,6 +120,7 @@ window.onload = function onWindowLoaded() {
       overallTaskDescription: 'Overall Task Description',
       subTaskDescription: 'Sub Task Description',
       selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
+      validatedInstallPath: null,
       installPathValid: false,
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
@@ -139,12 +139,10 @@ window.onload = function onWindowLoaded() {
               alert("You didn't select a path!");
             } else {
               app.selectedInstallPath = responseData.path;
-              app.showConfirmation = true;
             }
           });
         } else {
           app.selectedInstallPath = pathToInstall;
-          app.showConfirmation = true;
         }
       },
       // If argument 'installPath' is null, then a file chooser will let user choose game path
@@ -165,6 +163,7 @@ window.onload = function onWindowLoaded() {
         doPost('startInstall', { subMod: app.selectedSubMod, installPath: app.selectedInstallPath, validateOnly: true },
           (responseData) => {
             app.installPathValid = responseData.installStarted;
+            app.validatedInstallPath = responseData.validatedInstallPath;
           });
       },
     },
