@@ -435,8 +435,13 @@ steamapps/common/Higurashi When They Cry/HigurashiEp01.app</pre>
 																<td style="width:23%;"></td>
 																<td>
 																	<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser above doesn't work)</strong></div>
-																	<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }}</strong></div>
-																	<div v-if="!installPathValid" style="color: red"><strong>Couldn't detect game!</strong></div>
+																	<div v-if="validationInProgress">
+																		<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...</strong></div>
+																	</div>
+																	<div v-else>
+																		<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }}</strong></div>
+																		<div v-if="!installPathValid" style="color: red"><strong>Couldn't detect game!</strong></div>
+																	</div>
 																</td>
 															</tr>
 															<tr>

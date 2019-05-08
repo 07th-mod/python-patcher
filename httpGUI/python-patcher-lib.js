@@ -124,6 +124,7 @@ window.onload = function onWindowLoaded() {
       selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
       validatedInstallPath: null,
       installPathValid: false,
+      validationInProgress: true,
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
@@ -166,6 +167,7 @@ window.onload = function onWindowLoaded() {
           (responseData) => {
             app.installPathValid = responseData.installStarted;
             app.validatedInstallPath = responseData.validatedInstallPath;
+            app.validationInProgress = false;
           });
       },
     },
@@ -203,6 +205,7 @@ window.onload = function onWindowLoaded() {
       },
       selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
         if (newPath !== null) {
+          app.validationInProgress = true;
           app.showConfirmation = true;
           app.debouncedValidateInstallPath();
         }
