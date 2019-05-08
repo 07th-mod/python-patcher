@@ -207,7 +207,11 @@ window.onload = function onWindowLoaded() {
         if (newPath !== null) {
           app.validationInProgress = true;
           app.showConfirmation = true;
-          app.debouncedValidateInstallPath();
+          if (app.installPathFocussed) {
+            app.debouncedValidateInstallPath();
+          } else {
+            app.validateInstallPath();
+          }
         }
       },
     },
