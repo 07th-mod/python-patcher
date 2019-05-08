@@ -96,7 +96,7 @@ def mainUmineko(conf):
 		                "There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
-	downloadTempDir = os.path.join(conf.installPath, "temp")
+	downloadTempDir = conf.subModConfig.modName + " Downloads"
 
 	if os.path.isdir(downloadTempDir):
 		print("Information: Temp directories already exist - continued or overwritten install")
