@@ -61,7 +61,7 @@ class FullInstallConfiguration:
 			filesDict[file.name] = file
 
 		unityVersion = None
-		assetsbundlePath = os.path.join(datadir, "sharedassets0.assets")
+		assetsbundlePath = os.path.join(datadir, "resources.assets")
 		if os.path.exists(assetsbundlePath):
 			with open(assetsbundlePath, "rb") as assetsBundle:
 				unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
