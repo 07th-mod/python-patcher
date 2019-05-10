@@ -365,8 +365,8 @@ def getPossibleIdentifiersFromPath(path):
 	return os.listdir(path)
 
 
-def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
-	# type: (List[SubModConfig], [str]) -> [FullInstallConfiguration]
+def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPaths=True):
+	# type: (List[SubModConfig], [str], bool) -> [FullInstallConfiguration]
 	"""
 	This function has two purposes:
 		- When given a specific game path ('possiblePaths' argument), it checks if any of the given SubModConfig
@@ -397,14 +397,15 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 		for identifier in subMod.identifiers:
 			subModConfigDictionary[identifier] = subMod
 
-	extraPaths = []
-	for gamePath in pathsToBeScanned:
-		# MacOS: Any subpath with '.app' is also checked in case the containing path was manually entered
-		extraPaths.extend(glob.glob(os.path.join(gamePath, "*.app")))
-		# GOG Linux: Higurashi might be inside a 'game' subfolder
-		extraPaths.extend(glob.glob(os.path.join(gamePath, "game")))
+	if scanExtraPaths:
+		extraPaths = []
+		for gamePath in pathsToBeScanned:
+			# MacOS: Any subpath with '.app' is also checked in case the containing path was manually entered
+			extraPaths.extend(glob.glob(os.path.join(gamePath, "*.app")))
+			# GOG Linux: Higurashi might be inside a 'game' subfolder
+			extraPaths.extend(glob.glob(os.path.join(gamePath, "game")))
 
-	pathsToBeScanned += extraPaths
+		pathsToBeScanned += extraPaths
 
 	print("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
 
@@ -425,6 +426,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None):
 						isSteam = True
 
 				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
+				print("Successfully detected game using identifier [{}] in [{}]".format(possibleIdentifier, gamePath))
 				break
 			except KeyError:
 				pass
@@ -449,7 +451,9 @@ def scanUserSelectedPath(subModConfigList, gameExecutablePath):
 		# Search upwards for the game path, in case user has selected a deep subfolder of the game path
 		alreadyScanned = set()
 		for scanAttempt in range(10):
-			fullInstallConfigs = scanForFullInstallConfigs(subModConfigList=subModConfigList, possiblePaths=[gameExecutablePath])
+			fullInstallConfigs = scanForFullInstallConfigs(subModConfigList=subModConfigList,
+			                                               possiblePaths=[gameExecutablePath],
+			                                               scanExtraPaths= scanAttempt==0)
 			if fullInstallConfigs:
 				return fullInstallConfigs, "scanUserSelectedPath(): Path [{}] Ok".format(gameExecutablePath)
 
