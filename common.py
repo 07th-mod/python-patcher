@@ -453,7 +453,7 @@ class DownloaderAndExtractor:
 			self.destinationPath = os.path.normpath(destinationPath)
 
 		def __repr__(self):
-			return '[{}] to [{}] ({})'.format(self.filename, self.destinationPath, prettyPrintFileSize(self.length))
+			return '[{} ({})] to [{}]'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath)
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
