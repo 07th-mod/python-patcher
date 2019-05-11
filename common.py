@@ -363,15 +363,24 @@ def getMetalinkFilenames(url, downloadDir):
 	tree = ET.parse(metalinkFileFullPath)
 	root = tree.getroot()
 
+	def getTagNoNamespace(tag):
+		return tag.split('}')[-1]
+
 	# return the 'name' attribute of each 'file' node.
 	# ignore namespaces by removing the {stuff} part of the tag
-	filenames = []
+	filename_length_pairs = []
 	for fileNode in root.iter():
-		tagNoNamespace = fileNode.tag.split('}')[-1]
-		if tagNoNamespace == 'file':
-			filenames.append(fileNode.attrib['name'])
+		if getTagNoNamespace(fileNode.tag) == 'file':
+			length = 0
+			for fileNodeChild in fileNode:
+				if getTagNoNamespace(fileNodeChild.tag) == 'size':
+					try:
+						length = int(fileNodeChild.text)
+					except:
+						pass
+			filename_length_pairs.append((fileNode.attrib['name'], length))
 
-	return filenames
+	return filename_length_pairs
 
 def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
 	makeDirsExistOK(destinationFolder)
@@ -387,6 +396,14 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFil
 		except shutil.SameFileError:
 			print("Source and Destination are the same [{}]. No action taken.".format(sourcePath))
 
+def prettyPrintFileSize(fileSizeBytes):
+	#type: (int) -> str
+	if fileSizeBytes > 1e9:
+		return "{:.2f} GB".format(fileSizeBytes / 1e9)
+	elif fileSizeBytes > 1e6:
+		return "{:.2f} MB".format(fileSizeBytes / 1e6)
+	elif fileSizeBytes > 1e3:
+		return "{:.2f} KB".format(fileSizeBytes / 1e3)
 
 
 class DownloaderAndExtractor:
@@ -430,12 +447,13 @@ class DownloaderAndExtractor:
 	:return:
 	"""
 	class ExtractableItem:
-		def __init__(self, filename, destinationPath):
+		def __init__(self, filename, length, destinationPath):
 			self.filename = filename
+			self.length = length
 			self.destinationPath = os.path.normpath(destinationPath)
 
 		def __repr__(self):
-			return '[{}] to [{}]'.format(self.filename, self.destinationPath)
+			return '[{}] to [{}] ({})'.format(self.filename, self.destinationPath, prettyPrintFileSize(self.length))
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
@@ -464,12 +482,12 @@ class DownloaderAndExtractor:
 				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
 				print("Metalink contains: ", metalinkFilenames)
 				self.downloadList.append(file.url)
-				self.extractList.extend([DownloaderAndExtractor.ExtractableItem(filename=x, destinationPath=self.defaultExtractionDir) for x in metalinkFilenames])
+				self.extractList.extend([DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=self.defaultExtractionDir) for filename, length in metalinkFilenames])
 			else:
 				#for all other files, query the download filename from the http header
 				self.downloadList.append(file.url)
-				self.extractList.append(DownloaderAndExtractor.ExtractableItem(
-					filename=DownloaderAndExtractor.__getFilenameFromURL(file.url), destinationPath=self.defaultExtractionDir))
+				filename, length = DownloaderAndExtractor.__getFilenameFromURL(file.url)
+				self.extractList.append(DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=self.defaultExtractionDir))
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -481,9 +499,11 @@ class DownloaderAndExtractor:
 		makeDirsExistOK(self.downloadTempDir)
 		makeDirsExistOK(self.defaultExtractionDir)
 
+		totalDownloadSize = self.totalDownloadSize()
 		for i, url in enumerate(self.downloadList):
 			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading [{}] -> [{}]".format(url, self.downloadTempDir))
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Total Size: {} DL Folder: [{}] URL: [{}]"
+			                                              .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url))
 			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 				raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
 
@@ -512,14 +532,18 @@ class DownloaderAndExtractor:
 		:return:
 		"""
 		self.downloadList.append(url)
-		self.extractList.append(DownloaderAndExtractor.ExtractableItem(DownloaderAndExtractor.__getFilenameFromURL(url), extractionDir))
+		filename, length = DownloaderAndExtractor.__getFilenameFromURL(url)
+		self.extractList.append(DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=extractionDir))
 
 	def printPreview(self):
-		print("\nFirst these files will be downloaded:")
+		print("\nFirst these files will be downloaded (Total Download Size: {}):".format(prettyPrintFileSize(self.totalDownloadSize())))
 		print('\n - '.join([''] + self.downloadList))
 		print("\nThen these files will be extracted or copied:")
 		print('\n - '.join([''] + [str(x) for x in self.extractList]))
 		print()
+
+	def totalDownloadSize(self):
+		return sum([x.length for x in self.extractList])
 
 	@staticmethod
 	def __urlIsMetalink(url):
@@ -544,4 +568,4 @@ class DownloaderAndExtractor:
 			if result and len(result.groups()) > 0:
 				filename = result.group(1).strip().strip('"')
 
-		return filename
+		return filename, httpResponse.length
