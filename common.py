@@ -28,7 +28,7 @@ except ImportError:
 	from urllib import quote
 
 try:
-	from typing import Optional, List
+	from typing import Optional, List, Tuple
 except:
 	pass
 
@@ -552,6 +552,13 @@ class DownloaderAndExtractor:
 
 	@staticmethod
 	def __getFilenameFromURL(url):
+		# type: (str) -> Tuple[str, int]
+		"""
+		Returns the filename of the file at the given URL, and it's file size.
+		If the file size cannot be retrieved, returns a file size of 0
+		:param url: The url of a file or a url which will eventually redirect to a file
+		:return: A tuple of (filename, filesize) of the file pointed by the url
+		"""
 		# default filename is derived from URL
 		filename = os.path.basename(urlparse(url).path)
 
@@ -560,12 +567,19 @@ class DownloaderAndExtractor:
 		contentDisposition = None
 		try:
 			contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
+			lengthString = httpResponse.getheader('Content-Length')
 		except AttributeError:
 			contentDisposition = httpResponse.info().getheader("Content-Disposition")  # python 2
+			lengthString = httpResponse.info().getheader('Content-Length')
+
+		try:
+			length = int(lengthString)
+		except:
+			length = 0
 
 		if contentDisposition:
 			result = re.search(r"filename=(.*)", contentDisposition)
 			if result and len(result.groups()) > 0:
 				filename = result.group(1).strip().strip('"')
 
-		return filename, httpResponse.length
+		return filename, length
