@@ -12,6 +12,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 1.0e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CG.7z",                "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CGAlt.7z",             "priority": 0},
@@ -70,6 +71,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 1.4e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CG.7z",               "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CGAlt.7z",            "priority": 0},
@@ -128,6 +130,7 @@
 				{
 					"name" : "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 1.3e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CG.7z",             "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CGAlt.7z",          "priority": 0},
@@ -189,6 +192,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 0.8e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CG.7z",              "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CGAlt.7z",           "priority": 0},
@@ -247,6 +251,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 1.1e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CG.7z",                  "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CGAlt.7z",               "priority": 0},
@@ -296,6 +301,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 1.6e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CG.7z",            "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CGAlt.7z",         "priority": 0},
@@ -346,6 +352,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
+					"downloadSize": 2.9e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-CG.7z",               "priority": 0},
 						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-BGM.7z",              "priority": 0},
@@ -375,6 +382,7 @@
 				{
 					"name" : "1080p",
 					"descriptionID": "uminekoQuestionFull",
+					"downloadSize": 5.0e9,
 					"files":[
 						{"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
@@ -392,6 +400,7 @@
 				{
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
+					"downloadSize": 2.0e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
@@ -427,6 +436,7 @@
 				{
 					"name" : "full",
 					"descriptionID": "uminekoAnswerFull",
+					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
@@ -440,6 +450,7 @@
 				{
 					"name" : "adv",
 					"descriptionID": "uminekoAnswerADV",
+					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
@@ -454,6 +465,7 @@
 				{
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
+					"downloadSize": 1.7e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
