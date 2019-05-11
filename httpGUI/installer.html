@@ -310,6 +310,7 @@
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
+												<h5>This mod variant will download <strong>{{ selectedSubMod.downloadSize }}</strong> of data.</h5>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
 													<div v-if="selectedSubMod.modName === 'Console Arcs'">

@@ -428,6 +428,7 @@ class InstallerGUI:
 							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
 							'family': subModConfig.family,
 							'identifiers': subModConfig.identifiers,
+							'downloadSize': common.prettyPrintFileSize(subModConfig.downloadSize),
 						}
 					)
 

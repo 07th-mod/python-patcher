@@ -194,6 +194,7 @@ class SubModConfig:
 		self.descriptionID = subMod['descriptionID'] # type: str
 		"""This variable sets which description to display on the web GUI
 		The actual description text is stored on the webpage, not in the JSON or python side."""
+		self.downloadSize = subMod['downloadSize']
 
 		self.files = [] # type: List[ModFile]
 		for subModFile in subMod['files']:
