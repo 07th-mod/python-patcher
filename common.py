@@ -409,9 +409,9 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFil
 def prettyPrintFileSize(fileSizeBytes):
 	#type: (int) -> str
 
-	if fileSizeBytes > 1e9:
+	if fileSizeBytes >= 1e9:
 		return "{:.2f}".format(fileSizeBytes / 1e9).strip('0').strip('.') + ' GB'
-	elif fileSizeBytes > 1e6:
+	elif fileSizeBytes >= 1e6:
 		return "{:.2f}".format(fileSizeBytes / 1e6).strip('0').strip('.') + ' MB'
 	else:
 		return "{:.2f}".format(fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
