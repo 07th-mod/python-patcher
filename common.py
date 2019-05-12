@@ -156,6 +156,10 @@ def trySystemOpen(path, normalizePath=False):
 
 
 #TODO: capture both stdout and stderr
+# TODO: in the future, this function could be simplified (remove aria2c specific hacks) by:
+# - using --summary-interval=5 for aria2c to force the long summary to be printed more often (which gives a newline)
+# - OR running aria2c in RPC mode
+# 7z would also need to be checked on all platforms as working correctly.
 def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 	print("----- BEGIN EXECUTING COMMAND: [{}] -----".format(" ".join(arguments)))
 
@@ -250,6 +254,12 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 
 	if url:
 		arguments.append(url)
+
+	# On linux, there is some problem where the console buffer is not read by runProcessOutputToTempFile(...) until
+	# a newline is printed. I was unable to fix this properly, however setting 'summary-interval' (default 60s) lower will
+	# force a newline to be printed every 5 seconds/the console output to flush.
+	if Globals.IS_LINUX:
+		arguments.append('--summary-interval=5')
 
 	# with open('seven_zip_stdout.txt', "w", buffering=100) as outfile:
 	# 	return subprocess.call(arguments, stdout=outfile)
