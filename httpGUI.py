@@ -83,7 +83,7 @@ def _loggerMessageToStatusDict(message):
 	if status:
 		return {
 			"overallPercentage": status.overallPercentage,
-			"overallTaskDescription": "Task: {}".format(status.currentTask),
+			"overallTaskDescription": "{}".format(status.currentTask),
 		}
 
 	# Search the line for parts of a aria status update: "[#7f0d78 27MiB/910MiB(3%) CN:8 DL:4.2MiB ETA:3m27s]"
@@ -92,7 +92,7 @@ def _loggerMessageToStatusDict(message):
 	if status:
 		return {
 			"subTaskPercentage": status.percentCompleted,
-			"subTaskDescription": "Downloading - [{}]) ETA: {}".format(status.amountCompletedString, status.ETAString),
+			"subTaskDescription": "Downloading - [{}]) CN: {} DL: {} ETA: {}".format(status.amountCompletedString, status.numConnections, status.speed, status.ETAString),
 		}
 
 	sevenZipMessageAndPercent = {}

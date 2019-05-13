@@ -3,11 +3,14 @@ import re
 class AriaStatusUpdate:
 	regexAriaCompletionStatus = re.compile(r"#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((100|\d\d|\d)%\)")
 	regexAriaETA = re.compile(r"ETA:([^\]]+)")
+	regexAriaConnectionAndSpeed = re.compile(r'CN:([^D]+)DL:([^E]+)', re.IGNORECASE)
 
-	def __init__(self, amountCompletedString, percentCompleted, ETAString):
+	def __init__(self, amountCompletedString, percentCompleted, numConnections, speed, ETAString):
 		self.amountCompletedString = amountCompletedString
 		self.percentCompleted = percentCompleted
 		self.ETAString = ETAString
+		self.speed = speed
+		self.numConnections = numConnections
 
 #Note: Sometimes can get lines like "99% 35615" without the - [filename] part. This will be missed by this parser.
 class SevenZipStatusUpdate:
@@ -46,7 +49,16 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 	if match:
 		ETAString = match.groups()[0]
 
-	return AriaStatusUpdate(amountCompletedString, percentCompleted, ETAString)
+	# Search for num connections and speed separately so they don't cause the ETA search to fail
+	match = AriaStatusUpdate.regexAriaConnectionAndSpeed.search(ariaStatusUpdateString)
+	if match:
+		numConnections = match.groups()[0]
+		speed = match.groups()[1]
+	else:
+		numConnections = "N/A"
+		speed = "N/A"
+
+	return AriaStatusUpdate(amountCompletedString, percentCompleted, numConnections, speed, ETAString)
 
 #if none of the other types of lines match, and you see a percent number (eg 54%), assume it's 7zip
 def tryGetSevenZipPercent(sevenZipStatusUpdateString):
