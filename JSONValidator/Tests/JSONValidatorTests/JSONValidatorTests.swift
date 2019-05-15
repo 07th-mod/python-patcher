@@ -91,19 +91,38 @@ final class JSONValidatorTests: XCTestCase {
 			XCTFail("Failed to decode install data, look at other tests for details")
 			return
 		}
+
 		func testDownload(_ urlString: String, codingPath: String) {
 			guard let url = URL(string: urlString) else {
 				XCTFail("The url \"\(urlString)\" was invalid")
 				return
 			}
-			let e = expectation(description: "\(url) (at \(codingPath)) was invalid")
+			let e = expectation(description: "\(url) (at \(codingPath)) is downloadable")
 			var request = URLRequest(url: url)
 			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
+			request.timeoutInterval = Double.random(in: 3...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
 
+			tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 3)
+		}
+
+		/// Attempts to download the given file, fulfilling the given expectation if it succeeds
+		/// If the request times out, the download will be retried for a total of up to `tries` tries.
+		func tryDownload(
+			_ request: URLRequest,
+			fulfilling expectation: XCTestExpectation,
+			url: URL,
+			codingPath: String,
+			tries: Int
+		) {
 			var task: URLSessionDataTask? = nil
 			task = URLSession.shared.dataTask(with: request) { [weak task] (data, response, error) in
 				task?.cancel()
 				if let error = error {
+					if tries > 1, (error as NSError).code == NSURLErrorTimedOut {
+						// If it times out, try again
+						tryDownload(request, fulfilling: expectation, url: url, codingPath: codingPath, tries: tries - 1)
+						return
+					}
 					XCTFail("Failed to download \(url) (at \(codingPath)): \(error)")
 				}
 				else if let response = response as? HTTPURLResponse {
@@ -117,7 +136,7 @@ final class JSONValidatorTests: XCTestCase {
 				else {
 					XCTFail("Failed to download \(url) (at \(codingPath)): got nil response with no error")
 				}
-				e.fulfill()
+				expectation.fulfill()
 			}
 			task!.resume()
 		}
