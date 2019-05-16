@@ -263,6 +263,7 @@
 					"fileOverrides" : [
 						{"name": "movie",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
 						{"name": "ui",      "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/rikachama/ui/Meakashi-UI_steam_win.7z"},
+						{"name": "ui",      "os": ["windows"],      "unity": "5.5.3p1", "url":"https://07th-mod.com/rikachama/ui/Meakashi-UI_gog_win.7z"},
 						{"name": "ui",      "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/rikachama/ui/Meakashi-UI_steam_unix.7z"}
 					]
 				}
