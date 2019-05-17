@@ -120,6 +120,7 @@ final class JSONValidatorTests: XCTestCase {
 				if let error = error {
 					if tries > 1, (error as NSError).code == NSURLErrorTimedOut {
 						// If it times out, try again
+						print("Attempt to download \(url) timed out, \(tries - 1) retries left")
 						tryDownload(request, fulfilling: expectation, url: url, codingPath: codingPath, tries: tries - 1)
 						return
 					}
