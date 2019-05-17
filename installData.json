@@ -385,7 +385,7 @@
 					"descriptionID": "uminekoQuestionFull",
 					"downloadSize": 5.0e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://github.com/07th-mod/resources/raw/master/umineko-question-1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
+						{"name": "graphics-voices", "url":"https://07th-mod.com/Beato/1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
@@ -439,7 +439,7 @@
 					"descriptionID": "uminekoAnswerFull",
 					"downloadSize": 7.2e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
+						{"name": "graphics-voices", "url":"https://07th-mod.com/Bern/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
 					],
@@ -453,7 +453,7 @@
 					"descriptionID": "uminekoAnswerADV",
 					"downloadSize": 7.2e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://raw.githubusercontent.com/07th-mod/resources/master/umineko-answer/chiru_graphics_voices.meta4", "priority": 0},
+						{"name": "graphics-voices", "url":"https://07th-mod.com/Bern/chiru_graphics_voices.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
