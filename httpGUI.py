@@ -541,8 +541,10 @@ class InstallerGUI:
 					gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
 					gameLogExists = os.path.exists(gameLogPath)
 					with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
-						if os.path.exists(common.Globals.LOG_FILE_PATH):
-							myzip.write(common.Globals.LOG_FILE_PATH)
+						for filename in os.listdir(common.Globals.LOG_FOLDER):
+							path = os.path.join(common.Globals.LOG_FOLDER, filename)
+							myzip.write(path, os.path.basename(path))
+
 						if gameLogExists:
 							myzip.write(gameLogPath, higurashi_log_file_name)
 

@@ -1,4 +1,7 @@
+import os
 import sys
+from common import makeDirsExistOK
+
 try:
 	import queue
 except:
@@ -29,6 +32,7 @@ class Logger(object):
 	def __init__(self, logPath):
 		self.logPath = logPath
 		self.terminal = sys.stdout
+		makeDirsExistOK(os.path.dirname(logPath))
 		self.log = open(logPath, "a")
 		self.callbacks = {}
 		self.queue = queue.Queue(maxsize=100000)
