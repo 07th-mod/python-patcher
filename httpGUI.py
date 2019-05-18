@@ -35,8 +35,11 @@ try:
 	from tkinter import Tk
 	from tkinter import filedialog
 except ImportError:
-	from Tkinter import Tk
-	import tkFileDialog as filedialog
+	try:
+		from Tkinter import Tk
+		import tkFileDialog as filedialog
+	except:
+		pass
 
 try:
 	from typing import List, Optional, Dict
@@ -45,6 +48,11 @@ except ImportError:
 
 collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskPath(subMod):
+	try:
+		Tk
+	except NameError:
+		raise RuntimeError("Tk is not installed on this system")
+
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
 	if common.Globals.IS_MAC:
