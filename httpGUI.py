@@ -20,13 +20,13 @@ from gameScanner import SubModConfig
 
 try:
 	import urlparse
-except:
+except ImportError:
 	import urllib.parse as urlparse
 
 try:
 	import http.server as server
 	from http.server import HTTPServer
-except:
+except ImportError:
 	import SimpleHTTPServer as server
 	from BaseHTTPServer import HTTPServer
 
@@ -38,7 +38,7 @@ except ImportError:
 	try:
 		from Tkinter import Tk
 		import tkFileDialog as filedialog
-	except:
+	except ImportError:
 		pass
 
 try:
