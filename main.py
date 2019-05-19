@@ -2,17 +2,15 @@
 from __future__ import print_function, unicode_literals, with_statement
 
 import datetime
-import io
-import json
-import os, sys
+import os
+import pprint
+import sys
+
 import common
 import gameScanner
-import installerGUI
-import logger
 import httpGUI
-from gui import _TKAskYesNo
+import logger
 
-import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 try:
@@ -33,14 +31,15 @@ if __name__ == "__main__":
 	if os.path.exists("installData.json"):
 		common.Globals.DEVELOPER_MODE = True
 
-	#redirect stdout to both a file and console
-	#TODO: on MAC using a .app file, not sure if this logfile will be writeable
+	# redirect stdout to both a file and console
+	# TODO: on MAC using a .app file, not sure if this logfile will be writeable
 	#      could do a try-catch, and then only begin logging once the game path has been set?
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
 	print("\n\n------------------ Install Started On {} ------------------ ".format(datetime.datetime.now()))
+
 
 	def check07thModServerConnection():
 		"""
@@ -56,8 +55,8 @@ if __name__ == "__main__":
 			print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
 			common.exitWithError()
 
-	check07thModServerConnection()
 
+	check07thModServerConnection()
 
 	common.Globals.scanForExecutables()
 
