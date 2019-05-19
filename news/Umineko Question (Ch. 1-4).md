@@ -1,5 +1,12 @@
 # Changelog
 
+## Voice File Optimization - 19/05/2019
+
+The voice files are now stored as a single file (`arc4.nsa`). This will speed up
+installation time (especially on a HDD), and also reduce the number of voice files on disk from about 51,000 to just one file.
+
+We don't expect any issues, but if you find any problems with voice playback, please let us know.
+
 ## WARNING: 02/05/2019
 
 We have had a couple reports of performance problems for Chapters 5-8, even on high end PCs.
