@@ -49,6 +49,21 @@ function doPost(requestType, requestData, onSuccessCallback) {
     }
   };
 
+  http.timeout = 3000;
+
+  http.ontimeout = function onTimeout() {
+    const message = `Timeout Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
+    console.log(message);
+    alert(message);
+  };
+
+  http.onerror = function onError() {
+    const message = `Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
+    console.log(message);
+    alert(message);
+  };
+
+
   http.send(makeJSONRequest(requestType, requestData));
 }
 
