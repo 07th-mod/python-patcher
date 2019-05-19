@@ -385,17 +385,22 @@
 														<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
 														<div v-for="radioOption in modOptionGroup.radio">
 															<input class="form-check-input" type="radio" v-bind:name="modOptionGroup.name" v-bind:id="radioOption.id" v-bind:value="radioOption.id" v-model="modOptionGroup.selectedRadio">
-															<label class="form-check-label" v-bind:for="radioOption.name">
+															<label class="form-check-label" v-bind:for="radioOption.id">
 																{{ radioOption.name }}
 															</label>
-															<p><span v-html="renderMarkdown(radioOption.description)"></span></p>
+															<br>
+															<label v-bind:for="radioOption.id">
+																<span v-html="renderMarkdown(radioOption.description)"></span>
+															</label>
 														</div>
 														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
 															<input class="form-check-input" type="checkbox" v-bind:id="checkBoxOption.id" v-bind:value="checkBoxOption.id" v-model="modOptionGroup.selectedCheckBoxes">
-															<label class="form-check-label" v-bind:for="checkBoxOption.name">
+															<label class="form-check-label" v-bind:for="checkBoxOption.id">
 																{{ checkBoxOption.name }}
 															</label>
-															<p><span v-html="renderMarkdown(checkBoxOption.description)"></span></p>
+															<label v-bind:for="checkBoxOption.id">
+																<span v-html="renderMarkdown(checkBoxOption.description)"></span>
+															</label>
 														</div>
 													</div>
 												</div>
