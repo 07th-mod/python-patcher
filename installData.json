@@ -385,7 +385,8 @@
 					"descriptionID": "uminekoQuestionFull",
 					"downloadSize": 5.0e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://07th-mod.com/Beato/1080p/umi_1080p_graphics_voices.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
@@ -403,7 +404,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"downloadSize": 2.0e9,
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/voice_only/InDevelopment/ManualUpdates/0.utf", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
 					],
@@ -435,11 +436,12 @@
 			"identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
 			"submods": [
 				{
-					"name" : "full",
+					"name" : "novel-mode",
 					"descriptionID": "uminekoAnswerFull",
 					"downloadSize": 7.2e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://07th-mod.com/Bern/chiru_graphics_voices.meta4", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/0.utf", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
 					],
@@ -449,11 +451,12 @@
 					]
 				},
 				{
-					"name" : "adv",
+					"name" : "adv-mode",
 					"descriptionID": "uminekoAnswerADV",
 					"downloadSize": 7.2e9,
 					"files":[
-						{"name": "graphics-voices", "url":"https://07th-mod.com/Bern/chiru_graphics_voices.meta4", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/adv_mode/0.utf", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0}
@@ -468,7 +471,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"downloadSize": 1.7e9,
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/raw/master/voices-only/0.utf", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
