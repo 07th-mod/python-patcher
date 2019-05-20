@@ -128,6 +128,7 @@ window.onload = function onWindowLoaded() {
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
+      showPathSelectionButtons: true, // Set to true to show UI for path selection
     },
     methods: {
       doInstall() {
@@ -205,6 +206,7 @@ window.onload = function onWindowLoaded() {
             // If there is only one detected install path, select it
             if (this.fullInstallConfigs.length === 1) {
               this.selectedInstallPath = this.fullInstallConfigs[0].path;
+              this.showPathSelectionButtons = false;
             }
           });
         } else {
