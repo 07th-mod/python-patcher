@@ -413,30 +413,20 @@
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div class="button-tabs vertical">
 													<h4 class="uppercase mt40">Choose an install path</h4>
-													<ul class="tabs">
-														<table style="width:100%">
-															<tr>
-																<td style="width:23%;">Currently Chosen Path:</td>
-																<td><input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}"
+													<ul>
+														Currently Chosen Path:
+														<input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}"
 																	v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work"
 																	@focus="installPathFocussed = true" @blur="installPathFocussed = false">
-																</td>
-															</tr>
-															<tr>
-																<td style="width:23%;"></td>
-																<td>
-																	<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser above doesn't work)</strong></div>
-																	<div v-if="validationInProgress">
-																		<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...</strong></div>
-																		<div v-if="selectedInstallPath == null">Use the buttons below to select a path.</div>
-																	</div>
-																	<div v-else>
-																		<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }}</strong></div>
-																		<div v-if="!installPathValid" style="color: red"><strong>Couldn't detect game!</strong></div>
-																	</div>
-																</td>
-															</tr>
-														</table>
+														<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser above doesn't work)</strong></div>
+														<div v-if="validationInProgress">
+															<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...</strong></div>
+															<div v-if="selectedInstallPath == null">Use the buttons below to select a path.</div>
+														</div>
+														<div v-else>
+															<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }}</strong></div>
+															<div v-if="!installPathValid" style="color: red"><strong>Couldn't detect game!</strong></div>
+														</div>
 														<!-- If there is only one fullInstallConfig, it will be selected automatically. In that case, don't show the autodetected path chooser. -->
 														<li v-if="fullInstallConfigs.length > 1"
 															v-for="fullInstallConfig in fullInstallConfigs"
