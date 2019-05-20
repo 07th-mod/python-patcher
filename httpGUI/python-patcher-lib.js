@@ -200,7 +200,13 @@ window.onload = function onWindowLoaded() {
       },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
-          doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => { console.log(responseData); this.fullInstallConfigs = responseData; });
+          doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
+            console.log(responseData); this.fullInstallConfigs = responseData;
+            // If there is only one detected install path, select it
+            if (this.fullInstallConfigs.length === 1) {
+              this.selectedInstallPath = this.fullInstallConfigs[0].path;
+            }
+          });
         } else {
           this.fullInstallConfigs = [];
         }

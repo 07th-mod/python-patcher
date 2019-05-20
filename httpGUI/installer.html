@@ -437,7 +437,9 @@
 																</td>
 															</tr>
 														</table>
-														<li v-for="fullInstallConfig in fullInstallConfigs"
+														<!-- If there is only one fullInstallConfig, it will be selected automatically. In that case, don't show the autodetected path chooser. -->
+														<li v-if="fullInstallConfigs.length > 1"
+															v-for="fullInstallConfig in fullInstallConfigs"
 															v-on:click="onChoosePathButtonClicked(fullInstallConfig.path);"
 															v-bind:key="fullInstallConfig.key">
 															<div class="tab-title">
