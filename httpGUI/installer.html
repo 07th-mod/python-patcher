@@ -219,25 +219,18 @@
 							<div class="col-sm-12">
 								<div class="tabbed-content button-tabs vertical">
 									<!-- Left Hand Column displaying list of submods that can be installed (eg "Full Patch", "Voice Only") -->
+									<!--
 									<ul class="tabs col-md-3">
-										<h4 class="uppercase mb40">Choose Patch</h4>
-										<li
-										v-for="subMod in possibleSubMods"
-										v-on:click="selectedSubMod = subMod; showTroubleshooting = false;"
-										v-bind:class="{ active: selectedSubMod === subMod}"
-										>
-											<div class="tab-title"><span> Install {{ subMod.subModName }} Patch</span></div>
-										</li>
-
 										<li><br><hr></li>
 										<li v-if="selectedSubMod !== null"
 											v-on:click="showTroubleshooting = !showTroubleshooting;"
 											v-bind:class="{ active: showTroubleshooting}">
 										<div class="tab-title" ><span>"{{ selectedSubMod.subModName }} patch"  Troubleshooting</span></div>
 										</li>
-									</ul>
+									</ul>-->
 									<!-- Right Hand Column: Display Troubleshooting Help (only when troubleshooting button clicked) -->
-									<div class="content col-md-9" v-if="showTroubleshooting && (selectedSubMod !== null)">
+									<div class="col-md-2"></div>
+									<div class="col-md-8" v-if="showTroubleshooting && (selectedSubMod !== null)">
 										<h4 class="uppercase">"{{ selectedSubMod.subModName }} patch" Troubleshooting</h4>
 										<hr>
 										<h4>FAQ and Troubleshooting Information</h4>
@@ -305,7 +298,20 @@
 										<p>Add scan script for errors here.</p> -->
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
-									<ul class="content col-md-9">
+									<ul class="col-md-8">
+										<div v-if="possibleSubMods.length > 1">
+											<h4 class="uppercase">Choose Patch</h4>
+											<hr>
+											Please choose which variant of the patch you would like to install:
+											<p>
+											<div v-for="subMod in possibleSubMods">
+												<input class="form-check-input invisible" type="radio" v-bind:id="subMod.subModName" v-bind:name="subMod.subModName" v-bind:value="subMod" v-model="selectedSubMod">
+												<label class="form-check-label" v-bind:for="subMod.subModName">
+													<li v-bind:class="{ active: selectedSubMod === subMod}"><div class="tab-title"><span>{{ subMod.subModName }}</span></div></li>
+												</label>
+											</div>
+											</p>
+										</div>
 										<div v-if="(showTroubleshooting === false) && (selectedSubMod !== null)">
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
