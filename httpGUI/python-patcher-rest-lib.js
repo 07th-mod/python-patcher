@@ -1,5 +1,8 @@
 'use strict';
 
+let pythonPatcherRestLibErrorCount = 0;
+const pythonPatcherRestLibMaxErrorCount = 3;
+
 // Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
 function makeJSONRequest(requestType, requestData) {
   return JSON.stringify({ requestType, requestData });
@@ -8,6 +11,18 @@ function makeJSONRequest(requestType, requestData) {
 function decodeJSONResponse(jsonString) {
   const responseObject = JSON.parse(jsonString);
   return [responseObject.responseType, responseObject.responseData];
+}
+
+function showMessageWithLimit(message) {
+  pythonPatcherRestLibErrorCount += 1;
+  console.log(message);
+
+  if (pythonPatcherRestLibErrorCount === pythonPatcherRestLibMaxErrorCount) {
+    alert(`More than ${pythonPatcherRestLibMaxErrorCount} errors occured - no more errors will be shown in alerts`);
+    console.log(`More than ${pythonPatcherRestLibMaxErrorCount} errors occured - no more errors will be show in alerts`);
+  } else if (pythonPatcherRestLibErrorCount < pythonPatcherRestLibMaxErrorCount) {
+    alert(message);
+  }
 }
 
 // Send any object in JSON format as a POST request to the server.
@@ -53,14 +68,12 @@ function doPost(requestType, requestData, onSuccessCallback) {
 
   http.ontimeout = function onTimeout() {
     const message = `Timeout Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
-    console.log(message);
-    alert(message);
+    showMessageWithLimit(message);
   };
 
   http.onerror = function onError() {
     const message = `Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
-    console.log(message);
-    alert(message);
+    showMessageWithLimit(message);
   };
 
 
