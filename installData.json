@@ -387,7 +387,7 @@
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/1080p/InDevelopment/ManualUpdates/0.utf", "priority": 0},
+						{"name": "script", "url":"https://raw.githubusercontent.com/07th-mod/umineko-question/master/InDevelopment/ManualUpdates/0.utf", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
 						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "priority": 1},
