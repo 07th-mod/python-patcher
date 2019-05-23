@@ -391,9 +391,9 @@
 														<div v-if="showPathSelectionButtons">
 															Currently Chosen Path:<br>
 															<input v-bind:style="{'width':'99%', 'margin-bottom': '0px', 'background-color': !installPathValid ? '#ffdddd' : '#ffffff'}"
-																		v-model="selectedInstallPath" placeholder="You can paste a path here if the above options don't work"
+																		v-model="selectedInstallPath" placeholder="You can paste a path here if the below options don't work"
 																		@focus="installPathFocussed = true" @blur="installPathFocussed = false">
-															<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser above doesn't work)</strong></div>
+															<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser below doesn't work)</strong></div>
 															<div v-if="validationInProgress">
 																<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...</strong></div>
 																<div v-if="selectedInstallPath == null">Use the buttons below to select a path.</div>
