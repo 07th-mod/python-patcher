@@ -100,9 +100,9 @@ final class JSONValidatorTests: XCTestCase {
 			let e = expectation(description: "\(url) (at \(codingPath)) is downloadable")
 			var request = URLRequest(url: url)
 			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
-			request.timeoutInterval = Double.random(in: 3...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
+			request.timeoutInterval = Double.random(in: 4...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
 
-			tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 3)
+			tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 8)
 		}
 
 		/// Attempts to download the given file, fulfilling the given expectation if it succeeds
@@ -162,7 +162,7 @@ final class JSONValidatorTests: XCTestCase {
 			}
 		}
 
-		waitForExpectations(timeout: 20)
+		waitForExpectations(timeout: 60)
 	}
 
 	static var allTests = [
