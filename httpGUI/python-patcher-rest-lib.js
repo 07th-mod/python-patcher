@@ -64,7 +64,9 @@ function doPost(requestType, requestData, onSuccessCallback) {
     }
   };
 
-  http.timeout = 3000;
+  if (requestType !== 'showFileChooser') {
+    http.timeout = 3000;
+  }
 
   http.ontimeout = function onTimeout() {
     const message = `Timeout Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
