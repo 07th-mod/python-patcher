@@ -2,7 +2,6 @@ import commandLineParser
 import common
 import os, shutil, subprocess
 import gameScanner
-import gui
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 	"""

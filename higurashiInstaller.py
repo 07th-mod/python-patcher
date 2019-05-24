@@ -6,7 +6,6 @@ import common
 import os, os.path as path, shutil, subprocess, glob
 
 ########################################## Installer Functions  and Classes ############################################
-import gui
 import gameScanner
 
 
