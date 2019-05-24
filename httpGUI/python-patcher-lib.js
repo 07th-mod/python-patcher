@@ -253,7 +253,7 @@ window.onload = function onWindowLoaded() {
 // Add a reminder not to close the window/refresh/navigate out if installer started.
 // Due to limitations of various browsers, this will just show a generic message.
 window.onbeforeunload = function onbeforeunload(event) {
-  if (app.installStarted) {
+  if (app.installStarted && !app.installFinished) {
     event.preventDefault();
     event.returnValue = '';
   }
