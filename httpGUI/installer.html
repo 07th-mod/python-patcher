@@ -288,7 +288,7 @@
 											<hr>
 											Please choose which variant of the patch you would like to install:
 											<p>
-											<div v-for="subMod in possibleSubMods">
+											<div v-for="subMod in possibleSubMods" class="d-inline-block">
 												<input class="form-check-input invisible" type="radio" v-bind:id="subMod.subModName" v-bind:name="subMod.subModName" v-bind:value="subMod" v-model="selectedSubMod">
 												<label class="form-check-label" v-bind:for="subMod.subModName">
 													<li v-bind:class="{ active: selectedSubMod === subMod}"><div class="tab-title"><span>{{ subMod.subModName }}</span></div></li>

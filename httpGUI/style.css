@@ -106,3 +106,8 @@ body {
 .background-image-holder.fadeIn {
     -webkit-filter: brightness(50%); filter: brightness(50%)
 }
+
+/* Bootstrap should already contain this class, but I couldn't get it to work, so I've added it here. */
+.d-inline-block {
+    display: inline-block;
+}
