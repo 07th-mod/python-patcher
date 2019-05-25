@@ -3,11 +3,25 @@ import traceback
 
 import commandLineParser
 import common
-import os, os.path as path, shutil, subprocess, glob
+import os, os.path as path, shutil, subprocess, glob, stat
 
 ########################################## Installer Functions  and Classes ############################################
 import gameScanner
 
+def on_rm_error(func, path, exc_info):
+	# path contains the path of the file that couldn't be removed
+	# let's just assume that it's read-only and unlink it.
+	os.chmod(path, stat.S_IWRITE)
+	os.unlink(path)
+
+# Remove a file, even if it's marked as readonly
+def forceRemove(path):
+	os.chmod(path, stat.S_IWRITE)
+	os.remove(path)
+
+# Call shutil.rmtree, such that it even removes readonly files
+def forceRmTree(path):
+	shutil.rmtree(path, onerror=on_rm_error)
 
 class Installer:
 	def __init__(self, fullInstallConfiguration):
@@ -80,21 +94,21 @@ class Installer:
 
 		try:
 			for mg in glob.glob(compiledScriptsPattern):
-				os.remove(mg)
+				forceRemove(mg)
 		except Exception:
 			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
 			traceback.print_exc()
 
 		try:
 			if path.isdir(oldCG):
-				shutil.rmtree(oldCG)
+				forceRmTree(oldCG)
 		except Exception:
 			print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
 			traceback.print_exc()
 
 		try:
 			if path.isdir(oldCGAlt):
-				shutil.rmtree(oldCGAlt)
+				forceRmTree(oldCGAlt)
 		except Exception:
 			print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
 			traceback.print_exc()
@@ -141,7 +155,7 @@ class Installer:
 				self._moveDirectoryIntoPlace(fromDir=src, toDir=target)
 			else:
 				if path.exists(target):
-					os.remove(target)
+					forceRemove(target)
 				shutil.move(src, target)
 		os.rmdir(fromDir)
 
@@ -152,7 +166,7 @@ class Installer:
 		"""
 		if path.exists(fromPath):
 			if path.exists(toPath):
-				os.remove(toPath)
+				forceRemove(toPath)
 			shutil.move(fromPath, toPath)
 
 	def cleanup(self):
@@ -163,8 +177,8 @@ class Installer:
 		On mac, modifies the application Info.plist with new values if available
 		"""
 		try:
-			shutil.rmtree(self.downloadDir)
-			shutil.rmtree(self.extractDir)
+			forceRmTree(self.downloadDir)
+			forceRmTree(self.extractDir)
 		except OSError:
 			pass
 
