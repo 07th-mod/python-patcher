@@ -3,13 +3,14 @@ import common
 import os, shutil, subprocess
 import gameScanner
 
-def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
+def deleteAllInPathExceptSpecified(paths, extensions, searchStrings, alwaysDeleteStrings):
 	"""
 	Deletes all files in the specified paths, unless they have both a desired extension and a desired search string.
-	NOTE: if file has multiple extensions, all will be matched. Eg. .zip.001 will match the extension 'zip' and '001'
+	NOTE: if file has multiple extensions, only the last will be matched. This means multi part archives like a.zip.001
+	won't work correctly!
 
 	:param paths: A list[] of paths which will have its files deleted according to the below critera
-	:param extensions: files to keep must have one of the extensions in this list[] (without the '.', such as 'zip')
+	:param extensions: files to keep must have one of the extensions in this list[] (lowercase with the '.', such as '.zip')
 	:param searchStrings: files to keep must contain these search strings.
 	:return:
 	"""
@@ -25,23 +26,26 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 				print("removeFilesWithExtensions: Skipping folder [{}]".format(fullDeletePath))
 				continue
 
-			splitFileName = fileAnyCase.lower().split('.')
+			fileNameNoExt, extension = os.path.splitext(fileAnyCase.lower())
 
-			hasCorrectExtension = False
-			for extension in splitFileName[1:]:
-				if extension in extensions:
-					hasCorrectExtension = True
+			hasCorrectExtension = extension in extensions
 
 			hasCorrectSearchString = False
 			if not searchStrings:
 				hasCorrectSearchString = True
 			else:
 				for searchString in searchStrings:
-					if searchString in splitFileName[0]:
+					if searchString in fileNameNoExt:
 						hasCorrectSearchString = True
 
+			hasAlwaysDeleteString = False
+			if alwaysDeleteStrings:
+				for alwaysDeleteString in alwaysDeleteStrings:
+					if alwaysDeleteString in fileNameNoExt:
+						hasAlwaysDeleteString = True
+
 			# Keep the file if it has both the correct extension and search string. Otherwise, delete it
-			if hasCorrectExtension and hasCorrectSearchString:
+			if hasCorrectExtension and hasCorrectSearchString and not hasAlwaysDeleteString:
 				print("Keeping file:", fullDeletePath)
 			else:
 				print("Deleting file:", fullDeletePath)
@@ -109,8 +113,9 @@ def mainUmineko(conf):
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir],
-								   extensions=['7z', 'zip'],
-	                               searchStrings=['graphic', 'voice'])
+	                               extensions=['.7z', '.zip'],
+	                               searchStrings=['graphic', 'voice'],
+	                               alwaysDeleteStrings=['script'])
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
