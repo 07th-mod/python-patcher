@@ -238,6 +238,13 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 		'-x 8', # max connections to the same server
 		'-s 8', # Split - Try to use N connections per each download item
 		'-j 1', # max concurrent download items (eg number of separate urls which can be downloaded in parallel)
+		# By default, if aria2c detects a file already exists with the same name, and is different size to the file
+		# being downloaded (lets call this 'test.zip'), it will save to a different name ('test.2.zip', 'test.3.zip' etc)
+		# This option prevents this from happening. Continuing existing downloads where the file size is the same is still supported.
+		'--auto-file-renaming=false',
+		# By default, aria2c will just error out if auto-renaming is disabled. Enabling this option allows aria2c to overwrite existing files,
+		# if they cannot be continued (by the --continue argument)
+		'--allow-overwrite=true',
 	]
 
 	if followMetaLink:
