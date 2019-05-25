@@ -580,8 +580,6 @@ class DownloaderAndExtractor:
 		:param url: The url of a file or a url which will eventually redirect to a file
 		:return: A tuple of (filename, filesize) of the file pointed by the url
 		"""
-		# default filename is derived from URL
-		filename = os.path.basename(urlparse(url).path)
 
 		# if the url has a contentDisposition header, use that instead
 		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
@@ -598,9 +596,22 @@ class DownloaderAndExtractor:
 		except:
 			length = 0
 
-		if contentDisposition:
-			result = re.search(r"filename=(.*)", contentDisposition)
-			if result and len(result.groups()) > 0:
-				filename = result.group(1).strip().strip('"')
+		filename = None
+
+		# try to set the filename based on the content disposition field
+		if filename is None:
+			if contentDisposition:
+				result = re.search(r"filename=(.*)", contentDisposition)
+				if result and len(result.groups()) > 0:
+					filename = result.group(1).strip().strip('"')
+
+		# try to set the filename based on the redirected url
+		if filename is None:
+			filename = os.path.basename(urlparse(httpResponse.url).path)
+
+		# default filename is derived from original URL
+		if filename is None:
+			filename = os.path.basename(urlparse(url).path)
+
 
 		return filename, length
