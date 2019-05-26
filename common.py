@@ -106,6 +106,7 @@ class Globals:
 	DEVELOPER_MODE = False
 
 	BUILD_INFO = 'Build info not yet retrieved'
+	INSTALL_LOCK_FILE_PATH = 'lockfile.lock'
 
 	@staticmethod
 	def scanForExecutables():
@@ -624,3 +625,35 @@ class DownloaderAndExtractor:
 
 
 		return filename, length
+
+def tryCreateLockFile():
+	# type: () -> ()
+	"""
+	Creates a global lock file if it doesn't already exist.
+	All instances of the installer with the same current working directory will 'see' this lock file.
+	"""
+	try:
+		if not os.path.exists(Globals.INSTALL_LOCK_FILE_PATH):
+			with open(Globals.INSTALL_LOCK_FILE_PATH, 'w') as _:
+				pass
+	except:
+		pass
+
+def lockFileExists():
+	# type: () -> bool
+	"""
+	Returns true if the lock file (indicating install in progress) exists, false otherwise.
+	"""
+	return os.path.exists(Globals.INSTALL_LOCK_FILE_PATH)
+
+def tryDeleteLockFile():
+	# type: () -> ()
+	"""
+	Tries to delete the lock file - no error is raised if it fails, but success / failure is logged to file
+	"""
+	try:
+		if lockFileExists():
+			os.remove(Globals.INSTALL_LOCK_FILE_PATH)
+			print("Install Completed: Deleted the lock file")
+	except:
+		print('WARNING: Failed to delete lock file!')

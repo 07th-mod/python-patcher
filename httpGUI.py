@@ -389,6 +389,13 @@ class InstallerGUI:
 			except Exception as e:
 				print(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX + str(e))
 				raise
+			common.tryDeleteLockFile()
+
+		# This lock file allows the installer to detect if there is already an install in progress in a different instance of the program
+		# This lock file method is not foolproof, but should handle most cases
+		# It is cleaned up when the install finishes (even if the install was unsuccessful), but is NOT cleaned up
+		# if the program was force closed.
+		common.tryCreateLockFile()
 
 		self.threadHandle = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
@@ -514,7 +521,10 @@ class InstallerGUI:
 				}
 
 			def getInstallerMetaInfo(requestData):
-				return { 'buildInfo': common.Globals.BUILD_INFO }
+				return {
+					'buildInfo': common.Globals.BUILD_INFO,
+					'lockFileExists': common.lockFileExists(), # Indicate if it looks like install already in progress
+				}
 
 			# This causes a TKInter window to open allowing the user to choose a game path.
 			# The request data should be the submod ID.

@@ -129,6 +129,7 @@ window.onload = function onWindowLoaded() {
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
       showPathSelectionButtons: true, // Set to true to show UI for path selection
+      lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
     },
     methods: {
       doInstall() {
@@ -248,6 +249,9 @@ window.onload = function onWindowLoaded() {
 
     replaceElementWithNews('modNews', app.selectedMod);
     replaceElementWithBuildInfo('build-info');
+    doPost('getInstallerMetaInfo', [], (response) => {
+      app.lockFileExists = response.lockFileExists;
+    });
   });
 };
 
