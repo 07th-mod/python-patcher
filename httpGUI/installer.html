@@ -168,6 +168,7 @@
 			<transition name="fade">
 				<section class="section-small-padding" v-show="installStarted">
 						<div class="container">
+							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>Do not close the console window - doing so will stop the installation!</strong></div>
 							<h3> Overall Progress: {{ overallPercentage }}% </h3>
 							<h5 style="font-family: monospace"> {{ overallTaskDescription }} </h5>
 							<div class="progress">
