@@ -17,4 +17,4 @@ deploy:
   on:
     repo: 07th-mod/python-patcher
     tags: true
-
+  draft: true
