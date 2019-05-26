@@ -1,5 +1,13 @@
 # Changelog
 
+## Mangagamer (Non-Steam) Voice File Bug Fix - 26/05/2019
+
+The layout of the the `arc[X].nsa` files is different between the Mangagamer and Steam versions. The recent
+voice file optimization did not take that into account, and thus broke voice playback for users who have the Mangagamer (non-steam) release of Umineko.
+
+This has been fixed on the latest installer. If you have this problem and don't want to re-install,
+just rename the `arc4.nsa` file to `arc1.nsa`, so the game can find it.
+
 ## Voice File Optimization - 19/05/2019
 
 The voice files are now stored as a single file (`arc4.nsa`). This will speed up
