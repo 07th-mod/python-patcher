@@ -1604,38 +1604,7 @@ nav.nav-centered.outOfSight .logo {
   border-radius: 0;
   padding: 9px 24px 12px 24px;
 }
-/*!---------- 9. ALERTS ----------*/
-.alert {
-  margin-bottom: 24px;
-  background: none;
-  border-radius: 0;
-  font-weight: 600;
-  padding: 12px 16px;
-}
-.alert .close {
-  opacity: 1;
-  font-size: 24px;
-  top: -2px;
-  right: -4px;
-  transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-}
-.alert .close span {
-  font-weight: 400;
-}
-.alert-warning {
-  border: 1px solid #d88519;
-  color: #d88519;
-}
-.alert-success {
-  border: 1px solid #60b963;
-  color: #60b963;
-}
-.alert-danger {
-  border: 1px solid #c64444;
-  color: #c64444;
-}
+
 /*!---------- 10. ICONS ----------*/
 .icon {
   font-size: 64px;
