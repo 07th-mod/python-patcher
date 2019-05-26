@@ -283,11 +283,22 @@
 									</div>
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="col-md-8">
-										<div class="alert alert-warning" role="alert" v-if="lockFileExists"><strong>
+										<div v-if="metaInfo !== null">
+										<div class="alert alert-danger" role="alert"
+										v-if="	selectedSubMod !== null &&
+												selectedSubMod.family === 'higurashi' &&
+												metaInfo.operatingSystem === 'linux'"><strong>
+												Warning: GNOME Desktop (the default on Ubuntu) will cause Higurashi Ep.4 and upwards to crash the entire desktop when you start the game.
+												This happens even on the base game (without any mods applied).<br><br>
+												A workaround for this is to install XFCE desktop. You can follow this guide to install XFCE desktop (it can be installed alongside GNOME).
+												Please make sure you can launch the base game before applying any mods (for ease of installation, please don't make any saves on the base game).
+										</strong></div>
+										<div class="alert alert-warning" role="alert" v-if="metaInfo.lockFileExists"><strong>
 											Warning: It appears an install is already in progress, or the last install was closed unexpectedly.<br>
 											Please double check that there is only one console window open, and the install is not already running.<br>
 											If you force closed the installer last time you ran it, then you can ignore this message.
 										</strong></div>
+										</div>
 										<div v-if="possibleSubMods.length > 1">
 											<h4 class="uppercase">Choose Patch</h4>
 											<hr>

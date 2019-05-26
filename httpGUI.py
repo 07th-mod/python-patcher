@@ -524,6 +524,7 @@ class InstallerGUI:
 				return {
 					'buildInfo': common.Globals.BUILD_INFO,
 					'lockFileExists': common.lockFileExists(), # Indicate if it looks like install already in progress
+					'operatingSystem': common.Globals.OS_STRING,
 				}
 
 			# This causes a TKInter window to open allowing the user to choose a game path.
