@@ -14,6 +14,10 @@ The python files should run under both Python 2 and 3 (please try to maintain co
 
 The project is currently setup to use with the IDE `Pycharm`, so use IDE this if possible.
 
+Please note that pycharm will attempt to index files in the project folder - this may cause problems when you run
+the installer from pycharm, as the installer may try to move a file Pycharm is currently reading, causing it to
+fail (I have only seen this happen once).
+
 ## JSON Mod Definition
 
 The patcher reads the file [installData.json](installData.json) to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in [JSONValidator.swift](JSONValidator/Sources/JSONValidator/JSONValidator.swift)
@@ -77,7 +81,7 @@ There are some additional options which had to be set:
 
 `skip_cleanup: true`: this MUST be set such that after the previous script is run, the files are not cleaned up (first the script is run, then travis copies the files from the specified place)
 
-```
+```travis
   on:
     repo: 07th-mod/python-patcher
     tags: true
@@ -85,8 +89,18 @@ There are some additional options which had to be set:
 
 This ensures that releases are only deployed on tagged pushes, not every push.
 
+### Windows Builds
+
+We have had some issues with windows defender stalling downloads on our windows builds (it seems to do with us
+distributing a python distribution).
+
+On Chrome and Edge (not Firefox), when you downloaded the old zip, it would get stuck at 100% while the zip file was being scanned.
+Chrome would then refuse to download any other files while the windows defender service would be stuck at 30% CPU for 20 minutes or more.
+
+To fix this, we have encrypted the python distribution and the httpGUI archives with the password 'password', so windows defender has to wait until the files are extracted before it can scan them.
+
 #### Useful Resources
 
-- https://github.com/cclauss/Travis-CI-Python-on-three-OSes
-- https://github.com/drojf/Travis-CI-Python-on-three-OSes
-- https://docs.travis-ci.com/user/multi-os/
+- <https://github.com/cclauss/Travis-CI-Python-on-three-OSes>
+- <https://github.com/drojf/Travis-CI-Python-on-three-OSes>
+- <https://docs.travis-ci.com/user/multi-os/>
