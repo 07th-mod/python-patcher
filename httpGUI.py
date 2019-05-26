@@ -513,6 +513,9 @@ class InstallerGUI:
 					'progressPercent': progressPercent,
 				}
 
+			def getInstallerMetaInfo(requestData):
+				return { 'buildInfo': common.Globals.BUILD_INFO }
+
 			# This causes a TKInter window to open allowing the user to choose a game path.
 			# The request data should be the submod ID.
 			# This is required so that the correct file filter can be applied to the tkinter file chooser.
@@ -593,6 +596,7 @@ class InstallerGUI:
 				'getDonationStatus' : getDonationStatus,
 				'troubleshoot' : troubleshoot,
 				'showFileChooser' : showFileChooser,
+				'getInstallerMetaInfo': getInstallerMetaInfo,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

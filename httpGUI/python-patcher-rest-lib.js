@@ -116,3 +116,12 @@ function replaceDonationStatus(elementIDMonthsRemaining, elementIDProgressPercen
     }
   });
 }
+
+function replaceElementWithBuildInfo(elementID) {
+  // Retrieve the donation status
+  doPost('getInstallerMetaInfo', [], (response) => {
+    if (response.buildInfo !== null) {
+      document.getElementById(elementID).textContent = response.buildInfo;
+    }
+  });
+}

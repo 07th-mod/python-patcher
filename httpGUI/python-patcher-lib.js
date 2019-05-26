@@ -247,6 +247,7 @@ window.onload = function onWindowLoaded() {
     console.log(app.selectedSubMod);
 
     replaceElementWithNews('modNews', app.selectedMod);
+    replaceElementWithBuildInfo('build-info');
   });
 };
 

@@ -105,6 +105,8 @@ class Globals:
 
 	DEVELOPER_MODE = False
 
+	BUILD_INFO = 'Build info not yet retrieved'
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -121,6 +123,13 @@ class Globals:
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 			exitWithError()
 
+	@staticmethod
+	def getBuildInfo():
+		try:
+			with open('build_info.txt', 'r') as build_info_file:
+				Globals.BUILD_INFO = build_info_file.read()
+		except FileNotFoundError:
+			Globals.BUILD_INFO = 'No build_info.txt file found - probably a dev release.'
 
 def exitWithError():
 	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """

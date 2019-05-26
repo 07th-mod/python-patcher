@@ -39,7 +39,9 @@ if __name__ == "__main__":
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
 	print("\n\n------------------ Install Started On {} ------------------ ".format(datetime.datetime.now()))
-
+	common.Globals.getBuildInfo()
+	print("Installer Build Information:")
+	print(common.Globals.BUILD_INFO)
 
 	def check07thModServerConnection():
 		"""
