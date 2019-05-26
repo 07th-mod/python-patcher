@@ -137,6 +137,19 @@ def mainUmineko(conf):
 
 	downloaderAndExtractor.extract()
 
+	############################################# FIX .ARC FILE NAMING #################################################
+	# Steam release has arc files labeled arc.nsa, arc1.nsa, arc2.nsa, arc3.nsa.
+	# Mangagamer release has only one arc file labeled arc.nsa
+	# Generate dummy arc1-arc3 nsa files if they don't already exist, so the game can find the arc4.nsa that we provide
+	for i in range(1,4):
+		nsaPath = os.path.join(conf.installPath, 'arc{}.nsa'.format(i))
+		if not os.path.exists(nsaPath):
+			print(".nsa archive check: Generating dummy [{}] as it does not already exist (Mangagamer)".format(nsaPath))
+			with open(nsaPath, 'wb') as dummyNSAFile:
+				dummyNSAFile.write(bytes([0, 0, 0, 0, 0, 6]))
+		else:
+			print(".nsa archive check: [{}] already exists (Steam)".format(nsaPath))
+
 	#################################### MAKE EXECUTABLE, WRITE HELPER SCRIPTS #########################################
 	gameBaseName = "Umineko5to8"
 	if isQuestionArcs:
