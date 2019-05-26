@@ -77,7 +77,7 @@ class Globals:
 	githubMasterBaseURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
-	JSON_VERSION = 2
+	JSON_VERSION = 3
 
 	# Define constants used throughout the script. Use function calls to enforce variables as const
 	IS_WINDOWS = platform.system() == "Windows"
