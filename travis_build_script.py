@@ -74,7 +74,7 @@ shutil.copytree('bootstrap', bootstrap_copy_folder)
 shutil.copytree('.', staging_folder, ignore=ignore_filter)
 
 # Save the build information in the staging folder. Will later be read by installer.
-with open(os.path.join(staging_folder, 'build_info.txt')) as build_info_file:
+with open(os.path.join(staging_folder, 'build_info.txt'), 'w', encoding='utf-8') as build_info_file:
 	build_info_file.write(f'Build Date: {datetime.datetime.now()}\n')
 	build_info_file.write(f'Git Tag (Version): {os.environ.get("TRAVIS_TAG")}\n')
 
