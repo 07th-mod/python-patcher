@@ -128,7 +128,7 @@ class Globals:
 		try:
 			with open('build_info.txt', 'r') as build_info_file:
 				Globals.BUILD_INFO = build_info_file.read()
-		except FileNotFoundError:
+		except:
 			Globals.BUILD_INFO = 'No build_info.txt file found - probably a dev release.'
 
 def exitWithError():
