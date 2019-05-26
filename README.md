@@ -51,3 +51,42 @@ To use the plugin:
 - A lightbulb icon will appear
 - Click the lightbulb icon and you can automatically fix the issue
 - Moving the mouse cursor over a red squiggle will explain the error
+
+## Travis Setup
+
+It is HIGHLY recommended to use a linter when editing .travis.yml files - pycharm provides this functionality.
+
+Here is a list of steps I used to setup travis:
+
+### Allowing travis to upload to the repository
+
+- Install ruby
+- Do `gem install travis`
+- Open a terminal while inside this repository
+- Run `travis setup releases --com`. This will start a setup wizard which will update your .travis.yml file's deploy section.
+- Enter your Github username and password when asked
+- The setup will ask for a "File to Upload". This just sets a default value in the .travis.yml - you can change it later
+- Accept the default values for the rest of the options
+- See what changes the setup wizard made to your .travis.yml file
+
+There are some additional options which had to be set:
+
+`file_glob: true`: Allow using globb'd paths in the `file` option
+
+`file: travis_installer_output/*`: set which files to add to the releases
+
+`skip_cleanup: true`: this MUST be set such that after the previous script is run, the files are not cleaned up (first the script is run, then travis copies the files from the specified place)
+
+```
+  on:
+    repo: 07th-mod/python-patcher
+    tags: true
+```
+
+This ensures that releases are only deployed on tagged pushes, not every push.
+
+#### Useful Resources
+
+- https://github.com/cclauss/Travis-CI-Python-on-three-OSes
+- https://github.com/drojf/Travis-CI-Python-on-three-OSes
+- https://docs.travis-ci.com/user/multi-os/
