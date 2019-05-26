@@ -82,6 +82,19 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 	else:
 		call(['cp', '-r', staging_folder + '/.', osInstallData])
 
+################ Special extra tasks FOR WINDOWS ONLY ##############
+# Extract the python archive
+call(["7z", "x", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z', f'-o./{bootstrap_copy_folder}/higu_win_installer_32/install_data/'])
+# Delete the python archive
+try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z')
+# Re-compress the python and httpGUI files into an encrypted archive
+call(["7z", "a", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z', f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python', '-ppassword', '-mhe'])
+call(["7z", "a", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI_archive.7z', f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI', '-ppassword', '-mhe'])
+# Remove the python and httpGUI folders
+try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python')
+try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI')
+################ End windows special tasks ##############
+
 # RELATIVE PATHS MUST CONTAIN ./
 tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
