@@ -262,6 +262,11 @@
 		<script src="marked-setup.js"></script>
 		<script src="python-patcher-rest-lib.js"></script>
 		<script>
+			// Warn the user if they are on Internet Explorer - we don't support it!
+			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
+				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
+			}
+
 			replaceElementWithNews('globalNews', 'news');
 			replaceDonationStatus('donationMonthsRemaining', 'donationProgress');
 			replaceElementWithBuildInfo('build-info');
