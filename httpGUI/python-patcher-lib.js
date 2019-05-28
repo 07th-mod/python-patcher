@@ -43,6 +43,13 @@ function statusUpdate() {
         }
         if (status.overallTaskDescription !== undefined) {
           app.overallTaskDescription = status.overallTaskDescription;
+          if (status.overallPercentage === 100) {
+            app.subTaskDescription = 'Install Finished!!';
+            app.subTaskPercentage = 100;
+          } else {
+            app.subTaskDescription = 'Working...';
+            app.subTaskPercentage = 0;
+          }
         }
         if (status.subTaskPercentage !== undefined) {
           app.subTaskPercentage = status.subTaskPercentage;
