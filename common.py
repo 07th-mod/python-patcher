@@ -97,8 +97,8 @@ class Globals:
 	#Print this string from the installer thread to notify of an error during the installation.
 	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
 
-	LOG_FOLDER = 'LOGS'
-	LOG_BASENAME = datetime.datetime.now().strftime('LOG-07th-mod-%Y-%m-%d_%H-%M-%S.txt')
+	LOG_FOLDER = 'INSTALLER_LOGS'
+	LOG_BASENAME = datetime.datetime.now().strftime('MOD-INSTALLER-LOG-%Y-%m-%d_%H-%M-%S.txt')
 	LOG_FILE_PATH = os.path.join(LOG_FOLDER, LOG_BASENAME)
 
 	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"

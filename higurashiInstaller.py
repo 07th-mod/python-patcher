@@ -7,6 +7,8 @@ import os, os.path as path, shutil, subprocess, glob, stat
 
 ########################################## Installer Functions  and Classes ############################################
 import gameScanner
+import logger
+
 
 def on_rm_error(func, path, exc_info):
 	# path contains the path of the file that couldn't be removed
@@ -44,6 +46,10 @@ class Installer:
 			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
 		else:
 			self.dataDirectory = path.join(self.directory, self.info.subModConfig.dataName)
+
+		logger.getGlobalLogger().trySetSecondaryLoggingPath(
+			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
+		)
 
 		self.assetsDir = path.join(self.dataDirectory, "StreamingAssets")
 

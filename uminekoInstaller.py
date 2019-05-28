@@ -2,6 +2,8 @@ import commandLineParser
 import common
 import os, shutil, subprocess
 import gameScanner
+import logger
+
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings, alwaysDeleteStrings):
 	"""
@@ -85,6 +87,9 @@ def backupOrRemoveFiles(folderToBackup):
 #do install given a installer config object
 def mainUmineko(conf):
 	# type: (gameScanner.FullInstallConfiguration) -> None
+	logger.getGlobalLogger().trySetSecondaryLoggingPath(
+		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
+	)
 
 	isQuestionArcs = 'question' in conf.subModConfig.modName.lower()
 

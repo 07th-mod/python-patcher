@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 from common import makeDirsExistOK
 
@@ -33,7 +34,8 @@ class Logger(object):
 		self.logPath = logPath
 		self.terminal = sys.stdout
 		makeDirsExistOK(os.path.dirname(logPath))
-		self.log = open(logPath, "a")
+		self.logFile = open(logPath, "a")
+		self.secondaryLogFile = None
 		self.callbacks = {}
 		self.queue = queue.Queue(maxsize=100000)
 
@@ -42,7 +44,13 @@ class Logger(object):
 
 	def write(self, message, runCallbacks=True):
 		self.terminal.write(message)
-		self.log.write(message)
+		self.logFile.write(message)
+		if self.secondaryLogFile is not None:
+			try:
+				self.secondaryLogFile.write(message)
+			except:
+				pass
+
 		self._tryPutInQueue(message)
 
 		#execute all bound callbacks
@@ -51,7 +59,12 @@ class Logger(object):
 				callback(message)
 
 		#TODO: probably should flush every X seconds rather than every write
-		self.log.flush()
+		self.logFile.flush()
+		if self.secondaryLogFile is not None:
+			try:
+				self.secondaryLogFile.flush()
+			except:
+				pass
 
 	def flush(self):
 		#this flush method is needed for python 3 compatibility.
@@ -84,6 +97,30 @@ class Logger(object):
 			if not self.queue_full_error:
 				self.queue_full_error = True
 				self.terminal.write("WARNING: Install status message queue is full (possibly GUI was closed but console left open)")
+
+	def trySetSecondaryLoggingPath(self, newLogFilePath):
+		# type: (str) -> None
+		"""
+		Specify the secondary path for the log file.
+		The current log file will be copied to the newLogFilePath.
+		Any additional writes will go to both the existing log file and the new one.
+		:param newLogFilePath: the path where the new log file will be created (and updated)
+		:return: None
+		"""
+		try:
+			makeDirsExistOK(os.path.dirname(newLogFilePath))
+			shutil.copy(self.logPath, newLogFilePath)
+
+			if self.secondaryLogFile is not None:
+				fileToClose = self.secondaryLogFile
+				self.secondaryLogFile = None
+				fileToClose.close()
+				print("Closed log file at: [{}]".format(newLogFilePath))
+
+			self.secondaryLogFile = open(newLogFilePath, "a")
+			print("Successfully created secondary log file at: [{}]".format(newLogFilePath))
+		except Exception as e:
+			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, str(e)))
 
 def getGlobalLogger():
 	# type: () -> Logger
