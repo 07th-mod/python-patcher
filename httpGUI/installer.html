@@ -179,7 +179,7 @@
 							<h3> Subtask Progress: {{ subTaskPercentage }}% </h3>
 							<h5 style="font-family: monospace"> {{ subTaskDescription }} </h5>
 							<div class="progress">
-								<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%'}" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
+								<div id="subTaskProgressBar" class="progress-bar installer-progress-bar" :style="{width: subTaskPercentage + '%', transition: subTaskPercentage == 0 ? 'none' : 'width .6s ease' }" role="progressbar" v-bind:aria-valuenow="subTaskPercentage" aria-valuemin="0" aria-valuemax="100" >
 									<span class="sr-only">{{ subTaskPercentage }}% Complete</span>
 								</div>
 							</div>
