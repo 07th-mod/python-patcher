@@ -1,5 +1,8 @@
 setlocal
 
+:: Fix if batch file is run as administrator
+pushd %~dp0
+
 @echo off
 cd install_data
 
@@ -25,3 +28,5 @@ echo ------------ Batch file has finished executing ------------
 echo ------------ Press any key to close this window -----------  
 echo ----------------------------------------------------------- 
 pause
+
+popd
