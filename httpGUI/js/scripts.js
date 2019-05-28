@@ -1015,7 +1015,7 @@ $(window).load(function() {
 
     // Initialize Masonry
 
-    setTimeout(initializeMasonry, 1000);
+    initializeMasonry()
    
 
     mr_firstSectionHeight = $('.main-container section:nth-of-type(1)').outerHeight(true);
@@ -1097,7 +1097,6 @@ function initializeMasonry(){
             itemSelector: '.masonry-item'
         });
 
-        msnry.on('layoutComplete', function() {
 
             mr_firstSectionHeight = $('.main-container section:nth-of-type(1)').outerHeight(true);
 
@@ -1114,7 +1113,7 @@ function initializeMasonry(){
             if ($('.masonryFlyIn').length) {
                 masonryFlyIn();
             }
-        });
+
 
         msnry.layout();
     });
@@ -1129,7 +1128,7 @@ function masonryFlyIn() {
         setTimeout(function() {
             item.addClass('fadeIn');
         }, time);
-        time += 170;
+        time += 100;
     });
 }
 
