@@ -114,6 +114,10 @@ def _loggerMessageToStatusDict(message):
 		sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
 		if sevenZipFileCount:
 			sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipFileCount)
+		else:
+			sevenZipExtractionStartedString = commandLineParser.tryGetSevenZipExtractionStarted(message)
+			if sevenZipExtractionStartedString:
+				sevenZipMessageAndPercent['subTaskDescription'] = sevenZipExtractionStartedString
 
 	# Look for a line with just a percent on it (eg 51%)
 	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)

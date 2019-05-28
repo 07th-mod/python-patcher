@@ -18,6 +18,7 @@ class SevenZipStatusUpdate:
 	regexSevenZipPercentComplete = re.compile(r"(100|\d\d|\d)%")                # use with .search()
 	regexSevenZipFileCountAndName = re.compile(r"^\s*\d+ - *.*\s*$")    # use with .match()
 	regexSevenZipFileCountOnly = re.compile(r"^\s*\d+\s*$")             # use with .match()
+	regexSevenZipExtractionStarted = re.compile(r"^\s*Extracting archive:\s*.*") # use with .match()
 
 	def __init__(self, percentCompleted, numItemsCompleted, currentlyProcessingFileName):
 		self.percentCompleted = percentCompleted
@@ -84,6 +85,14 @@ def tryGetSevenZipFileCount(sevenZipStatusUpdateString):
 	# type: (str) -> str
 	# NOTE: 'match' is used here, not 'search'
 	if SevenZipStatusUpdate.regexSevenZipFileCountOnly.match(sevenZipStatusUpdateString):
+		return sevenZipStatusUpdateString
+
+	return None
+
+def tryGetSevenZipExtractionStarted(sevenZipStatusUpdateString):
+	# type: (str) -> str
+	# NOTE: 'match' is used here, not 'search'
+	if SevenZipStatusUpdate.regexSevenZipExtractionStarted.match(sevenZipStatusUpdateString):
 		return sevenZipStatusUpdateString
 
 	return None
