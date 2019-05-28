@@ -19,6 +19,10 @@ def forceRemove(path):
 	os.chmod(path, stat.S_IWRITE)
 	os.remove(path)
 
+def forceRemoveDir(path):
+	os.chmod(path, stat.S_IWRITE)
+	os.rmdir(path)
+
 # Call shutil.rmtree, such that it even removes readonly files
 def forceRmTree(path):
 	shutil.rmtree(path, onerror=on_rm_error)
@@ -157,7 +161,7 @@ class Installer:
 				if path.exists(target):
 					forceRemove(target)
 				shutil.move(src, target)
-		os.rmdir(fromDir)
+		forceRemoveDir(fromDir)
 
 	def _moveFileIntoPlace(self, fromPath, toPath):
 		# type: (str, str) -> None
