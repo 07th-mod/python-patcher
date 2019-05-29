@@ -1,5 +1,6 @@
 'use strict';
 
+const pythonPatcherTimeScriptLoaded = Date.now();
 let pythonPatcherRestLibErrorCount = 0;
 const pythonPatcherRestLibMaxErrorCount = 3;
 
@@ -64,8 +65,10 @@ function doPost(requestType, requestData, onSuccessCallback) {
     }
   };
 
+  // Use a timeout of 8 seconds, reducing 3 seconds over time, to account for page/server load
   if (requestType !== 'showFileChooser') {
-    http.timeout = 3000;
+    const millisecondsSincePageLoaded = Date.now() - pythonPatcherTimeScriptLoaded;
+    http.timeout = Math.max(8000 - millisecondsSincePageLoaded, 3000);
   }
 
   http.ontimeout = function onTimeout() {
