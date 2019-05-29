@@ -31,7 +31,7 @@ It's also possible for a poor performing hard disk to cause performance problems
 by the engine each time they are displayed (as far as we know).
 
 If you still have problems, please post your CPU and GPU specs and a description of how
-the lag appears on our Discord (click the troubleshooting button) for us to analyse.
+the lag appears on our Discord for us to analyse.
 
 If you figure out what's causing the problem, please let us know as we really want to sort this issue out.
 
