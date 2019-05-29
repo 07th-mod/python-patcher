@@ -1,0 +1,153 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+		<link rel="icon" type="image/png" href="favicon.png" />
+        <meta charset="utf-8">
+        <title>07th-Mod Installer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+
+		<div class="nav-container">
+		    <nav>
+		        <div class="nav-bar">
+		            <div class="module left">
+		                <a href="index.html">
+		                    <img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+		                </a>
+		            </div>
+		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+		                <i class="ti-menu"></i>
+		            </div>
+		        </div>
+		    </nav>
+
+		</div>
+
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
+		<div id="app" class="main-container" v-cloak>
+			<section class="page-title page-title-4 bg-secondary">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8">
+								<h3 class="uppercase mb0">Troubleshooting</h3>
+							</div>
+							<div class="col-md-4 text-right">
+								<ol class="breadcrumb breadcrumb-2">
+									<li>
+										<a href="index.html" target="_self">Home</a>
+									</li>
+									<li class="active">Troubleshooting<br></li>
+								</ol>
+							</div>
+						</div>
+					</div>
+			</section>
+			<section class="section-small-padding">
+				<div class="container"><div class="row"><div class="col-sm-12">
+					<!-- Begin Middle Column -->
+					<div class="col-md-10">
+					<h4 class="uppercase">Troubleshooting</h4>
+					<hr>
+					<h4>FAQ and Troubleshooting Information</h4>
+					<p>Click on the links below to visit the FAQ of our wiki:<br>
+					<a href="http://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi Wiki FAQ</a><br>
+					<a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko Wiki FAQ</a><br>
+					</p>
+					<h4>Discord Server</h4>
+					<p>
+						We have a discord server where you can request for support on the game. Make sure to do the following<br>
+						- Submit your Installer and Game Log (see below section)<br>
+						- Check the pinned message on the channel by clicking on the
+						<svg name="Pin" class="iconInactive-g2AXfB icon-1R19_H" width="24" height="24" viewBox="0 0 26 26"><g fill="none" fill-rule="evenodd"><path d="M1 1h24v24H1"></path><path class="iconForeground-3y9f0B" fill="currentColor" d="M15 15V6h-4v9h-.50899482C10.22788048 15 10 15.2238576 10 15.5c0 .2680664.2198305.5.49100518.5h5.01798964C15.77211952 16 16 15.7761424 16 15.5c0-.2680664-.2198305-.5-.49100518-.5H15zm2-9h1V4H8v2h1v8l-2 2v2h5.2v4h1.6v-4H19v-2l-2-2V6z"></path></g></svg>
+						icon at the top right of the <b>#umi_support</b> or <b>#higu_support</b> channel. It will tell you other information that you should submit to us.
+					</p>
+					<a href="https://discord.gg/pf5VhF9" target="_blank"><div class="tab-title mb40" ><span>Open Our Discord Server</span></div></a>
+					<h4>Detected Installations And Tools</h4>
+					<p>
+						Below is a list of installations. Some installations may not be listed if you had to specify the path manually.
+						There are some handy tools for each installation listed.
+					</p>
+
+					<h4>Get Installer and Game Log (Windows)</h4>
+					<p>
+						There are two logs:<br>
+						- The installer logs (produced by this installer). This may be useful if your install didn't fully complete or seems stuck.<br>
+						- The game log (produced by the game). This may be useful if your game freezes or crashes.<br><br>
+						The button below will generate a .zip file containing both of these logs.
+						Please note that the game log <b>only records one session</b>, so make sure you have just recreated the bug in the most recent session.<br><br>
+						You should submit this to our Discord in the Umineko <b>#umi_support</b> or Higurashi <b>#higu_support</b> channel when asking for help.
+					</p>
+					<!-- Add one button for each detected installation. Otherwise need a different button for each install user has. -->
+					<div 	class="tab-title mb40"
+							v-for="fullInstallConfig in fullInstallConfigs"
+							v-on:click="getLogsZip(selectedSubMod, fullInstallConfig.path)">
+							<span>Download .zip file of Logs</span><br>
+							Game Path:  fullInstallConfig.path
+					</div>
+					<div class="tab-title mb40" v-on:click="getLogsZip(selectedSubMod)">
+						<span>Download .zip file of Logs<br>(Select Path Manually)</span>
+					</div>
+					<h4> Open Save Folder (Windows)</h4>
+					<div>
+						In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
+						Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
+						Click the button below to show the save folder. If you are deleting your saves, <b>please make a backup first</b>.<br><br>
+						<div class="tab-title mb40"
+							v-if="selectedSubMod.family !== 'higurashi'"
+							v-for="fullInstallConfig in fullInstallConfigs"
+							v-on:click="openSaveFolder(selectedSubMod, fullInstallConfig.path)">
+							<span>Open Save Folder</span><br>
+							Game Path:  fullInstallConfig.path
+						</div>
+						<div class="tab-title mb40" v-on:click="openSaveFolder(selectedSubMod)">
+							<span>Open Save Folder  selectedSubMod.family === 'higurashi' ? '' : '(Choose Path Manually)'  </span>
+						</div>
+					</div>
+					<!-- Drojf - this should probably be in the wiki, unless the installer can automatically opent he location on linux -->
+					<h4>Other Useful Information</h4>
+<pre>
+	Mac game log location: '/Users/[yourusername]/Library/Logs/Unity/Player.log'
+	Mac save file location: ~/Library/Application Support/unity.MangaGamer.Higurashi When They Cry - Ch.1 Onikakushi/
+	Linux save file locations:
+	~/.config/unity3d/Mangagamer/Higurashi When They Cry _ Ch_1 Onikakushi
+	~/.config/unity3d/MangaGamer/Higurashi When They Cry _ Ch_1 Onikakushi
+	~/.config/unity3d/MangaGamer/ Higurashi When They Cry - Ch.1 Onikakushi</pre>
+						<!-- Drojf - not sure whether should add this informat
+						<h4> Delete CompiledUpdateScripts Folder</h4>
+						<p>Sometimes it can help to force a rebuild of the compiled update scripts. The folder is located in "Higurashi When They Cry\HigurashiEp01_Data\StreamingAssets\CompiledUpdateScripts"</p>-->
+						<!--<h4> Log Autoscan</h4>
+						<p>Add scan script for errors here.</p> -->
+					</div>
+					<!-- End Middle Column -->
+				</div></div></div>
+			</section>
+			<section class="section-small-padding">
+					<div class="container">
+							<div>
+								<h2><a href="index.html">← Go Back</a></h2>
+							</div>
+					</div>
+			</section>
+		</div>
+
+		<script src="js/lodash.js"></script>
+		<script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/parallax.js"></script>
+        <script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="marked-setup.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-troubleshooting.js"></script>
+    </body>
+</html>
