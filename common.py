@@ -29,6 +29,16 @@ except ImportError:
 	from urllib import quote
 
 try:
+	import ssl
+	if ssl.OPENSSL_VERSION_NUMBER < 0x10001000: # Version 1.0.1, first to support TLS 1.1 and 1.2
+		SSL_VERSION_IS_OLD = True
+	else:
+		SSL_VERSION_IS_OLD = False
+except ImportError:
+	# No SSL at all
+	SSL_VERSION_IS_OLD = True
+
+try:
 	from typing import Optional, List, Tuple
 except:
 	pass
@@ -230,13 +240,14 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 	return proc.returncode
 
 #when calling this function, use named arguments to avoid confusion!
-def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIPV6=False):
+def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIPV6=False, outputFile=None):
 	"""
 	Calls aria2c with some default arguments:
 	TODO: list what each default argument does as comments next to arguments array?
 
 	:param downloadDir: The directory to store the downloaded file(s)
 	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
+	:param outputFile: When downloading a single file, if this is specified, it will be downloaded with the given name
 	:return Returns the exit code of the aria2c call
 	"""
 	arguments = [
@@ -275,6 +286,9 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 
 	if url:
 		arguments.append(url)
+
+	if outputFile:
+		arguments.append("--out=" + outputFile)
 
 	# On linux, there is some problem where the console buffer is not read by runProcessOutputToTempFile(...) until
 	# a newline is printed. I was unable to fix this properly, however setting 'summary-interval' (default 60s) lower will
@@ -345,9 +359,16 @@ def getModList(jsonURL):
 	:return: A list of mod info objects
 	:rtype: list[dict]
 	"""
+	tmpdir = None
 	try:
 		if jsonURL[0:4] == "http":
-			file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+			if not SSL_VERSION_IS_OLD:
+				file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
+			else:
+				import tempfile
+				tmpdir = tempfile.mkdtemp()
+				aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json")
+				file = open(os.path.join(tmpdir, "info.json"), "r")
 		else:
 			file = open(jsonURL, "r")
 	except HTTPError as error:
@@ -358,6 +379,8 @@ def getModList(jsonURL):
 
 	info = json.load(file)
 	file.close()
+	if tmpdir:
+		shutil.rmtree(tmpdir)
 	try:
 		version = info["version"]
 		if version > Globals.JSON_VERSION:
@@ -590,6 +613,10 @@ class DownloaderAndExtractor:
 		:param url: The url of a file or a url which will eventually redirect to a file
 		:return: A tuple of (filename, filesize) of the file pointed by the url
 		"""
+
+		# It's not a huge deal if the filename download is insecure (the actual download is done with Aria)
+		if SSL_VERSION_IS_OLD and url[0:5] == "https":
+			url = "http" + url[5:]
 
 		# if the url has a contentDisposition header, use that instead
 		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
