@@ -390,13 +390,16 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 	if not pathsToBeScanned:
 		pathsToBeScanned = getMaybeGamePaths()
 
-	# Build a mapping from subModIdentifier -> subMod
+	# Build a mapping from subModIdentifier -> List[subMod]
+	# This tells us, for each identifier, which subMods are compatible with that identifier (can be installed)
 	# In all our games, the identifiers are the same for each subMod (but different for each Mod),
 	# but it is easier to work with in the installer if we work with subMods
-	subModConfigDictionary = {}
+
+	from collections import defaultdict
+	subModConfigDictionary = defaultdict(list) #type: defaultdict[List[SubModConfig]]
 	for subMod in subModConfigList:
 		for identifier in subMod.identifiers:
-			subModConfigDictionary[identifier] = subMod
+			subModConfigDictionary[identifier].append(subMod)
 
 	if scanExtraPaths:
 		extraPaths = []
@@ -412,9 +415,9 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 
 	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromPath(gamePath)
+		subModConfigsInThisGamePath = set()
 		for possibleIdentifier in possibleIdentifiers:
 			try:
-				subModConfig = subModConfigDictionary[possibleIdentifier]
 				possibleSteamPaths = [
 					os.path.join(gamePath, "steam_api.dll"),
 					os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
@@ -426,9 +429,13 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 					if os.path.exists(possibleSteamPath):
 						isSteam = True
 
-				returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
-				print("Successfully detected game using identifier [{}] in [{}]".format(possibleIdentifier, gamePath))
-				break
+				# Add each submod which is compatible with the found identifier, unless it has already been detected at this path.
+				for subModConfig in subModConfigDictionary[possibleIdentifier]:
+					if subModConfig not in subModConfigsInThisGamePath:
+						subModConfigsInThisGamePath.add(subModConfig)
+						returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
+						print("Successfully detected game using identifier [{}] in [{}]".format(possibleIdentifier, gamePath))
+
 			except KeyError:
 				pass
 
