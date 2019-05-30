@@ -5,3 +5,7 @@ insert_final_newline=true
 indent_style=tab
 indent_size=tab
 smart_tabs=true # In case https://github.com/editorconfig/editorconfig/issues/323 gets implemented
+
+[*.yml]
+indent_style=space
+indent_size=2
