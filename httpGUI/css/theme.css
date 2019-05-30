@@ -443,7 +443,7 @@ a {
   transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
-  cursor: poitner;
+  cursor: pointer;
 }
 .image-bg a,
 .bg-primary a {
