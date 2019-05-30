@@ -4,12 +4,16 @@ from __future__ import print_function, unicode_literals, with_statement
 import datetime
 import os
 import pprint
+import socket
 import sys
 
 import common
 import gameScanner
 import httpGUI
 import logger
+
+try: input = raw_input
+except NameError: pass
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -51,6 +55,15 @@ if __name__ == "__main__":
 		print("Please move the installer to a shorter path. The current path is:")
 		print(os.getcwd())
 		common.exitWithError()
+
+	# On Windows, check for non-ascii characters in hostname, which prevent the server starting up
+	if common.Globals.IS_WINDOWS and not all(ord(c) < 128 for c in socket.gethostname()):
+		print("-------------------------------------------------------------")
+		print("ERROR: It looks like your hostname [{}] contains non-ASCII characters. This may prevent the installer from starting up.".format(socket.gethostname()))
+		print("Please change your hostname to only contain ASCII characters, then restart the installer.")
+		print("You can press ENTER to try to run the installer despite this problem.")
+		print("-------------------------------------------------------------")
+		input()
 
 	def check07thModServerConnection():
 		"""
