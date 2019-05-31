@@ -457,15 +457,15 @@ class InstallerGUI:
 						'os' : common.Globals.OS_STRING,
 						}
 
-			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install
+			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install, or None to get ALL possible games
 			# responseData: A dictionary containing basic information about each fullConfig. Most important is the path
 			#               which must be submitted in the final install step.
 			# NOTE: the idOfSubMod is not unique in the returned list. You must supply both a submod ID
 			#       and a path to the next stage
 			def getGamePathsHandler(requestData):
 				id = requestData['id']
-				selectedSubMod = self.idToSubMod[id]
-				fullInstallConfigs = gameScanner.scanForFullInstallConfigs([selectedSubMod])
+				selectedSubMods = [self.idToSubMod[id]] if id is not None else self.allSubModConfigs
+				fullInstallConfigs = gameScanner.scanForFullInstallConfigs(selectedSubMods)
 				fullInstallConfigHandles = []
 				for fullConfig in fullInstallConfigs:
 					fullInstallConfigHandles.append(
@@ -600,6 +600,7 @@ class InstallerGUI:
 							'Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
 
 					return {}
+
 
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,

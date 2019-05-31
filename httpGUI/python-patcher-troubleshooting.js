@@ -12,6 +12,7 @@ window.onload = function onWindowLoaded() {
   app = new Vue({
     el: '#app',
     data: {
+      uniqueSubMods: [],
     },
     methods: {
     },
@@ -28,5 +29,15 @@ window.onload = function onWindowLoaded() {
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {
     console.log(responseData);
+  });
+
+  doPost('gamePaths', { id: null }, (allDetectedSubMods) => {
+    const pathToSubModMap = {};
+    allDetectedSubMods.forEach((element) => {
+      pathToSubModMap[element.path] = element;
+    });
+    // filter down such that there is only one submod per path
+    app.uniqueSubMods = Object.values(pathToSubModMap);
+    console.log(app.uniqueSubMods);
   });
 };

@@ -76,6 +76,9 @@
 						Below is a list of installations. Some installations may not be listed if you had to specify the path manually.
 						There are some handy tools for each installation listed.
 					</p>
+					<div v-for="subMod in uniqueSubMods">
+							{{ subMod.modName }} {{ subMod.path }}
+					</div>
 
 					<h4>Get Installer and Game Log (Windows)</h4>
 					<p>
