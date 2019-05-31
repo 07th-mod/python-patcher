@@ -207,20 +207,6 @@
 										<div v-if="metaInfo !== null">
 										<div class="alert alert-danger" role="alert"
 										v-if="	selectedSubMod !== null &&
-												selectedSubMod.family === 'higurashi'"><strong>
-												There is currently a bug on some Higurashi games (confirmed on Ep.3, Ep.4) which causes the game to crash on startup.<br>
-												You will get a message (for Episode 3) like:<br>
-												"Tatarigoroshi/HigurashiEp03_Data/sharedassets0.assets' is corrupted! Remove it and launch unity again!"<br>
-												To fix this issue, navigate to your game data folder, for example:<br>
-												<pre>C:\games\Steam\steamapps\common\Higurashi 03 - Tatarigoroshi\HigurashiEp03_Data</pre>
-												In this folder, there is a `sharedassets0.assets` and a `sharedassets0.assets.backup` file -  we want to restore the backup.<br>
-												To do this:<br>
-												- rename the `sharedassets0.assets` to `sharedassets0.assets.broken`<br>
-												- rename the `sharedassets0.assets.backup` file to `sharedassets0.assets`.<br>
-												If you don't get a crash on startup, there is no need to apply this fix.<br>
-										</strong></div>
-										<div class="alert alert-danger" role="alert"
-										v-if="	selectedSubMod !== null &&
 												selectedSubMod.family === 'higurashi' &&
 												metaInfo.operatingSystem === 'linux'"><strong>
 												Warning: GNOME Desktop (the default on Ubuntu) will cause Higurashi Ep.4 and upwards to crash the entire desktop when you start the game.
