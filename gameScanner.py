@@ -1,8 +1,11 @@
 import glob
 import json
+import re
+
 import common
 import os
 import subprocess
+import traceback
 try:
 	from typing import List, Optional
 except ImportError:
@@ -255,19 +258,41 @@ def findPossibleGamePathsWindows():
 	except ImportError:
 		import _winreg as winreg
 
-	registrySteamPath = None
+	allSteamPaths = []
 	try:
 		registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
-		registrySteamPath, _regType = winreg.QueryValueEx(registryKey, 'SteamPath')
+		defaultSteamPath, _regType = winreg.QueryValueEx(registryKey, 'SteamPath')
+		allSteamPaths.append(defaultSteamPath)
 		winreg.CloseKey(registryKey)
 	except WindowsError:
 		print("findPossibleGamePaths: Couldn't read Steam registry key - Steam not installed?")
 		return []
 
+	# now that we know the steam path, search the "Steam\config\config.vdf" file for extra install paths
+	# this is a purely optional step, so it's OK if it fails
+	try:
+		baseInstallFolderRegex = re.compile(r'^\s*"BaseInstallFolder_\d+"\s*"([^"]+)"', re.MULTILINE)
+		steamConfigVDFLocation = os.path.join(defaultSteamPath, r'config\config.vdf')
+		with open(steamConfigVDFLocation, 'r') as configVDFFile:
+			allSteamPaths += baseInstallFolderRegex.findall(configVDFFile.read())
+	except Exception as e:
+		traceback.print_exc()
+
+	print("Will scan the following steam install locations: ", allSteamPaths)
+
 	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
 	try:
-		for root, dirs, _files in os.walk(os.path.join(registrySteamPath, r'steamapps\common')):
-			return [os.path.normpath(os.path.join(root, x)) for x in dirs]
+		allPossibleGamePaths = []
+
+		for steamCommonPath in (os.path.join(steamPath, r'steamapps\common') for steamPath in allSteamPaths):
+			for gameFolderName in os.listdir(steamCommonPath):
+				allPossibleGamePaths.append(
+					os.path.normpath(
+						os.path.join(steamCommonPath, gameFolderName)
+					)
+				)
+
+		return allPossibleGamePaths
 	except:
 		print("findPossibleGamePaths: Couldn't open registry key folder - Steam folder deleted?")
 		return []
