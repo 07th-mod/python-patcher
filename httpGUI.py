@@ -580,24 +580,41 @@ class InstallerGUI:
 						'filePath' : common.Globals.LOGS_ZIP_FILE_PATH,
 						'gameLogFound' : gameLogExists
 					}
+				elif action == 'showLogs':
+					installPath = _getInstallPath()
+
+					logsPath = installPath
+
+					if subMod.family == 'higurashi':
+						if common.Globals.IS_MAC:
+							logsPath = os.path.join(installPath, "Contents/Resources/Data")
+						else:
+							logsPath = os.path.join(installPath, subMod.dataName)
+
+					if os.path.exists(logsPath):
+						print('Trying to open [{}]'.format(logsPath))
+						common.trySystemOpen(logsPath, normalizePath=True)
+					else:
+						return {'error': 'Cant open Logs Folder [{}] as it doesnt exist!'.format(logsPath)}
+
+					return {}
 				elif action == 'openSaveFolder':
 					if subMod.family == 'higurashi':
 						result = re.findall(r'\d\d', subMod.dataName)
 						if result:
 							saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
 						else:
-							raise InstallerGUIException('Sorry, cant figure out higurashi episode number :(')
+							return {'error': 'Sorry, cant figure out higurashi episode number :('}
 					elif subMod.family == 'umineko':
 						saveFolderName = os.path.join(_getInstallPath(), 'mysav')
 					else:
-						raise InstallerGUIException('Cant open save folder: Unknown game family {}'.format(subMod.family))
+						return {'error': 'Cant open save folder: Unknown game family {}'.format(subMod.family)}
 
 					if os.path.exists(saveFolderName):
 						print('Trying to open [{}]'.format(saveFolderName))
 						common.trySystemOpen(saveFolderName, normalizePath=True)
 					else:
-						raise InstallerGUIException(
-							'Cant open Save Folder - folder [{}] doesnt exist!'.format(saveFolderName))
+						return {'error': 'Save Folder [{}] doesnt exist! Have you made any saves yet?'.format(saveFolderName)}
 
 					return {}
 

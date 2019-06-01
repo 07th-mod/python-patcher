@@ -15,6 +15,13 @@
     margin-bottom: 8px;
 }
 
+.troubleshooting-button {
+    margin-top: 0px;
+    margin-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 /* When bootstrap progress bars are used with this template,
 they have zero height. This forces the height to some valid value*/
 .installer-progress-bar {

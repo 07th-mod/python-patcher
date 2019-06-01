@@ -15,6 +15,13 @@ window.onload = function onWindowLoaded() {
       uniqueSubMods: [],
     },
     methods: {
+      troubleshoot(action, subModToInstall, installPath) {
+        doPost('troubleshoot', { action: action, subMod: subModToInstall, installPath }, (responseData) => {
+          if (responseData.error !== undefined) {
+            alert(responseData.error);
+          }
+        });
+      },
     },
     computed: {
 

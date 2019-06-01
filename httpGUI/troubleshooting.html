@@ -74,46 +74,37 @@
 					<h4>Detected Installations And Tools</h4>
 					<p>
 						Below is a list of installations. Some installations may not be listed if you had to specify the path manually.
-						There are some handy tools for each installation listed.
+						There are some handy tools for each installation listed.<br>
+						<strong>NOTE: Windows will sometimes open the folder but hide it in your task bar - check for a flashing Explorer icon if the folder does not appear.</strong>
 					</p>
-					<div v-for="subMod in uniqueSubMods">
-							{{ subMod.modName }} {{ subMod.path }}
-					</div>
+					<table class="table table-striped table-bordered">
+						<tr>
+							<th>Game Name</th>
+							<th>Game Path</th>
+							<th>Tools</th>
+						</tr>
+						<tr v-for="subMod in uniqueSubMods">
+							<td>{{ subMod.modName }}</td>
+							<td>{{ subMod.path }}</td>
+							<td>
+								<button class="troubleshooting-button" v-on:click="troubleshoot('showLogs', subMod, subMod.path)">Show Game and Install Logs</button>
+								<button class="troubleshooting-button" v-on:click="troubleshoot('openSaveFolder', subMod, subMod.path)">Show Save Folder (Windows)</button>
+							</td>
+						</tr>
+					</table>
 
-					<h4>Get Installer and Game Log (Windows)</h4>
+					<h4>Installer and Game Logs (Windows)</h4>
 					<p>
 						There are two logs:<br>
 						- The installer logs (produced by this installer). This may be useful if your install didn't fully complete or seems stuck.<br>
 						- The game log (produced by the game). This may be useful if your game freezes or crashes.<br><br>
-						The button below will generate a .zip file containing both of these logs.
-						Please note that the game log <b>only records one session</b>, so make sure you have just recreated the bug in the most recent session.<br><br>
 						You should submit this to our Discord in the Umineko <b>#umi_support</b> or Higurashi <b>#higu_support</b> channel when asking for help.
 					</p>
-					<!-- Add one button for each detected installation. Otherwise need a different button for each install user has. -->
-					<div 	class="tab-title mb40"
-							v-for="fullInstallConfig in fullInstallConfigs"
-							v-on:click="getLogsZip(selectedSubMod, fullInstallConfig.path)">
-							<span>Download .zip file of Logs</span><br>
-							Game Path:  fullInstallConfig.path
-					</div>
-					<div class="tab-title mb40" v-on:click="getLogsZip(selectedSubMod)">
-						<span>Download .zip file of Logs<br>(Select Path Manually)</span>
-					</div>
 					<h4> Open Save Folder (Windows)</h4>
 					<div>
 						In some cases, your game might be unable to boot because of one or more corrupted save files.<br>
 						Since uninstalling the game doesn't clear your save files, you need to clear them manually.<br>
-						Click the button below to show the save folder. If you are deleting your saves, <b>please make a backup first</b>.<br><br>
-						<div class="tab-title mb40"
-							v-if="selectedSubMod.family !== 'higurashi'"
-							v-for="fullInstallConfig in fullInstallConfigs"
-							v-on:click="openSaveFolder(selectedSubMod, fullInstallConfig.path)">
-							<span>Open Save Folder</span><br>
-							Game Path:  fullInstallConfig.path
-						</div>
-						<div class="tab-title mb40" v-on:click="openSaveFolder(selectedSubMod)">
-							<span>Open Save Folder  selectedSubMod.family === 'higurashi' ? '' : '(Choose Path Manually)'  </span>
-						</div>
+						If you are deleting your saves, <b>please make a backup first</b>.<br><br>
 					</div>
 					<!-- Drojf - this should probably be in the wiki, unless the installer can automatically opent he location on linux -->
 					<h4>Other Useful Information</h4>
