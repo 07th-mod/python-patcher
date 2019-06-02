@@ -509,7 +509,7 @@ class DownloaderAndExtractor:
 		def __repr__(self):
 			return '[{} ({})] to [{}]'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath)
 
-	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=33, extractionProgressAmount=33):
+	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
