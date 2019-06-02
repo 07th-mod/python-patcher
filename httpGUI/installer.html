@@ -317,7 +317,7 @@
 															<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser below doesn't work)</strong></div>
 															<div v-if="validationInProgress">
 																<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...</strong></div>
-																<div v-if="selectedInstallPath == null">Use the buttons below to select a path.</div>
+																<div v-if="selectedInstallPath == null"><strong>Please use the buttons below to select a path.</strong></div>
 															</div>
 															<div v-else>
 																<div v-if="showPathSelectionButtons && installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }} ✓</strong></div>
@@ -328,7 +328,7 @@
 																<li v-for="fullInstallConfig in fullInstallConfigs"
 																	v-on:click="onChoosePathButtonClicked(fullInstallConfig.path);"
 																	v-bind:key="fullInstallConfig.key">
-																	<div class="tab-title">
+																	<div class="tab-title mb16">
 																		Use Autodetected Path: "{{ fullInstallConfig.path }}"
 																	</div>
 																</li>
