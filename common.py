@@ -684,3 +684,45 @@ def tryDeleteLockFile():
 			print("Install Completed: Deleted the lock file")
 	except:
 		print('WARNING: Failed to delete lock file!')
+
+def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
+	# type: (str, int) -> (Optional[bool], str)
+	"""
+	Checks for free disk space.
+	NOTE: this function will return 'None' for haveEnoughFreeSpace if the disk space cannot be queried.
+	This will happen on Python 2.7 installations (e.g. MacOS), however the freeSpaceAdvisoryString will still be populated
+
+	:param installPath: The install path whose root disk is to be checked for free space
+	:param recommendedFreeSpaceBytes: The recommended amount of free space for this installation
+	:return: Tuple of:
+	freeSpaceAdvisoryString: a message to the user indicating whether there is enough space on the selected install path
+	haveEnoughFreeSpace: Indicates the free space status according to the following:
+	 - null: Couldn't query the free space. freeSpaceAdvisoryString will still have a message in this case.
+	 - false: There is not enough free space
+	 - true: There is  enough free space on disk
+	"""
+	recommendedFreeSpaceString = prettyPrintFileSize(recommendedFreeSpaceBytes)
+
+	# Try to calculate actual free space
+	free_space = None
+	try:
+		from shutil import disk_usage
+		free_space = disk_usage(installPath).free
+	except:
+		pass
+
+	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space".format(recommendedFreeSpaceString)
+	haveEnoughFreeSpace = None
+
+	if free_space is not None:
+		freeSpaceString = prettyPrintFileSize(free_space)
+		if free_space < recommendedFreeSpaceBytes:
+			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! " \
+			                          "(have {}, need {})".format(freeSpaceString, recommendedFreeSpaceString)
+			haveEnoughFreeSpace = False
+		else:
+			freeSpaceAdvisoryString = "You have enough free disk space (have {}, need {})".format(freeSpaceString,
+			                                                                                      recommendedFreeSpaceString)
+			haveEnoughFreeSpace = True
+
+	return haveEnoughFreeSpace, freeSpaceAdvisoryString

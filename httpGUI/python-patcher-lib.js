@@ -135,10 +135,17 @@ window.onload = function onWindowLoaded() {
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
       showPathSelectionButtons: true, // Set to true to show UI for path selection
-      // metaInfo: meta info about the installer environment, etc.
-      // lockFileExists: This indicates if a install is already running in a different instance, or a previous install was killed while running
-      // operatingSystem: The operating system - either 'windows', 'linux', or 'mac'
+      // metaInfo: meta info about the installer environment, etc. Contains:
+      //  - lockFileExists: This indicates if a install is already running in a different instance, or a previous install was killed while running
+      //  - operatingSystem: The operating system - either 'windows', 'linux', or 'mac'
       metaInfo: null,
+      // freeSpaceAdvisoryString: a message to the user indicating whether there is enough space on the selected install path
+      freeSpaceAdvisoryString: null,
+      // haveEnoughFreeSpace: Indicates the free space status according to the following:
+      // - null: Couldn't query the free space. freeSpaceAdvisoryString will still have a message in this case.
+      // - false: There is not enough free space
+      // - true: There is  enough free space on disk
+      haveEnoughFreeSpace: null,
     },
     methods: {
       doInstall() {
@@ -179,6 +186,8 @@ window.onload = function onWindowLoaded() {
             app.installPathValid = responseData.installStarted;
             app.validatedInstallPath = responseData.validatedInstallPath;
             app.validationInProgress = false;
+            app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
+            app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
           });
       },
     },

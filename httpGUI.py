@@ -505,6 +505,10 @@ class InstallerGUI:
 				retval = { 'installStarted': installValid }
 				if installValid:
 					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
+					retval['haveEnoughFreeSpace'], retval['freeSpaceAdvisoryString'] = common.checkFreeSpace(
+						installPath = fullInstallConfiguration.installPath,
+						recommendedFreeSpaceBytes = 2 * subMod.downloadSize
+					)
 				return retval
 
 			# requestData: Not necessary - will be ignored
