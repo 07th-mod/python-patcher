@@ -30,8 +30,8 @@ def forceRmTree(path):
 	shutil.rmtree(path, onerror=on_rm_error)
 
 class Installer:
-	def __init__(self, fullInstallConfiguration):
-		# type: (gameScanner.FullInstallConfiguration) -> None
+	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory):
+		# type: (gameScanner.FullInstallConfiguration, bool) -> None
 
 		"""
 		Installer Init
@@ -64,9 +64,8 @@ class Installer:
 			if path.exists(possibleSteamPath):
 				self.isSteam = True
 
-		#TODO: DROJF - Not sure if should use 'name' or 'target'. I have set the json such that 'name' is the descriptive name, 'target' is the target game to install to
 		self.downloadDir = self.info.subModConfig.modName + " Downloads"
-		self.extractDir = self.info.subModConfig.modName + " Extraction"
+		self.extractDir = self.directory if extractDirectlyToGameDirectory else (self.info.subModConfig.modName + " Extraction")
 
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
 		                                                            downloadTempDir=self.downloadDir,
@@ -179,7 +178,7 @@ class Installer:
 				forceRemove(toPath)
 			shutil.move(fromPath, toPath)
 
-	def cleanup(self):
+	def cleanup(self, cleanExtractionDirectory):
 		"""
 		General cleanup and other post-install things
 
@@ -188,7 +187,8 @@ class Installer:
 		"""
 		try:
 			forceRmTree(self.downloadDir)
-			forceRmTree(self.extractDir)
+			if cleanExtractionDirectory:
+				forceRmTree(self.extractDir)
 		except OSError:
 			pass
 
@@ -209,15 +209,29 @@ class Installer:
 
 def main(fullInstallConfiguration):
 	# type: (gameScanner.FullInstallConfiguration) -> None
-	installer = Installer(fullInstallConfiguration)
-	print("Downloading...")
-	installer.download()
-	print("Extracting...")
-	installer.extractFiles()
-	commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
-	installer.backupUI()
-	installer.cleanOld()
-	installer.moveFilesIntoPlace()
-	commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
-	installer.cleanup()
+
+	# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
+	if common.Globals.IS_WINDOWS:
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
+		print("Downloading...")
+		installer.download()
+		installer.backupUI()
+		installer.cleanOld()
+		print("Extracting...")
+		installer.extractFiles()
+		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.cleanup(cleanExtractionDirectory=False)
+	else:
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False)
+		print("Downloading...")
+		installer.download()
+		print("Extracting...")
+		installer.extractFiles()
+		commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
+		installer.backupUI()
+		installer.cleanOld()
+		installer.moveFilesIntoPlace()
+		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.cleanup(cleanExtractionDirectory=True)
+
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")
