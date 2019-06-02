@@ -42,7 +42,7 @@ class FailedFileOverrideException(Exception):
 		hasUnity = any(x.unity is not None for x in self.candidates)
 		out = "Failed to find a " + self.name + " file to use, your game has the properties (steam: " + str(self.steam)
 		if hasUnity:
-			out += ", unity: " + self.unity
+			out += ", unity: " + str(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
 		return out
 
