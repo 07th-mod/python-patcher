@@ -48,14 +48,6 @@ if __name__ == "__main__":
 	print(common.Globals.BUILD_INFO)
 	print("Installer is being run from: [{}]".format(os.getcwd()))
 
-	if common.Globals.IS_WINDOWS and len(os.getcwd()) > 100:
-		print("\n\n---------------------------------------------------------------------------------")
-		print("ERROR: The path you are running the installer from is too long!")
-		print("It is currently {} characters long, but must be less than 100 characters".format(len(os.getcwd())))
-		print("Please move the installer to a shorter path. The current path is:")
-		print(os.getcwd())
-		common.exitWithError()
-
 	# On Windows, check for non-ascii characters in hostname, which prevent the server starting up
 	if common.Globals.IS_WINDOWS and not all(ord(c) < 128 for c in socket.gethostname()):
 		print("-------------------------------------------------------------")
