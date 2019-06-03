@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import glob
 import json
 import re
@@ -6,6 +8,7 @@ import common
 import os
 import subprocess
 import traceback
+
 try:
 	from typing import List, Optional
 except ImportError:
@@ -271,9 +274,10 @@ def findPossibleGamePathsWindows():
 	# now that we know the steam path, search the "Steam\config\config.vdf" file for extra install paths
 	# this is a purely optional step, so it's OK if it fails
 	try:
+		import io
 		baseInstallFolderRegex = re.compile(r'^\s*"BaseInstallFolder_\d+"\s*"([^"]+)"', re.MULTILINE)
 		steamConfigVDFLocation = os.path.join(defaultSteamPath, r'config\config.vdf')
-		with open(steamConfigVDFLocation, 'r') as configVDFFile:
+		with io.open(steamConfigVDFLocation, 'r', encoding='UTF-8') as configVDFFile:
 			allSteamPaths += baseInstallFolderRegex.findall(configVDFFile.read())
 	except Exception as e:
 		traceback.print_exc()

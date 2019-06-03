@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import datetime
 import re
@@ -117,6 +117,8 @@ class Globals:
 
 	BUILD_INFO = 'Build info not yet retrieved'
 	INSTALL_LOCK_FILE_PATH = 'lockfile.lock'
+
+	IS_PYTHON_2 = sys.version_info.major == 2
 
 	@staticmethod
 	def scanForExecutables():
