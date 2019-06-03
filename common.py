@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import datetime
 import re
@@ -117,6 +117,8 @@ class Globals:
 
 	BUILD_INFO = 'Build info not yet retrieved'
 	INSTALL_LOCK_FILE_PATH = 'lockfile.lock'
+
+	IS_PYTHON_2 = sys.version_info.major == 2
 
 	@staticmethod
 	def scanForExecutables():
@@ -386,7 +388,7 @@ def getModList(jsonURL):
 		if version > Globals.JSON_VERSION:
 			printErrorMessage("Your installer is out of date.")
 			printErrorMessage("Please download the latest version of the installer and try again.")
-			print("\nYour installer is compatible with mod listings up to version " + str(Globals.JSON_VERSION) + " but the latest listing is version " + str(version))
+			print("\nYour installer is compatible with mod listings up to version {} but the latest listing is version {}".format(Globals.JSON_VERSION, version))
 			exitWithError()
 	except KeyError:
 		print("Warning: The mod info listing is missing a version number.  Things might not work.")
@@ -568,7 +570,7 @@ class DownloaderAndExtractor:
 		# extract or copy all files from the download folder to the game directory
 		for i, extractableItem in enumerate(self.extractList):
 			overallPercentage = self.downloadProgressAmount + int(i*self.extractionProgressAmount/len(self.extractList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting " + str(extractableItem))
+			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting {}".format(extractableItem))
 			fileNameNoExt, extension = os.path.splitext(extractableItem.filename)
 
 			#TODO: the '.u' and '.utf' logic is specific to umineko - shouldn't be in this class
@@ -591,9 +593,9 @@ class DownloaderAndExtractor:
 
 	def printPreview(self):
 		print("\nFirst these files will be downloaded (Total Download Size: {}):".format(prettyPrintFileSize(self.totalDownloadSize())))
-		print('\n - '.join([''] + self.downloadList))
+		print('\n - '.join(self.downloadList))
 		print("\nThen these files will be extracted or copied:")
-		print('\n - '.join([''] + [str(x) for x in self.extractList]))
+		print('\n - '.join(['{}'.format(x) for x in self.extractList]))
 		print()
 
 	def totalDownloadSize(self):

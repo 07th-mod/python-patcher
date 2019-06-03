@@ -1,6 +1,5 @@
-# TODO: test on python 2.7
 # see https://blog.anvileight.com/posts/simple-python-http-server/
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import itertools
 import os
@@ -391,7 +390,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX + str(e))
+				print('{}{}'.format(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX, e))
 				raise
 			common.tryDeleteLockFile()
 

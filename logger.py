@@ -1,7 +1,12 @@
+from __future__ import unicode_literals
+
 import os
 import shutil
 import sys
 from common import makeDirsExistOK
+from common import Globals
+
+import io
 
 try:
 	import queue
@@ -34,7 +39,7 @@ class Logger(object):
 		self.logPath = logPath
 		self.terminal = sys.stdout
 		makeDirsExistOK(os.path.dirname(logPath))
-		self.logFile = open(logPath, "a")
+		self.logFile = io.open(logPath, "a", encoding='UTF-8')
 		self.secondaryLogFile = None
 		self.callbacks = {}
 		self.queue = queue.Queue(maxsize=100000)
@@ -43,6 +48,9 @@ class Logger(object):
 		self.terminal.write(message)
 
 	def write(self, message, runCallbacks=True):
+		if Globals.IS_PYTHON_2 and isinstance(message, str):
+			message = message.decode(encoding='UTF-8', errors='replace')
+
 		self.terminal.write(message)
 		self.logFile.write(message)
 		if self.secondaryLogFile is not None:
@@ -117,10 +125,10 @@ class Logger(object):
 				fileToClose.close()
 				print("Closed log file at: [{}]".format(newLogFilePath))
 
-			self.secondaryLogFile = open(newLogFilePath, "a")
+			self.secondaryLogFile = open(newLogFilePath, "a", encoding='UTF-8')
 			print("Successfully created secondary log file at: [{}]".format(newLogFilePath))
 		except Exception as e:
-			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, str(e)))
+			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, e))
 
 def getGlobalLogger():
 	# type: () -> Logger

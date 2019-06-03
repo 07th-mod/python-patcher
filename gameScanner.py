@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import glob
 import json
 import re
@@ -6,6 +8,7 @@ import common
 import os
 import subprocess
 import traceback
+
 try:
 	from typing import List, Optional
 except ImportError:
@@ -31,7 +34,7 @@ class FailedFileOverrideException(Exception):
 		# type: (ModFileOverride) -> str
 		out = "("
 		if candidate.steam is not None:
-			out += "steam: " + str(candidate.steam)
+			out += "steam: {}".format(candidate.steam)
 		if candidate.unity is not None:
 			if len(out) > 1:
 				out += ", "
@@ -40,9 +43,9 @@ class FailedFileOverrideException(Exception):
 
 	def __str__(self):
 		hasUnity = any(x.unity is not None for x in self.candidates)
-		out = "Failed to find a " + self.name + " file to use, your game has the properties (steam: " + str(self.steam)
+		out = "Failed to find a {} file to use, your game has the properties (steam: {}".format(self.name, self.steam)
 		if hasUnity:
-			out += ", unity: " + str(self.unity)
+			out += ", unity: {}".format(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
 		return out
 
@@ -160,7 +163,7 @@ class ModOptionParser:
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		print('MOD OPTIONS:\n')
 		for modOption in self.config.subModConfig.modOptions:
-			print('  - ' + str(modOption))
+			print('  - {}'.format(modOption))
 			if modOption.value:
 				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
 					self.downloadAndExtractOptionsByPriority.append(
@@ -271,9 +274,10 @@ def findPossibleGamePathsWindows():
 	# now that we know the steam path, search the "Steam\config\config.vdf" file for extra install paths
 	# this is a purely optional step, so it's OK if it fails
 	try:
+		import io
 		baseInstallFolderRegex = re.compile(r'^\s*"BaseInstallFolder_\d+"\s*"([^"]+)"', re.MULTILINE)
 		steamConfigVDFLocation = os.path.join(defaultSteamPath, r'config\config.vdf')
-		with open(steamConfigVDFLocation, 'r') as configVDFFile:
+		with io.open(steamConfigVDFLocation, 'r', encoding='UTF-8') as configVDFFile:
 			allSteamPaths += baseInstallFolderRegex.findall(configVDFFile.read())
 	except Exception as e:
 		traceback.print_exc()
