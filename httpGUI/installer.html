@@ -156,18 +156,28 @@
 			<div class="mb40">
 				<h4>Install Information and Links</h4>
 				<p>
-					The mod was installed to [{{ selectedInstallPath }}]<br>
-					The install log was saved to [{{ logFilePath }}]<br><br>
+					The mod was installed to: <strong>{{ selectedInstallPath }}</strong><br>
+					The install log was saved to: <strong>{{ logFilePath }}</strong><br><br>
 					If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
 				</p>
+			</div>
+			<hr>
+			<div class="mb40">
+				<h4>Temporary Downloads Cleanup</h4>
+				<p>For a <strong>Higurashi</strong> install, temporary downloads are deleted on a successful install. No action is necessary</p><br>
+				<p>For <strong>Umineko</strong>, temporary downloads are kept in the <strong>"install_data\[GAME NAME] Downloads"</strong> folder, inside the installer folder</p>
+				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
+				<p>You can also back-up the downloads if you wish to install again in the future.</p>
 			</div>
 			<hr>
 			</div>
 			</transition>
 			<transition name="fade">
-				<section class="section-small-padding" v-show="installStarted">
+				<section class="section-small-padding" v-show="true">
 						<div class="container">
-							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>Do not close the console window - doing so will stop the installation!</strong></div>
+							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>
+								To stop the installation, close the console window. Download progress will be kept (resuming downloads is supported).
+							</strong></div>
 							<h3> Overall Progress: {{ overallPercentage }}% </h3>
 							<h5 style="font-family: monospace"> {{ overallTaskDescription }} </h5>
 							<div class="progress">
