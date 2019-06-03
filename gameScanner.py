@@ -31,7 +31,7 @@ class FailedFileOverrideException(Exception):
 		# type: (ModFileOverride) -> str
 		out = "("
 		if candidate.steam is not None:
-			out += "steam: " + str(candidate.steam)
+			out += "steam: {}".format(candidate.steam)
 		if candidate.unity is not None:
 			if len(out) > 1:
 				out += ", "
@@ -40,9 +40,9 @@ class FailedFileOverrideException(Exception):
 
 	def __str__(self):
 		hasUnity = any(x.unity is not None for x in self.candidates)
-		out = "Failed to find a " + self.name + " file to use, your game has the properties (steam: " + str(self.steam)
+		out = "Failed to find a {} file to use, your game has the properties (steam: {}".format(self.name, self.steam)
 		if hasUnity:
-			out += ", unity: " + str(self.unity)
+			out += ", unity: {}".format(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
 		return out
 
@@ -160,7 +160,7 @@ class ModOptionParser:
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		print('MOD OPTIONS:\n')
 		for modOption in self.config.subModConfig.modOptions:
-			print('  - ' + str(modOption))
+			print('  - {}'.format(modOption))
 			if modOption.value:
 				if modOption.type == 'downloadAndExtract' and modOption.data is not None:
 					self.downloadAndExtractOptionsByPriority.append(

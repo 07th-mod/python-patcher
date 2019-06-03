@@ -120,7 +120,7 @@ class Logger(object):
 			self.secondaryLogFile = open(newLogFilePath, "a")
 			print("Successfully created secondary log file at: [{}]".format(newLogFilePath))
 		except Exception as e:
-			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, str(e)))
+			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, e))
 
 def getGlobalLogger():
 	# type: () -> Logger

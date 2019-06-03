@@ -391,7 +391,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX + str(e))
+				print('{}{}'.format(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX, e))
 				raise
 			common.tryDeleteLockFile()
 
