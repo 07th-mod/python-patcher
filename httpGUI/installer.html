@@ -224,7 +224,7 @@
 												A workaround for this is to install XFCE desktop. You can follow this guide to install XFCE desktop (it can be installed alongside GNOME).
 												Please make sure you can launch the base game before applying any mods (for ease of installation, please don't make any saves on the base game).
 										</strong></div>
-										<div class="alert alert-warning" role="alert" v-if="metaInfo.lockFileExists"><strong>
+										<div class="alert alert-warning" role="alert" v-if="!metaInfo.installAlreadyInProgress && metaInfo.lockFileExists"><strong>
 											Warning: It appears an install is already in progress, or the last install was closed unexpectedly.<br>
 											Please double check that there is only one console window open, and the install is not already running.<br>
 											If you force closed the installer last time you ran it, then you can ignore this message.

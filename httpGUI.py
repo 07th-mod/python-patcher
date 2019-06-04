@@ -351,6 +351,9 @@ class InstallerGUI:
 		self.threadHandle = None # type: Optional[threading.Thread]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
+	def installAlreadyInProgress(self):
+		return self.threadHandle and self.threadHandle.is_alive()
+
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, validateOnly):
 		#type: (SubModConfig, str, bool) -> (bool, gameScanner.FullInstallConfiguration)
@@ -383,7 +386,7 @@ class InstallerGUI:
 			raise Exception("Error - Unknown Game Family - I don't know how to install [{}] family of games. Please notify 07th-mod developers.".format(fullInstallSettings.subModConfig.family))
 
 		# Prevent accidentally starting two installations at once
-		if self.threadHandle and self.threadHandle.is_alive():
+		if self.installAlreadyInProgress():
 			raise Exception("Can't start install - installer already running.")
 
 		def errorPrintingInstaller(args):
@@ -532,6 +535,7 @@ class InstallerGUI:
 					'buildInfo': common.Globals.BUILD_INFO,
 					'lockFileExists': common.lockFileExists(), # Indicate if it looks like install already in progress
 					'operatingSystem': common.Globals.OS_STRING,
+					'installAlreadyInProgress': self.installAlreadyInProgress(),
 				}
 
 			# This causes a TKInter window to open allowing the user to choose a game path.

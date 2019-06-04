@@ -81,6 +81,12 @@ function statusUpdate() {
     });
 }
 
+function setInstallStartedAndBeginPolling() {
+  statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
+  app.installStarted = true;
+  window.scrollTo(0, 0);
+}
+
 // Step 4.
 // Attempts to start the install to the given installPath.
 // If the installPath argument is not given, then the python
@@ -99,9 +105,7 @@ function startInstall(subModToInstall, installPath) {
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
-        statusUpdateTimerHandle = window.setInterval(statusUpdate, 500);
-        app.installStarted = true;
-        window.scrollTo(0, 0);
+        setInstallStartedAndBeginPolling();
       } else {
         alert('The install could not be started. Reason: {INSERT REASON HERE}. Please ensure you chose a valid path.');
       }
@@ -269,6 +273,9 @@ window.onload = function onWindowLoaded() {
     replaceElementWithBuildInfo('build-info');
     doPost('getInstallerMetaInfo', [], (response) => {
       app.metaInfo = response;
+      if (app.metaInfo.installAlreadyInProgress) {
+        setInstallStartedAndBeginPolling();
+      }
     });
   });
 };
