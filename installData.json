@@ -389,7 +389,7 @@
 					"downloadSize": 5.0e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p.7z.meta4", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v2.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Beato/script-full.zip", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
