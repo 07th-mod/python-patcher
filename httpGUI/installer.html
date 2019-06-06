@@ -275,9 +275,13 @@
 													</ul>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
+													<strong>
+														NOTE: ADV mode is switchable for the Question Arcs, but not for the Answer Arcs.<br>
+														Please keep this in mind when you eventually install the Answer Arcs.
+													</strong><br><br>
 													This patch installs all PS3 content that the team has ported so far:
 													<ul class="bullets">
-														<li>NEW: Has ADV mode (text is shown in a textbox at the bottom of the screen) which can be toggled on or off at any time</li>
+														<li>NEW: Has ADV mode, where text is shown in a textbox at the bottom of the screen. In the Question Arcs only, this can be toggled on or off at any time.</li>
 														<li>NEW: Playing with Japanese Text is supported</li>
 														<li>PS3 voices</li>
 														<li>PS3 sprites</li>
@@ -289,7 +293,7 @@
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerFull'">
 													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
-													Please select the "ADV Patch" option if you want to play with ADV mode.<br><br>
+													Please select the "ADV-MODE" option if you want to play with ADV mode.<br><br>
 													This patch installs all PS3 content that the team has ported so far:<br>
 													<ul class="bullets">
 														<li>NEW: Playing with Japanese Text is supported</li>
@@ -301,10 +305,13 @@
 													</ul>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoAnswerADV'">
+													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
+													Please select the "NOVEL-MODE" option if you want to play with NOVEL mode.<br><br>
+													This patch installs all PS3 content that the team has ported so far:<br>
 													This patch is the same as the "full" variant except it adds ADV mode:
 													<ul class="bullets">
 														<li>WARNING: Playing with Japanese Text is NOT supported</li>
-														<li>Has <b>ADV mode</b> (text is shown in a textbox at the bottom of the screen)</li>
+														<li>Has <b>ADV mode</b>, where text is shown in a textbox at the bottom of the screen.</li>
 														<li>PS3 voices</li>
 														<li>PS3 sprites</li>
 														<li>PS3 CGs (event images)</li>
@@ -314,6 +321,23 @@
 												</div>
 												<div v-else>
 													No description for {{ selectedSubMod.descriptionID }} :(
+												</div>
+												<!-- Umineko Novel/ADV Mode Example Images Table (shown on all non-voice only Umineko options) -->
+												<div v-if="selectedSubMod.family === 'umineko' && selectedSubMod.descriptionID !== 'uminekoVoiceOnly'">
+													<table class="umineko-image-table-content">
+														<thead>
+															<tr>
+																<th>NOVEL/Normal Mode</th>
+																<th>ADV Mode</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td width="400"><img src="img/umineko/novel-mode-example.jpg"></td>
+																<td width="400"><img src="img/umineko/adv-mode-example.jpg"></td>
+															</tr>
+														</tbody>
+													</table>
 												</div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div>

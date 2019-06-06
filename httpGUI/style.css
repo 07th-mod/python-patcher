@@ -118,3 +118,23 @@ body {
 .d-inline-block {
     display: inline-block;
 }
+
+/* Styles for Umineko ADV/NVL Comparison Table */
+.umineko-image-table-content {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+    border-radius: 8px;
+    overflow: hidden; /* Fix top of table not being rounded     */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.umineko-image-table-content th {
+    background-color: #47b475;
+    color: #fff;
+    font-size: 20px;
+    padding: 15px;
+}
+
+.umineko-image-table-content td {
+    padding: 15px;
+}
