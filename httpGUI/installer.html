@@ -98,6 +98,7 @@
 		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
 			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
 		<div id="app" class="main-container" v-cloak>
+			<div id="snackbar" v-bind:class="{ show: toastMessage }">{{ toastMessage }}</div>
 			<section class="page-title page-title-4 bg-secondary">
 					<div class="container">
 						<div class="row">

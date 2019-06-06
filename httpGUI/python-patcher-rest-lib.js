@@ -1,8 +1,14 @@
 'use strict';
 
 const pythonPatcherTimeScriptLoaded = Date.now();
-let pythonPatcherRestLibErrorCount = 0;
-const pythonPatcherRestLibMaxErrorCount = 3;
+
+let POSTNotificationErrorCallback = function defaultPOSTNotificationErrorCallback(message) {
+  alert(message);
+};
+
+function setPOSTNotificationErrorCallback(callback) {
+  POSTNotificationErrorCallback = callback;
+}
 
 // Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
 function makeJSONRequest(requestType, requestData) {
@@ -12,18 +18,6 @@ function makeJSONRequest(requestType, requestData) {
 function decodeJSONResponse(jsonString) {
   const responseObject = JSON.parse(jsonString);
   return [responseObject.responseType, responseObject.responseData];
-}
-
-function showMessageWithLimit(message) {
-  pythonPatcherRestLibErrorCount += 1;
-  console.log(message);
-
-  if (pythonPatcherRestLibErrorCount === pythonPatcherRestLibMaxErrorCount) {
-    alert(`More than ${pythonPatcherRestLibMaxErrorCount} errors occured - no more errors will be shown in alerts`);
-    console.log(`More than ${pythonPatcherRestLibMaxErrorCount} errors occured - no more errors will be show in alerts`);
-  } else if (pythonPatcherRestLibErrorCount < pythonPatcherRestLibMaxErrorCount) {
-    alert(message);
-  }
 }
 
 // Send any object in JSON format as a POST request to the server.
@@ -52,15 +46,22 @@ function doPost(requestType, requestData, onSuccessCallback) {
   // Call a function when the state changes.
   // TODO: add timeout here to notify user if server has crashed or stopped working
   http.onreadystatechange = function onReadyStateChange() {
-    if (http.readyState === 4 && http.status === 200) {
-      const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
-      if (responseType === 'error') {
-        console.log(`Error: ${responseDataObject.errorReason}`);
-        alert(responseDataObject.errorReason);
-      } else if (responseType === 'unknownRequest' || responseType !== requestType) {
-        console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
+    if (http.readyState === 4) {
+      if (http.status === 200) {
+        const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
+        if (responseType === 'error') {
+          console.log(`Error: ${responseDataObject.errorReason}`);
+          alert(responseDataObject.errorReason);
+        } else if (responseType === 'unknownRequest' || responseType !== requestType) {
+          console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
+        } else {
+          onSuccessCallback(responseDataObject);
+        }
       } else {
-        onSuccessCallback(responseDataObject);
+        const errorCodeString = http.status === 0 ? '' : `[${http.status}]`;
+        const message = `Error ${errorCodeString} on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
+        console.log(message);
+        POSTNotificationErrorCallback(message);
       }
     }
   };
@@ -70,17 +71,6 @@ function doPost(requestType, requestData, onSuccessCallback) {
     const millisecondsSincePageLoaded = Date.now() - pythonPatcherTimeScriptLoaded;
     http.timeout = Math.max(8000 - millisecondsSincePageLoaded, 3000);
   }
-
-  http.ontimeout = function onTimeout() {
-    const message = `Timeout Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
-    showMessageWithLimit(message);
-  };
-
-  http.onerror = function onError() {
-    const message = `Error [${this.statusText}] on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
-    showMessageWithLimit(message);
-  };
-
 
   http.send(makeJSONRequest(requestType, requestData));
 }
