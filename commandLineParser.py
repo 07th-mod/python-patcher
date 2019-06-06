@@ -6,6 +6,7 @@ class AriaStatusUpdate:
 	regexAriaCompletionStatus = re.compile(r"#[0-9a-zA-Z]+\s([^/]+/[^/]+)\((100|\d\d|\d)%\)")
 	regexAriaETA = re.compile(r"ETA:([^\]]+)")
 	regexAriaConnectionAndSpeed = re.compile(r'CN:([^D]+)DL:([^E]+)', re.IGNORECASE)
+	regexAriaChecksumError = re.compile(r'Checksum error detected\.\s*file=(.*)', re.IGNORECASE)
 
 	def __init__(self, amountCompletedString, percentCompleted, numConnections, speed, ETAString):
 		self.amountCompletedString = amountCompletedString
@@ -62,6 +63,15 @@ def tryGetAriaStatusUpdate(ariaStatusUpdateString):
 		speed = "N/A"
 
 	return AriaStatusUpdate(amountCompletedString, percentCompleted, numConnections, speed, ETAString)
+
+def tryGetAriaChecksumError(ariaChecksumErrorString):
+	# type: (str) -> str
+	"""
+	Matches a message like:
+	"Checksum error detected. file=Umineko Question (Ch. 1-4) Downloads/Umineko-Graphics-1080p-v2.7z"
+	"""
+	match = AriaStatusUpdate.regexAriaChecksumError.search(ariaChecksumErrorString)
+	return match.groups()[0] if match is not None else None
 
 #if none of the other types of lines match, and you see a percent number (eg 54%), assume it's 7zip
 def tryGetSevenZipPercent(sevenZipStatusUpdateString):

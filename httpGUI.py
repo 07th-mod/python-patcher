@@ -129,8 +129,16 @@ def _loggerMessageToStatusDict(message):
 
 		return sevenZipMessageAndPercent
 
+	# This variable represents the final message which will be displayed on the web console
+	displayedMessage = message
+
+	# Check for a checksum error message (when using metalinks)
+	if commandLineParser.tryGetAriaChecksumError(message) is not None:
+		ignoreMessage = "--- You can IGNORE this checksum error unless you repeatedly get it for the same file. ---\n"
+		displayedMessage = "{}{}{}".format(ignoreMessage, message, ignoreMessage)
+
 	# if the message is not a aria or 7zip message, just show it in the gui log window
-	return {"msg": message,
+	return {"msg": displayedMessage,
 	        "error": True if message.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX) else False}
 
 def start_server(working_directory, post_handlers, serverStartedCallback=lambda _: None):
