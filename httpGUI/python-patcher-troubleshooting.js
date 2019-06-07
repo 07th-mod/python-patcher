@@ -45,6 +45,7 @@ window.onload = function onWindowLoaded() {
     });
     // filter down such that there is only one submod per path
     app.uniqueSubMods = Object.values(pathToSubModMap);
+    app.uniqueSubMods.sort((a, b) => a.id - b.id);
     console.log(app.uniqueSubMods);
   });
 };
