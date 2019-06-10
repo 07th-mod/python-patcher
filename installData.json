@@ -384,7 +384,7 @@
 			"identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
 			"submods": [
 				{
-					"name" : "1080p",
+					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
 					"downloadSize": 5.0e9,
 					"files":[

@@ -235,7 +235,7 @@ class SubModConfig:
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
 
-	# Submod lists may contain many entries with the same modName (eg a list may have [umi-question:voice, umi-question:full, umi-question:1080p])
+	# Submod lists may contain many entries with the same modName (eg a list may have [umi-question:voice, umi-question:full, umi-question:full])
 	# This function gets the unique modNames. It also preserves the original order of the list.
 	@staticmethod
 	def getUniqueModNamesInSubModList(subModList):
