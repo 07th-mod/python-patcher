@@ -21,6 +21,9 @@ def main(conf):
 	print("Is Linux", common.Globals.IS_LINUX)
 	print("Is Mac", common.Globals.IS_MAC)
 
+	if not common.Globals.IS_WINDOWS:
+		raise Exception("Error: Umineko Hane Mod (onscripter version) is not supported on Mac or Linux!")
+
 	####################################### VALIDATE AND PREPARE FOLDERS ###############################################
 	# do a quick verification that the directory is correct before starting installer
 	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):

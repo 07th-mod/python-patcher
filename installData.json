@@ -513,11 +513,9 @@
 					"descriptionID": "uminekoHaneOnscripterFull",
 					"downloadSize": 0.1e9,
 					"files":[
-						{"name": "mod",      "url":null,                                                             "priority": 0}
+						{"name": "mod", "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip", "priority": 0}
 					],
-					"fileOverrides" : [
-						{"name": "mod", "os":["windows"], "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip"}
-					]
+					"fileOverrides" : []
 				}
 			]
 		}
