@@ -501,7 +501,7 @@
 			]
 		},
 		{
-			"family": "umineko-nscripter",
+			"family": "umineko_nscripter",
 			"name" : "Umineko Hane",
 			"target": "Umineko",
 			"CFBundleName": "This Field is Not Used",

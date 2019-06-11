@@ -389,7 +389,7 @@ class InstallerGUI:
 		installerFunction = {
 			"higurashi": higurashiInstaller.main,
 			"umineko": uminekoInstaller.mainUmineko,
-			"umineko-nscripter": uminekoNScripterInstaller.mainNscripter
+			"umineko_nscripter": uminekoNScripterInstaller.main
 		}.get(fullInstallSettings.subModConfig.family, None)
 
 		if not installerFunction:
@@ -624,7 +624,7 @@ class InstallerGUI:
 							return {'error': 'Sorry, cant figure out higurashi episode number :('}
 					elif subMod.family == 'umineko':
 						saveFolderName = os.path.join(_getInstallPath(), 'mysav')
-					elif subMod.family == 'umineko-nscripter':
+					elif subMod.family == 'umineko_nscripter':
 						# For now just open the all users profile folder
 						# The actual save folder will be set according to the ';gameid' defined at the top of the script file
 						saveFolderName = os.path.expandvars('%AllUsersProfile%')

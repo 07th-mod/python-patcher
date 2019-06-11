@@ -7,7 +7,7 @@ import gameScanner
 import logger
 
 #do install given a installer config object
-def mainNscripter(conf):
+def main(conf):
 	# type: (gameScanner.FullInstallConfiguration) -> None
 	logger.getGlobalLogger().trySetSecondaryLoggingPath(
 		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
