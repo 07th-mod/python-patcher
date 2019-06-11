@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import commandLineParser
 import common
-import os, shutil, subprocess
+import os
 import gameScanner
 import logger
 
@@ -35,12 +35,6 @@ def main(conf):
 
 	common.makeDirsExistOK(downloadTempDir)
 
-	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
-	for path in os.listdir(downloadTempDir):
-		if 'script' in path:
-			print("Deleting previous script download {}".format(path))
-			os.remove(os.path.join(downloadTempDir, path))
-
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
@@ -55,8 +49,6 @@ def main(conf):
 
 	downloaderAndExtractor.printPreview()
 	downloaderAndExtractor.download()
-
 	downloaderAndExtractor.extract()
 
-
-	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")
+	commandLineParser.printSeventhModStatusUpdate(100, "Umineko Hane install script completed!")
