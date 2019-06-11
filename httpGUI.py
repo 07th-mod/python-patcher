@@ -367,6 +367,7 @@ class InstallerGUI:
 		#type: (SubModConfig, str, bool) -> (bool, gameScanner.FullInstallConfiguration)
 		import higurashiInstaller
 		import uminekoInstaller
+		import uminekoNScripterInstaller
 
 		fullInstallConfigs = None
 		if os.path.isdir(installPath):
@@ -387,7 +388,8 @@ class InstallerGUI:
 
 		installerFunction = {
 			"higurashi": higurashiInstaller.main,
-			"umineko": uminekoInstaller.mainUmineko
+			"umineko": uminekoInstaller.mainUmineko,
+			"umineko-nscripter": uminekoNScripterInstaller.mainNscripter
 		}.get(fullInstallSettings.subModConfig.family, None)
 
 		if not installerFunction:
