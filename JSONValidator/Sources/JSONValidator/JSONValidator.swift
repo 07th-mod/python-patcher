@@ -44,6 +44,7 @@ public struct ModDefinition: Codable {
 public enum ModFamily: String, Codable {
 	case higurashi
 	case umineko
+	case umineko-nscripter
 }
 
 public struct SubmodDefinition: Codable {
