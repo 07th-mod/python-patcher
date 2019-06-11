@@ -513,10 +513,10 @@
 					"descriptionID": "uminekoHaneFull",
 					"downloadSize": 0.1e9,
 					"files":[
-						{"name": "graphics",      "url":null,                                                             "priority": 0}
+						{"name": "mod",      "url":null,                                                             "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "graphics", "os":["windows"], "url":"https://github.com/07th-mod/umineko-hane-ons/releases/download/v1.0.0/07th-Mod.zip"}
+						{"name": "mod", "os":["windows"], "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip"}
 					]
 				}
 			]
