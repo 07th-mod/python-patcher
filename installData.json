@@ -499,6 +499,26 @@
 					]
 				}
 			]
+		},
+		{
+			"family": "umineko-nscripter",
+			"name" : "Umineko Hane",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["うみねこのなく頃に羽.exe"],
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoHaneFull",
+					"downloadSize": 0.1e9,
+					"files":[
+						{"name": "graphics", "url":"https://github.com/07th-mod/umineko-hane-ons/releases/download/v1.0.0/07th-Mod.zip", "priority": 0}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [{}]
 		}
 	]
 }
