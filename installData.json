@@ -506,7 +506,7 @@
 			"target": "Umineko",
 			"CFBundleName": "This Field is Not Used",
 			"dataname": "",
-			"identifiers" : ["うみねこのなく頃に羽.exe"],
+			"identifiers" : ["うみねこのなく頃に羽.exe", "snow.dll"],
 			"submods": [
 				{
 					"name" : "full",
