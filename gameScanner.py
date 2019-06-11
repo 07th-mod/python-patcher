@@ -42,6 +42,8 @@ class FailedFileOverrideException(Exception):
 		return out + ")"
 
 	def __str__(self):
+		if not self.candidates:
+			return "Your current OS is not supported by the file {} in this mod".format(self.name)
 		hasUnity = any(x.unity is not None for x in self.candidates)
 		out = "Failed to find a {} file to use, your game has the properties (steam: {}".format(self.name, self.steam)
 		if hasUnity:

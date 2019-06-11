@@ -59,12 +59,21 @@ final class JSONValidatorTests: XCTestCase {
 		for mod in installData.mods {
 			for submod in mod.submods {
 				for file in submod.files where file.url == nil {
+					func isOverrideAvailable(os: OS, steam: Bool) -> Bool {
+						return submod.fileOverrides.contains(where: { override in
+							return override.name == file.name
+							    && override.os.contains(os)
+							    && (override.steam ?? steam == steam)
+						})
+					}
+
 					for os in OS.allCases {
-						for steam in [true, false] {
-							if !submod.fileOverrides.contains(where: { override in
-								override.name == file.name && override.os.contains(os) && (override.steam ?? steam == steam)
-							}) {
-								XCTFail("\(mod.name) \(submod.name) \(file.name) must be overridden but a user with the os \(os) and steam \(steam) will have no overrides available")
+						if isOverrideAvailable(os: os, steam: true) != isOverrideAvailable(os: os, steam: false) {
+							if isOverrideAvailable(os: os, steam: true) {
+								XCTFail("A user on \(os) will only have \(mod.name) \(submod.name) \(file.name) available if they installed with steam, please add a version for if they don't have steam")
+							}
+							else {
+								XCTFail("A user on \(os) will only have \(mod.name) \(submod.name) \(file.name) available if they installed without steam, please add a version for if they do have steam")
 							}
 						}
 					}
