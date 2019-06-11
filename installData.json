@@ -510,7 +510,7 @@
 			"submods": [
 				{
 					"name" : "full",
-					"descriptionID": "uminekoHaneFull",
+					"descriptionID": "uminekoHaneOnscripterFull",
 					"downloadSize": 0.1e9,
 					"files":[
 						{"name": "mod",      "url":null,                                                             "priority": 0}
