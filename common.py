@@ -1,6 +1,7 @@
 from __future__ import print_function, unicode_literals
 
 import datetime
+import io
 import re
 import shutil
 import sys, os, platform, subprocess, json
@@ -370,16 +371,16 @@ def getModList(jsonURL):
 				import tempfile
 				tmpdir = tempfile.mkdtemp()
 				aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json")
-				file = open(os.path.join(tmpdir, "info.json"), "r")
+				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
 		else:
-			file = open(jsonURL, "r")
+			file = io.open(jsonURL, "r", encoding='utf-8')
 	except HTTPError as error:
 		print(error)
 		print("Couldn't reach 07th Mod Server to download patch info")
 		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
 		exitWithError()
 
-	info = json.load(file)
+	info = json.load(file, encoding='utf-8')
 	file.close()
 	if tmpdir:
 		shutil.rmtree(tmpdir)
