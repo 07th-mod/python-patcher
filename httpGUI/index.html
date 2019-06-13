@@ -15,12 +15,8 @@
         <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
     </head>
     <body>
-				
+		<div id="app" class="main-container" v-cloak>
 		<div class="nav-container">
-		    
-		    
-		
-		    
 		    <nav>
 		        <div class="nav-bar">
 		            <div class="module left">
@@ -100,13 +96,6 @@
 		            
 		        </div>
 		    </nav>
-		
-		    
-		    
-		
-		    
-		    
-		
 		</div>
 		
 		<div class="main-container">
@@ -130,11 +119,15 @@
 						
 					</div>
 					
-				</section><section class="projects pt48">
+				</section><section class="pt48">
 					<div class="container">
 						<div class="row pb24">
 							<div class="col-sm-12 text-center">
 								<ul class="filters mb0">
+									<!-- This part is populated by the theme - it contains buttons for each filter -->
+									<li class="active" v-on:click="currentDataFilter = null">All</li>
+									<li v-for="dataFilter in dataFilters"
+									v-on:click="currentDataFilter = dataFilter">{{ dataFilter }}</li>
 								</ul>
 							</div>
 						</div>
@@ -145,117 +138,26 @@
 							</div>
 						</div>
 						<div class="row masonry masonryFlyIn">
-							<div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">
-										<img alt="Umineko" src="img/games/umineko-question.jpg">
+							<div
+							v-for="subMod in uniqueSubMods"
+							class="col-md-4 col-sm-6 masonry-item project" 
+							data-filter="Question Arcs"
+							>
+							<!-- A hard value of 168px is set for the heigh here. This is so that 'masonry' which provides the
+								 fly in animation knows the approximate size of the tiles before the images have been loaded. 
+								I tried fixing this other ways but this seems the most foolproof.-->
+								<div class="image-tile inner-title hover-reveal text-center" 
+								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === subModExtraProperties[subMod.modName].dataFilter) }">
+									<a v-on:click="nav(subMod.modName)">
+										<img alt="Umineko" v-bind:src="subModExtraProperties[subMod.modName].img" height="168px">
 										<div class="title">
-											<h5 class="uppercase mb0">Umineko</h5>
+											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
 											<span>Question Arcs</span>
 										</div>
 									</a>
 								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Umineko Answer (Ch. 5-8)')">
-										<img alt="Umineko Chiru" src="img/games/umineko-answer.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Umineko Chiru</h5>
-											<span>Answer Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Umineko Hane')">
-										<img alt="Umineko Hane" src="img/games/umineko-hane.png">
-										<div class="title">
-											<h5 class="uppercase mb0">Umineko Hane</h5>
-											<span>Extra Content</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Console Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Console Arcs')">
-										<img alt="Console Arcs" src="img/games/console.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Console Arcs</h5>
-											<span>All Chapters</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Onikakushi Ch.1')">
-										<img alt="Onikakushi" src="img/games/header1.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Onikakushi</h5>
-											<span>Chapter 1 - Question Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Watanagashi Ch.2')">
-										<img alt="Watanagashi" src="img/games/header2.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Watanagashi</h5>
-											<span>Chapter 2 - Question Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Tatarigoroshi Ch.3')">
-										<img alt="Tatarigoroshi" src="img/games/header3.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Tatarigoroshi</h5>
-											<span>Chapter 3 - Question Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Question Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Himatsubushi Ch.4')">
-										<img alt="Himatsubushi" src="img/games/header4.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Himatsubushi</h5>
-											<span>Chapter 4 - Question Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Meakashi Ch.5')">
-										<img alt="Meakashi" src="img/games/header5.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Meakashi</h5>
-											<span>Chapter 5 - Answer Arcs</span>
-										</div>
-									</a>
-								</div>
-							</div><div class="col-md-4 col-sm-6 masonry-item project" data-filter="Answer Arcs">
-								<div class="image-tile inner-title hover-reveal text-center">
-									<a onclick="setModNameAndNavigate('Tsumihoroboshi Ch.6')">
-										<img alt="Tsumihoroboshi" src="img/games/header6.jpg">
-										<div class="title">
-											<h5 class="uppercase mb0">Tsumihoroboshi</h5>
-											<span>Chapter 6 - Answer Arcs</span>
-										</div>
-									</a>
-								</div>
 							</div>
-							<div class="col-md-4 col-sm-6 masonry-item project button-tabs" data-filter="Answer Arcs">
-								<a href="troubleshooting.html">
-									<div class="image-tile inner-title hover-reveal text-center tab-title" style="width:360px; height:160px">
-										<h3>Troubleshooting</h3>
-										<div class="title">
-											<h5 class="uppercase mb0">Troubleshooting</h5>
-										</div>
-									</div>
-								</a>
-							</div>
+							
 						</div>
 						
 					</div>
@@ -272,8 +174,8 @@
 					</div>
 					<div id="build-info" class="container">Loading Build Information...</div>
 				</section>
-			</div>
-
+		</div>
+		</div>
 			
 					
 		<script src="js/jquery.min.js"></script>
@@ -281,18 +183,16 @@
 		<script src="js/masonry.min.js"></script>
 		<script src="js/parallax.js"></script>
 		<script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
 		<script src="js/marked.min.js"></script>
 		<script src="marked-setup.js"></script>
 		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-index.js"></script>
 		<script>
 			// Warn the user if they are on Internet Explorer - we don't support it!
 			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
 				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
 			}
-
-			replaceElementWithNews('globalNews', 'news');
-			replaceDonationStatus('donationMonthsRemaining', 'donationProgress');
-			replaceElementWithBuildInfo('build-info');
 		</script>
 		</body>
 	</html>

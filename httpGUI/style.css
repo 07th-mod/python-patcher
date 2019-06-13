@@ -96,6 +96,11 @@ they have zero height. This forces the height to some valid value*/
     opacity: 0;
 }
 
+.index-button-disable {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
 .install-finished-div p {
     line-height: 16px;
     margin-bottom: 0;

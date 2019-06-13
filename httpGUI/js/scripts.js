@@ -1014,8 +1014,8 @@ $(window).load(function() {
     "use strict";
 
     // Initialize Masonry
-
-    initializeMasonry()
+    //drojf - this has been moved to our js so we can make Masonry load after Vue finishes loading
+    //initializeMasonry()
    
 
     mr_firstSectionHeight = $('.main-container section:nth-of-type(1)').outerHeight(true);
