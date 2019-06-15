@@ -122,6 +122,7 @@
 			<!-- Displayed when the install finishes successfully -->
 			<section class="section-small-padding" v-show="!installFailed">
 				<h1 style="color: green;">The install was successful!</h1>
+				<h4>IMPORTANT INFO BEFORE YOU PLAY</h4>
 				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
 					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
 					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
@@ -129,8 +130,11 @@
 					<p>Please check out our <a href="http://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a> for common problems</p>
 				</div>
 				<div v-else>
-					<p><strong>Warning</strong>: Unmodded saves are not compatible with the mod!</p>
-					<p>If you have made old saves, do not press 'continue' or load, please start a new game. Otherwise, you may get a black screen or the game may crash.</p>
+					<p><strong>Warning: Saves between different versions of the game are not compatible!</strong></p>
+					<p>For example, different releases of our mod are not be compatible. Unmodded and modded saves are definitely not compatible.</p>
+					<p>If you have made old saves, do not press 'continue' or load - please use the chapter jump menu or start a new game.</p>
+					<p>You could get many kinds of wierd behaviour, for example being stuck on a black screen, or the game may crash.</p>
+					<p>If you want to use the saves on multiple machines (for example, using steam sync), make sure they are all running exactly the same version of the mod.</p>
 					<br>
 					<p><strong>Warning</strong>: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
 					<p>This is normal, however if the game freezes on a <b>black screen</b> it's likely something went wrong - please contact us on Discord if this happens.</p>

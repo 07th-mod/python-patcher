@@ -97,8 +97,9 @@ they have zero height. This forces the height to some valid value*/
 }
 
 .install-finished-div p {
-    line-height: 16px;
+    line-height: 20px;
     margin-bottom: 0;
+    font-size: 14px;
 }
 
 body {
