@@ -388,7 +388,7 @@
 					"descriptionID": "uminekoQuestionFull",
 					"downloadSize": 5.0e9,
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v2.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Beato/script-full.zip", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
@@ -407,7 +407,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"downloadSize": 2.0e9,
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Beato/script-voice-only.zip", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0}
 					],
@@ -444,7 +444,7 @@
 					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Bern/script-full.zip", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1}
@@ -460,7 +460,7 @@
 					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Bern/script-adv-mode.zip", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
@@ -476,7 +476,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"downloadSize": 1.7e9,
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
 						{"name": "script", "url":"https://07th-mod.com/Bern/script-voice-only.zip", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0}
