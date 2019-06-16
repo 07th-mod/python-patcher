@@ -125,7 +125,7 @@ class Logger(object):
 				fileToClose.close()
 				print("Closed log file at: [{}]".format(newLogFilePath))
 
-			self.secondaryLogFile = open(newLogFilePath, "a", encoding='UTF-8')
+			self.secondaryLogFile = io.open(newLogFilePath, "a", encoding='UTF-8')
 			print("Successfully created secondary log file at: [{}]".format(newLogFilePath))
 		except Exception as e:
 			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, e))
