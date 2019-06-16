@@ -142,6 +142,17 @@ def mainUmineko(conf):
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(conf.installPath)
 
+	# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
+	graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
+
+	for folderPath in graphicsPathsToDelete:
+		if os.path.exists(folderPath):
+			print("Deleting {}".format(folderPath))
+			try:
+				shutil.rmtree(folderPath)
+			except:
+				print("WARNING: failed to remove folder {}".format(folderPath))
+
 	downloaderAndExtractor.extract()
 
 	############################################# FIX .ARC FILE NAMING #################################################
