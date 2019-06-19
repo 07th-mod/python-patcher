@@ -14,7 +14,9 @@
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
     </head>
     <body>
-				
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+		The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
+		<div id="app" class="main-container" v-cloak>
 		<div class="nav-container">
 		    <nav>
 		        <div class="nav-bar">
@@ -28,76 +30,14 @@
 		            </div>
 		            <div class="module-group right">
 		                <div class="module left">
-		                    <ul class="menu">
-		                        
-		                        <li class="has-dropdown">
-		                            <a href="higurashi.html" target="_self">Higurashi When They Cry</a>
-		                            <ul class="mega-menu">
-		                                <li>
-		                                    <ul>
-		                                        <li>
-		                                            <span class="title">Question Arcs</span>
-		                                        </li>
-		                                        <li>
-		                                            <a onclick="setModNameAndNavigate('Onikakushi Ch.1')" target="_self">Ch.1 Onikakushi</a>
-		                                        </li><li>
-		                                            <a onclick="setModNameAndNavigate('Watanagashi Ch.2')" target="_self">Ch.2 Watanagashi</a>
-		                                        </li><li>
-		                                            <a onclick="setModNameAndNavigate('Tatarigoroshi Ch.3')" target="_self">Ch.3 Tatarigoroshi</a>
-		                                        </li><li>
-		                                            <a onclick="setModNameAndNavigate('Himatsubushi Ch.4')" target="_self">Ch.4 Himatsubushi</a>
-		                                        </li>
-		                                    </ul>
-		                                </li>
-		                                <li>
-		                                    <ul>
-		                                        <li>
-		                                            <span class="title">Answer Arcs</span>
-												</li>
-												<li>
-		                                            <a onclick="setModNameAndNavigate('Meakashi Ch.5')" target="_self">Ch.5 Meakashi</a>
-		                                        </li>
-		                                        <li>
-		                                            <a onclick="setModNameAndNavigate('Tsumihoroboshi Ch.6')" target="_self">Ch.6 Tsumihoroboshi</a>
-		                                        </li>
-		                                    </ul>
-										</li>
-										<li>
-		                                    <ul>
-		                                        <li>
-		                                            <span class="title">Console Arcs</span>
-		                                        </li>
-		                                        <li>
-		                                            <a onclick="setModNameAndNavigate('Console Arcs')" target="_self">All Chapters</a>
-		                                        </li>
-		                                    </ul>
-		                                </li>
-		                            </ul>
-								</li>
-								<li class="has-dropdown">
-		                            <a href="umineko.html">Umineko When They Cry</a>
-		                            <ul>
-		                                <li>
-		                                    <a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">Question Arcs</a>
-		                                </li>
-		                                <li>
-		                                    <a onclick="setModNameAndNavigate('Umineko Answer (Ch. 5-8)')">Answer Arcs</a>
-		                                </li>
-		                            </ul>
-		                        </li>
-		                        
-		                    </ul>
+							<dropdown-game-menu></dropdown-game-menu>
 		                </div>
 		            </div>
-		            
 		        </div>
 		    </nav>
-		
 		</div>
 
-		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
-			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
-		<div id="app" class="main-container" v-cloak>
+		<div>
 			<div id="snackbar" v-bind:class="{ show: toastMessage }">{{ toastMessage }}</div>
 			<section class="page-title page-title-4 bg-secondary">
 					<div class="container">
@@ -477,7 +417,7 @@
 			</div>
 			</section>
 		</div>
-
+		</div>
 		<script src="js/lodash.js"></script>
 		<script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

@@ -14,7 +14,9 @@
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
     </head>
     <body>
-
+		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
+		The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
+		<div id="app" class="main-container" v-cloak>
 		<div class="nav-container">
 		    <nav>
 		        <div class="nav-bar">
@@ -25,15 +27,18 @@
 		            </div>
 		            <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
 		                <i class="ti-menu"></i>
-		            </div>
+					</div>
+					<div class="module-group right">
+						<div class="module left">
+							<dropdown-game-menu></dropdown-game-menu>
+						</div>
+					</div>
 		        </div>
 		    </nav>
 
 		</div>
 
-		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
-			 The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
-		<div id="app" class="main-container" v-cloak>
+		<div>
 			<section class="page-title page-title-4 bg-secondary">
 					<div class="container">
 						<div class="row">
@@ -132,7 +137,7 @@ Linux save file locations:
 					</div>
 			</section>
 		</div>
-
+		</div>
 		<script src="js/lodash.js"></script>
 		<script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

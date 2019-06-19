@@ -9,54 +9,6 @@ let app = null;
 // - Main Vue instance, called 'app', is initialized
 // - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
-  Vue.component('dropdown-game-menu', {
-    data() {
-      let menuData = {
-        families: {},
-      };
-
-      doPost('subModHandles', [], (responseData) => {
-        const modNameToSubModHandleMap = {};
-        responseData.subModHandles.forEach((subModHandle) => {
-          modNameToSubModHandleMap[subModHandle.modName] = subModHandle;
-        });
-
-        // Sort by id
-        const uniqueSubMods = Object.values(modNameToSubModHandleMap);
-        uniqueSubMods.sort((a, b) => a.id - b.id);
-
-        // group by family
-        const families = _.groupBy(uniqueSubMods, subMod => subMod.family);
-
-        // for purposes of display, umineko and umineko_nscripter are the same group.
-        if (families.umineko !== undefined && families.umineko_nscripter !== undefined) {
-          families.umineko = families.umineko.concat(families.umineko_nscripter);
-          delete families.umineko_nscripter;
-        }
-
-        menuData.families = families;
-      });
-
-      return menuData;
-    },
-    methods: {
-      remapFamily(familyName) {
-        // For now just append "When They Cry" - if other games added, use a dictionary
-        return `${familyName} When They Cry`;
-      },
-    },
-    template: `
-    <ul class="menu">
-    <li class="has-dropdown" v-for='(modsInFamily, family, index) in families'>
-        <a target="_self">{{ remapFamily(family) }}</a>
-        <ul>
-            <li v-for='num in modsInFamily'><a onclick="setModNameAndNavigate('Umineko Question (Ch. 1-4)')">{{ num.modName }}</a></li>
-        </ul>
-    </li>
-    </ul>
-    `,
-  });
-
   app = new Vue({
     el: '#app',
     data: {
@@ -150,6 +102,4 @@ window.onload = function onWindowLoaded() {
       }, 500);
     },
   });
-
-
 };
