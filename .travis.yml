@@ -19,17 +19,4 @@ deploy:
     repo: 07th-mod/python-patcher
     tags: true
   draft: true
-  body: |
-    #### Known Issue: Supported Browsers
 
-    You must use **Chrome, Firefox, or Microsoft Edge.**  "Internet Exporer" **does not work** with the installer!
-
-    #### Known Issue: Higurashi on Ubuntu (or Linux users with GNOME Desktop)
-
-    GNOME Desktop (the default on Ubuntu) will cause Higurashi Ep.4 and upwards to crash the entire desktop when you start the game. This happens even on the base game (without any mods applied). A workaround for this is to install XFCE desktop. You can follow [this guide](https://linuxconfig.org/how-to-install-xubuntu-desktop-on-ubuntu-18-04-bionic-beaver-linux) to install XFCE desktop (it can be installed alongside GNOME). Please make sure you can launch the base game before applying any mods (for ease of installation, please don't make any saves on the base game).
-
-    ----
-
-    Changes:
-
-    - List your changes here.
