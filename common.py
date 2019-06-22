@@ -511,13 +511,14 @@ class DownloaderAndExtractor:
 	:return:
 	"""
 	class ExtractableItem:
-		def __init__(self, filename, length, destinationPath):
+		def __init__(self, filename, length, destinationPath, fromMetaLink):
 			self.filename = filename
 			self.length = length
 			self.destinationPath = os.path.normpath(destinationPath)
+			self.fromMetaLink = fromMetaLink
 
 		def __repr__(self):
-			return '[{} ({})] to [{}]'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath)
+			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
 		# type: ([gameScanner.ModFile], str, str, int, int) -> None
@@ -542,16 +543,10 @@ class DownloaderAndExtractor:
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
-			if DownloaderAndExtractor.__urlIsMetalink(file.url):
-				metalinkFilenames = getMetalinkFilenames(file.url, self.downloadTempDir)
-				print("Metalink contains: ", metalinkFilenames)
-				self.downloadList.append(file.url)
-				self.extractList.extend([DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=self.defaultExtractionDir) for filename, length in metalinkFilenames])
-			else:
-				#for all other files, query the download filename from the http header
-				self.downloadList.append(file.url)
-				filename, length = DownloaderAndExtractor.__getFilenameFromURL(file.url)
-				self.extractList.append(DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=self.defaultExtractionDir))
+			self.downloadList.append(file.url)
+			self.extractList.extend(
+				DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
+			)
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -589,15 +584,12 @@ class DownloaderAndExtractor:
 
 	def addItemManually(self, url, extractionDir):
 		"""
-		Use this function to manually add a file to download and extract, with a custom extraction directory
-		Does not support metalink files.
-		:param url:
-		:param extractionDir:
-		:return:
+		Use this function to manually add a file or metalink to download and extract, with a custom extraction directory
+		:param url: The URL or metalink to download
+		:param extractionDir: The folder where the file(s) will be extracted
 		"""
 		self.downloadList.append(url)
-		filename, length = DownloaderAndExtractor.__getFilenameFromURL(url)
-		self.extractList.append(DownloaderAndExtractor.ExtractableItem(filename=filename, length=length, destinationPath=extractionDir))
+		self.extractList.extend(DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir))
 
 	def printPreview(self):
 		print("\nFirst these files will be downloaded (Total Download Size: {}):".format(prettyPrintFileSize(self.totalDownloadSize())))
@@ -608,6 +600,33 @@ class DownloaderAndExtractor:
 
 	def totalDownloadSize(self):
 		return sum([x.length for x in self.extractList])
+
+	@staticmethod
+	def getExtractableItem(url, extractionDir):
+		#type: (str, str) -> List[ExtractableItem]
+		"""
+		Returns a list of ExtractableItems given a url. ExtractableItems represent a file on disk which can be
+		extracted or moved to the target `extractionDir` directory
+		Normally each url represents exactly one file, but a metalink may contain multiple files.
+		:param url: The url of the file or metalink to download
+		:param extractionDir: Where to extract or move the downloaded file to after download is finished
+		:return:
+		"""
+		if DownloaderAndExtractor.__urlIsMetalink(url):
+			metalinkFilenames = getMetalinkFilenames(url)
+			print("Metalink contains: ", metalinkFilenames)
+			return [DownloaderAndExtractor.ExtractableItem(
+				filename=filename,
+				length=length,
+				destinationPath=extractionDir,
+				fromMetaLink=True) for filename, length in metalinkFilenames]
+		else:
+			filename, length = DownloaderAndExtractor.__getFilenameFromURL(url)
+			return [DownloaderAndExtractor.ExtractableItem(
+				filename=filename,
+				length=length,
+				destinationPath=extractionDir,
+				fromMetaLink=False)]
 
 	@staticmethod
 	def __urlIsMetalink(url):
