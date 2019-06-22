@@ -1,5 +1,14 @@
 # Changelog
 
+## Add Upscaled Pachinko Sprites Option - 22/06/2019
+
+An option to replace the PS3 sprites with upscaled versions of the Pachinko sprites (Mangagamer, non-ryukishi sprites)
+has been added.
+
+There may still be some times in the game where the PS3 sprites will appear (CGs will use PS3 sprites, and so will
+zoomed in sprites for the Answer arcs). There are also some Pachinko characters which don't have sprites at all -
+they will show up with the PS3 sprites. The character portraits for the Answer Arcs will show as PS3 sprites, too.
+
 ## Mangagamer (Non-Steam) Voice File Bug Fix - 26/05/2019
 
 The layout of the the `arc[X].nsa` files is different between the Mangagamer and Steam versions. The recent

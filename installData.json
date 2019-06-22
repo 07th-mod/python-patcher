@@ -1,5 +1,5 @@
 {
-	"version": 3,
+	"version": 4,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -393,11 +393,11 @@
 						{"name": "script", "url":"https://07th-mod.com/Beato/script-full.zip", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 1},
-						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "priority": 1},
+						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
 						{"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 0}
 					],
 					"fileOverrides" : [
-						{"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"},
+						{"name": "os-specific-update", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4"},
 						{"name": "exe", "os":["linux"], "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
 						{"name": "exe", "os":["mac"],   "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
 					]
@@ -426,6 +426,16 @@
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{"name": "No BGM Changes", "description": "Use the default Background Music"}
+					]
+				},
+				{
+					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No change", "description": "No change to sprites"},
+						{
+							"name": "Pachinko Sprites", "description": "* The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n * An additional 550MB of download is required.\n * **Do not use with voice only patch!**\n * Please note that in some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						}
 					]
 				}
 			]
@@ -496,6 +506,16 @@
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{"name": "No BGM Changes", "description": "Use the default Background Music"}
+					]
+				},
+				{
+					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No change", "description": "No change to sprites"},
+						{
+							"name": "Pachinko Sprites", "description": "* The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n * An additional 500MB of download is required.\n * **Do not use with voice only patch!**.\n * Please note that in some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						}
 					]
 				}
 			]
