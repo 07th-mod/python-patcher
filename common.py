@@ -8,6 +8,7 @@ import sys, os, platform, subprocess, json
 import threading
 import time
 import traceback
+import tempfile
 
 import commandLineParser
 import gameScanner
@@ -368,7 +369,6 @@ def getModList(jsonURL):
 			if not SSL_VERSION_IS_OLD:
 				file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
 			else:
-				import tempfile
 				tmpdir = tempfile.mkdtemp()
 				aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json")
 				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
@@ -409,15 +409,22 @@ def makeExecutable(executablePath):
 	current = os.stat(executablePath)
 	os.chmod(executablePath, current.st_mode | 0o111)
 
-def getMetalinkFilenames(url, downloadDir):
+def getMetalinkFilenames(url):
 	import xml.etree.ElementTree as ET
 
-	metalinkFileName = os.path.basename(url)
-	metalinkFileFullPath = os.path.join(downloadDir, metalinkFileName)
+	downloadDir = tempfile.mkdtemp()
 
+	# Download the metalink file
 	aria(downloadDir, url=url)
 
-	tree = ET.parse(metalinkFileFullPath)
+	# Load/Parse the metalink file into memory
+	tree = ET.parse(
+		os.path.join(downloadDir, os.path.basename(url))
+	)
+
+	# Remove the metalink file/folder as soon as it's loaded into memory
+	shutil.rmtree(downloadDir)
+
 	root = tree.getroot()
 
 	def getTagNoNamespace(tag):
