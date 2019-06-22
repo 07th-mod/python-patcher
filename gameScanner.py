@@ -100,19 +100,28 @@ class FullInstallConfiguration:
 			candidates = [x for x in self.subModConfig.fileOverrides if x.name == key and common.Globals.OS_STRING in x.os]
 			raise FailedFileOverrideException(key, candidates, unity=unityVersion, steam=self.isSteam)
 
+		# Pre-sort by the file's native order, to ensure deterministic ordering for files with the same priority
+		overriddenFiles = sorted(filesDict.values(), key=lambda x: x.nativeOrder)
+
 		# sort the priority from Lowest to Highest (eg items with priority '0' will always be at start of the list)
 		# this is because the low priority items should be extracted first, so the high priority items can overwrite them.
-		return sorted(filesDict.values(), key=lambda x: x.priority)
+		return sorted(overriddenFiles, key=lambda x: x.priority)
 
 # NOTE: the 'priority' indicates the order of extraction:
 # Files are extracted in order 0,1,2,3 ...
 # Therefore, the 'later extracted' files are higher priority, that is archives with priority 3 will overwrite priority 0,1,2 archives
 class ModFile:
+	modFileCounter = 0
 	def __init__(self, name, url, priority):
 		# type: (str, Optional[str], int) -> None
 		self.name = name
 		self.url = url
 		self.priority = priority #consider renaming this "extractionOrder"?
+
+		# This variable is used to provide ordering which roughly matches the ordering in the JSON file
+		# to ensure files are downloaded and extracted in a deterministic manner
+		self.nativeOrder = ModFile.modFileCounter
+		ModFile.modFileCounter += 1
 
 class ModFileOverride:
 	def __init__(self, name, os, steam, unity, url):
