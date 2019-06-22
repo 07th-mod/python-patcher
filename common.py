@@ -585,6 +585,7 @@ class DownloaderAndExtractor:
 	def addItemManually(self, url, extractionDir):
 		"""
 		Use this function to manually add a file or metalink to download and extract, with a custom extraction directory
+		Items added by this function will be downloaded/extracted AFTER any already existing items in the download/extract list.
 		:param url: The URL or metalink to download
 		:param extractionDir: The folder where the file(s) will be extracted
 		"""
@@ -592,9 +593,9 @@ class DownloaderAndExtractor:
 		self.extractList.extend(DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir))
 
 	def printPreview(self):
-		print("\nFirst these files will be downloaded (Total Download Size: {}):".format(prettyPrintFileSize(self.totalDownloadSize())))
+		print("\nFirst these files will be downloaded (Total Download Size: {}):\n - ".format(prettyPrintFileSize(self.totalDownloadSize())))
 		print('\n - '.join(self.downloadList))
-		print("\nThen these files will be extracted or copied:")
+		print("\nThen these files will be extracted or copied:\n - ")
 		print('\n - '.join(['{}'.format(x) for x in self.extractList]))
 		print()
 
@@ -738,6 +739,7 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 		from shutil import disk_usage
 		free_space = disk_usage(installPath).free
 	except:
+		print("Free Disk Space query failed - probably using Python 2")
 		pass
 
 	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space".format(recommendedFreeSpaceString)
