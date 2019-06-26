@@ -430,6 +430,7 @@
 				},
 				{
 					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"submods" : ["full"],
 					"radio": [
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
@@ -510,6 +511,7 @@
 				},
 				{
 					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"submods" : ["novel-mode", "adv-mode"],
 					"radio": [
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{

@@ -240,8 +240,10 @@ class SubModConfig:
 				                                 data=jsonModOption.get('data', None)))
 
 		for jsonModOptionGroup in mod.get('modOptionGroups', []):
-			jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
-			jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
+			applicableSubMods = jsonModOptionGroup.get('submods')
+			if applicableSubMods is None or self.subModName in applicableSubMods:
+				jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
+				jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)

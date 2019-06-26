@@ -97,6 +97,8 @@ public struct ModOptionGroup: Codable {
 	public var name: String
 	/// The type (currently only one option)
 	public var type: ModOptionType
+	/// A list of submods which this ModOptionGroup is applicable to. If it doesn't exist, is applicable to all submods.
+	public var submods: [String]?
 	/// Data for if this is a radio button.  Mutually exclusive with checkBox
 	public var radio: [ModOptionEntry]?
 	/// Data for if this is a checkBox.  Mutually exclusive with radio
