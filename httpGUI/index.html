@@ -63,9 +63,19 @@
 							<div class="col-sm-12 text-center">
 								<ul class="filters mb0">
 									<!-- This part is populated by the theme - it contains buttons for each filter -->
-									<li class="active" v-on:click="currentDataFilter = null">All</li>
-									<li v-for="dataFilter in dataFilters"
-									v-on:click="currentDataFilter = dataFilter">{{ dataFilter }}</li>
+									<li
+										v-bind:class="{ active: currentDataFilter === null }"
+										v-on:click="currentDataFilter = null"
+									>
+										All
+									</li>
+									<li
+										v-for="dataFilter in dataFilters"
+										v-bind:class="{ active: currentDataFilter === dataFilter}"
+										v-on:click="currentDataFilter = dataFilter"
+									>
+										{{ dataFilter }}
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -87,10 +97,10 @@
 								<div class="image-tile inner-title hover-reveal text-center" 
 								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === subModExtraProperties[subMod.modName].dataFilter) }">
 									<a v-on:click="nav(subMod.modName)">
-										<img alt="Umineko" v-bind:src="subModExtraProperties[subMod.modName].img" height="168px">
+										<img v-bind:alt="subMod.modName" v-bind:src="subModExtraProperties[subMod.modName].img" height="168px">
 										<div class="title">
 											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
-											<span>Question Arcs</span>
+											<span>{{ subModExtraProperties[subMod.modName].dataFilter }}</span>
 										</div>
 									</a>
 								</div>

@@ -24,7 +24,7 @@ window.onload = function onWindowLoaded() {
         },
         'Umineko Hane': {
           img: 'img/games/umineko-hane.png',
-          dataFilter: 'Answer Arcs',
+          dataFilter: 'Bonus Content',
         },
         'Console Arcs': {
           img: 'img/games/console.jpg',
@@ -56,7 +56,7 @@ window.onload = function onWindowLoaded() {
         },
       },
       // Data filters are defined manually so you can set the order
-      dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs'],
+      dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],
       currentDataFilter: null,
       masonryInitialized: false,
     },
