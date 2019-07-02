@@ -349,6 +349,18 @@ def findPossibleGamePaths(gameName):
 		else:
 			print("Warning: ran findPossibleGamePaths with an unknown game")
 
+		# add all files in the default steam common folder for Mac
+		try:
+			steamCommonPath = "~/Library/Application Support/Steam/steamapps/common/"
+			for gameFolderName in os.listdir(steamCommonPath):
+				allPossibleGamePaths.append(
+					os.path.normpath(
+						os.path.join(steamCommonPath, gameFolderName)
+					)
+				)
+		except:
+			print("Warning: MacOS - failed to add default steam common folder paths")
+
 	#if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
 
