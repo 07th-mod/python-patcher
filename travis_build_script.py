@@ -112,16 +112,19 @@ try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/h
 
 # RELATIVE PATHS MUST CONTAIN ./
 if BUILD_LINUX_MAC:
-    tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
+    os.rename(f'./{bootstrap_copy_folder}/higu_linux64_installer/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Linux64/')
+    tar_gz(f'./{bootstrap_copy_folder}/07th-Mod_Installer_Linux64/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
 
 if not BUILD_LINUX_MAC:
-    call(['7z', 'a', '-sfx7z.sfx', os.path.join(output_folder, '07th-Mod.Installer.win.exe'), f'./{bootstrap_copy_folder}/higu_win_installer_32/'])
+    os.rename(f'./{bootstrap_copy_folder}/higu_win_installer_32/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Windows/')
+    call(['7z', 'a', '-sfx7z.sfx', os.path.join(output_folder, '07th-Mod.Installer.win.exe'), f'./{bootstrap_copy_folder}/07th-Mod_Installer_Windows/'])
     
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:
-    zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
+   os.rename(f'./{bootstrap_copy_folder}/higu_mac_installer/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Mac/')
+   zip(f'./{bootstrap_copy_folder}/07th-Mod_Installer_Mac/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
