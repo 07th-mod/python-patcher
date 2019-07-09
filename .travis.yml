@@ -1,13 +1,35 @@
 # PLEASE USE A LINTER (PYCHARM) TO EDIT THIS FILE - it will automatically detect syntax mistakes
-before_install:
-- sudo apt-get install -y p7zip-full
-- bash travis_install_swift.sh
 language: python
-python:
-- '3.6'
+matrix:
+  include:
+  # Use this linux machine to build the linux release and run Swift tests
+  - name: Build Linux Installer and Run Swift Tests
+    python: 3.7
+    dist: xenial
+    before_install:
+    - python3 -m pip install pyinstaller
+    - sudo apt-get install -y p7zip-full
+    - bash travis_install_swift.sh
+    env:
+      - BUILD_MODE=NORMAL
+      - RUN_TESTS=TRUE
+  # Use this Windows machine to only build the 64-bit version of the installer
+  - name: Build Windows 64-bit Installer
+    os: windows
+    language: shell
+    before_install:
+    - choco install python
+    - python -m pip install --upgrade pip
+    - python -m pip install pyinstaller
+    env:
+      - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      - BUILD_MODE=WINDOWS
+# TODO: Not sure if upgrading pip is necessary. This would save time across all machines.
+install: pip3 install --upgrade pip
+# The below tasks are run across all machines, but gated using if statements on the environment variables
 script:
-- python travis_build_script.py
-- bash travis_validate_json.sh
+- if [ "$BUILD_MODE" = "NORMAL" ]; then python travis_build_script.py && bash travis_validate_json.sh ; fi
+- if [ "$BUILD_MODE" = "WINDOWS" ]; then python3 travis_build_script.py win || python travis_build_script.py win ; fi
 deploy:
   provider: releases
   api_key:

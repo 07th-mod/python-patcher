@@ -6,6 +6,13 @@ import subprocess
 import sys
 import datetime
 
+BUILD_LINUX_MAC = True
+if len(sys.argv) == 2:
+    if "win" in sys.argv[1].lower():
+        BUILD_LINUX_MAC = False
+
+print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
+
 IS_WINDOWS = sys.platform == "win32"
 
 def call(args):
@@ -43,6 +50,8 @@ print("\nTravis python build script started\n")
 staging_folder = 'travis_installer_staging'
 output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
+
+os.makedirs(output_folder, exist_ok=True)
 
 # No wildcards allowed in these paths to be ignored
 ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__', 'news']
@@ -102,12 +111,17 @@ try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/h
 ################ End windows special tasks ##############
 
 # RELATIVE PATHS MUST CONTAIN ./
-tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
+if BUILD_LINUX_MAC:
+    tar_gz(f'./{bootstrap_copy_folder}/higu_linux64_installer/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
-zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
+# zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
 
+if not BUILD_LINUX_MAC:
+    call(['7z', 'a', '-sfx7z.sfx', os.path.join(output_folder, '07th-Mod.Installer.win.exe'), f'./{bootstrap_copy_folder}/higu_win_installer_32/'])
+    
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
-zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
+if BUILD_LINUX_MAC:
+    zip(f'./{bootstrap_copy_folder}/higu_mac_installer/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
