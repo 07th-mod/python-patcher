@@ -19,7 +19,7 @@ matrix:
     language: shell
     before_install:
     - choco install python
-    - choco install rust
+    - choco install rust-ms
     - python -m pip install --upgrade pip
     - python -m pip install pyinstaller
     env:

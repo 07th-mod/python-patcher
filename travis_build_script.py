@@ -128,7 +128,7 @@ if not BUILD_LINUX_MAC:
 	shutil.copy('installer_loader.rs', os.path.join(loader_build_folder, 'installer_loader.rs'))
 	# compile the rust loader
 	loader_exe_name = '07th-Mod.Installer.Windows.exe'
-	call(['rustc', os.path.join(loader_build_folder, 'installer_loader.rs'), '-o', os.path.join(loader_build_folder, loader_exe_name)])
+	call(['rustc', '-O', os.path.join(loader_build_folder, 'installer_loader.rs'), '-o', os.path.join(loader_build_folder, loader_exe_name)])
 	shutil.copy(os.path.join(loader_build_folder, loader_exe_name), os.path.join(output_folder, loader_exe_name))
 
 
