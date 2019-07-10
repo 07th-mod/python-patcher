@@ -1,0 +1,11 @@
+[package]
+name = "install_loader"
+version = "0.1.0"
+authors = ["Daniel Wong <drojfjord@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+xz2 = "0.1"
+tar = "0.4"

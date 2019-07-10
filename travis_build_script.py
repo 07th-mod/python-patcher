@@ -15,9 +15,9 @@ print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
 
 IS_WINDOWS = sys.platform == "win32"
 
-def call(args):
+def call(args, **kwargs):
 	print("running: {}".format(args))
-	retcode = subprocess.call(args, shell=IS_WINDOWS) # use shell on windows
+	retcode = subprocess.call(args, shell=IS_WINDOWS, **kwargs) # use shell on windows
 	if retcode != 0:
 		exit(retcode)
 
@@ -50,10 +50,9 @@ print("\nTravis python build script started\n")
 staging_folder = 'travis_installer_staging'
 output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
-loader_build_folder = 'rust_loader_build'
 
 # No wildcards allowed in these paths to be ignored
-ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__', 'news']
+ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__', 'news', 'install_loader']
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
 def ignore_filter(folderPath, folderContents):
@@ -74,7 +73,6 @@ def ignore_filter(folderPath, folderContents):
 try_remove_tree(bootstrap_copy_folder)
 try_remove_tree(output_folder)
 try_remove_tree(staging_folder)
-try_remove_tree(loader_build_folder)
 
 # Make sure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
@@ -100,18 +98,9 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 	else:
 		call(['cp', '-r', staging_folder + '/.', osInstallData])
 
-################ Special extra tasks FOR WINDOWS ONLY ##############
-# Extract the python archive
+# FOR WINDOWS ONLY: Extract the python archive, then delete the archive
 call(["7z", "x", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z', f'-o./{bootstrap_copy_folder}/higu_win_installer_32/install_data/'])
-# Delete the python archive
 try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z')
-# Re-compress the python and httpGUI files into an encrypted archive
-call(["7z", "a", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z', f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python', '-ppassword', '-mhe'])
-call(["7z", "a", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI_archive.7z', f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI', '-ppassword', '-mhe'])
-# Remove the python and httpGUI folders
-try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python')
-try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/httpGUI')
-################ End windows special tasks ##############
 
 # RELATIVE PATHS MUST CONTAIN ./
 if BUILD_LINUX_MAC:
@@ -121,16 +110,25 @@ if BUILD_LINUX_MAC:
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
 
 if not BUILD_LINUX_MAC:
-	os.rename(f'./{bootstrap_copy_folder}/higu_win_installer_32/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Windows/')
-	call(['7z', 'a', '-aoa', os.path.join(loader_build_folder, '07th-Mod.Installer.Windows.7z'), f'./{bootstrap_copy_folder}/07th-Mod_Installer_Windows/'])
-	# copy 7za binary to current directory
-	shutil.copy('bootstrap/higu_win_installer_32/install_data/7za.exe', os.path.join(loader_build_folder, '7za.exe'))
-	shutil.copy('installer_loader.rs', os.path.join(loader_build_folder, 'installer_loader.rs'))
-	# compile the rust loader
-	loader_exe_name = '07th-Mod.Installer.Windows.exe'
-	call(['rustc', '-O', os.path.join(loader_build_folder, 'installer_loader.rs'), '-o', os.path.join(loader_build_folder, loader_exe_name)])
-	shutil.copy(os.path.join(loader_build_folder, loader_exe_name), os.path.join(output_folder, loader_exe_name))
+	# Create an archive of the contents install_data folder (no subfolder)
+	loader_src_folder = 'install_loader/src'
+	tar_path = os.path.join(loader_src_folder, 'install_data.tar')
+	xz_path = tar_path + '.xz'
+	try_remove_tree(tar_path)
+	try_remove_tree(xz_path)
+	call(['7z', 'a', '-aoa', tar_path, f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/*'])
+	call(['7z', 'a', '-aoa', xz_path, tar_path])
 
+	# Compile the rust loader
+	# DO NOT put the words "install", "patch", "update", etc. in the filename, or else windows will force running the .exe as administrator
+	# https://stackoverflow.com/questions/31140051/windows-force-uac-elevation-for-files-if-their-names-contain-update
+	# To fix properly, need to embed a manifest/change msvc linker options, as per
+	# https://www.reddit.com/r/rust/comments/8tooi0/hey_rustaceans_got_an_easy_question_ask_here/e1lk7tw?utm_source=share&utm_medium=web2x
+	loader_exe_name = '07th-Mod.Loader.Windows.exe'
+	call(['cargo', 'build', '--release'], cwd=loader_src_folder)
+
+	# Copy the exe to the final output folder
+	shutil.copy('install_loader/target/release/install_loader.exe', os.path.join(output_folder, loader_exe_name))
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:
