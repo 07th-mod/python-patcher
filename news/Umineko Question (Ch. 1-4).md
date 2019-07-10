@@ -1,5 +1,9 @@
 # Changelog
 
+## Add Upscaled Ryukishi Sprites Option - 09/07/2019
+
+Added Upscaled Ryukishi sprites option. See "mod options" section of wiki for more details.
+
 ## Add Upscaled Pachinko Sprites Option - 22/06/2019
 
 An option to replace the PS3 sprites with upscaled versions of the Pachinko sprites (Mangagamer, non-ryukishi sprites)
@@ -8,6 +12,18 @@ has been added.
 There may still be some times in the game where the PS3 sprites will appear (CGs will use PS3 sprites, and so will
 zoomed in sprites for the Answer arcs). There are also some Pachinko characters which don't have sprites at all -
 they will show up with the PS3 sprites. The character portraits for the Answer Arcs will show as PS3 sprites, too.
+
+### Question Arcs Missing Voices Bug Fix - 15/06/2019
+
+Quite a fair way into the game on the Question Arcs, voices would fail to play back (for certain characters).
+
+This was due to a very big `arc4.nsa` which had all the voice files in it. The voice file was too large for the game to handle, so everything past a certain point wouldn't play.
+
+In the new version of the patch, the voice file is split into two smaller files (`arc4.nsa` and `arc5.nsa`) so the game can handle it.
+
+This problem affected all installs from 19/05/2019 to 15/06/2019, so there would have been a roughly 1-month span where your 
+install would have had broken voices. If you installed during this time, it would be best to either manually apply the voice 
+file pack, or re-install the game using the installer.
 
 ## Mangagamer (Non-Steam) Voice File Bug Fix - 26/05/2019
 
