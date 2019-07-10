@@ -120,12 +120,13 @@ if not BUILD_LINUX_MAC:
 	call(['7z', 'a', '-aoa', xz_path, tar_path])
 
 	# Compile the rust loader
-	# DO NOT put the words "install", "patch", "update", etc. in the filename, or else windows will force running the .exe as administrator
+	# If not using a manifest file, DO NOT put the words "install", "patch", "update", etc. in the filename,
+	# or else windows will force running the .exe as administrator
 	# https://stackoverflow.com/questions/31140051/windows-force-uac-elevation-for-files-if-their-names-contain-update
-	# To fix properly, need to embed a manifest/change msvc linker options, as per
+	# If using msvc linker, embed a manifest/change msvc linker options, as per
 	# https://www.reddit.com/r/rust/comments/8tooi0/hey_rustaceans_got_an_easy_question_ask_here/e1lk7tw?utm_source=share&utm_medium=web2x
-	loader_exe_name = '07th-Mod.Loader.Windows.exe'
-	call(['cargo', 'build', '--release'], cwd=loader_src_folder)
+	loader_exe_name = '07th-Mod.Installer.Windows.exe'
+	call(['cargo', 'rustc', '--release', '--', '-C', 'link-arg=/MANIFEST:embed'], cwd=loader_src_folder)
 
 	# Copy the exe to the final output folder
 	shutil.copy('install_loader/target/release/install_loader.exe', os.path.join(output_folder, loader_exe_name))
