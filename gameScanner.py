@@ -303,11 +303,13 @@ def findPossibleGamePathsWindows():
 
 		for steamCommonPath in (os.path.join(steamPath, r'steamapps\common') for steamPath in allSteamPaths):
 			for gameFolderName in os.listdir(steamCommonPath):
-				allPossibleGamePaths.append(
-					os.path.normpath(
-						os.path.join(steamCommonPath, gameFolderName)
+				gameFolderPath = os.path.join(steamCommonPath, gameFolderName)
+				if os.path.isdir(gameFolderPath):
+					allPossibleGamePaths.append(
+						os.path.normpath(
+							gameFolderPath
+						)
 					)
-				)
 
 		return allPossibleGamePaths
 	except:
@@ -417,7 +419,11 @@ def getPossibleIdentifiersFromPath(path):
 				return []
 		except (subprocess.CalledProcessError, KeyError):
 			pass
-	return os.listdir(path)
+
+	if os.path.isdir(path):
+		return os.listdir(path)
+
+	return []
 
 
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPaths=True):
