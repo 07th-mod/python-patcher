@@ -400,11 +400,19 @@ def getMaybeGamePaths():
 	# if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
 
-def getPossibleIdentifiersFromPath(path):
+def getPossibleIdentifiersFromFolder(folderPath):
 	# type: (str) -> List[str]
-	if not os.path.exists(path):
+	# Given a folder, retrieves the possible identifiers for that folder
+
+	if not os.path.exists(folderPath):
+		print("WARNING: getPossibleIdentifiersFromPath() on path [{}] but path didn't exist".format(folderPath))
 		return []
-	infoPlist = os.path.join(path, "Contents/Info.plist")
+
+	if not os.path.isdir(folderPath):
+		print("WARNING: getPossibleIdentifiersFromPath() on path [{}] but path is not a folder".format(folderPath))
+		return []
+
+	infoPlist = os.path.join(folderPath, "Contents/Info.plist")
 	if common.Globals.IS_MAC and os.path.exists(infoPlist):
 		try:
 			info = subprocess.check_output(
@@ -420,10 +428,7 @@ def getPossibleIdentifiersFromPath(path):
 		except (subprocess.CalledProcessError, KeyError):
 			pass
 
-	if os.path.isdir(path):
-		return os.listdir(path)
-
-	return []
+	return os.listdir(folderPath)
 
 
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPaths=True):
@@ -474,7 +479,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 	print("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
 
 	for gamePath in pathsToBeScanned:
-		possibleIdentifiers = getPossibleIdentifiersFromPath(gamePath)
+		possibleIdentifiers = getPossibleIdentifiersFromFolder(gamePath)
 		subModConfigsInThisGamePath = set()
 		for possibleIdentifier in possibleIdentifiers:
 			try:
