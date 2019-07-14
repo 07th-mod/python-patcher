@@ -41,7 +41,7 @@ function statusUpdate() {
             app.installFinished = true;
             app.subTaskDescription = 'Install Finished!';
             app.subTaskPercentage = 100;
-            alert("Install Finished! Before closing the installer, launch the game to make sure it works correctly. Click the troubleshooting button for help if something goes wrong.");
+            document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
           }
         }
         if (status.overallTaskDescription !== undefined) {
@@ -74,10 +74,10 @@ function statusUpdate() {
           }
           // If status.msg is defined, status.error will also be defined
           if (status.error) {
-            alert(status.msg);
             app.installFailed = true;
             app.installFinished = true;
             window.clearInterval(statusUpdateTimerHandle);
+            setTimeout(() => { alert(status.msg); }, 100);
           }
         }
       });

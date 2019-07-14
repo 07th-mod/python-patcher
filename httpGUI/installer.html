@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-		<link rel="icon" type="image/png" href="favicon.png" />
+		<link id="favicon" rel="icon" type="image/png" href="favicon.png" />
         <meta charset="utf-8">
         <title>07th-Mod Installer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,7 +89,7 @@
 				<h1 style="color: red;">The install failed :(</h1>
 				<p> Please check the last few mesages in the terminal output for more information. </p>
 				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
-					<p>Common Umineko install failure reasons go here.</p>
+					<p>Please make sure you have a legal copy of the game, and that you have enough free disk space to install the patch.</p>
 				</div>
 				<div v-else>
 					<p>A common reason for the Higurashi installation to fail is that you have an <b>old version of the game</b>.</p>
