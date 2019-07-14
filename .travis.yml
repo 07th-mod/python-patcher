@@ -7,7 +7,6 @@ matrix:
     python: 3.7
     dist: xenial
     before_install:
-    - python3 -m pip install pyinstaller
     - sudo apt-get install -y p7zip-full
     - bash travis_install_swift.sh
     env:
@@ -21,7 +20,6 @@ matrix:
     - choco install python
     - choco install rust-ms --forcex86
     - python -m pip install --upgrade pip
-    - python -m pip install pyinstaller
     env:
       - PATH=/c/Python37:/c/Python37/Scripts:$PATH
       - BUILD_MODE=WINDOWS
