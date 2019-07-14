@@ -593,9 +593,10 @@ class DownloaderAndExtractor:
 		self.extractList.extend(DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir))
 
 	def printPreview(self):
-		print("\nFirst these files will be downloaded (Total Download Size: {}):\n - ".format(prettyPrintFileSize(self.totalDownloadSize())))
+		pretty_file_size = prettyPrintFileSize(self.totalDownloadSize())
+		print("\nFirst these files will be downloaded (Total Download Size: {}):\n - ".format(pretty_file_size), end='')
 		print('\n - '.join(self.downloadList))
-		print("\nThen these files will be extracted or copied:\n - ")
+		print("\nThen these files will be extracted or copied:\n - ", end='')
 		print('\n - '.join(['{}'.format(x) for x in self.extractList]))
 		print()
 
