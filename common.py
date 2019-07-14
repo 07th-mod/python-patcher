@@ -363,6 +363,12 @@ def getModList(jsonURL):
 	:return: A list of mod info objects
 	:rtype: list[dict]
 	"""
+	def errorHandler(error):
+		print(error)
+		print("Couldn't reach 07th Mod Server to download patch info")
+		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
+		exitWithError()
+
 	tmpdir = None
 	try:
 		if jsonURL[0:4] == "http":
@@ -370,15 +376,14 @@ def getModList(jsonURL):
 				file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
 			else:
 				tmpdir = tempfile.mkdtemp()
-				aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json")
+				if aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json") != 0:
+					errorHandler(Exception("ERROR - could not download modList [{}]. Installation Stopped"))
+
 				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
 		else:
 			file = io.open(jsonURL, "r", encoding='utf-8')
 	except HTTPError as error:
-		print(error)
-		print("Couldn't reach 07th Mod Server to download patch info")
-		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
-		exitWithError()
+		errorHandler(error)
 
 	info = json.load(file, encoding='utf-8')
 	file.close()
@@ -415,7 +420,8 @@ def getMetalinkFilenames(url):
 	downloadDir = tempfile.mkdtemp()
 
 	# Download the metalink file
-	aria(downloadDir, url=url)
+	if aria(downloadDir, url=url) != 0:
+		raise Exception("ERROR - could not download metalink [{}]. Installation Stopped".format(url))
 
 	# Load/Parse the metalink file into memory
 	tree = ET.parse(
