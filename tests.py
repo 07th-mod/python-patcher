@@ -169,11 +169,25 @@ class TestSubModVersion(unittest.TestCase):
 		subModConfig = installConfiguration.SubModConfig(mod, submod)
 		fullConfig = installConfiguration.FullInstallConfiguration(subModConfig, test_dir, True)
 
+		originalModFileList = fullConfig.buildFileListSorted('datadir')
+
+		# If there is no file present, all files should require download
 		fileVersionManager = fileVersionManagement.VersionManager(
 			subMod=subModConfig,
-			modFileList=fullConfig.buildFileListSorted('datadir'),
+			modFileList=originalModFileList,
 			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
 
+		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), originalModFileList)
+
+		fileVersionManager.saveVersionsToFile()
+
+		# If there is a file present which is identical, no files should require download
+		fileVersionManagerIdentical = fileVersionManagement.VersionManager(
+			subMod=subModConfig,
+			modFileList=originalModFileList,
+			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
+
+		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), [])
 
 		shutil.rmtree(test_dir)
 
