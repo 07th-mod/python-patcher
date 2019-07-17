@@ -25,13 +25,12 @@ class VersionManager:
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = localVersionFilePath
-		self.localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
+		self.localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
 
 		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
 		self.remoteVersionObject = None
 
-		allRemoteVersions, _remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
-
+		allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
 		print("Remote Info:", allRemoteVersions)
 
 		if allRemoteVersions is not None:
@@ -44,6 +43,9 @@ class VersionManager:
 		print(self.localVersionObject)
 		print("Remote Version:")
 		print(self.remoteVersionObject)
+		if remoteError is not None:
+			print("Error retriving remote version".format(remoteError))
+
 
 		# In theory can always re-install everything if can't get the remote server, but most likely it means
 		# remote version this indicates an error with the server, so halt if this happens.

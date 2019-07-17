@@ -379,6 +379,8 @@ def getJSON(jsonURI, isURL):
 			file = io.open(jsonURI, "r", encoding='utf-8')
 	except HTTPError as error:
 		return None, error
+	except Exception as anyError:
+		return None, anyError
 
 	info = json.load(file, encoding='utf-8')
 	file.close()
