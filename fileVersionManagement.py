@@ -87,6 +87,11 @@ def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
 	directUpdateList = []
 	for file in modFileList:
 		needUpdate = versionInformation.get(file.id)
+		# needUpdate can be three values:
+		# - True: The file definitely needs an update as the version is different
+		# - False: The file definitely DOES NOT need an update as the version is the same
+		# - None: The version info is missing on either the local or remote side. Since status is unknown, do an update.
+		# Since we want to be safe, only remove the file if the status is False
 		if needUpdate is not False:
 			directUpdateList.append(file)
 			updateSet.add(file.id)
