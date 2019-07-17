@@ -28,12 +28,17 @@ class VersionManager:
 		self.localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
 
 		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
-		allRemoteVersions, _remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
 		self.remoteVersionObject = None
-		for remoteVersion in allRemoteVersions:
-			if remoteVersion['id'] == self.targetID:
-				self.remoteVersionObject = remoteVersion
-				break
+
+		allRemoteVersions, _remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
+
+		print("Remote Info:", allRemoteVersions)
+
+		if allRemoteVersions is not None:
+			for remoteVersion in allRemoteVersions:
+				if remoteVersion['id'] == self.targetID:
+					self.remoteVersionObject = remoteVersion
+					break
 
 		print("Local Version:")
 		print(self.localVersionObject)
