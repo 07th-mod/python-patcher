@@ -216,8 +216,6 @@ class SubModConfig:
 				jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
 				jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
 
-		self.modVersionURL = subMod['modVersionURL']
-
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
 

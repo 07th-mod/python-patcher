@@ -1,0 +1,14 @@
+[
+    {
+        "id" : "Onikakushi Ch.1/full",
+        "files":[
+            {"id": "cg",      "version": "1.0.0"},
+            {"id": "cgalt",   "version": "1.0.0"},
+            {"id": "movie",   "version": "1.0.0"},
+            {"id": "voices",  "version": "1.0.0"},
+            {"id": "script",  "version": "6.1.0"},
+            {"id": "ui-windows",  "version": "2.1.0"}
+        ]
+    }
+]
+

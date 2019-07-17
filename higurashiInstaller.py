@@ -72,9 +72,9 @@ class Installer:
 		self.extractDir = self.directory if extractDirectlyToGameDirectory else (self.info.subModConfig.modName + " Extraction")
 
 		self.fileVersionManager = fileVersionManagement.VersionManager(
+			subMod=self.info.subModConfig,
 			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
-			localVersionFilePath=os.path.join(self.directory, "modVersion.txt"),
-			remoteVersionURL=self.info.subModConfig.modVersionURL)
+			localVersionFilePath=os.path.join(self.directory, "installedVersionData.txt"))
 
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.fileVersionManager.getFilesRequiringUpdate(),
 		                                                            downloadTempDir=self.downloadDir,

@@ -18,11 +18,22 @@ import common
 import installConfiguration
 
 class VersionManager:
-	def __init__(self, modFileList, localVersionFilePath, remoteVersionURL):
+	remoteVersionURL = "https://raw.githubusercontent.com/drojf/python-patcher/master/versionData.json"
+
+	def __init__(self, subMod, modFileList, localVersionFilePath):
+		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str) -> None
+		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = localVersionFilePath
 		self.localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
-		self.remoteVersionObject, _remoteError = common.getJSON(remoteVersionURL, isURL=True)
+
+		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
+		allRemoteVersions, _remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
+		self.remoteVersionObject = None
+		for remoteVersion in allRemoteVersions:
+			if remoteVersion['id'] == self.targetID:
+				self.remoteVersionObject = remoteVersion
+				break
 
 		print("Local Version:")
 		print(self.localVersionObject)
@@ -32,42 +43,19 @@ class VersionManager:
 		# In theory can always re-install everything if can't get the remote server, but most likely it means
 		# remote version this indicates an error with the server, so halt if this happens.
 		if self.remoteVersionObject is None:
-			raise Exception("Can't get version information from server! Installation stopped.")
+			raise Exception("Can't get version information for {} from server! Installation stopped.".format(self.targetID))
 
 	def getFilesRequiringUpdate(self):
-		"""
-		:return: returns a modified mod file list consisting of files which require update
-		"""
+		""" :return: returns a modified mod file list consisting of files which require update """
 		if self.localVersionObject is None or self.remoteVersionObject is None:
 			return self.unfilteredModFileList
 
 		return filterFileListInner(self.unfilteredModFileList, self.localVersionObject, self.remoteVersionObject)
 
 	def saveVersionsToFile(self):
-		"""
-		After install is successful, call this function to save the remote version info to local file
-		"""
+		""" After install is successful, call this function to save the remote version info to local file """
 		with open(self.localVersionFilePath, 'w', encoding='utf-8') as localFilePath:
 			json.dump(self.remoteVersionObject, localFilePath)
-
-# # note: modFileList must already include any fileOverrides (from buildFileListSorted() in FullInstallConfiguration
-# def filterFileListOuter(modFileList, localVersionFilePath, remoteVersionURL):
-# 	# type: (List[installConfiguration.ModFile], str, str) -> (List[installConfiguration.ModFile], Dict)
-# 	"""
-#
-# 	:param modFileList:
-# 	:param localVersionFilePath:
-# 	:param remoteVersionURL:
-# 	:return: returns the mod file list of files which require update, and also the remote json dict which should
-# 	         be saved to disk after install is completed
-# 	"""
-# 	localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
-# 	remoteVersionObject, _remoteError = common.getJSON(remoteVersionURL, isURL=True)
-#
-# 	if localVersionObject is None or remoteVersionObject is None:
-# 		return modFileList
-#
-# 	filterFileListInner(modFileList, localVersionObject, remoteVersionObject), remoteVersionObject
 
 # given a mod
 def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
@@ -111,8 +99,12 @@ def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
 
 class SubModVersionInfo:
 	def __init__(self, jsonObject):
+		"""
+		:param jsonObject:
+		:param id: The ID is of the form "Onikakushi Ch.1/full". Local JSON have this ID saved in them, but remote
+		"""
 		self.jsonObject = jsonObject
-		self.subModName = jsonObject['subModName']
+		self.id = jsonObject['id']
 		self.fileVersionsDict = {} #type: Dict[str, FileVersion]
 		for row in jsonObject['files']:
 			self.fileVersionsDict[row['id']] = FileVersion(row['id'], row['version'])
@@ -136,7 +128,7 @@ class SubModVersionInfo:
 			print("No local version info - full install required")
 			return updatesRequired
 
-		if local.subModName != self.subModName:
+		if local.id != self.id:
 			print("Different submod is installed - full install required")
 			return updatesRequired
 
@@ -178,3 +170,23 @@ class FileVersion:
 
 	def __repr__(self):
 		return "{}-{}".format(self.id, self.version)
+
+
+# # note: modFileList must already include any fileOverrides (from buildFileListSorted() in FullInstallConfiguration
+# def filterFileListOuter(modFileList, localVersionFilePath, remoteVersionURL):
+# 	# type: (List[installConfiguration.ModFile], str, str) -> (List[installConfiguration.ModFile], Dict)
+# 	"""
+#
+# 	:param modFileList:
+# 	:param localVersionFilePath:
+# 	:param remoteVersionURL:
+# 	:return: returns the mod file list of files which require update, and also the remote json dict which should
+# 	         be saved to disk after install is completed
+# 	"""
+# 	localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
+# 	remoteVersionObject, _remoteError = common.getJSON(remoteVersionURL, isURL=True)
+#
+# 	if localVersionObject is None or remoteVersionObject is None:
+# 		return modFileList
+#
+# 	filterFileListInner(modFileList, localVersionObject, remoteVersionObject), remoteVersionObject
