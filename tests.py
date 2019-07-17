@@ -115,6 +115,18 @@ class TestSubModVersion(unittest.TestCase):
 }
 	"""
 
+	def getModListFromDummyJSON(self):
+		tmpdir = tempfile.mkdtemp()
+		tempJSONPath = os.path.join(tmpdir, "temp.json")
+		with open(tempJSONPath, 'w', ) as tempJSON:
+			tempJSON.write(self.testInstallDataString)
+
+		print(tempJSONPath)
+
+		modList = common.getModList(tempJSONPath, isURL=False)
+		shutil.rmtree(tmpdir)
+		return modList
+
 	# test when no updates required
 	def test_no_update(self):
 		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
@@ -146,22 +158,27 @@ class TestSubModVersion(unittest.TestCase):
 
 		self.assertEquals(result, {'cg':False, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
 
+	def test_highLevelFunctions(self):
+		test_dir = tempfile.mkdtemp()
+
+
+		modList = self.getModListFromDummyJSON()
+		mod = modList[0]
+		submod = mod['submods'][0]
+
+		subModConfig = installConfiguration.SubModConfig(mod, submod)
+		fullConfig = installConfiguration.FullInstallConfiguration(subModConfig, test_dir, True)
+
+		fileVersionManager = fileVersionManagement.VersionManager(
+			subMod=subModConfig,
+			modFileList=fullConfig.buildFileListSorted('datadir'),
+			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
+
+
+		shutil.rmtree(test_dir)
+
 	def test_filterFileListInner(self):
-
-
-		def getModListFromDummyJSON():
-			tmpdir = tempfile.mkdtemp()
-			tempJSONPath = os.path.join(tmpdir, "temp.json")
-			with open(tempJSONPath, 'w', ) as tempJSON:
-				tempJSON.write(self.testInstallDataString)
-
-			print(tempJSONPath)
-
-			modList = common.getModList(tempJSONPath, isURL=False)
-			shutil.rmtree(tmpdir)
-			return modList
-
-		modList = getModListFromDummyJSON()
+		modList = self.getModListFromDummyJSON()
 
 		mod = modList[0]
 		submod = mod['submods'][0]
