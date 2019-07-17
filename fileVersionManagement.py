@@ -1,3 +1,4 @@
+import io
 import json
 
 try:
@@ -61,8 +62,8 @@ class VersionManager:
 
 	def saveVersionsToFile(self):
 		""" After install is successful, call this function to save the remote version info to local file """
-		with open(self.localVersionFilePath, 'w', encoding='utf-8') as localFilePath:
-			json.dump(self.remoteVersionObject, localFilePath)
+		with io.open(self.localVersionFilePath, 'w', encoding='utf-8') as file:
+			file.write(json.dumps(self.remoteVersionObject, ensure_ascii=False, encoding='utf-8'))
 
 # given a mod
 def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
