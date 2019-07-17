@@ -4,11 +4,12 @@ import commandLineParser
 import common
 import os
 import gameScanner
+import installConfiguration
 import logger
 
 #do install given a installer config object
 def main(conf):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 	logger.getGlobalLogger().trySetSecondaryLoggingPath(
 		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
 	)
@@ -42,7 +43,7 @@ def main(conf):
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
-	parser = gameScanner.ModOptionParser(conf)
+	parser = installConfiguration.ModOptionParser(conf)
 
 	for opt in parser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(

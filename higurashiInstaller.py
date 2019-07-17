@@ -8,7 +8,9 @@ import common
 import os, os.path as path, shutil, subprocess, glob, stat
 
 ########################################## Installer Functions  and Classes ############################################
+import fileVersionManagement
 import gameScanner
+import installConfiguration
 import logger
 
 
@@ -33,7 +35,7 @@ def forceRmTree(path):
 
 class Installer:
 	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory):
-		# type: (gameScanner.FullInstallConfiguration, bool) -> None
+		# type: (installConfiguration.FullInstallConfiguration, bool) -> None
 
 		"""
 		Installer Init
@@ -69,13 +71,18 @@ class Installer:
 		self.downloadDir = self.info.subModConfig.modName + " Downloads"
 		self.extractDir = self.directory if extractDirectlyToGameDirectory else (self.info.subModConfig.modName + " Extraction")
 
-		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
+		self.fileVersionManager = fileVersionManagement.VersionManager(
+			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
+			localVersionFilePath=os.path.join(self.directory, "modVersion.txt"),
+			remoteVersionURL=self.info.subModConfig.modVersionURL)
+
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.fileVersionManager.getFilesRequiringUpdate(),
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		parser = gameScanner.ModOptionParser(self.info)
+		parser = installConfiguration.ModOptionParser(self.info)
 
 		for opt in parser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
@@ -209,8 +216,11 @@ class Installer:
 			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
+	def saveFileVersionInformation(self):
+		self.fileVersionManager.saveVersionsToFile()
+
 def main(fullInstallConfiguration):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 
 	# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
 	if common.Globals.IS_WINDOWS:
@@ -222,6 +232,7 @@ def main(fullInstallConfiguration):
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.saveFileVersionInformation()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False)
@@ -234,6 +245,7 @@ def main(fullInstallConfiguration):
 		installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.saveFileVersionInformation()
 		installer.cleanup(cleanExtractionDirectory=True)
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")

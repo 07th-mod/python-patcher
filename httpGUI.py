@@ -15,7 +15,7 @@ import threading
 import gameScanner
 import commandLineParser
 import logger
-from gameScanner import SubModConfig
+import installConfiguration
 
 try:
 	import urlparse
@@ -353,8 +353,8 @@ class InstallerGUI:
 		"""
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
-		self.allSubModConfigs = allSubModConfigs # type: List[SubModConfig]
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, SubModConfig]
+		self.allSubModConfigs = allSubModConfigs # type: List[installConfiguration.SubModConfig]
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, installConfiguration.SubModConfig]
 		self.messageBuffer = []
 		self.threadHandle = None # type: Optional[threading.Thread]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
@@ -364,7 +364,7 @@ class InstallerGUI:
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, validateOnly):
-		#type: (SubModConfig, str, bool) -> (bool, gameScanner.FullInstallConfiguration)
+		#type: (installConfiguration.SubModConfig, str, bool) -> (bool, installConfiguration.FullInstallConfiguration)
 		import higurashiInstaller
 		import uminekoInstaller
 		import uminekoNScripterInstaller

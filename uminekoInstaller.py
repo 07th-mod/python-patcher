@@ -4,6 +4,7 @@ import commandLineParser
 import common
 import os, shutil, subprocess
 import gameScanner
+import installConfiguration
 import logger
 
 def backupOrRemoveFiles(folderToBackup):
@@ -39,7 +40,7 @@ def backupOrRemoveFiles(folderToBackup):
 
 #do install given a installer config object
 def mainUmineko(conf):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 	logger.getGlobalLogger().trySetSecondaryLoggingPath(
 		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
 	)
@@ -71,9 +72,11 @@ def mainUmineko(conf):
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
-	downloaderAndExtractor.buildDownloadAndExtractionList()
+	downloaderAndExtractor.buildDownloadAndExtractionList(None)
 
-	parser = gameScanner.ModOptionParser(conf)
+	return
+
+	parser = installConfiguration.ModOptionParser(conf)
 
 	for opt in parser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(

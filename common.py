@@ -11,7 +11,7 @@ import traceback
 import tempfile
 
 import commandLineParser
-import gameScanner
+import installConfiguration
 
 try:
 	"".decode("utf-8")
@@ -41,7 +41,7 @@ except ImportError:
 	SSL_VERSION_IS_OLD = True
 
 try:
-	from typing import Optional, List, Tuple
+	from typing import Optional, List, Tuple, Dict
 except:
 	pass
 
@@ -356,34 +356,54 @@ def getDonationStatus():
 
 	return monthsRemainingString, progressPercentString
 
-def getModList(jsonURL):
+def getJSON(jsonURI, isURL):
+	#type: (str, bool) -> (Dict, Exception)
+	"""
+
+	:param jsonURI: Path to a file or URL to download
+	:param isURL: Specify whether the URI is for a URL or path
+	:return: 
+	"""
+	tmpdir = None
+	try:
+		if isURL:
+			if not SSL_VERSION_IS_OLD:
+				file = urlopen(Request(jsonURI, headers={"User-Agent": ""}))
+			else:
+				tmpdir = tempfile.mkdtemp()
+				if aria(url=jsonURI, downloadDir=tmpdir, outputFile="info.json") != 0:
+					return None, Exception("ERROR - could not download modList [{}]. Installation Stopped")
+
+				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
+		else:
+			file = io.open(jsonURI, "r", encoding='utf-8')
+	except HTTPError as error:
+		return None, error
+
+	info = json.load(file, encoding='utf-8')
+	file.close()
+	if tmpdir:
+		shutil.rmtree(tmpdir)
+
+	return info, None
+
+def getModList(jsonURI, isURL):
 	"""
 	Gets the list of available mods from the 07th Mod server
 
 	:return: A list of mod info objects
 	:rtype: list[dict]
 	"""
-	tmpdir = None
-	try:
-		if jsonURL[0:4] == "http":
-			if not SSL_VERSION_IS_OLD:
-				file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
-			else:
-				tmpdir = tempfile.mkdtemp()
-				aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json")
-				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
-		else:
-			file = io.open(jsonURL, "r", encoding='utf-8')
-	except HTTPError as error:
+	def errorHandler(error):
 		print(error)
 		print("Couldn't reach 07th Mod Server to download patch info")
 		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
 		exitWithError()
 
-	info = json.load(file, encoding='utf-8')
-	file.close()
-	if tmpdir:
-		shutil.rmtree(tmpdir)
+	info, exception = getJSON(jsonURI, isURL)
+	if info is None:
+		errorHandler(exception)
+
 	try:
 		version = info["version"]
 		if version > Globals.JSON_VERSION:
@@ -415,7 +435,8 @@ def getMetalinkFilenames(url):
 	downloadDir = tempfile.mkdtemp()
 
 	# Download the metalink file
-	aria(downloadDir, url=url)
+	if aria(downloadDir, url=url) != 0:
+		raise Exception("ERROR - could not download metalink [{}]. Installation Stopped".format(url))
 
 	# Load/Parse the metalink file into memory
 	tree = ET.parse(
@@ -470,6 +491,7 @@ def prettyPrintFileSize(fileSizeBytes):
 	else:
 		return "{:.2f}".format(fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
 
+
 class DownloaderAndExtractor:
 	"""
 	####################################################################################################################
@@ -521,7 +543,7 @@ class DownloaderAndExtractor:
 			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
-		# type: ([gameScanner.ModFile], str, str, int, int) -> None
+		# type: (List[installConfiguration.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.defaultExtractionDir = extractionDir
@@ -535,11 +557,19 @@ class DownloaderAndExtractor:
 		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
 	def buildDownloadAndExtractionList(self):
+		#type: () -> None
 		"""
 		This function fills in the self.downloadList and self.extractList lists, based on the self.modFileList
 		If there are existing values in the self.downloadList or self.extractList, they are retained
+		:type versionInformation: A dictionary indicating for each file name/overrideName whether it needs installation
 		:return:
 		"""
+
+		# Step 1: determine which items have been updated or whose version status is unknown
+		# Step 2: determine which items are dependencies (roughly) of the items which need to be updated
+
+		# Step 3: iterate over the list of downloads, and remove any download not in the above two categories.
+
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
@@ -547,6 +577,11 @@ class DownloaderAndExtractor:
 			self.extractList.extend(
 				DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
 			)
+
+			print("If {} is updated, then need to update".format(file.name))
+			for f2 in self.modFileList:
+				if f2.priority > file.priority:
+					print(f2.name)
 
 		self.downloadAndExtractionListsBuilt = True
 

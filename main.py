@@ -10,6 +10,7 @@ import sys
 import common
 import gameScanner
 import httpGUI
+import installConfiguration
 import logger
 
 try: input = raw_input
@@ -79,14 +80,14 @@ if __name__ == "__main__":
 	# Scan for moddable games on the user's computer before starting installation
 	if common.Globals.DEVELOPER_MODE and os.path.exists("installData.json"):
 		# Use local `installData.json` if it's there (if cloned from github)
-		modList = common.getModList("installData.json")
+		modList = common.getModList("installData.json", isURL=False)
 	else:
-		modList = common.getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json")
+		modList = common.getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json", isURL=True)
 
 	subModconfigList = []
 	for mod in modList:
 		for submod in mod['submods']:
-			conf = gameScanner.SubModConfig(mod, submod)
+			conf = installConfiguration.SubModConfig(mod, submod)
 			print(conf)
 			subModconfigList.append(conf)
 
