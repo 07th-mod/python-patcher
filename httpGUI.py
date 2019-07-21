@@ -678,7 +678,7 @@ class InstallerGUI:
 
 		def on_server_started(web_server):
 			web_server_url = 'http://{}:{}'.format(*web_server.server_address)
-			common.trySystemOpen(web_server_url)
+			common.openURLInBrowser(web_server_url)
 			print("Please open {} in your browser if it didn't open automatically".format(web_server_url))
 
 		start_server(working_directory=workingDirectory,

@@ -9,6 +9,7 @@ import threading
 import time
 import traceback
 import tempfile
+import webbrowser
 
 import commandLineParser
 import gameScanner
@@ -182,6 +183,8 @@ def trySystemOpen(path, normalizePath=False):
 	except:
 		return False
 
+def openURLInBrowser(url):
+	webbrowser.open(url, new=2, autoraise=True)
 
 #TODO: capture both stdout and stderr
 # TODO: in the future, this function could be simplified (remove aria2c specific hacks) by:
