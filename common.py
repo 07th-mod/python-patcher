@@ -341,8 +341,12 @@ def tryGetRemoteNews(newsName):
 
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
-	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*<b>\s*(\d+)[^<]+", re.IGNORECASE)
-	progressAmountRegex = re.compile(r"progress\s*value=(\d+)", re.IGNORECASE)
+	"""
+	:return: (months_remaining, funding_goal_percentage) as a tuple (can both be None if regex failed)
+	"""
+	# NOTE: Even though the markdown has double-quotes, the served page has no quotation
+	#       so do not put any double quotes in the below regex
+	donationStatusRegex = re.compile(r'<progress\s*value=(\d+).*data-months-remaining=(\d+)>', re.IGNORECASE)
 
 	try:
 		file = urlopen(Request(r"http://07th-mod.com/wiki/", headers={"User-Agent": ""}))
@@ -351,13 +355,11 @@ def getDonationStatus():
 
 	entirePage = file.read().decode('utf-8')
 
-	match = serverTimeRemainingRegex.search(entirePage)
-	monthsRemainingString = None if match is None else match.group(1)
+	match = donationStatusRegex.search(entirePage)
+	if match:
+		return match.group(2), match.group(1)
 
-	match = progressAmountRegex.search(entirePage)
-	progressPercentString = None if match is None else match.group(1)
-
-	return monthsRemainingString, progressPercentString
+	return None, None
 
 def getModList(jsonURL):
 	"""
