@@ -460,6 +460,7 @@ class InstallerGUI:
 							'family': subModConfig.family,
 							'identifiers': subModConfig.identifiers,
 							'downloadSize': common.prettyPrintFileSize(subModConfig.downloadSize),
+							'extractSize': common.prettyPrintFileSize(subModConfig.downloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING),
 						}
 					)
 
@@ -519,7 +520,7 @@ class InstallerGUI:
 					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
 					retval['haveEnoughFreeSpace'], retval['freeSpaceAdvisoryString'] = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
-						recommendedFreeSpaceBytes = 2.5 * subMod.downloadSize
+						recommendedFreeSpaceBytes = subMod.downloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
 					)
 				return retval
 

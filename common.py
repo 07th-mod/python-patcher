@@ -123,6 +123,8 @@ class Globals:
 
 	IS_PYTHON_2 = sys.version_info.major == 2
 
+	DOWNLOAD_TO_EXTRACTION_SCALING = 2.5
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
