@@ -9,6 +9,8 @@ import os
 import subprocess
 import traceback
 
+import logger
+
 try:
 	from typing import List, Optional
 except ImportError:
@@ -295,7 +297,7 @@ def findPossibleGamePathsWindows():
 	except Exception as e:
 		traceback.print_exc()
 
-	print("Will scan the following steam install locations: ", allSteamPaths)
+	logger.printNoTerminal("Will scan the following steam install locations: {}".format(allSteamPaths))
 
 	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
 	try:
@@ -476,7 +478,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 
 		pathsToBeScanned += extraPaths
 
-	print("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
+	logger.printNoTerminal("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
 
 	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromFolder(gamePath)
@@ -499,7 +501,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 					if subModConfig not in subModConfigsInThisGamePath:
 						subModConfigsInThisGamePath.add(subModConfig)
 						returnedFullConfigs.append(FullInstallConfiguration(subModConfig, gamePath, isSteam))
-						print("Successfully detected game using identifier [{}] in [{}]".format(possibleIdentifier, gamePath))
+						print("Found Game [{}] at [{}] id [{}]".format(subModConfig.modName, gamePath, possibleIdentifier))
 
 			except KeyError:
 				pass

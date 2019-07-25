@@ -194,7 +194,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			logger.getGlobalLogger().writeNoLog('Browser requested [{}], Trying to deliver [{}]\n'.format(self.path, path))
+			logger.printNoTerminal('Browser requested [{}], Trying to deliver [{}]'.format(self.path, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -223,7 +223,7 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 				f = open(path, 'rb')
 			except IOError:
 				self.send_error(404, "File not found")
-				logger.getGlobalLogger().writeNoLog('404 Error: Cant deliver [{}] - file not found!\n'.format(path))
+				logger.printNoTerminal('404 Error: Cant deliver [{}] - file not found!\n'.format(path))
 				return None
 			try:
 				self.send_response(200)
@@ -428,7 +428,7 @@ class InstallerGUI:
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
 			if requestType != 'statusUpdate':
-				print('Got Request [{}] Data [{}]\n'.format(requestType, requestData))
+				logger.printNoTerminal('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
 			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
 			# responseData: a dictionary indicating if it's a valid selection (true, false)
@@ -509,9 +509,9 @@ class InstallerGUI:
 				subMod = self.idToSubMod[id]
 
 				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
-				print("\nUser selected options for install:")
+				logger.printNoTerminal("\nUser selected options for install:")
 				for modOption in subMod.modOptions:
-					print(modOption)
+					logger.printNoTerminal(modOption)
 
 				installPath = requestData.get('installPath', None)
 				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
@@ -680,7 +680,7 @@ class InstallerGUI:
 		def on_server_started(web_server):
 			web_server_url = 'http://{}:{}'.format(*web_server.server_address)
 			common.openURLInBrowser(web_server_url)
-			print("Please open {} in your browser if it didn't open automatically".format(web_server_url))
+			print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
 
 		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,

@@ -1,12 +1,10 @@
 from __future__ import unicode_literals
 
+import io
 import os
 import shutil
 import sys
-from common import makeDirsExistOK
-from common import Globals
-
-import io
+import common
 
 try:
 	import queue
@@ -20,9 +18,6 @@ class StdErrRedirector():
 	"""
 	def __init__(self, attachedLogger):
 		self.attachedLogger = attachedLogger
-
-	def writeNoLog(self, message):
-		self.attachedLogger.write(message)
 
 	def write(self, message):
 		self.attachedLogger.write(message)
@@ -38,20 +33,19 @@ class Logger(object):
 	def __init__(self, logPath):
 		self.logPath = logPath
 		self.terminal = sys.stdout
-		makeDirsExistOK(os.path.dirname(logPath))
+		common.makeDirsExistOK(os.path.dirname(logPath))
 		self.logFile = io.open(logPath, "a", encoding='UTF-8')
 		self.secondaryLogFile = None
 		self.callbacks = {}
 		self.queue = queue.Queue(maxsize=100000)
 
-	def writeNoLog(self, message):
-		self.terminal.write(message)
-
-	def write(self, message, runCallbacks=True):
-		if Globals.IS_PYTHON_2 and isinstance(message, str):
+	def write(self, message, runCallbacks=True, noTerminal=False):
+		if common.Globals.IS_PYTHON_2 and isinstance(message, str):
 			message = message.decode(encoding='UTF-8', errors='replace')
 
-		self.terminal.write(message)
+		if not noTerminal:
+			self.terminal.write(message)
+
 		self.logFile.write(message)
 		if self.secondaryLogFile is not None:
 			try:
@@ -116,7 +110,7 @@ class Logger(object):
 		:return: None
 		"""
 		try:
-			makeDirsExistOK(os.path.dirname(newLogFilePath))
+			common.makeDirsExistOK(os.path.dirname(newLogFilePath))
 			shutil.copy(self.logPath, newLogFilePath)
 
 			if self.secondaryLogFile is not None:
@@ -149,3 +143,9 @@ def registerLoggerCallback(callbackKey, callback):
 
 def deregisterLoggerCallback(callbackKey):
 	return Logger.globalLogger.callbacks.pop(callbackKey, None)
+
+def printNoTerminal(message):
+	Logger.globalLogger.write(
+		"{}\n".format(message),
+		noTerminal=True
+	)
