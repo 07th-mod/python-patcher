@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import commandLineParser
 import common
-import os, shutil, subprocess
+import os, shutil, subprocess, hashlib
 import gameScanner
 import logger
 
@@ -60,6 +60,24 @@ def mainUmineko(conf):
 	if not os.path.isfile(os.path.join(conf.installPath, "arc.nsa")):
 		raise Exception("ERROR - wrong game path. Installation Stopped.\n"
 		                "There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
+
+	for filename in os.listdir(conf.installPath):
+		# Stop the user installing the mod on pirated versions of the game.
+		# Use SHA256 hash of the lowercase filename to avoid listing the website names in our source code.
+		if hashlib.sha256(filename.lower().encode('utf-8')).hexdigest() in [
+			'2c02ec6f6de9281a68975257a477e8f994affe4eeaaf18b0b56b4047885461e0',
+			'4fae41c555fe50034065e59ce33a643c1d93ee846221ecc5756f00e039035076',
+		]:
+			raise Exception("\nInstall Failed - The {} mod is not compatible with the pirated version of the game\n"
+			                "(Detected file [{}]) Please install the latest Steam or Mangagamer release."
+			                .format(conf.subModConfig.modName, filename))
+
+		# Stop the user installing the mod on the old/original Japanese game.
+		# This probably means the user placed a fake identifier (eg the game exe) in the old game's folder.
+		if filename == 'snow.dll':
+			raise Exception("\nInstall Failed - The {} mod is not compatible with the old/original Japanese game.\n"
+			                "(Detected [{}]) Please install the latest Steam or Mangagamer release."
+			                .format(conf.subModConfig.modName, filename))
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = conf.subModConfig.modName + " Downloads"
