@@ -59,7 +59,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
         }
       } else {
         const errorCodeString = http.status === 0 ? '' : `[${http.status}]`;
-        const message = `Error ${errorCodeString} on request [${requestType}] - Please check that you have not closed the console - it is required for the installation.`;
+        const message = `POST Error ${errorCodeString} on [${requestType}] - Please check the console is open - it is required for the installation.`;
         console.log(message);
         POSTNotificationErrorCallback(message);
       }
@@ -168,4 +168,39 @@ Vue.component('dropdown-game-menu', {
   </li>
   </ul>
   `,
+});
+
+// This component creates a snackbar (temporary popup at bottom of the screen)
+// when a POST error occurs. You are currently only allowed one snack bar per page.
+// To use, add a <snack-bar></snack-bar> element inside your main vue #app section
+Vue.component('snack-bar', {
+  data() {
+    return {
+      toastMessage: null,
+      toastVisible: false,
+      toastDismissalID: null,
+      toastCount: 0,
+    };
+  },
+  mounted() {
+    // This is a global function defined in this file. It registers
+    // which function should be called on a POST error
+    setPOSTNotificationErrorCallback(this.showToast);
+  },
+  methods: {
+    showToast(toastMessage) {
+      this.toastCount += 1;
+      this.toastMessage = toastMessage;
+      this.toastVisible = true;
+
+      // To prevent repeated fade in/out, cancel dismissal when a new toast received
+      if (this.toastDismissalID !== null) {
+        clearTimeout(this.toastDismissalID);
+      }
+      this.toastDismissalID = setTimeout(() => { this.toastVisible = false; }, 8000);
+    },
+  },
+  template: `<transition name="fade">
+  <div id="snackbar" v-show="toastVisible">{{ toastCount }}x {{ toastMessage }}</div>
+  </transition>`,
 });

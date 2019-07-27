@@ -43,10 +43,10 @@ if __name__ == "__main__":
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
-	print("\n\n------------------ Install Started On {} ------------------ ".format(datetime.datetime.now()))
+	print("> Install Started On {}".format(datetime.datetime.now()))
 	common.Globals.getBuildInfo()
-	print("Installer Build Information:")
-	print(common.Globals.BUILD_INFO)
+	print("Python {}".format(sys.version))
+	print("Installer Build Information: {}".format(common.Globals.BUILD_INFO))
 	print("Installer is being run from: [{}]".format(os.getcwd()))
 
 	# On Windows, check for non-ascii characters in hostname, which prevent the server starting up
@@ -88,8 +88,15 @@ if __name__ == "__main__":
 	for mod in modList:
 		for submod in mod['submods']:
 			conf = installConfiguration.SubModConfig(mod, submod)
-			print(conf)
+			logger.printNoTerminal(conf)
 			subModconfigList.append(conf)
+
+	print("\n\n----------------------------------------- PLEASE READ -----------------------------------------\n")
+	print(" - Do not close this window until you are finished with the installer! Closing this window will\n"
+	      "   stop the installer!")
+	print(" - A web page should have opened - do not close it! The web page is the installer's user interface.")
+	print(" - On the web page, click the game you want to mod to start the installation.")
+	print("\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 
 	installerGUI = httpGUI.InstallerGUI(subModconfigList)
 	installerGUI.server_test()

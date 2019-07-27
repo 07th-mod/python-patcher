@@ -22,6 +22,10 @@ window.onload = function onWindowLoaded() {
           img: 'img/games/umineko-answer.jpg',
           dataFilter: 'Answer Arcs',
         },
+        'Umineko Tsubasa': {
+          img: 'img/games/umineko-tsubasa.png',
+          dataFilter: 'Bonus Content',
+        },
         'Umineko Hane': {
           img: 'img/games/umineko-hane.png',
           dataFilter: 'Bonus Content',

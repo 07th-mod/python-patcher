@@ -9,6 +9,7 @@ import threading
 import time
 import traceback
 import tempfile
+import webbrowser
 
 import commandLineParser
 import installConfiguration
@@ -122,6 +123,8 @@ class Globals:
 
 	IS_PYTHON_2 = sys.version_info.major == 2
 
+	DOWNLOAD_TO_EXTRACTION_SCALING = 2.5
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -182,6 +185,8 @@ def trySystemOpen(path, normalizePath=False):
 	except:
 		return False
 
+def openURLInBrowser(url):
+	webbrowser.open(url, new=2, autoraise=True)
 
 #TODO: capture both stdout and stderr
 # TODO: in the future, this function could be simplified (remove aria2c specific hacks) by:
@@ -338,8 +343,12 @@ def tryGetRemoteNews(newsName):
 
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
-	serverTimeRemainingRegex = re.compile(r"Server\s*time\s*remaining:\s*<b>\s*(\d+)[^<]+", re.IGNORECASE)
-	progressAmountRegex = re.compile(r"progress\s*value=(\d+)", re.IGNORECASE)
+	"""
+	:return: (months_remaining, funding_goal_percentage) as a tuple (can both be None if regex failed)
+	"""
+	# NOTE: Even though the markdown has double-quotes, the served page has no quotation
+	#       so do not put any double quotes in the below regex
+	donationStatusRegex = re.compile(r'<progress\s*value=(\d+).*data-months-remaining=(\d+)>', re.IGNORECASE)
 
 	try:
 		file = urlopen(Request(r"http://07th-mod.com/wiki/", headers={"User-Agent": ""}))
@@ -348,13 +357,11 @@ def getDonationStatus():
 
 	entirePage = file.read().decode('utf-8')
 
-	match = serverTimeRemainingRegex.search(entirePage)
-	monthsRemainingString = None if match is None else match.group(1)
+	match = donationStatusRegex.search(entirePage)
+	if match:
+		return match.group(2), match.group(1)
 
-	match = progressAmountRegex.search(entirePage)
-	progressPercentString = None if match is None else match.group(1)
-
-	return monthsRemainingString, progressPercentString
+	return None, None
 
 def getJSON(jsonURI, isURL):
 	#type: (str, bool) -> (Dict, Exception)

@@ -9,9 +9,6 @@ let numberOfBlankLinesInARow = 0;
 // This is a handle to the setWindow(statusUpdate()) timer
 let statusUpdateTimerHandle = null;
 
-// This is a handle to the timer which dismisses the toast notifications.
-let toastDismissalID = null;
-
 // <python-pather-rest-lib.js should be included before this file> TODO: use proper javascript import
 
 // -------------------------------- DOM Modification Functions --------------------------------
@@ -153,7 +150,6 @@ window.onload = function onWindowLoaded() {
       // - false: There is not enough free space
       // - true: There is  enough free space on disk
       haveEnoughFreeSpace: null,
-      toastMessage: null,
     },
     methods: {
       doInstall() {
@@ -197,13 +193,6 @@ window.onload = function onWindowLoaded() {
             app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
           });
-      },
-      showToast(toastMessage) {
-        app.toastMessage = toastMessage;
-        if (toastDismissalID !== null) {
-          clearTimeout(toastDismissalID);
-        }
-        toastDismissalID = setTimeout(() => { app.toastMessage = null; }, 8000);
       },
     },
     computed: {
@@ -268,8 +257,6 @@ window.onload = function onWindowLoaded() {
   el = {
     terminal: document.getElementById('terminal'),
   };
-
-  setPOSTNotificationErrorCallback(app.showToast);
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {
