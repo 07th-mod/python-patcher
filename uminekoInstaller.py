@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import commandLineParser
 import common
 import os, shutil, subprocess
+
+import fileVersionManagement
 import gameScanner
 import installConfiguration
 import logger
@@ -71,10 +73,13 @@ def mainUmineko(conf):
 	common.makeDirsExistOK(downloadTempDir)
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
-	downloaderAndExtractor.buildDownloadAndExtractionList(None)
+	fileVersionManager = fileVersionManagement.VersionManager(
+		subMod=conf.subModConfig,
+		modFileList=conf.buildFileListSorted(),
+		localVersionFilePath=os.path.join(conf.installPath, "installedVersionData.txt"))
 
-	return
+	downloaderAndExtractor = common.DownloaderAndExtractor(fileVersionManager.getFilesRequiringUpdate(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	downloaderAndExtractor.buildDownloadAndExtractionList()
 
 	parser = installConfiguration.ModOptionParser(conf)
 
@@ -158,5 +163,7 @@ def mainUmineko(conf):
 		f.writelines(["mklink saves mysav /J\n", "pause"])
 
 	# For now, don't copy save data
+
+	fileVersionManager.saveVersionsToFile()
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")
