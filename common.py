@@ -116,6 +116,7 @@ class Globals:
 
 	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"
 
+	# Set to 'True' in main.py if installData.json is detected on disk
 	DEVELOPER_MODE = False
 
 	BUILD_INFO = 'Build info not yet retrieved'

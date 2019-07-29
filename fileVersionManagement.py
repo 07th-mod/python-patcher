@@ -1,5 +1,6 @@
 import io
 import json
+import os
 
 try:
 	from typing import List, Dict, Optional
@@ -31,7 +32,11 @@ class VersionManager:
 		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
 		self.remoteVersionObject = None
 
-		allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
+		if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
+			allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
+		else:
+			allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
+
 		print("Remote Info:", allRemoteVersions)
 
 		if allRemoteVersions is not None:
