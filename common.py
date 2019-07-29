@@ -571,14 +571,8 @@ class DownloaderAndExtractor:
 		"""
 		This function fills in the self.downloadList and self.extractList lists, based on the self.modFileList
 		If there are existing values in the self.downloadList or self.extractList, they are retained
-		:type versionInformation: A dictionary indicating for each file name/overrideName whether it needs installation
 		:return:
 		"""
-
-		# Step 1: determine which items have been updated or whose version status is unknown
-		# Step 2: determine which items are dependencies (roughly) of the items which need to be updated
-
-		# Step 3: iterate over the list of downloads, and remove any download not in the above two categories.
 
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
@@ -587,11 +581,6 @@ class DownloaderAndExtractor:
 			self.extractList.extend(
 				DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
 			)
-
-			print("If {} is updated, then need to update".format(file.name))
-			for f2 in self.modFileList:
-				if f2.priority > file.priority:
-					print(f2.name)
 
 		self.downloadAndExtractionListsBuilt = True
 
