@@ -37,21 +37,18 @@ class VersionManager:
 		else:
 			allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
 
-		print("Remote Info:", allRemoteVersions)
 
+		# Check the remote submod matches the game/submod pair to be installed
 		if allRemoteVersions is not None:
 			for remoteVersion in allRemoteVersions:
 				if remoteVersion['id'] == self.targetID:
 					self.remoteVersionObject = remoteVersion
 					break
 
-		print("Local Version:")
-		print(self.localVersionObject)
-		print("Remote Version:")
-		print(self.remoteVersionObject)
 		if remoteError is not None:
-			print("Error retriving remote version".format(remoteError))
+			print("Error retrieving remote version".format(remoteError))
 
+		self.logJSONVersions()
 
 		# In theory can always re-install everything if can't get the remote server, but most likely it means
 		# remote version this indicates an error with the server, so halt if this happens.
@@ -69,6 +66,20 @@ class VersionManager:
 		""" After install is successful, call this function to save the remote version info to local file """
 		with io.open(self.localVersionFilePath, 'w', encoding='utf-8') as file:
 			file.write(json.dumps(self.remoteVersionObject, ensure_ascii=False, encoding='utf-8'))
+
+	def logJSONVersions(self):
+		logger.printNoTerminal("\nLocal Version:")
+		if self.localVersionObject:
+			logger.printNoTerminal(json.dumps(self.localVersionObject, indent=4, sort_keys=True))
+		else:
+			logger.printNoTerminal("No Local Version Information!")
+
+		logger.printNoTerminal("Remote Version:")
+		if self.remoteVersionObject:
+			logger.printNoTerminal(json.dumps(self.remoteVersionObject, indent=4, sort_keys=True))
+		else:
+			logger.printNoTerminal("No Remote Version Information!")
+
 
 # given a mod
 def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
@@ -188,23 +199,3 @@ class FileVersion:
 
 	def __repr__(self):
 		return "{}-{}".format(self.id, self.version)
-
-
-# # note: modFileList must already include any fileOverrides (from buildFileListSorted() in FullInstallConfiguration
-# def filterFileListOuter(modFileList, localVersionFilePath, remoteVersionURL):
-# 	# type: (List[installConfiguration.ModFile], str, str) -> (List[installConfiguration.ModFile], Dict)
-# 	"""
-#
-# 	:param modFileList:
-# 	:param localVersionFilePath:
-# 	:param remoteVersionURL:
-# 	:return: returns the mod file list of files which require update, and also the remote json dict which should
-# 	         be saved to disk after install is completed
-# 	"""
-# 	localVersionObject, _localError = common.getJSON(localVersionFilePath, isURL=False)
-# 	remoteVersionObject, _remoteError = common.getJSON(remoteVersionURL, isURL=True)
-#
-# 	if localVersionObject is None or remoteVersionObject is None:
-# 		return modFileList
-#
-# 	filterFileListInner(modFileList, localVersionObject, remoteVersionObject), remoteVersionObject
