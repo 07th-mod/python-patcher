@@ -72,7 +72,7 @@ def mainUmineko(conf):
 
 	common.makeDirsExistOK(downloadTempDir)
 
-	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
+	######################################## Query and Download Files ##################################################
 	fileVersionManager = fileVersionManagement.VersionManager(
 		subMod=conf.subModConfig,
 		modFileList=conf.buildFileListSorted(),
@@ -102,7 +102,7 @@ def mainUmineko(conf):
 
 	downloaderAndExtractor.download()
 
-	# Backup/clear the .exe and script files
+	###################### Backup/clear the .exe and script files, and old graphics ####################################
 	backupOrRemoveFiles(conf.installPath)
 
 	if performFullInstall:
@@ -117,6 +117,7 @@ def mainUmineko(conf):
 				except:
 					print("WARNING: failed to remove folder {}".format(folderPath))
 
+	######################################## Extract Archives ##########################################################
 	downloaderAndExtractor.extract()
 
 	############################################# FIX .ARC FILE NAMING #################################################
