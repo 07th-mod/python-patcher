@@ -197,12 +197,13 @@ class SubModVersionInfo:
 		with io.open(path, 'w', encoding='utf-8') as file:
 			file.write(json.dumps(obj, ensure_ascii=False, encoding='utf-8'))
 
-	# There are four cases when a file should be installed:
+	# There are five cases when a file should be installed:
 	# - There is no previous install info
 	# - The previous install was a different submod (for example, installing 'full' onto 'voice-only')
 	# - The file is not at all installed. This will trigger on UI mods of different versions, an unmodded game,
 	#   or when you add a new file to an existing mod
 	# - The remote version of the file does not match.
+	# - A partial install was started on one submod, but we want to start a new install on a different submod (need to do a full install)
 	@staticmethod
 	def getFilesNeedingInstall(localVersionInfo, remoteVersionInfo):
 		# type: (Optional[SubModVersionInfo], Optional[SubModVersionInfo]) -> Dict[str, (bool, str)]
