@@ -85,10 +85,6 @@ class ModFile:
 		self.nativeOrder = ModFile.modFileCounter
 		ModFile.modFileCounter += 1
 
-		# Mutable Value - The reason this ModFile is being updated
-		self.updateReason = None
-		self.needsUpdate = True
-
 
 class ModFileOverride:
 	def __init__(self, name, id, os, steam, unity, url):

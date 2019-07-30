@@ -46,21 +46,21 @@ class VersionManager:
 
 		# If can't retrieve version info, mark everything as needing update
 		if self.localVersionInfo is None or self.remoteVersionInfo is None:
+			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
-				file.updateReason = "Failed to retreive version information from local or remote"
-				file.needsUpdate = True
+				self.updatesRequiredDict[file.id] = (True, "Failed to retreive version information from local or remote")
+		else:
+			# Mark files which need update
+			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
 
-		# Mark files which need update
-		markFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
-
-		print("\nInstaller Update Information:")
-		for file in self.unfilteredModFileList:
-			print("[{}]: status: [{}] because [{}]".format(file.id, file.needsUpdate, file.updateReason))
+			print("\nInstaller Update Information:")
+			for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
+				print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
 
 		# Check if a full update is required
 		self.fullUpdate = True
-		for file in self.unfilteredModFileList:
-			if not file.needsUpdate:
+		for (needsUpdate, _updateReason) in self.updatesRequiredDict.values():
+			if not needsUpdate:
 				self.fullUpdate = False
 
 	def fullUpdateRequired(self):
@@ -71,7 +71,17 @@ class VersionManager:
 		""" :return: returns a modified mod file list consisting of files which require update AND
 		a boolean value indicating whether a full update is needed"""
 		# Convert the update set back into a modfile list
-		return [x for x in self.unfilteredModFileList if x.needsUpdate]
+		filesToUpdate = []
+		for file in self.unfilteredModFileList:
+			updateInfo = self.updatesRequiredDict.get(file.id)
+			if updateInfo is None:
+				filesToUpdate.append(file)
+			else:
+				needsUpdate, _updateReason = updateInfo
+				if needsUpdate:
+					filesToUpdate.append(file)
+
+		return filesToUpdate
 
 	# When install starts, mark which submod is attempted to be installed
 	def saveVersionInstallStarted(self):
@@ -116,7 +126,7 @@ def getRemoteVersion(remoteTargetID):
 
 
 # given a mod
-def markFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
+def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> ()
 
 	# Do a sanity check that all the mod files have unique IDs. If they don't, just assume all files need to be updated
@@ -129,7 +139,7 @@ def markFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 
 	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
 
-	updateSet = set()
+	updateSet = {}
 
 	# Get the list of files which either have no version status or require an update
 	# needUpdate can be three values:
@@ -145,10 +155,9 @@ def markFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 		else:
 			needUpdate, updateReason = result
 
-		file.updateReason = updateReason
-		if needUpdate is not False:
+		updateSet[file.id] = (needUpdate, updateReason)
+		if needUpdate:
 			directUpdateList.append(file)
-			updateSet.add(file.id)
 
 	# Add dependencies of the above files which need updates to the update set
 	# For example, if there is an "graphics-update" pack, it must always overwrite the "graphics" pack,
@@ -156,14 +165,13 @@ def markFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	debug_dependency_list = []
 	for file in directUpdateList:
 		for otherFile in modFileList:
-			if otherFile.priority > file.priority and otherFile.id not in updateSet:
-				updateSet.add(otherFile.id)
-				debug_dependency_list.append(otherFile.id)
-				otherFile.updateReason = "{} is a dependency of {}".format(file.id, otherFile.id)
+			if otherFile.priority > file.priority:
+				# don't overwrite existing reason if the item is already to be updated
+				if otherFile.id in updateSet and updateSet[otherFile.id][0] is not True:
+					debug_dependency_list.append(otherFile.id)
+					updateSet[otherFile.id] = (True, "{} is a dependency of {}".format(file.id, otherFile.id))
 
-	# Mark files which don't need update
-	for file in modFileList:
-		file.needsUpdate = file.id in updateSet
+	return updateSet
 
 class SubModVersionInfo:
 	def __init__(self, jsonObject):

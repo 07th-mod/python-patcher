@@ -17,8 +17,18 @@ def stripReason(idToNeedUpdateAndReasonDict):
 		retVal[id] = needUpdate
 	return retVal
 
-def getFilesRequiringUpdate(fileList):
-	return [x for x in fileList if x.needsUpdate]
+def getFilesRequiringUpdate(fileList, updateInformation):
+	out = []
+	for file in fileList:
+		result = updateInformation.get(file.id)
+		if result is None:
+			out.append(file)
+		else:
+			needsUpdate, _ = result
+			if needsUpdate:
+				out.append(file)
+
+	return out
 
 class TestSubModVersion(unittest.TestCase):
 	localJSON = json.loads("""
@@ -270,11 +280,11 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		fileVersionManagement.markFilesNeedingUpdate(fileList,
-		                                             fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
-		                                             fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
+		updateInformation = fileVersionManagement.getFilesNeedingUpdate(fileList,
+		                                            fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
+		                                            fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
 
-		result = getFilesRequiringUpdate(fileList)
+		result = getFilesRequiringUpdate(fileList, updateInformation)
 
 		self.assertEqual(result, [])
 		print("Unchanged", [x.id for x in result])
@@ -308,14 +318,14 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		fileVersionManagement.markFilesNeedingUpdate(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
-		                                                      fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
+		updateInformation = fileVersionManagement.getFilesNeedingUpdate(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
+		                                            fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
 
-		result = getFilesRequiringUpdate(fileList)
+		result = getFilesRequiringUpdate(fileList, updateInformation)
 
 		idSet = set(x.id for x in result)
 		self.assertIn('cg', idSet) #cg changed version
-		self.assertIn('script', idSet) #script changed version
+		self.assertIn('script', idSet) #script is a dependency of cg (must overwrite cg)
 		idSet.remove('cg')
 		idSet.remove('script')
 		self.assertEqual(idSet, set()) #no other items should remain in the list
