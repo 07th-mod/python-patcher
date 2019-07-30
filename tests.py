@@ -17,6 +17,9 @@ def stripReason(idToNeedUpdateAndReasonDict):
 		retVal[id] = needUpdate
 	return retVal
 
+def getFilesRequiringUpdate(fileList):
+	return [x for x in fileList if x.needsUpdate]
+
 class TestSubModVersion(unittest.TestCase):
 	localJSON = json.loads("""
 	{
@@ -212,7 +215,8 @@ class TestSubModVersion(unittest.TestCase):
 			modFileList=originalModFileList,
 			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
 
-		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), (originalModFileList, True))
+		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), originalModFileList)
+		self.assertEqual(fileVersionManager.fullUpdateRequired(), True)
 
 		fileVersionManager.saveVersionInstallFinished()
 
@@ -222,7 +226,8 @@ class TestSubModVersion(unittest.TestCase):
 			modFileList=originalModFileList,
 			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
 
-		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), ([], False))
+		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), [])
+		self.assertEqual(fileVersionManagerIdentical.fullUpdateRequired(), False)
 
 		shutil.rmtree(test_dir)
 
@@ -265,9 +270,12 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		result = fileVersionManagement.filterFileList(fileList,
-		                                              fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
-		                                              fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
+		fileVersionManagement.markFilesNeedingUpdate(fileList,
+		                                             fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
+		                                             fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
+
+		result = getFilesRequiringUpdate(fileList)
+
 		self.assertEqual(result, [])
 		print("Unchanged", [x.id for x in result])
 
@@ -300,8 +308,10 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		result = fileVersionManagement.filterFileList(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
-		                                              fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
+		fileVersionManagement.markFilesNeedingUpdate(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
+		                                                      fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
+
+		result = getFilesRequiringUpdate(fileList)
 
 		idSet = set(x.id for x in result)
 		self.assertIn('cg', idSet) #cg changed version

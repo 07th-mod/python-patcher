@@ -44,23 +44,34 @@ class VersionManager:
 		logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
 		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
 
-	def getFilesRequiringUpdate(self):
-		#type: () -> (List[installConfiguration.ModFile], bool)
-		""" :return: returns a modified mod file list consisting of files which require update AND
-		a boolean value indicating whether a full update is needed"""
-		updatedFileList = self.unfilteredModFileList
-
+		# If can't retrieve version info, mark everything as needing update
 		if self.localVersionInfo is None or self.remoteVersionInfo is None:
 			for file in self.unfilteredModFileList:
 				file.updateReason = "Failed to retreive version information from local or remote"
-		else:
-			updatedFileList = filterFileList(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
+				file.needsUpdate = True
+
+		# Mark files which need update
+		markFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
 
 		print("\nInstaller Update Information:")
-		for file in updatedFileList:
-			print("Updating [{}] because [{}]".format(file.id, file.updateReason))
+		for file in self.unfilteredModFileList:
+			print("[{}]: status: [{}] because [{}]".format(file.id, file.needsUpdate, file.updateReason))
 
-		return updatedFileList, set(updatedFileList) == set(self.unfilteredModFileList)
+		# Check if a full update is required
+		self.fullUpdate = True
+		for file in self.unfilteredModFileList:
+			if not file.needsUpdate:
+				self.fullUpdate = False
+
+	def fullUpdateRequired(self):
+		return self.fullUpdate
+
+	def getFilesRequiringUpdate(self):
+		#type: () -> List[installConfiguration.ModFile]
+		""" :return: returns a modified mod file list consisting of files which require update AND
+		a boolean value indicating whether a full update is needed"""
+		# Convert the update set back into a modfile list
+		return [x for x in self.unfilteredModFileList if x.needsUpdate]
 
 	# When install starts, mark which submod is attempted to be installed
 	def saveVersionInstallStarted(self):
@@ -105,15 +116,15 @@ def getRemoteVersion(remoteTargetID):
 
 
 # given a mod
-def filterFileList(modFileList, localVersionInfo, remoteVersionInfo):
-	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> List[installConfiguration.ModFile]
+def markFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
+	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> ()
 
 	# Do a sanity check that all the mod files have unique IDs. If they don't, just assume all files need to be updated
 	sanityCheckSet = set()
 	for file in modFileList:
 		if file.id in sanityCheckSet:
 			print("ERROR: duplicate file ID {} detected - just updating everything", file.id)
-			return modFileList
+			return
 		sanityCheckSet.add(file.id)
 
 	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
@@ -150,8 +161,9 @@ def filterFileList(modFileList, localVersionInfo, remoteVersionInfo):
 				debug_dependency_list.append(otherFile.id)
 				otherFile.updateReason = "{} is a dependency of {}".format(file.id, otherFile.id)
 
-	# Convert the update set back into a modfile list
-	return [x for x in modFileList if x.id in updateSet]
+	# Mark files which don't need update
+	for file in modFileList:
+		file.needsUpdate = file.id in updateSet
 
 class SubModVersionInfo:
 	def __init__(self, jsonObject):

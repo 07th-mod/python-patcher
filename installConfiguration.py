@@ -87,6 +87,7 @@ class ModFile:
 
 		# Mutable Value - The reason this ModFile is being updated
 		self.updateReason = None
+		self.needsUpdate = True
 
 
 class ModFileOverride:
