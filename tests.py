@@ -186,7 +186,7 @@ class TestSubModVersion(unittest.TestCase):
 			modFileList=originalModFileList,
 			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
 
-		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), originalModFileList)
+		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), (originalModFileList, True))
 
 		fileVersionManager.saveVersionsToFile()
 
@@ -196,7 +196,7 @@ class TestSubModVersion(unittest.TestCase):
 			modFileList=originalModFileList,
 			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"))
 
-		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), [])
+		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), ([], False))
 
 		shutil.rmtree(test_dir)
 

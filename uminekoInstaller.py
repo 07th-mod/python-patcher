@@ -78,7 +78,9 @@ def mainUmineko(conf):
 		modFileList=conf.buildFileListSorted(),
 		localVersionFilePath=os.path.join(conf.installPath, "installedVersionData.txt"))
 
-	downloaderAndExtractor = common.DownloaderAndExtractor(fileVersionManager.getFilesRequiringUpdate(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	filesRequiringUpdate, performFullInstall = fileVersionManager.getFilesRequiringUpdate()
+	print("Perform Full Install: {}".format(performFullInstall))
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
 	parser = installConfiguration.ModOptionParser(conf)
@@ -103,16 +105,17 @@ def mainUmineko(conf):
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(conf.installPath)
 
-	# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
-	graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
+	if performFullInstall:
+		# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
+		graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
 
-	for folderPath in graphicsPathsToDelete:
-		if os.path.exists(folderPath):
-			print("Deleting {}".format(folderPath))
-			try:
-				shutil.rmtree(folderPath)
-			except:
-				print("WARNING: failed to remove folder {}".format(folderPath))
+		for folderPath in graphicsPathsToDelete:
+			if os.path.exists(folderPath):
+				print("Deleting {}".format(folderPath))
+				try:
+					shutil.rmtree(folderPath)
+				except:
+					print("WARNING: failed to remove folder {}".format(folderPath))
 
 	downloaderAndExtractor.extract()
 

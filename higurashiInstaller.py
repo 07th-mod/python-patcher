@@ -76,7 +76,8 @@ class Installer:
 			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
 			localVersionFilePath=os.path.join(self.directory, "installedVersionData.txt"))
 
-		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.fileVersionManager.getFilesRequiringUpdate(),
+		modFileList, _performFullInstall = self.fileVersionManager.getFilesRequiringUpdate()
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 

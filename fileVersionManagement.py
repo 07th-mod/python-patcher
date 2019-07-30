@@ -58,7 +58,9 @@ class VersionManager:
 			raise Exception("Can't get version information for {} from server! Installation stopped.".format(self.targetID))
 
 	def getFilesRequiringUpdate(self):
-		""" :return: returns a modified mod file list consisting of files which require update """
+		#type: () -> (List[installConfiguration.ModFile], bool)
+		""" :return: returns a modified mod file list consisting of files which require update AND
+		a boolean value indicating whether a full update is needed"""
 		updatedFileList = self.unfilteredModFileList
 
 		if self.localVersionObject is None or self.remoteVersionObject is None:
@@ -71,7 +73,7 @@ class VersionManager:
 		for file in updatedFileList:
 			print("Updating [{}] because [{}]".format(file.id, file.updateReason))
 
-		return updatedFileList
+		return updatedFileList, set(updatedFileList) == set(self.unfilteredModFileList)
 
 	def saveVersionsToFile(self):
 		""" After install is successful, call this function to save the remote version info to local file """
