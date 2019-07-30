@@ -31,24 +31,21 @@ class VersionManager:
 		self.localVersionFilePath = localVersionFilePath
 		self.localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
 
-		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
-		self.remoteVersionObject = None
-
 		if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
 			allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
 		else:
 			allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
 
+		if remoteError is not None:
+			print("Error retrieving remote version".format(remoteError))
 
-		# Check the remote submod matches the game/submod pair to be installed
+		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
+		self.remoteVersionObject = None
 		if allRemoteVersions is not None:
 			for remoteVersion in allRemoteVersions:
 				if remoteVersion['id'] == self.targetID:
 					self.remoteVersionObject = remoteVersion
 					break
-
-		if remoteError is not None:
-			print("Error retrieving remote version".format(remoteError))
 
 		self.logJSONVersions()
 
