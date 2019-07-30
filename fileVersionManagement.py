@@ -22,37 +22,27 @@ import common
 import installConfiguration
 
 class VersionManager:
-	remoteVersionURL = "https://raw.githubusercontent.com/drojf/python-patcher/master/versionData.json"
-
 	def __init__(self, subMod, modFileList, localVersionFilePath):
 		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str) -> None
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = localVersionFilePath
-		self.localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
 
-		if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
-			allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
-		else:
-			allRemoteVersions, remoteError = common.getJSON(VersionManager.remoteVersionURL, isURL=True)
+		# Get remote and local versions
+		try:
+			self.localVersionInfo = getLocalVersion(self.localVersionFilePath)
+		except Exception as error:
+			self.localVersionInfo = None
+			print("VersionManager: Error while retrieving version information: {}".format(error))
 
-		if remoteError is not None:
-			print("Error retrieving remote version".format(remoteError))
+		try:
+			self.remoteVersionInfo = getRemoteVersion(self.targetID)
+		except Exception as error:
+			self.remoteVersionInfo = None
+			print("VersionManager: Error while retrieving remote version information {}".format(error))
 
-		# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
-		self.remoteVersionObject = None
-		if allRemoteVersions is not None:
-			for remoteVersion in allRemoteVersions:
-				if remoteVersion['id'] == self.targetID:
-					self.remoteVersionObject = remoteVersion
-					break
-
-		self.logJSONVersions()
-
-		# In theory can always re-install everything if can't get the remote server, but most likely it means
-		# remote version this indicates an error with the server, so halt if this happens.
-		if self.remoteVersionObject is None:
-			raise Exception("Can't get version information for {} from server! Installation stopped.".format(self.targetID))
+		logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
+		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
 
 	def getFilesRequiringUpdate(self):
 		#type: () -> (List[installConfiguration.ModFile], bool)
@@ -60,11 +50,11 @@ class VersionManager:
 		a boolean value indicating whether a full update is needed"""
 		updatedFileList = self.unfilteredModFileList
 
-		if self.localVersionObject is None or self.remoteVersionObject is None:
+		if self.localVersionInfo is None or self.remoteVersionInfo is None:
 			for file in self.unfilteredModFileList:
 				file.updateReason = "Failed to retreive version information from local or remote"
 		else:
-			updatedFileList = filterFileListInner(self.unfilteredModFileList, self.localVersionObject, self.remoteVersionObject)
+			updatedFileList = filterFileList(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
 
 		print("\nInstaller Update Information:")
 		for file in updatedFileList:
@@ -72,28 +62,51 @@ class VersionManager:
 
 		return updatedFileList, set(updatedFileList) == set(self.unfilteredModFileList)
 
-	def saveVersionsToFile(self):
-		""" After install is successful, call this function to save the remote version info to local file """
-		with io.open(self.localVersionFilePath, 'w', encoding='utf-8') as file:
-			file.write(json.dumps(self.remoteVersionObject, ensure_ascii=False, encoding='utf-8'))
+	# When install starts, mark which submod is attempted to be installed
+	def saveVersionInstallStarted(self):
+		self.localVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
-	def logJSONVersions(self):
-		logger.printNoTerminal("\nLocal Version:")
-		if self.localVersionObject:
-			logger.printNoTerminal(json.dumps(self.localVersionObject, indent=4, sort_keys=True))
-		else:
-			logger.printNoTerminal("No Local Version Information!")
+	# When install finishes, copy the remoteVersionInfo
+	def saveVersionInstallFinished(self):
+		self.remoteVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
-		logger.printNoTerminal("Remote Version:")
-		if self.remoteVersionObject:
-			logger.printNoTerminal(json.dumps(self.remoteVersionObject, indent=4, sort_keys=True))
-		else:
-			logger.printNoTerminal("No Remote Version Information!")
+
+def getLocalVersion(localVersionFilePath):
+	localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
+	return None if localVersionObject is None else SubModVersionInfo(localVersionObject)
+
+
+def getRemoteVersion(remoteTargetID):
+	remoteVersionURL = "https://raw.githubusercontent.com/drojf/python-patcher/master/versionData.json" #Remove this later!
+
+	# Get remote version
+	if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
+		allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
+	else:
+		allRemoteVersions, remoteError = common.getJSON(remoteVersionURL, isURL=True)
+
+	if remoteError is not None:
+		print("Error retrieving remote version".format(remoteError))
+
+	# The remote JSON stores a version dict for each mod-subMod pair. Extract only the one that we want
+	remoteVersionObject = None
+	if allRemoteVersions is not None:
+		for remoteVersion in allRemoteVersions:
+			if remoteVersion['id'] == remoteTargetID:
+				remoteVersionObject = remoteVersion
+				break
+
+	# In theory can always re-install everything if can't get the remote server, but most likely it means
+	# remote version this indicates an error with the server, so halt if this happens.
+	if remoteVersionObject is None:
+		raise Exception("Can't get version information for {} from server! Installation stopped.".format(remoteTargetID))
+
+	return SubModVersionInfo(remoteVersionObject)
 
 
 # given a mod
-def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
-	#type: (List[installConfiguration.ModFile], Dict, Dict) -> List[installConfiguration.ModFile]
+def filterFileList(modFileList, localVersionInfo, remoteVersionInfo):
+	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> List[installConfiguration.ModFile]
 
 	# Do a sanity check that all the mod files have unique IDs. If they don't, just assume all files need to be updated
 	sanityCheckSet = set()
@@ -103,8 +116,6 @@ def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
 			return modFileList
 		sanityCheckSet.add(file.id)
 
-	localVersionInfo = SubModVersionInfo(localJSONObject)
-	remoteVersionInfo = SubModVersionInfo(remoteJSONObject)
 	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
 
 	updateSet = set()
@@ -142,18 +153,29 @@ def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
 	# Convert the update set back into a modfile list
 	return [x for x in modFileList if x.id in updateSet]
 
-
 class SubModVersionInfo:
 	def __init__(self, jsonObject):
 		"""
 		:param jsonObject:
-		:param id: The ID is of the form "Onikakushi Ch.1/full". Local JSON have this ID saved in them, but remote
 		"""
-		self.jsonObject = jsonObject
 		self.id = jsonObject['id']
 		self.fileVersionsDict = {} #type: Dict[str, FileVersion]
 		for row in jsonObject['files']:
 			self.fileVersionsDict[row['id']] = FileVersion(row['id'], row['version'])
+		self.lastAttemptedInstallID = jsonObject.get('lastAttemptedInstallID')
+
+	def serialize(self, path, lastAttemptedInstallID):
+		files = [{'id':fileVersion.id, 'version': fileVersion.version}
+		         for fileVersion in self.fileVersionsDict.values()]
+
+		obj = {
+			'id': self.id,
+			'files' : files,
+			'lastAttemptedInstallID': lastAttemptedInstallID
+		}
+
+		with io.open(path, 'w', encoding='utf-8') as file:
+			file.write(json.dumps(obj, ensure_ascii=False, encoding='utf-8'))
 
 	# There are four cases when a file should be installed:
 	# - There is no previous install info
@@ -181,6 +203,13 @@ class SubModVersionInfo:
 		if localVersionInfo.id != remoteVersionInfo.id:
 			return installAll("A Different submod is installed")
 
+		if localVersionInfo.lastAttemptedInstallID is None:
+			return installAll("Missing last attempted install ID")
+
+		if localVersionInfo.lastAttemptedInstallID != remoteVersionInfo.id:
+			return installAll("The last attempted install was [{}] but target/remote install is [{}]"
+			                  .format(localVersionInfo.lastAttemptedInstallID, remoteVersionInfo.id))
+
 		# Iterate through each file and and remove it if it does not need to be installed
 		updatesRequired = {}
 		for remoteID, remoteVersion in remoteVersionInfo.fileVersionsDict.items():
@@ -199,6 +228,9 @@ class SubModVersionInfo:
 
 		return updatesRequired
 
+	def __repr__(self):
+		return "id: {} lastAttemptedInstallID: {} files: {}"\
+			.format(self.id, self.lastAttemptedInstallID, ", ".join([x.__repr__() for x in self.fileVersionsDict.values()]))
 
 class FileVersion:
 # 	# NOTE: the "id" can be different from the 'name'
@@ -209,7 +241,7 @@ class FileVersion:
 		# type: (str, str) -> None
 		self.id = id
 		self.version = version
-#
+
 	def equals(self, other):
 		# type: (FileVersion) -> bool
 		"""

@@ -21,6 +21,7 @@ class TestSubModVersion(unittest.TestCase):
 	localJSON = json.loads("""
 	{
 		"id" : "Onikakushi Ch.1/full",
+		"lastAttemptedInstallID": "Onikakushi Ch.1/full",
 		"files":[
 			{"id": "cg",      "version": "1.0.0"},
 			{"id": "cgalt",   "version": "1.0.0"},
@@ -34,6 +35,7 @@ class TestSubModVersion(unittest.TestCase):
 	remoteJSON = json.loads("""
 	{
 		"id" : "Onikakushi Ch.1/full",
+		"lastAttemptedInstallID": "Onikakushi Ch.1/full",
 		"files": [
 			{"id": "cg",      "version": "1.0.0"},
 			{"id": "cgalt",   "version": "1.2.0"},
@@ -47,6 +49,21 @@ class TestSubModVersion(unittest.TestCase):
 	voiceOnlyJSON = json.loads("""
 	{
 		"id" : "Onikakushi Ch.1/voice-only",
+		"lastAttemptedInstallID": "Onikakushi Ch.1/voice-only",
+		"files": [
+			{"id": "cg",      "version": "1.0.0"},
+			{"id": "cgalt",   "version": "1.2.0"},
+			{"id": "movie",   "version": "1.0.0"},
+			{"id": "voices",  "version": "1.0.1"},
+			{"id": "script",  "version": "6.2.0"}
+		]
+	}
+	""")
+
+	voiceWithFullPartiallyInstalledJSON = json.loads("""
+	{
+		"id" : "Onikakushi Ch.1/voice-only",
+		"lastAttemptedInstallID": "Onikakushi Ch.1/full",
 		"files": [
 			{"id": "cg",      "version": "1.0.0"},
 			{"id": "cgalt",   "version": "1.2.0"},
@@ -160,6 +177,15 @@ class TestSubModVersion(unittest.TestCase):
 
 		self.assertEquals(stripReason(result), {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
 
+	# test if partially installed full ontop of voice-only, then reverted to voice-only (should do a full re-install)
+	def test_voice_partial_install_full_then_voice(self):
+		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.voiceWithFullPartiallyInstalledJSON)
+		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.voiceOnlyJSON)
+		result = fileVersionManagement.SubModVersionInfo.getFilesNeedingInstall(local, remote)
+
+		self.assertEquals(stripReason(result), {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
+
+
 	def test_import(self):
 		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
 		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.remoteJSON)
@@ -188,7 +214,7 @@ class TestSubModVersion(unittest.TestCase):
 
 		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), (originalModFileList, True))
 
-		fileVersionManager.saveVersionsToFile()
+		fileVersionManager.saveVersionInstallFinished()
 
 		# If there is a file present which is identical, no files should require download
 		fileVersionManagerIdentical = fileVersionManagement.VersionManager(
@@ -214,6 +240,7 @@ class TestSubModVersion(unittest.TestCase):
 		unchangedTestSet = (json.loads("""
 		{
 			"id" : "Onikakushi Ch.1/full",
+			"lastAttemptedInstallID" : "Onikakushi Ch.1/full",
 			"files":[
 				{"id": "cg",      "version": "1.0.0"},
 				{"id": "cgalt",   "version": "1.0.0"},
@@ -226,6 +253,7 @@ class TestSubModVersion(unittest.TestCase):
 		"""), json.loads("""
 		{
 			"id" : "Onikakushi Ch.1/full",
+			"lastAttemptedInstallID" : "Onikakushi Ch.1/full",
 			"files":[
 				{"id": "cg",      "version": "1.0.0"},
 				{"id": "cgalt",   "version": "1.0.0"},
@@ -237,7 +265,9 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		result = fileVersionManagement.filterFileListInner(fileList, unchangedTestSet[0], unchangedTestSet[1])
+		result = fileVersionManagement.filterFileList(fileList,
+		                                              fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
+		                                              fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
 		self.assertEqual(result, [])
 		print("Unchanged", [x.id for x in result])
 
@@ -245,6 +275,7 @@ class TestSubModVersion(unittest.TestCase):
 		dependencyTestSet = (json.loads("""
 		{
 			"id" : "Onikakushi Ch.1/full",
+			"lastAttemptedInstallID" : "Onikakushi Ch.1/full",
 			"files":[
 				{"id": "cg",      "version": "1.0.0"},
 				{"id": "cgalt",   "version": "1.0.0"},
@@ -257,6 +288,7 @@ class TestSubModVersion(unittest.TestCase):
 		"""), json.loads("""
 		{
 			"id" : "Onikakushi Ch.1/full",
+			"lastAttemptedInstallID" : "Onikakushi Ch.1/full",
 			"files":[
 				{"id": "cg",      "version": "1.0.1"},
 				{"id": "cgalt",   "version": "1.0.0"},
@@ -268,7 +300,8 @@ class TestSubModVersion(unittest.TestCase):
 		}
 		"""))
 
-		result = fileVersionManagement.filterFileListInner(fileList, dependencyTestSet[0], dependencyTestSet[1])
+		result = fileVersionManagement.filterFileList(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
+		                                              fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
 
 		idSet = set(x.id for x in result)
 		self.assertIn('cg', idSet) #cg changed version
