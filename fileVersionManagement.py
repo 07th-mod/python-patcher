@@ -2,6 +2,8 @@ import io
 import json
 import os
 
+import logger
+
 try:
 	from typing import List, Dict, Optional
 except:
@@ -57,10 +59,19 @@ class VersionManager:
 
 	def getFilesRequiringUpdate(self):
 		""" :return: returns a modified mod file list consisting of files which require update """
-		if self.localVersionObject is None or self.remoteVersionObject is None:
-			return self.unfilteredModFileList
+		updatedFileList = self.unfilteredModFileList
 
-		return filterFileListInner(self.unfilteredModFileList, self.localVersionObject, self.remoteVersionObject)
+		if self.localVersionObject is None or self.remoteVersionObject is None:
+			for file in self.unfilteredModFileList:
+				file.updateReason = "Failed to retreive version information from local or remote"
+		else:
+			updatedFileList = filterFileListInner(self.unfilteredModFileList, self.localVersionObject, self.remoteVersionObject)
+
+		print("\nInstaller Update Information:")
+		for file in updatedFileList:
+			print("Updating [{}] because [{}]".format(file.id, file.updateReason))
+
+		return updatedFileList
 
 	def saveVersionsToFile(self):
 		""" After install is successful, call this function to save the remote version info to local file """
@@ -95,32 +106,39 @@ def filterFileListInner(modFileList, localJSONObject, remoteJSONObject):
 
 	localVersionInfo = SubModVersionInfo(localJSONObject)
 	remoteVersionInfo = SubModVersionInfo(remoteJSONObject)
-	versionInformation = remoteVersionInfo.getFilesNeedingInstall(localVersionInfo)
+	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
 
 	updateSet = set()
 
 	# Get the list of files which either have no version status or require an update
+	# needUpdate can be three values:
+	# - True: The file definitely needs an update as the version is different
+	# - False: The file definitely DOES NOT need an update as the version is the same
+	# - None: The version info is missing on either the local or remote side. Since status is unknown, do an update.
+	# Since we want to be safe, only remove the file if the status is False
 	directUpdateList = []
 	for file in modFileList:
-		needUpdate = versionInformation.get(file.id)
-		# needUpdate can be three values:
-		# - True: The file definitely needs an update as the version is different
-		# - False: The file definitely DOES NOT need an update as the version is the same
-		# - None: The version info is missing on either the local or remote side. Since status is unknown, do an update.
-		# Since we want to be safe, only remove the file if the status is False
+		result = updatesRequiredDict.get(file.id)
+		if result is None:
+			needUpdate, updateReason = True, "Missing version info"
+		else:
+			needUpdate, updateReason = result
+
+		file.updateReason = updateReason
 		if needUpdate is not False:
 			directUpdateList.append(file)
 			updateSet.add(file.id)
 
 	# Add dependencies of the above files which need updates to the update set
+	# For example, if there is an "graphics-update" pack, it must always overwrite the "graphics" pack,
+	# even if it has not changed.
+	debug_dependency_list = []
 	for file in directUpdateList:
-		print("If {} is updated, then need to update".format(file.name))
 		for otherFile in modFileList:
-			if otherFile.priority > file.priority:
-				print("adding dependencey", otherFile.id)
+			if otherFile.priority > file.priority and otherFile.id not in updateSet:
 				updateSet.add(otherFile.id)
-
-	print("FullUpdateList", updateSet)
+				debug_dependency_list.append(otherFile.id)
+				otherFile.updateReason = "{} is a dependency of {}".format(file.id, otherFile.id)
 
 	# Convert the update set back into a modfile list
 	return [x for x in modFileList if x.id in updateSet]
@@ -144,37 +162,41 @@ class SubModVersionInfo:
 	# - The file is not at all installed. This will trigger on UI mods of different versions, an unmodded game,
 	#   or when you add a new file to an existing mod
 	# - The remote version of the file does not match.
-	def getFilesNeedingInstall(self, local):
-		# type: (Optional[SubModVersionInfo]) -> Dict[str, bool]
-		""":type local: SubModVersionInfo"""
+	@staticmethod
+	def getFilesNeedingInstall(localVersionInfo, remoteVersionInfo):
+		# type: (Optional[SubModVersionInfo], Optional[SubModVersionInfo]) -> Dict[str, (bool, str)]
+		"""
+		:type local: SubModVersionInfo
+		:return a dict of (fileID, (needUpdate, reason)), where reason is a string describing why an update is required
+		"""
 
-		# Assume that all files need to be installed
-		updatesRequired = {}
-		for fileVersion in self.fileVersionsDict.values():
-			updatesRequired[fileVersion.id] = True
-
-		if local is None:
-			print("No local version info - full install required")
+		def installAll(reason):
+			updatesRequired = {}
+			for remoteVersion in remoteVersionInfo.fileVersionsDict.values():
+				updatesRequired[remoteVersion.id] = True, reason
 			return updatesRequired
 
-		if local.id != self.id:
-			print("Different submod is installed - full install required")
-			return updatesRequired
+		if localVersionInfo is None:
+			return installAll("No local version info")
+
+		if localVersionInfo.id != remoteVersionInfo.id:
+			return installAll("A Different submod is installed")
 
 		# Iterate through each file and and remove it if it does not need to be installed
-		for remoteID, remoteVersion in self.fileVersionsDict.items():
-			localVersion = local.fileVersionsDict.get(remoteID)
+		updatesRequired = {}
+		for remoteID, remoteVersion in remoteVersionInfo.fileVersionsDict.items():
+			localVersion = localVersionInfo.fileVersionsDict.get(remoteID)
 
 			if localVersion is None:
-				print("Local does not have {} installed".format(remoteID))
+				updatesRequired[remoteID] = True, "Local does not have {} installed".format(remoteID)
 				continue
 
 			if not localVersion.equals(remoteVersion):
-				print("Local is {} but latest is {}".format(localVersion, remoteVersion))
+				updatesRequired[remoteID] = True, "Local is {} but latest is {}".format(localVersion, remoteVersion)
 				continue
 
 			# all checks passed, therefore file does not need to be installed.
-			updatesRequired[remoteID] = False
+			updatesRequired[remoteID] = False, "Version are the same"
 
 		return updatesRequired
 

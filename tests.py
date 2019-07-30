@@ -1,12 +1,21 @@
 import json
 import os
 import shutil
+import sys
 import unittest
 import tempfile
 
 import common
 import fileVersionManagement
 import installConfiguration
+import logger
+
+
+def stripReason(idToNeedUpdateAndReasonDict):
+	retVal = {}
+	for id, (needUpdate, reason) in idToNeedUpdateAndReasonDict.items():
+		retVal[id] = needUpdate
+	return retVal
 
 class TestSubModVersion(unittest.TestCase):
 	localJSON = json.loads("""
@@ -131,32 +140,32 @@ class TestSubModVersion(unittest.TestCase):
 	def test_no_update(self):
 		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
 		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
-		result = remote.getFilesNeedingInstall(local)
+		result = fileVersionManagement.SubModVersionInfo.getFilesNeedingInstall(local, remote)
 
-		self.assertEquals(result, {'cg':False, 'cgalt':False, 'movie-unity':False, 'voices':False, 'script':False})
+		self.assertEquals(stripReason(result), {'cg':False, 'cgalt':False, 'movie-unity':False, 'voices':False, 'script':False})
 
 	# test different submod name
 	def test_different_subModName(self):
 		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
 		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.voiceOnlyJSON)
-		result = remote.getFilesNeedingInstall(local)
+		result = fileVersionManagement.SubModVersionInfo.getFilesNeedingInstall(local, remote)
 
-		self.assertEquals(result, {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
+		self.assertEquals(stripReason(result), {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
 
 	# test no local version
 	def test_no_local(self):
 		local = None
 		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.remoteJSON)
-		result = remote.getFilesNeedingInstall(local)
+		result = fileVersionManagement.SubModVersionInfo.getFilesNeedingInstall(local, remote)
 
-		self.assertEquals(result, {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
+		self.assertEquals(stripReason(result), {'cg':True, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
 
 	def test_import(self):
 		local = fileVersionManagement.SubModVersionInfo(TestSubModVersion.localJSON)
 		remote = fileVersionManagement.SubModVersionInfo(TestSubModVersion.remoteJSON)
-		result = remote.getFilesNeedingInstall(local)
+		result = fileVersionManagement.SubModVersionInfo.getFilesNeedingInstall(local, remote)
 
-		self.assertEquals(result, {'cg':False, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
+		self.assertEquals(stripReason(result), {'cg':False, 'cgalt':True, 'movie':True, 'voices':True, 'script':True})
 
 	def test_highLevelFunctions(self):
 		test_dir = tempfile.mkdtemp()
@@ -230,7 +239,7 @@ class TestSubModVersion(unittest.TestCase):
 
 		result = fileVersionManagement.filterFileListInner(fileList, unchangedTestSet[0], unchangedTestSet[1])
 		self.assertEqual(result, [])
-		print("UNCAHNGED", [x.id for x in result])
+		print("Unchanged", [x.id for x in result])
 
 		# Test if 'cg' version changes, that both 'cg' and 'script' need update
 		dependencyTestSet = (json.loads("""
@@ -268,6 +277,8 @@ class TestSubModVersion(unittest.TestCase):
 		idSet.remove('script')
 		self.assertEqual(idSet, set()) #no other items should remain in the list
 
-
 if __name__ == '__main__':
+	sys.stdout = logger.Logger("python_patcher_tests_logs.txt")
+	logger.setGlobalLogger(sys.stdout)
+	sys.stderr = logger.StdErrRedirector(sys.stdout)
 	unittest.main()
