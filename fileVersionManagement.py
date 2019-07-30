@@ -71,17 +71,7 @@ class VersionManager:
 		""" :return: returns a modified mod file list consisting of files which require update AND
 		a boolean value indicating whether a full update is needed"""
 		# Convert the update set back into a modfile list
-		filesToUpdate = []
-		for file in self.unfilteredModFileList:
-			updateInfo = self.updatesRequiredDict.get(file.id)
-			if updateInfo is None:
-				filesToUpdate.append(file)
-			else:
-				needsUpdate, _updateReason = updateInfo
-				if needsUpdate:
-					filesToUpdate.append(file)
-
-		return filesToUpdate
+		return [x for x in self.unfilteredModFileList if self.updatesRequiredDict[x.id][0]]
 
 	# When install starts, mark which submod is attempted to be installed
 	def saveVersionInstallStarted(self):
@@ -128,6 +118,13 @@ def getRemoteVersion(remoteTargetID):
 # given a mod
 def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> ()
+	"""
+
+	:param modFileList:
+	:param localVersionInfo:
+	:param remoteVersionInfo:
+	:return: the returned value will contain one entry for each item in the modFileList
+	"""
 
 	# Do a sanity check that all the mod files have unique IDs. If they don't, just assume all files need to be updated
 	sanityCheckSet = set()
@@ -139,7 +136,7 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 
 	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
 
-	updateSet = {}
+	updateDict = {}
 
 	# Get the list of files which either have no version status or require an update
 	# needUpdate can be three values:
@@ -150,12 +147,9 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	directUpdateList = []
 	for file in modFileList:
 		result = updatesRequiredDict.get(file.id)
-		if result is None:
-			needUpdate, updateReason = True, "Missing version info"
-		else:
-			needUpdate, updateReason = result
+		needUpdate, updateReason = (True, "Missing version info") if result is None else result
 
-		updateSet[file.id] = (needUpdate, updateReason)
+		updateDict[file.id] = (needUpdate, updateReason)
 		if needUpdate:
 			directUpdateList.append(file)
 
@@ -167,11 +161,12 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 		for otherFile in modFileList:
 			if otherFile.priority > file.priority:
 				# don't overwrite existing reason if the item is already to be updated
-				if otherFile.id in updateSet and updateSet[otherFile.id][0] is not True:
+				if updateDict[otherFile.id][0] is not True:
 					debug_dependency_list.append(otherFile.id)
-					updateSet[otherFile.id] = (True, "{} is a dependency of {}".format(file.id, otherFile.id))
+					updateDict[otherFile.id] = (True, "{} is a dependency of {}".format(file.id, otherFile.id))
 
-	return updateSet
+	# At this point, updateDict will contain one entry for each file in modFileList
+	return updateDict
 
 class SubModVersionInfo:
 	def __init__(self, jsonObject):

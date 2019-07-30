@@ -17,18 +17,8 @@ def stripReason(idToNeedUpdateAndReasonDict):
 		retVal[id] = needUpdate
 	return retVal
 
-def getFilesRequiringUpdate(fileList, updateInformation):
-	out = []
-	for file in fileList:
-		result = updateInformation.get(file.id)
-		if result is None:
-			out.append(file)
-		else:
-			needsUpdate, _ = result
-			if needsUpdate:
-				out.append(file)
-
-	return out
+def convertUpdateInformationToModFileList(fileList, updateInformation):
+	return [x for x in fileList if updateInformation[x.id][0]]
 
 class TestSubModVersion(unittest.TestCase):
 	localJSON = json.loads("""
@@ -284,7 +274,7 @@ class TestSubModVersion(unittest.TestCase):
 		                                            fileVersionManagement.SubModVersionInfo(unchangedTestSet[0]),
 		                                            fileVersionManagement.SubModVersionInfo(unchangedTestSet[1]))
 
-		result = getFilesRequiringUpdate(fileList, updateInformation)
+		result = convertUpdateInformationToModFileList(fileList, updateInformation)
 
 		self.assertEqual(result, [])
 		print("Unchanged", [x.id for x in result])
@@ -321,7 +311,7 @@ class TestSubModVersion(unittest.TestCase):
 		updateInformation = fileVersionManagement.getFilesNeedingUpdate(fileList, fileVersionManagement.SubModVersionInfo(dependencyTestSet[0]),
 		                                            fileVersionManagement.SubModVersionInfo(dependencyTestSet[1]))
 
-		result = getFilesRequiringUpdate(fileList, updateInformation)
+		result = convertUpdateInformationToModFileList(fileList, updateInformation)
 
 		idSet = set(x.id for x in result)
 		self.assertIn('cg', idSet) #cg changed version
