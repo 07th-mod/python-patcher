@@ -7,6 +7,7 @@ matrix:
     python: 3.7
     dist: xenial
     before_install:
+    - sudo apt-get install -y aria2
     - sudo apt-get install -y p7zip-full
     - bash travis_install_swift.sh
     env:
@@ -17,6 +18,7 @@ matrix:
     os: windows
     language: shell
     before_install:
+    - choco install aria2
     - choco install python
     - choco install rust-ms --forcex86
     - python -m pip install --upgrade pip
