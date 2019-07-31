@@ -92,7 +92,7 @@ def getLocalVersion(localVersionFilePath):
 
 
 def getRemoteVersion(remoteTargetID):
-	remoteVersionURL = "https://raw.githubusercontent.com/drojf/python-patcher/master/versionData.json" #Remove this later!
+	remoteVersionURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/versionData.json"
 
 	# Get remote version
 	if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
