@@ -331,6 +331,8 @@ def modOptionsToWebFormat(modOptions):
 
 def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
+	for modOption in modOptions.values():
+		modOption.value = False
 
 	for modOptionGroup in webFormatModOptions:
 		selectedRadioID = modOptionGroup['selectedRadio']
