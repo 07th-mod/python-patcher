@@ -111,8 +111,9 @@ class Logger(object):
 		:return: None
 		"""
 		# If new log file path is the same as current one, don't do anything
-		if os.path.normpath(self.secondaryLogFilePath) == os.path.normpath(newLogFilePath):
-			return
+		if self.secondaryLogFilePath is not None:
+			if os.path.normpath(self.secondaryLogFilePath) == os.path.normpath(newLogFilePath):
+				return
 
 		try:
 			common.makeDirsExistOK(os.path.dirname(newLogFilePath))
