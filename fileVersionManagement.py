@@ -45,10 +45,14 @@ class VersionManager:
 		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
 
 		# If can't retrieve version info, mark everything as needing update
-		if self.localVersionInfo is None or self.remoteVersionInfo is None:
+		if self.localVersionInfo is None:
 			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
-				self.updatesRequiredDict[file.id] = (True, "Failed to retreive version information from local or remote")
+				self.updatesRequiredDict[file.id] = (True, "Failed to retrieve local version information")
+		elif self.remoteVersionInfo is None:
+			self.updatesRequiredDict = {}
+			for file in self.unfilteredModFileList:
+				self.updatesRequiredDict[file.id] = (True, "Failed to retrieve remote version information")
 		else:
 			# Mark files which need update
 			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
