@@ -6,6 +6,8 @@ import subprocess
 import sys
 import datetime
 
+import cacheDownloadSizes
+
 BUILD_LINUX_MAC = True
 if len(sys.argv) == 2:
 	if "win" in sys.argv[1].lower():
@@ -45,6 +47,9 @@ def tar_gz(input_path, output_filename: str):
 	os.remove(tempFileName)
 
 print("\nTravis python build script started\n")
+
+print("Generating Cached Download Sizes File")
+cacheDownloadSizes.generateCachedDownloadSizes()
 
 # first, copy the files we want into a staging folder
 staging_folder = 'travis_installer_staging'

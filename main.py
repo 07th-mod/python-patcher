@@ -76,6 +76,7 @@ if __name__ == "__main__":
 	check07thModServerConnection()
 
 	common.Globals.scanForExecutables()
+	common.Globals.loadCachedDownloadSizes()
 
 	# Scan for moddable games on the user's computer before starting installation
 	if common.Globals.DEVELOPER_MODE and os.path.exists("installData.json"):

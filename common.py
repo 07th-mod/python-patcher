@@ -126,6 +126,8 @@ class Globals:
 
 	DOWNLOAD_TO_EXTRACTION_SCALING = 2.5
 
+	URL_FILE_SIZE_LOOKUP_TABLE = {}
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -141,6 +143,13 @@ class Globals:
 			# TODO: automatically download and install dependencies
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 			exitWithError()
+
+	@staticmethod
+	def loadCachedDownloadSizes():
+		try:
+			Globals.URL_FILE_SIZE_LOOKUP_TABLE, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+		except:
+			print("Failed to read URL File Size Lookup Table")
 
 	@staticmethod
 	def getBuildInfo():
