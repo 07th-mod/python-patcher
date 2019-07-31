@@ -12,6 +12,7 @@ import common
 import traceback
 import threading
 
+import fileVersionManagement
 import gameScanner
 import commandLineParser
 import logger
@@ -382,7 +383,47 @@ class InstallerGUI:
 			print(errorMessage)
 
 		if validateOnly:
-			return (True, fullInstallConfigs[0]) if fullInstallConfigs else (False, '')
+			if fullInstallConfigs:
+				fullInstallConfig = fullInstallConfigs[0]
+
+				####### Preview which files are going to be downloaded #######
+				# Higurashi installer needs datadirectory set to determine unity version
+				dataDirectory = os.path.join(fullInstallConfig.installPath,
+				                             "Contents/Resources/Data" if common.Globals.IS_MAC else fullInstallConfig.subModConfig.dataName)
+
+				modFileList = fullInstallConfig.buildFileListSorted(datadir=dataDirectory) # type: List[installConfiguration.ModFile]
+				fileVersionManager = fileVersionManagement.VersionManager(
+					subMod=fullInstallConfig.subModConfig,
+					modFileList=modFileList,
+					localVersionFilePath=os.path.join(fullInstallConfig.installPath, "installedVersionData.txt"))
+
+				# Generate rows for the normal/overridden files
+				totalDownload = 0
+				downloadItemsPreview = []
+				for modFile in modFileList:
+					updateNeeded, updateReason = fileVersionManager.updatesRequiredDict[modFile.id]
+					downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(modFile.url)
+					downloadItemsPreview.append((modFile.id, downloadSize, updateNeeded, updateReason))
+					if updateNeeded and downloadSize:
+						totalDownload += downloadSize
+
+				# Generate rows for the mod option files
+				parser = installConfiguration.ModOptionParser(fullInstallConfig)
+				for option in parser.downloadAndExtractOptionsByPriority:
+					downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(option.url)
+					downloadItemsPreview.append((option.name, downloadSize, True, 'Mod options are always downloaded'))
+					if downloadSize:
+						totalDownload += downloadSize
+
+				# The last row is the total download size of all the
+				downloadItemsPreview.append(("Total Download Size", totalDownload, None, ''))
+
+				# Convert the size in bytes to a nicely formatted string
+				downloadItemsPreview = [(row[0], common.prettyPrintFileSize(row[1]), row[2], row[3]) for row in downloadItemsPreview]
+
+				return True, fullInstallConfig, downloadItemsPreview
+			else:
+				return False, '', None
 		else:
 			if not fullInstallConfigs:
 				raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
@@ -420,7 +461,7 @@ class InstallerGUI:
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
 
-		return (True, fullInstallSettings)
+		return True, fullInstallSettings, None
 
 	# An example of how this class can be used.
 	def server_test(self):
@@ -517,7 +558,7 @@ class InstallerGUI:
 					logger.printNoTerminal(modOption)
 
 				installPath = requestData.get('installPath', None)
-				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
+				installValid, fullInstallConfiguration, downloadItemsPreview = self.try_start_install(subMod, installPath, validateOnly)
 				retval = { 'installStarted': installValid }
 				if installValid:
 					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
@@ -525,6 +566,7 @@ class InstallerGUI:
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = subMod.downloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
 					)
+					retval['downloadItemsPreview'] = downloadItemsPreview
 				return retval
 
 			# requestData: Not necessary - will be ignored

@@ -150,6 +150,7 @@ window.onload = function onWindowLoaded() {
       // - false: There is not enough free space
       // - true: There is  enough free space on disk
       haveEnoughFreeSpace: null,
+      downloadItemsPreview: [],
     },
     methods: {
       doInstall() {
@@ -192,7 +193,19 @@ window.onload = function onWindowLoaded() {
             app.validationInProgress = false;
             app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
+            app.downloadItemsPreview = responseData.downloadItemsPreview;
           });
+      },
+      updateAndValidateInstallSettings(newPath) {
+        if (newPath !== null) {
+          app.validationInProgress = true;
+          app.showConfirmation = true;
+          if (app.installPathFocussed) {
+            app.debouncedValidateInstallPath();
+          } else {
+            app.validateInstallPath();
+          }
+        }
       },
     },
     computed: {
@@ -237,15 +250,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
-        if (newPath !== null) {
-          app.validationInProgress = true;
-          app.showConfirmation = true;
-          if (app.installPathFocussed) {
-            app.debouncedValidateInstallPath();
-          } else {
-            app.validateInstallPath();
-          }
-        }
+        app.updateAndValidateInstallSettings(newPath);
       },
     },
     created() {
@@ -278,6 +283,11 @@ window.onload = function onWindowLoaded() {
       }
     });
   });
+
+  // When any properties of the selected submod and child properites change,
+  // need to update install settings / refresh download preview
+  app.$watch('selectedSubMod', () => { app.updateAndValidateInstallSettings(app.selectedInstallPath); }, { deep: true });
+
 };
 
 // Add a reminder not to close the window/refresh/navigate out if installer started.

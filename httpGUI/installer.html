@@ -428,6 +428,28 @@
 																<div v-else-if="haveEnoughFreeSpace" class="alert alert-success" role="alert">{{ freeSpaceAdvisoryString }}</div>
 																<div v-else-if="!haveEnoughFreeSpace" class="alert alert-danger" role="alert">{{ freeSpaceAdvisoryString }}</div>
 															</strong>
+															<strong>Files to be downloaded:</strong><br>
+															<table class="umineko-image-table-content">
+																<thead>
+																	<tr>
+																		<th style="width: 50px">DL</th>
+																		<th style="width: 150px">File Name</th>
+																		<th style="width: 100px">File Size</th>
+																		<th style="width: 100%">Update Reason</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr v-for="fileInfo in downloadItemsPreview"
+																	v-bind:class="{ active: fileInfo[2] === true, inactive: fileInfo[2] === false }">
+																		<td v-if="fileInfo[2] === null"></td>
+																		<td v-if="fileInfo[2] === true">✓</td>
+																		<td v-if="fileInfo[2] === false">—</td>
+																		<td>{{ fileInfo[0] }}</td>
+																		<td>{{ fileInfo[1] }}</td>
+																		<td>{{ fileInfo[3] }}</td>
+																	</tr>
+																</tbody>
+															</table>
 														</div>
 														<ul class="tabs button-tabs">
 															<li><div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstall()>
