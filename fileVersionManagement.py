@@ -22,8 +22,8 @@ import common
 import installConfiguration
 
 class VersionManager:
-	def __init__(self, subMod, modFileList, localVersionFilePath):
-		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str) -> None
+	def __init__(self, subMod, modFileList, localVersionFilePath, _testRemoteSubModVersion=None):
+		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo]) -> None
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = localVersionFilePath
@@ -40,6 +40,10 @@ class VersionManager:
 		except Exception as error:
 			self.remoteVersionInfo = None
 			print("VersionManager: Error while retrieving remote version information {}".format(error))
+
+		# allow overriding the remote sub mod version for testing purposes
+		if _testRemoteSubModVersion:
+			self.remoteVersionInfo = _testRemoteSubModVersion
 
 		logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
 		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
