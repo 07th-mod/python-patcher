@@ -198,7 +198,7 @@ class SubModVersionInfo:
 		}
 
 		with io.open(path, 'w', encoding='utf-8') as file:
-			file.write(json.dumps(obj, ensure_ascii=False, encoding='utf-8', indent=4, sort_keys=True))
+			file.write(json.dumps(obj, ensure_ascii=False, indent=4, sort_keys=True))
 
 	# There are five cases when a file should be installed:
 	# - There is no previous install info
