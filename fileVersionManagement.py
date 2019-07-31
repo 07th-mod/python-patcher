@@ -35,15 +35,15 @@ class VersionManager:
 			self.localVersionInfo = None
 			print("VersionManager: Error while retrieving version information: {}".format(error))
 
-		try:
-			self.remoteVersionInfo = getRemoteVersion(self.targetID)
-		except Exception as error:
-			self.remoteVersionInfo = None
-			print("VersionManager: Error while retrieving remote version information {}".format(error))
-
 		# allow overriding the remote sub mod version for testing purposes
-		if _testRemoteSubModVersion:
+		if _testRemoteSubModVersion is not None:
 			self.remoteVersionInfo = _testRemoteSubModVersion
+		else:
+			try:
+				self.remoteVersionInfo = getRemoteVersion(self.targetID)
+			except Exception as error:
+				self.remoteVersionInfo = None
+				print("VersionManager: Error while retrieving remote version information {}".format(error))
 
 		logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
 		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
