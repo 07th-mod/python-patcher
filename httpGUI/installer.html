@@ -192,7 +192,7 @@
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
-												<h5>This mod variant will download approximately <strong>{{ selectedSubMod.downloadSize }}</strong> of data.
+												<h5>This mod variant will download approximately <strong>{{ selectedSubMod.downloadSize }}</strong> of data, when installing from scratch.<br>
 													You need at least <strong>{{  selectedSubMod.extractSize }}</strong> of free disk space for extraction and temporary files.
 												</h5>
 												<!-- Show the appropriate description depending on the descriptionID -->
@@ -423,11 +423,6 @@
 																</div>
 															</div>
 															<br>
-															<strong>
-																<div v-if="haveEnoughFreeSpace === null" class="alert alert-warning">{{ freeSpaceAdvisoryString }}</div>
-																<div v-else-if="haveEnoughFreeSpace" class="alert alert-success" role="alert">{{ freeSpaceAdvisoryString }}</div>
-																<div v-else-if="!haveEnoughFreeSpace" class="alert alert-danger" role="alert">{{ freeSpaceAdvisoryString }}</div>
-															</strong>
 															<strong>Files to be downloaded:</strong><br>
 															<table class="umineko-image-table-content">
 																<thead>
@@ -450,6 +445,11 @@
 																	</tr>
 																</tbody>
 															</table>
+															<strong>
+																<div v-if="haveEnoughFreeSpace === null" class="alert alert-warning">{{ freeSpaceAdvisoryString }}</div>
+																<div v-else-if="haveEnoughFreeSpace" class="alert alert-success" role="alert">{{ freeSpaceAdvisoryString }}</div>
+																<div v-else-if="!haveEnoughFreeSpace" class="alert alert-danger" role="alert">{{ freeSpaceAdvisoryString }}</div>
+															</strong>
 														</div>
 														<ul class="tabs button-tabs">
 															<li><div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstall()>

@@ -567,11 +567,14 @@ class InstallerGUI:
 				retval = { 'installStarted': installValid }
 				if installValid:
 					downloadItemsPreview, totalDownloadSize = getDownloadPreview(fullInstallConfiguration)
-					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
-					retval['haveEnoughFreeSpace'], retval['freeSpaceAdvisoryString'] = common.checkFreeSpace(
+					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
 					)
+
+					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
+					retval['haveEnoughFreeSpace'] = haveEnoughFreeSpace
+					retval['freeSpaceAdvisoryString'] = freeSpaceAdvisoryString
 					retval['downloadItemsPreview'] = downloadItemsPreview
 				return retval
 

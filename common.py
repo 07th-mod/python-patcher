@@ -795,7 +795,7 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 		print("Free Disk Space query failed - probably using Python 2")
 		pass
 
-	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space".format(recommendedFreeSpaceString)
+	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space for extraction and temporary files.".format(recommendedFreeSpaceString)
 	haveEnoughFreeSpace = None
 
 	if free_space is not None:
