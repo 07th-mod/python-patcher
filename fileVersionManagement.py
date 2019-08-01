@@ -92,6 +92,10 @@ class VersionManager:
 
 	# When install finishes, copy the remoteVersionInfo
 	def saveVersionInstallFinished(self):
+		if self.remoteVersionInfo is None:
+			print("VersionManager: ERROR: Not saving remote version info as it couldn't be retrieved from server")
+			return
+
 		self.remoteVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	@staticmethod
