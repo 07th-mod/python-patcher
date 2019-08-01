@@ -61,6 +61,15 @@ def main(conf):
 		)
 
 	downloaderAndExtractor.printPreview()
+
+	# Download files
+	# Delete all non-checksummed files from the download folder, if they exist
+	for extractableItem in downloaderAndExtractor.extractList:
+		extractableItemPath = os.path.join(downloadTempDir, extractableItem.filename)
+		if not extractableItem.fromMetaLink and os.path.exists(extractableItemPath):
+			print("Removing existing non-checksummed download: [{}]".format(extractableItemPath))
+			os.remove(extractableItemPath)
+
 	downloaderAndExtractor.download()
 
 	# Extract files
