@@ -555,6 +555,7 @@ class InstallerGUI:
 				webModOptionGroups = webSubModHandle['modOptionGroups']
 				id = webSubModHandle['id']
 				validateOnly = requestData.get('validateOnly', False)
+				deleteVersionInformation = requestData.get('deleteVersionInformation', False)
 
 				subMod = self.idToSubMod[id]
 
@@ -567,6 +568,9 @@ class InstallerGUI:
 				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
 				retval = { 'installStarted': installValid }
 				if installValid:
+					if deleteVersionInformation:
+						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
+
 					downloadItemsPreview, totalDownloadSize, numUpdatesRequired = getDownloadPreview(fullInstallConfiguration)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,

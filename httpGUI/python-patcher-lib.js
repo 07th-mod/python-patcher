@@ -187,9 +187,16 @@ window.onload = function onWindowLoaded() {
       renderMarkdown(markdownText) {
         return marked(markdownText, { sanitize: true });
       },
-      validateInstallPath() {
+      validateInstallPath(deleteVersionInformation) {
         // Just validate the install - don't actually start the installation
-        doPost('startInstall', { subMod: app.selectedSubMod, installPath: app.selectedInstallPath, validateOnly: true },
+        const args = {
+          subMod: app.selectedSubMod,
+          installPath: app.selectedInstallPath,
+          validateOnly: true,
+          deleteVersionInformation: deleteVersionInformation === true,
+        };
+
+        doPost('startInstall', args,
           (responseData) => {
             app.installPathValid = responseData.installStarted;
             app.validatedInstallPath = responseData.validatedInstallPath;
@@ -210,6 +217,9 @@ window.onload = function onWindowLoaded() {
             app.validateInstallPath();
           }
         }
+      },
+      deleteVersionInformation() {
+        app.validateInstallPath(true);
       },
     },
     computed: {

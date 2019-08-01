@@ -171,3 +171,8 @@ The snackbar - position it at the bottom and in the middle of the screen */
     left: 50%; /* Center the snackbar */
     bottom: 30px; /* 30px from the bottom */
 }
+
+.button-small {
+    padding-left: 5px;
+    padding-right: 5px;
+}

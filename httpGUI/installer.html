@@ -372,7 +372,7 @@
 														<!-- If path was detected automatically, then don't show other path selection options unless asked -->
 														<div v-else>
 															<div v-if="installPathValid" style="color: green"><strong>Game was autodetected at: {{ validatedInstallPath }} ✓</strong></div>
-															<button v-on:click="showPathSelectionButtons = true">Choose a different path</button>
+															<button class="button-small" v-on:click="showPathSelectionButtons = true">Choose a different path</button>
 														</div>
 													</ul>
 												</div>
@@ -423,7 +423,7 @@
 																</div>
 															</div>
 															<br>
-															<strong>Files to be downloaded:</strong><br>
+															<strong>Files to be downloaded</strong><br>
 															<table class="umineko-image-table-content">
 																<thead>
 																	<tr>
@@ -445,6 +445,12 @@
 																	</tr>
 																</tbody>
 															</table>
+															<button class="button-small" data-toggle="collapse" data-target="#advanced-options">Show Advanced Version Options</button>
+															<div id="advanced-options" class="collapse">
+																<div class="tab-title mb40" v-show="selectedSubMod!==null" v-on:click=deleteVersionInformation()>
+																	<span>Delete Version Information (Force Re-install)</span>
+																</div>
+															</div>
 															<strong>
 																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
 																<div v-if="haveEnoughFreeSpace === null" class="alert alert-warning">{{ freeSpaceAdvisoryString }}</div>

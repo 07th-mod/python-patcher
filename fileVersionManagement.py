@@ -22,11 +22,13 @@ import common
 import installConfiguration
 
 class VersionManager:
+	localVersionFileName = "installedVersionData.json"
+
 	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None):
 		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo]) -> None
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
-		self.localVersionFilePath = os.path.join(localVersionFolder, "installedVersionData.txt")
+		self.localVersionFilePath = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
 
 		# Get remote and local versions
 		try:
@@ -92,6 +94,11 @@ class VersionManager:
 	def saveVersionInstallFinished(self):
 		self.remoteVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
+	@staticmethod
+	def tryDeleteLocalVersionFile(localVersionFolder):
+		localVersionFilePathToDelete = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
+		if os.path.exists(localVersionFilePathToDelete):
+			os.remove(localVersionFilePathToDelete)
 
 def getLocalVersion(localVersionFilePath):
 	localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
