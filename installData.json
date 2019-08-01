@@ -244,8 +244,8 @@
 					"descriptionID": "higurashiFull",
 					"downloadSize": 1.1e9,
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CG.7z",                  "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CGAlt.7z",               "priority": 0},
+						{"name": "cg",      "url":"http://172.110.6.39/ddl/Meakashi-CG.7z",                  "priority": 0},
+						{"name": "cgalt",   "url":"http://172.110.6.39/ddl/Meakashi-CGAlt.7z",               "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
