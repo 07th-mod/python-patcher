@@ -66,10 +66,9 @@ function doPost(requestType, requestData, onSuccessCallback) {
     }
   };
 
-  // Use a timeout of 8 seconds, reducing 3 seconds over time, to account for page/server load
+  // Use a timeout of 8 seconds. After this POSTNotificationErrorCallback() will be called
   if (requestType !== 'showFileChooser') {
-    const millisecondsSincePageLoaded = Date.now() - pythonPatcherTimeScriptLoaded;
-    http.timeout = Math.max(8000 - millisecondsSincePageLoaded, 3000);
+    http.timeout = 8000;
   }
 
   http.send(makeJSONRequest(requestType, requestData));
