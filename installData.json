@@ -523,6 +523,25 @@
 		},
 		{
 			"family": "umineko_nscripter",
+			"name" : "Umineko Tsubasa",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["うみねこのなく頃に翼.exe", "snow.dll"],
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoTsubasaOnscripterFull",
+					"downloadSize": 0.3e9,
+					"files":[
+						{"name": "mod", "url":"https://07th-mod.com/Bern/Tsubasa/umineko-tsubasa-ons.zip", "priority": 0}
+					],
+					"fileOverrides" : []
+				}
+			]
+		},
+		{
+			"family": "umineko_nscripter",
 			"name" : "Umineko Hane",
 			"target": "Umineko",
 			"CFBundleName": "This Field is Not Used",

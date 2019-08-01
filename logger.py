@@ -36,6 +36,7 @@ class Logger(object):
 		common.makeDirsExistOK(os.path.dirname(logPath))
 		self.logFile = io.open(logPath, "a", encoding='UTF-8')
 		self.secondaryLogFile = None
+		self.secondaryLogFilePath = None
 		self.callbacks = {}
 		self.queue = queue.Queue(maxsize=100000)
 
@@ -109,6 +110,11 @@ class Logger(object):
 		:param newLogFilePath: the path where the new log file will be created (and updated)
 		:return: None
 		"""
+		# If new log file path is the same as current one, don't do anything
+		if self.secondaryLogFilePath is not None:
+			if os.path.normpath(self.secondaryLogFilePath) == os.path.normpath(newLogFilePath):
+				return
+
 		try:
 			common.makeDirsExistOK(os.path.dirname(newLogFilePath))
 			shutil.copy(self.logPath, newLogFilePath)
@@ -120,6 +126,7 @@ class Logger(object):
 				print("Closed log file at: [{}]".format(newLogFilePath))
 
 			self.secondaryLogFile = io.open(newLogFilePath, "a", encoding='UTF-8')
+			self.secondaryLogFilePath = newLogFilePath
 			print("Successfully created secondary log file at: [{}]".format(newLogFilePath))
 		except Exception as e:
 			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, e))
