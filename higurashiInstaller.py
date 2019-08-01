@@ -76,7 +76,7 @@ class Installer:
 			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
 			localVersionFolder=self.directory)
 
-		modFileList, _performFullInstall = self.fileVersionManager.getFilesRequiringUpdate()
+		modFileList = self.fileVersionManager.getFilesRequiringUpdate()
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
@@ -217,8 +217,11 @@ class Installer:
 			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
-	def saveFileVersionInformation(self):
-		self.fileVersionManager.saveVersionsToFile()
+	def saveFileVersionInfoStarted(self):
+		self.fileVersionManager.saveVersionInstallStarted()
+
+	def saveFileVersionInfoFinished(self):
+		self.fileVersionManager.saveVersionInstallFinished()
 
 def main(fullInstallConfiguration):
 	# type: (installConfiguration.FullInstallConfiguration) -> None
@@ -228,17 +231,19 @@ def main(fullInstallConfiguration):
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
 		print("Downloading...")
 		installer.download()
+		installer.saveFileVersionInfoStarted()
 		installer.backupUI()
 		installer.cleanOld()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
-		installer.saveFileVersionInformation()
+		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False)
 		print("Downloading...")
 		installer.download()
+		installer.saveFileVersionInfoStarted()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
@@ -246,7 +251,7 @@ def main(fullInstallConfiguration):
 		installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
-		installer.saveFileVersionInformation()
+		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")

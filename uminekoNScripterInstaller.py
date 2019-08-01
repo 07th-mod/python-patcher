@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import commandLineParser
 import common
 import os
+
+import fileVersionManagement
 import gameScanner
 import installConfiguration
 import logger
@@ -40,7 +42,14 @@ def main(conf):
 	common.makeDirsExistOK(downloadTempDir)
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	fileVersionManager = fileVersionManagement.VersionManager(
+		subMod=conf.subModConfig,
+		modFileList=conf.buildFileListSorted(),
+		localVersionFolder=conf.installPath)
+
+	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
+
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
 	parser = installConfiguration.ModOptionParser(conf)
@@ -53,6 +62,10 @@ def main(conf):
 
 	downloaderAndExtractor.printPreview()
 	downloaderAndExtractor.download()
+
+	# Extract files
+	fileVersionManager.saveVersionInstallStarted()
 	downloaderAndExtractor.extract()
 
+	fileVersionManager.saveVersionInstallFinished()
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko Hane install script completed!")
