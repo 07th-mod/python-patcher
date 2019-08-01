@@ -72,7 +72,8 @@ ignore_paths = [
 	'.travis.yml',
 	'__pycache__',
 	'news',
-	'install_loader'
+	'install_loader',
+	'installerTests',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
