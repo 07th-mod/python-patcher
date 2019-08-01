@@ -52,7 +52,7 @@ class VersionManager:
 		if self.localVersionInfo is None:
 			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
-				self.updatesRequiredDict[file.id] = (True, "Failed to retrieve local version information")
+				self.updatesRequiredDict[file.id] = (True, "No local version information - Assuming update is required")
 		elif self.remoteVersionInfo is None:
 			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
@@ -175,7 +175,7 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 				# don't overwrite existing reason if the item is already to be updated
 				if updateDict[otherFile.id][0] is not True:
 					debug_dependency_list.append(otherFile.id)
-					updateDict[otherFile.id] = (True, "{} is a dependency of {}".format(file.id, otherFile.id))
+					updateDict[otherFile.id] = (True, "{} is a dependency of {}".format(otherFile.id, file.id))
 
 	# At this point, updateDict will contain one entry for each file in modFileList
 	return updateDict
@@ -226,16 +226,16 @@ class SubModVersionInfo:
 			return updatesRequired
 
 		if localVersionInfo is None:
-			return installAll("No local version info")
+			return installAll("Full Install Required - No local version info")
 
 		if localVersionInfo.id != remoteVersionInfo.id:
-			return installAll("A Different submod is installed")
+			return installAll("Full Install Required - A Different submod is installed")
 
 		if localVersionInfo.lastAttemptedInstallID is None:
-			return installAll("Missing last attempted install ID")
+			return installAll("Full Install Required - Missing last attempted install ID")
 
 		if localVersionInfo.lastAttemptedInstallID != remoteVersionInfo.id:
-			return installAll("The last attempted install was [{}] but target/remote install is [{}]"
+			return installAll("Full Install Required - The last attempted install was [{}] but target/remote install is [{}]"
 			                  .format(localVersionInfo.lastAttemptedInstallID, remoteVersionInfo.id))
 
 		# Iterate through each file and and remove it if it does not need to be installed
@@ -252,7 +252,7 @@ class SubModVersionInfo:
 				continue
 
 			# all checks passed, therefore file does not need to be installed.
-			updatesRequired[remoteID] = False, "Version are the same"
+			updatesRequired[remoteID] = False, "No update required - Local {} is up-to-date".format(localVersion)
 
 		return updatesRequired
 
