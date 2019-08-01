@@ -355,7 +355,7 @@ def getDownloadPreview(fullInstallConfig):
 	fileVersionManager = fileVersionManagement.VersionManager(
 		subMod=fullInstallConfig.subModConfig,
 		modFileList=modFileList,
-		localVersionFilePath=os.path.join(fullInstallConfig.installPath, "installedVersionData.txt"))
+		localVersionFolder=fullInstallConfig.installPath)
 
 	# Generate rows for the normal/overridden files
 	totalDownload = 0

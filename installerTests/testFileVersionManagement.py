@@ -230,7 +230,7 @@ class TestSubModVersion(unittest.TestCase):
 		fileVersionManager = fileVersionManagement.VersionManager(
 			subMod=subModConfig,
 			modFileList=originalModFileList,
-			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"),
+			localVersionFolder=test_dir,
 			_testRemoteSubModVersion=remoteVersionObject)
 
 		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), originalModFileList)
@@ -242,7 +242,7 @@ class TestSubModVersion(unittest.TestCase):
 		fileVersionManagerIdentical = fileVersionManagement.VersionManager(
 			subMod=subModConfig,
 			modFileList=originalModFileList,
-			localVersionFilePath=os.path.join(test_dir, "installedVersionData.txt"),
+			localVersionFolder=test_dir,
 			_testRemoteSubModVersion=remoteVersionObject)
 
 		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), [])

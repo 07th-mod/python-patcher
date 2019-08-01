@@ -22,11 +22,11 @@ import common
 import installConfiguration
 
 class VersionManager:
-	def __init__(self, subMod, modFileList, localVersionFilePath, _testRemoteSubModVersion=None):
+	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None):
 		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo]) -> None
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
-		self.localVersionFilePath = localVersionFilePath
+		self.localVersionFilePath = os.path.join(localVersionFolder, "installedVersionData.txt")
 
 		# Get remote and local versions
 		try:

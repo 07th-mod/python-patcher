@@ -76,7 +76,7 @@ def mainUmineko(conf):
 	fileVersionManager = fileVersionManagement.VersionManager(
 		subMod=conf.subModConfig,
 		modFileList=conf.buildFileListSorted(),
-		localVersionFilePath=os.path.join(conf.installPath, "installedVersionData.txt"))
+		localVersionFolder=conf.installPath)
 
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
 	print("Perform Full Install: {}".format(fileVersionManager.fullUpdateRequired()))
