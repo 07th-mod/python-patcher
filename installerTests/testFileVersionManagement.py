@@ -234,7 +234,7 @@ class TestSubModVersion(unittest.TestCase):
 			_testRemoteSubModVersion=remoteVersionObject)
 
 		self.assertEqual(fileVersionManager.getFilesRequiringUpdate(), originalModFileList)
-		self.assertEqual(fileVersionManager.fullUpdateRequired(), True)
+		self.assertEqual(fileVersionManager.performFullInstall(), True)
 
 		fileVersionManager.saveVersionInstallFinished()
 
@@ -246,7 +246,7 @@ class TestSubModVersion(unittest.TestCase):
 			_testRemoteSubModVersion=remoteVersionObject)
 
 		self.assertEqual(fileVersionManagerIdentical.getFilesRequiringUpdate(), [])
-		self.assertEqual(fileVersionManagerIdentical.fullUpdateRequired(), False)
+		self.assertEqual(fileVersionManagerIdentical.performFullInstall(), False)
 
 		shutil.rmtree(test_dir)
 
