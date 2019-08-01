@@ -65,14 +65,13 @@ class VersionManager:
 			for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
 				print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
 
-		# Check if a full update is required
-		self.fullUpdate = True
-		for (needsUpdate, _updateReason) in self.updatesRequiredDict.values():
-			if not needsUpdate:
-				self.fullUpdate = False
+		# Check how many updates are required
+		updatesRequiredList = self.updatesRequiredDict.values()
+		self.totalNumUpdates = len(updatesRequiredList)
+		self.numUpdatesRequired = sum([needsUpdate for (needsUpdate, _) in updatesRequiredList])
 
 	def fullUpdateRequired(self):
-		return self.fullUpdate
+		return self.numUpdatesRequired == self.totalNumUpdates
 
 	def getFilesRequiringUpdate(self):
 		#type: () -> List[installConfiguration.ModFile]

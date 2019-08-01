@@ -150,7 +150,10 @@ window.onload = function onWindowLoaded() {
       // - false: There is not enough free space
       // - true: There is  enough free space on disk
       haveEnoughFreeSpace: null,
+      // The download items preview includes mod options, and an extra summary row at the end
       downloadItemsPreview: [],
+      // The number of updated files detected, EXCEPT for mod options
+      numUpdatesRequired: 0,
     },
     methods: {
       doInstall() {
@@ -194,6 +197,7 @@ window.onload = function onWindowLoaded() {
             app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
             app.downloadItemsPreview = responseData.downloadItemsPreview;
+            app.numUpdatesRequired = responseData.numUpdatesRequired;
           });
       },
       updateAndValidateInstallSettings(newPath) {

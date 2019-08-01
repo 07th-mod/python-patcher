@@ -383,7 +383,7 @@ def getDownloadPreview(fullInstallConfig):
 	downloadItemsPreview = [(row[0], common.prettyPrintFileSize(row[1]), row[2], row[3]) for row in
 	                        downloadItemsPreview]
 
-	return downloadItemsPreview, totalDownload
+	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
@@ -567,7 +567,7 @@ class InstallerGUI:
 				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
 				retval = { 'installStarted': installValid }
 				if installValid:
-					downloadItemsPreview, totalDownloadSize = getDownloadPreview(fullInstallConfiguration)
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired = getDownloadPreview(fullInstallConfiguration)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
@@ -577,6 +577,7 @@ class InstallerGUI:
 					retval['haveEnoughFreeSpace'] = haveEnoughFreeSpace
 					retval['freeSpaceAdvisoryString'] = freeSpaceAdvisoryString
 					retval['downloadItemsPreview'] = downloadItemsPreview
+					retval['numUpdatesRequired'] = numUpdatesRequired
 				return retval
 
 			# requestData: Not necessary - will be ignored
