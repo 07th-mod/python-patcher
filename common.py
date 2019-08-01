@@ -87,7 +87,7 @@ def printErrorMessage(text):
 
 ################################################## Global Variables#####################################################
 class Globals:
-	githubMasterBaseURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
+	GITHUB_MASTER_BASE_URL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
 	JSON_VERSION = 4
@@ -340,7 +340,7 @@ def tryGetRemoteNews(newsName):
 	:return:
 	"""
 	localPath = 'news/' + newsName + '.md'
-	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
+	url = Globals.GITHUB_MASTER_BASE_URL + 'news/' + quote(newsName) + '.md'
 	try:
 		if Globals.DEVELOPER_MODE and os.path.exists(localPath):
 			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3

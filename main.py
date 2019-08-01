@@ -83,7 +83,7 @@ if __name__ == "__main__":
 		# Use local `installData.json` if it's there (if cloned from github)
 		modList = common.getModList("installData.json", isURL=False)
 	else:
-		modList = common.getModList("https://raw.githubusercontent.com/07th-mod/python-patcher/master/installData.json", isURL=True)
+		modList = common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
 
 	subModconfigList = []
 	for mod in modList:
