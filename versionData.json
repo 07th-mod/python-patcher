@@ -156,7 +156,18 @@
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"}
 		]
+	},
+	{
+		"id" : "Umineko Tsubasa/full",
+		"files":[
+			{"id": "mod",                    "version": "1.0.0"}
+		]
+	},
+	{
+		"id" : "Umineko Hane/full",
+		"files":[
+			{"id": "mod",                    "version": "1.0.0"}
+		]
 	}
-
 ]
 
