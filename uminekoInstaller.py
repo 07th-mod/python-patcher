@@ -79,7 +79,7 @@ def mainUmineko(conf):
 		localVersionFilePath=os.path.join(conf.installPath, "installedVersionData.txt"))
 
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
-	print("Perform Full Install: {}".format(fileVersionManager.performFullInstall()))
+	print("Perform Full Install: {}".format(fileVersionManager.fullUpdateRequired()))
 	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
@@ -108,7 +108,7 @@ def mainUmineko(conf):
 	###################### Backup/clear the .exe and script files, and old graphics ####################################
 	backupOrRemoveFiles(conf.installPath)
 
-	if fileVersionManager.performFullInstall():
+	if fileVersionManager.fullUpdateRequired():
 		# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
 		graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
 

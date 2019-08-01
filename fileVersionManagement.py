@@ -71,7 +71,7 @@ class VersionManager:
 			if not needsUpdate:
 				self.fullUpdate = False
 
-	def performFullInstall(self):
+	def fullUpdateRequired(self):
 		return self.fullUpdate
 
 	def getFilesRequiringUpdate(self):

@@ -376,7 +376,8 @@ def getDownloadPreview(fullInstallConfig):
 			totalDownload += downloadSize
 
 	# The last row is the total download size of all the
-	downloadItemsPreview.append(("Total Download Size", totalDownload, None, ''))
+	updateTypeString = 'Update Type: {}'.format('Full Update' if fileVersionManager.fullUpdateRequired() else 'Partial Update')
+	downloadItemsPreview.append(("Total Download Size", totalDownload, None, updateTypeString))
 
 	# Convert the size in bytes to a nicely formatted string
 	downloadItemsPreview = [(row[0], common.prettyPrintFileSize(row[1]), row[2], row[3]) for row in
