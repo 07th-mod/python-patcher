@@ -83,6 +83,10 @@ class VersionManager:
 
 	# When install starts, mark which submod is attempted to be installed
 	def saveVersionInstallStarted(self):
+		if self.localVersionInfo is None:
+			print("VersionManager: Not saving local version info as this is the 'first' install")
+			return
+
 		self.localVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	# When install finishes, copy the remoteVersionInfo
