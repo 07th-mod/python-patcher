@@ -345,16 +345,3 @@ class TestSubModVersion(unittest.TestCase):
 				print(message)
 
 		logger.setGlobalLogger(DummyLogger())
-
-	# def setUp(self):
-		# sys.stdout = logger.Logger("python_patcher_tests_logs.txt")
-		# logger.setGlobalLogger(sys.stdout)
-		# sys.stderr = logger.StdErrRedirector(sys.stdout)
-		#unittest.main()
-
-#
-# if __name__ == '__main__':
-# 	sys.stdout = logger.Logger("python_patcher_tests_logs.txt")
-# 	logger.setGlobalLogger(sys.stdout)
-# 	sys.stderr = logger.StdErrRedirector(sys.stdout)
-# 	unittest.main()
