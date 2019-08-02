@@ -426,12 +426,7 @@ class InstallerGUI:
 			print(errorMessage)
 
 		if validateOnly:
-			if fullInstallConfigs:
-				fullInstallConfig = fullInstallConfigs[0]
-
-				return True, fullInstallConfig
-			else:
-				return False, ''
+			return (True, fullInstallConfigs[0]) if fullInstallConfigs else (False, '')
 		else:
 			if not fullInstallConfigs:
 				raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
@@ -469,7 +464,7 @@ class InstallerGUI:
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
 
-		return True, fullInstallSettings
+		return (True, fullInstallSettings)
 
 	# An example of how this class can be used.
 	def server_test(self):
