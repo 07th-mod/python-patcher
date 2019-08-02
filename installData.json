@@ -32,7 +32,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
@@ -42,7 +42,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
@@ -82,7 +82,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
@@ -92,7 +92,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
@@ -143,7 +143,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
@@ -153,7 +153,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
@@ -203,7 +203,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
@@ -213,7 +213,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
@@ -264,7 +264,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
@@ -274,7 +274,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
@@ -314,7 +314,7 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default BGM", "description": "Use the default Background Music"},
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
 							"data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
@@ -324,7 +324,7 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
 							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
@@ -416,7 +416,7 @@
 							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
-						{"name": "No BGM Changes", "description": "Use the default Background Music"}
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"}
 					]
 				},
 				{
@@ -501,7 +501,7 @@
 							"name": "Restore and Repair BGM", "description": "Restores uncensored system0.ogg BGM and repairs damaged kuina.ogg at 53 second mark",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
-						{"name": "No BGM Changes", "description": "Use the default Background Music"}
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"}
 					]
 				},
 				{
