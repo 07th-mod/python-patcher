@@ -94,14 +94,14 @@ function setInstallStartedAndBeginPolling() {
 // If the install starts successfully, a interval timer wil call
 // the statusUpdate() function every 1s. Otherwise, the user is notified
 // that the install failed to start.
-function startInstall(subModToInstall, installPath) {
+function startInstall(subModToInstall, installPath, deleteVersionInformation) {
   if (app.installStarted) {
     alert("Installer is already running!");
     return;
   }
 
   doPost('startInstall',
-    { subMod: subModToInstall, installPath },
+    { subMod: subModToInstall, installPath, deleteVersionInformation: deleteVersionInformation === true },
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
@@ -156,10 +156,10 @@ window.onload = function onWindowLoaded() {
       numUpdatesRequired: 0,
     },
     methods: {
-      doInstall() {
+      doInstall(deleteVersionInformation) {
         console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
         console.log(app.selectedSubMod);
-        startInstall(app.selectedSubMod, app.selectedInstallPath);
+        startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
       },
       onChoosePathButtonClicked(pathToInstall) {
         if (pathToInstall === undefined) {
@@ -218,8 +218,10 @@ window.onload = function onWindowLoaded() {
           }
         }
       },
-      deleteVersionInformation() {
-        app.validateInstallPath(true);
+      askPerformFullInstall() {
+        if (confirm('Are you sure you want to perform a full re-install?')) {
+          app.doInstall(true);
+        }
       },
     },
     computed: {
