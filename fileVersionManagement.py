@@ -71,6 +71,7 @@ class VersionManager:
 		updatesRequiredList = self.updatesRequiredDict.values()
 		self.totalNumUpdates = len(updatesRequiredList)
 		self.numUpdatesRequired = sum([needsUpdate for (needsUpdate, _) in updatesRequiredList])
+		print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
 
 	def fullUpdateRequired(self):
 		return self.numUpdatesRequired == self.totalNumUpdates

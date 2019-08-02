@@ -91,8 +91,6 @@ class Installer:
 				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
 			)
 
-		self.fullUpdateRequired = self.fileVersionManager.fullUpdateRequired()
-
 		self.downloaderAndExtractor.printPreview()
 
 	def backupUI(self):
@@ -121,7 +119,7 @@ class Installer:
 			traceback.print_exc()
 
 		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
-		if self.fullUpdateRequired:
+		if self.fileVersionManager.fullUpdateRequired():
 			print("Full Update Detected: Deleting old CG and CGAlt folders")
 			try:
 				if path.isdir(oldCG):
