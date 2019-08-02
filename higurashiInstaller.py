@@ -91,6 +91,8 @@ class Installer:
 				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
 			)
 
+		self.fullUpdateRequired = self.fileVersionManager.fullUpdateRequired()
+
 		self.downloaderAndExtractor.printPreview()
 
 	def backupUI(self):
@@ -118,19 +120,22 @@ class Installer:
 			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
 			traceback.print_exc()
 
-		try:
-			if path.isdir(oldCG):
-				forceRmTree(oldCG)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
-			traceback.print_exc()
+		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
+		if self.fullUpdateRequired:
+			print("Full Update Detected: Deleting old CG and CGAlt folders")
+			try:
+				if path.isdir(oldCG):
+					forceRmTree(oldCG)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
+				traceback.print_exc()
 
-		try:
-			if path.isdir(oldCGAlt):
-				forceRmTree(oldCGAlt)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
-			traceback.print_exc()
+			try:
+				if path.isdir(oldCGAlt):
+					forceRmTree(oldCGAlt)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
+				traceback.print_exc()
 
 	def download(self):
 		self.downloaderAndExtractor.download()
