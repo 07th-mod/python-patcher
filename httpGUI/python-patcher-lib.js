@@ -154,6 +154,8 @@ window.onload = function onWindowLoaded() {
       downloadItemsPreview: [],
       // The number of updated files detected, EXCEPT for mod options
       numUpdatesRequired: 0,
+      // Whether all the files need to be re-installed, or just part of the files. Mod options are not counted.
+      fullUpdateRequired: true,
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -205,6 +207,7 @@ window.onload = function onWindowLoaded() {
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
             app.downloadItemsPreview = responseData.downloadItemsPreview;
             app.numUpdatesRequired = responseData.numUpdatesRequired;
+            app.fullUpdateRequired = responseData.fullUpdateRequired;
           });
       },
       updateAndValidateInstallSettings(newPath) {

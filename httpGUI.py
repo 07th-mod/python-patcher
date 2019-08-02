@@ -385,7 +385,7 @@ def getDownloadPreview(fullInstallConfig):
 	                         row[2],
 	                         row[3]) for row in downloadItemsPreview]
 
-	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired
+	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired()
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
@@ -573,7 +573,7 @@ class InstallerGUI:
 					if deleteVersionInformation:
 						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
 
-					downloadItemsPreview, totalDownloadSize, numUpdatesRequired = getDownloadPreview(fullInstallConfiguration)
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired = getDownloadPreview(fullInstallConfiguration)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
@@ -584,6 +584,7 @@ class InstallerGUI:
 					retval['freeSpaceAdvisoryString'] = freeSpaceAdvisoryString
 					retval['downloadItemsPreview'] = downloadItemsPreview
 					retval['numUpdatesRequired'] = numUpdatesRequired
+					retval['fullUpdateRequired'] = fullUpdateRequired
 				return retval
 
 			# requestData: Not necessary - will be ignored
