@@ -380,8 +380,10 @@ def getDownloadPreview(fullInstallConfig):
 	downloadItemsPreview.append(("Total Download Size", totalDownload, None, updateTypeString))
 
 	# Convert the size in bytes to a nicely formatted string
-	downloadItemsPreview = [(row[0], common.prettyPrintFileSize(row[1]), row[2], row[3]) for row in
-	                        downloadItemsPreview]
+	downloadItemsPreview = [(row[0],
+	                         'N/A' if row[1] is None else common.prettyPrintFileSize(row[1]),
+	                         row[2],
+	                         row[3]) for row in downloadItemsPreview]
 
 	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired
 
