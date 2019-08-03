@@ -12,7 +12,7 @@ import tempfile
 import webbrowser
 
 import commandLineParser
-import gameScanner
+import installConfiguration
 
 try:
 	"".decode("utf-8")
@@ -42,7 +42,7 @@ except ImportError:
 	SSL_VERSION_IS_OLD = True
 
 try:
-	from typing import Optional, List, Tuple
+	from typing import Optional, List, Tuple, Dict
 except:
 	pass
 
@@ -87,7 +87,7 @@ def printErrorMessage(text):
 
 ################################################## Global Variables#####################################################
 class Globals:
-	githubMasterBaseURL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
+	GITHUB_MASTER_BASE_URL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
 	JSON_VERSION = 4
@@ -116,6 +116,7 @@ class Globals:
 
 	LOGS_ZIP_FILE_PATH = "07th-mod-logs.zip"
 
+	# Set to 'True' in main.py if installData.json is detected on disk
 	DEVELOPER_MODE = False
 
 	BUILD_INFO = 'Build info not yet retrieved'
@@ -124,6 +125,8 @@ class Globals:
 	IS_PYTHON_2 = sys.version_info.major == 2
 
 	DOWNLOAD_TO_EXTRACTION_SCALING = 2.5
+
+	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
 	@staticmethod
 	def scanForExecutables():
@@ -140,6 +143,13 @@ class Globals:
 			# TODO: automatically download and install dependencies
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 			exitWithError()
+
+	@staticmethod
+	def loadCachedDownloadSizes():
+		try:
+			Globals.URL_FILE_SIZE_LOOKUP_TABLE, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+		except:
+			print("Failed to read URL File Size Lookup Table")
 
 	@staticmethod
 	def getBuildInfo():
@@ -330,7 +340,7 @@ def tryGetRemoteNews(newsName):
 	:return:
 	"""
 	localPath = 'news/' + newsName + '.md'
-	url = Globals.githubMasterBaseURL + 'news/' + quote(newsName) + '.md'
+	url = Globals.GITHUB_MASTER_BASE_URL + 'news/' + quote(newsName) + '.md'
 	try:
 		if Globals.DEVELOPER_MODE and os.path.exists(localPath):
 			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3
@@ -363,7 +373,40 @@ def getDonationStatus():
 
 	return None, None
 
-def getModList(jsonURL):
+def getJSON(jsonURI, isURL):
+	#type: (str, bool) -> (Dict, Exception)
+	"""
+
+	:param jsonURI: Path to a file or URL to download
+	:param isURL: Specify whether the URI is for a URL or path
+	:return: 
+	"""
+	tmpdir = None
+	try:
+		if isURL:
+			if not SSL_VERSION_IS_OLD:
+				file = urlopen(Request(jsonURI, headers={"User-Agent": ""}))
+			else:
+				tmpdir = tempfile.mkdtemp()
+				if aria(url=jsonURI, downloadDir=tmpdir, outputFile="info.json") != 0:
+					return None, Exception("ERROR - could not download modList [{}]. Installation Stopped")
+
+				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
+		else:
+			file = io.open(jsonURI, "r", encoding='utf-8')
+	except HTTPError as error:
+		return None, error
+	except Exception as anyError:
+		return None, anyError
+
+	info = json.load(file, encoding='utf-8')
+	file.close()
+	if tmpdir:
+		shutil.rmtree(tmpdir)
+
+	return info, None
+
+def getModList(jsonURI, isURL):
 	"""
 	Gets the list of available mods from the 07th Mod server
 
@@ -376,26 +419,10 @@ def getModList(jsonURL):
 		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
 		exitWithError()
 
-	tmpdir = None
-	try:
-		if jsonURL[0:4] == "http":
-			if not SSL_VERSION_IS_OLD:
-				file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
-			else:
-				tmpdir = tempfile.mkdtemp()
-				if aria(url=jsonURL, downloadDir=tmpdir, outputFile="info.json") != 0:
-					errorHandler(Exception("ERROR - could not download modList [{}]. Installation Stopped"))
+	info, exception = getJSON(jsonURI, isURL)
+	if info is None:
+		errorHandler(exception)
 
-				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
-		else:
-			file = io.open(jsonURL, "r", encoding='utf-8')
-	except HTTPError as error:
-		errorHandler(error)
-
-	info = json.load(file, encoding='utf-8')
-	file.close()
-	if tmpdir:
-		shutil.rmtree(tmpdir)
 	try:
 		version = info["version"]
 		if version > Globals.JSON_VERSION:
@@ -473,15 +500,25 @@ def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFil
 		except shutil.SameFileError:
 			print("Source and Destination are the same [{}]. No action taken.".format(sourcePath))
 
-def prettyPrintFileSize(fileSizeBytes):
+def prettyPrintFileSize(fileSizeBytesWithSign):
 	#type: (int) -> str
 
+	fileSizeBytes = fileSizeBytesWithSign
+	sign = ''
+
+	if fileSizeBytesWithSign < 0:
+		fileSizeBytes = -fileSizeBytesWithSign
+		sign = '-'
+
 	if fileSizeBytes >= 1e9:
-		return "{:.2f}".format(fileSizeBytes / 1e9).strip('0').strip('.') + ' GB'
+		return "{}{:.2f}".format(sign, fileSizeBytes / 1e9).strip('0').strip('.') + ' GB'
 	elif fileSizeBytes >= 1e6:
-		return "{:.2f}".format(fileSizeBytes / 1e6).strip('0').strip('.') + ' MB'
+		return "{}{:.2f}".format(sign, fileSizeBytes / 1e6).strip('0').strip('.') + ' MB'
+	elif fileSizeBytes > 0:
+		return "{}{:.2f}".format(sign, fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
 	else:
-		return "{:.2f}".format(fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
+		return "0 KB"
+
 
 class DownloaderAndExtractor:
 	"""
@@ -534,7 +571,7 @@ class DownloaderAndExtractor:
 			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
 
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
-		# type: ([gameScanner.ModFile], str, str, int, int) -> None
+		# type: (List[installConfiguration.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.defaultExtractionDir = extractionDir
@@ -548,11 +585,13 @@ class DownloaderAndExtractor:
 		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
 	def buildDownloadAndExtractionList(self):
+		#type: () -> None
 		"""
 		This function fills in the self.downloadList and self.extractList lists, based on the self.modFileList
 		If there are existing values in the self.downloadList or self.extractList, they are retained
 		:return:
 		"""
+
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
@@ -756,7 +795,7 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 		print("Free Disk Space query failed - probably using Python 2")
 		pass
 
-	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space".format(recommendedFreeSpaceString)
+	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space for extraction and temporary files.".format(recommendedFreeSpaceString)
 	haveEnoughFreeSpace = None
 
 	if free_space is not None:

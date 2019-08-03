@@ -3,12 +3,15 @@ from __future__ import unicode_literals
 import commandLineParser
 import common
 import os
+
+import fileVersionManagement
 import gameScanner
+import installConfiguration
 import logger
 
 #do install given a installer config object
 def main(conf):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 	logger.getGlobalLogger().trySetSecondaryLoggingPath(
 		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
 	)
@@ -39,10 +42,17 @@ def main(conf):
 	common.makeDirsExistOK(downloadTempDir)
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	fileVersionManager = fileVersionManagement.VersionManager(
+		subMod=conf.subModConfig,
+		modFileList=conf.buildFileListSorted(),
+		localVersionFolder=conf.installPath)
+
+	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
+
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
-	parser = gameScanner.ModOptionParser(conf)
+	parser = installConfiguration.ModOptionParser(conf)
 
 	for opt in parser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(
@@ -51,7 +61,20 @@ def main(conf):
 		)
 
 	downloaderAndExtractor.printPreview()
+
+	# Download files
+	# Delete all non-checksummed files from the download folder, if they exist
+	for extractableItem in downloaderAndExtractor.extractList:
+		extractableItemPath = os.path.join(downloadTempDir, extractableItem.filename)
+		if not extractableItem.fromMetaLink and os.path.exists(extractableItemPath):
+			print("Removing existing non-checksummed download: [{}]".format(extractableItemPath))
+			os.remove(extractableItemPath)
+
 	downloaderAndExtractor.download()
+
+	# Extract files
+	fileVersionManager.saveVersionInstallStarted()
 	downloaderAndExtractor.extract()
 
+	fileVersionManager.saveVersionInstallFinished()
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko Hane install script completed!")

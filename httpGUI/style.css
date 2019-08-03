@@ -147,6 +147,14 @@ body {
     padding: 15px;
 }
 
+.umineko-image-table-content tr.inactive {
+    background-color: lightgray;
+}
+
+.umineko-image-table-content tr.active {
+    background-color: lightgreen;
+}
+
 /* From https://www.w3schools.com/howto/howto_js_snackbar.asp
 Bootstrap 4 has native notifications, but the theme uses Bootstrap 3.3
 The snackbar - position it at the bottom and in the middle of the screen */
@@ -162,4 +170,9 @@ The snackbar - position it at the bottom and in the middle of the screen */
     z-index: 1; /* Add a z-index if needed */
     left: 50%; /* Center the snackbar */
     bottom: 30px; /* 30px from the bottom */
+}
+
+.button-small {
+    padding-left: 5px;
+    padding-right: 5px;
 }

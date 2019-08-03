@@ -8,7 +8,9 @@ import common
 import os, os.path as path, shutil, subprocess, glob, stat
 
 ########################################## Installer Functions  and Classes ############################################
+import fileVersionManagement
 import gameScanner
+import installConfiguration
 import logger
 
 
@@ -33,7 +35,7 @@ def forceRmTree(path):
 
 class Installer:
 	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory):
-		# type: (gameScanner.FullInstallConfiguration, bool) -> None
+		# type: (installConfiguration.FullInstallConfiguration, bool) -> None
 
 		"""
 		Installer Init
@@ -69,13 +71,19 @@ class Installer:
 		self.downloadDir = self.info.subModConfig.modName + " Downloads"
 		self.extractDir = self.directory if extractDirectlyToGameDirectory else (self.info.subModConfig.modName + " Extraction")
 
-		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
+		self.fileVersionManager = fileVersionManagement.VersionManager(
+			subMod=self.info.subModConfig,
+			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
+			localVersionFolder=self.directory)
+
+		modFileList = self.fileVersionManager.getFilesRequiringUpdate()
+		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		parser = gameScanner.ModOptionParser(self.info)
+		parser = installConfiguration.ModOptionParser(self.info)
 
 		for opt in parser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
@@ -110,19 +118,22 @@ class Installer:
 			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
 			traceback.print_exc()
 
-		try:
-			if path.isdir(oldCG):
-				forceRmTree(oldCG)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
-			traceback.print_exc()
+		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
+		if self.fileVersionManager.fullUpdateRequired():
+			print("Full Update Detected: Deleting old CG and CGAlt folders")
+			try:
+				if path.isdir(oldCG):
+					forceRmTree(oldCG)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] directory'.format(oldCG))
+				traceback.print_exc()
 
-		try:
-			if path.isdir(oldCGAlt):
-				forceRmTree(oldCGAlt)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
-			traceback.print_exc()
+			try:
+				if path.isdir(oldCGAlt):
+					forceRmTree(oldCGAlt)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
+				traceback.print_exc()
 
 	def download(self):
 		self.downloaderAndExtractor.download()
@@ -209,24 +220,33 @@ class Installer:
 			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
+	def saveFileVersionInfoStarted(self):
+		self.fileVersionManager.saveVersionInstallStarted()
+
+	def saveFileVersionInfoFinished(self):
+		self.fileVersionManager.saveVersionInstallFinished()
+
 def main(fullInstallConfiguration):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 
 	# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
 	if common.Globals.IS_WINDOWS:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
 		print("Downloading...")
 		installer.download()
+		installer.saveFileVersionInfoStarted()
 		installer.backupUI()
 		installer.cleanOld()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False)
 		print("Downloading...")
 		installer.download()
+		installer.saveFileVersionInfoStarted()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
@@ -234,6 +254,7 @@ def main(fullInstallConfiguration):
 		installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")

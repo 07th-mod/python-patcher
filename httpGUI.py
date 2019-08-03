@@ -12,10 +12,11 @@ import common
 import traceback
 import threading
 
+import fileVersionManagement
 import gameScanner
 import commandLineParser
 import logger
-from gameScanner import SubModConfig
+import installConfiguration
 
 try:
 	import urlparse
@@ -331,6 +332,7 @@ def modOptionsToWebFormat(modOptions):
 
 def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
+	# Clear all mod options to "off" before enabling the ones which the user set.
 	for modOption in modOptions.values():
 		modOption.value = False
 
@@ -341,6 +343,49 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 
 		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
 			modOptions[checkBoxID].value = True
+
+def getDownloadPreview(fullInstallConfig):
+	####### Preview which files are going to be downloaded #######
+	# Higurashi installer needs datadirectory set to determine unity version
+	dataDirectory = os.path.join(fullInstallConfig.installPath,
+	                             "Contents/Resources/Data" if common.Globals.IS_MAC else fullInstallConfig.subModConfig.dataName)
+
+	modFileList = fullInstallConfig.buildFileListSorted(
+		datadir=dataDirectory)  # type: List[installConfiguration.ModFile]
+	fileVersionManager = fileVersionManagement.VersionManager(
+		subMod=fullInstallConfig.subModConfig,
+		modFileList=modFileList,
+		localVersionFolder=fullInstallConfig.installPath)
+
+	# Generate rows for the normal/overridden files
+	totalDownload = 0
+	downloadItemsPreview = []
+	for modFile in modFileList:
+		updateNeeded, updateReason = fileVersionManager.updatesRequiredDict[modFile.id]
+		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(modFile.url)
+		downloadItemsPreview.append((modFile.id, downloadSize, updateNeeded, updateReason))
+		if updateNeeded and downloadSize:
+			totalDownload += downloadSize
+
+	# Generate rows for the mod option files
+	parser = installConfiguration.ModOptionParser(fullInstallConfig)
+	for option in parser.downloadAndExtractOptionsByPriority:
+		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(option.url)
+		downloadItemsPreview.append((option.name, downloadSize, True, 'Mod options are always downloaded'))
+		if downloadSize:
+			totalDownload += downloadSize
+
+	# The last row is the total download size of all the
+	updateTypeString = 'Update Type: {}'.format('Full Update' if fileVersionManager.fullUpdateRequired() else 'Partial Update')
+	downloadItemsPreview.append(("Total Download Size", totalDownload, None, updateTypeString))
+
+	# Convert the size in bytes to a nicely formatted string
+	downloadItemsPreview = [(row[0],
+	                         'N/A' if row[1] is None else common.prettyPrintFileSize(row[1]),
+	                         row[2],
+	                         row[3]) for row in downloadItemsPreview]
+
+	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired()
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
@@ -355,8 +400,8 @@ class InstallerGUI:
 		"""
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
-		self.allSubModConfigs = allSubModConfigs # type: List[SubModConfig]
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, SubModConfig]
+		self.allSubModConfigs = allSubModConfigs # type: List[installConfiguration.SubModConfig]
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, installConfiguration.SubModConfig]
 		self.messageBuffer = []
 		self.threadHandle = None # type: Optional[threading.Thread]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
@@ -366,7 +411,7 @@ class InstallerGUI:
 
 	# TODO: this function should return an error message describing why the install couldn't be started
 	def try_start_install(self, subMod, installPath, validateOnly):
-		#type: (SubModConfig, str, bool) -> (bool, gameScanner.FullInstallConfiguration)
+		#type: (installConfiguration.SubModConfig, str, bool) -> (bool, installConfiguration.FullInstallConfiguration)
 		import higurashiInstaller
 		import uminekoInstaller
 		import uminekoNScripterInstaller
@@ -507,6 +552,7 @@ class InstallerGUI:
 				webModOptionGroups = webSubModHandle['modOptionGroups']
 				id = webSubModHandle['id']
 				validateOnly = requestData.get('validateOnly', False)
+				deleteVersionInformation = requestData.get('deleteVersionInformation', False)
 
 				subMod = self.idToSubMod[id]
 
@@ -519,11 +565,21 @@ class InstallerGUI:
 				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
 				retval = { 'installStarted': installValid }
 				if installValid:
-					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
-					retval['haveEnoughFreeSpace'], retval['freeSpaceAdvisoryString'] = common.checkFreeSpace(
+					if deleteVersionInformation:
+						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
+
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired = getDownloadPreview(fullInstallConfiguration)
+					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
-						recommendedFreeSpaceBytes = subMod.downloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
+						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
 					)
+
+					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
+					retval['haveEnoughFreeSpace'] = haveEnoughFreeSpace
+					retval['freeSpaceAdvisoryString'] = freeSpaceAdvisoryString
+					retval['downloadItemsPreview'] = downloadItemsPreview
+					retval['numUpdatesRequired'] = numUpdatesRequired
+					retval['fullUpdateRequired'] = fullUpdateRequired
 				return retval
 
 			# requestData: Not necessary - will be ignored

@@ -6,6 +6,8 @@ import subprocess
 import sys
 import datetime
 
+import cacheDownloadSizes
+
 BUILD_LINUX_MAC = True
 if len(sys.argv) == 2:
 	if "win" in sys.argv[1].lower():
@@ -46,13 +48,33 @@ def tar_gz(input_path, output_filename: str):
 
 print("\nTravis python build script started\n")
 
+print("Generating Cached Download Sizes File")
+cacheDownloadSizes.generateCachedDownloadSizes()
+
 # first, copy the files we want into a staging folder
 staging_folder = 'travis_installer_staging'
 output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
 
 # No wildcards allowed in these paths to be ignored
-ignore_paths = [staging_folder, output_folder, bootstrap_copy_folder, 'JSONValidator', 'installData.json', 'httpGUI/node_modules', 'bootstrap', '.git', '.idea', '.gitignore', '.travis.yml', '__pycache__', 'news', 'install_loader']
+ignore_paths = [
+	staging_folder,
+	output_folder,
+	bootstrap_copy_folder,
+	'JSONValidator',
+	'installData.json',
+	'versionData.json',
+	'httpGUI/node_modules',
+	'bootstrap',
+	'.git',
+	'.idea',
+	'.gitignore',
+	'.travis.yml',
+	'__pycache__',
+	'news',
+	'install_loader',
+	'installerTests',
+]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
 def ignore_filter(folderPath, folderContents):

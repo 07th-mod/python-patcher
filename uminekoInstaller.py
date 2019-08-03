@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 import commandLineParser
 import common
 import os, shutil, subprocess, hashlib
+
+import fileVersionManagement
 import gameScanner
+import installConfiguration
 import logger
 
 def backupOrRemoveFiles(folderToBackup):
@@ -39,7 +42,7 @@ def backupOrRemoveFiles(folderToBackup):
 
 #do install given a installer config object
 def mainUmineko(conf):
-	# type: (gameScanner.FullInstallConfiguration) -> None
+	# type: (installConfiguration.FullInstallConfiguration) -> None
 	logger.getGlobalLogger().trySetSecondaryLoggingPath(
 		os.path.join(conf.installPath, common.Globals.LOG_BASENAME)
 	)
@@ -87,11 +90,18 @@ def mainUmineko(conf):
 
 	common.makeDirsExistOK(downloadTempDir)
 
-	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
-	downloaderAndExtractor = common.DownloaderAndExtractor(conf.buildFileListSorted(), downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	######################################## Query and Download Files ##################################################
+	fileVersionManager = fileVersionManagement.VersionManager(
+		subMod=conf.subModConfig,
+		modFileList=conf.buildFileListSorted(),
+		localVersionFolder=conf.installPath)
+
+	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
+	print("Perform Full Install: {}".format(fileVersionManager.fullUpdateRequired()))
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
-	parser = gameScanner.ModOptionParser(conf)
+	parser = installConfiguration.ModOptionParser(conf)
 
 	for opt in parser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(
@@ -110,20 +120,25 @@ def mainUmineko(conf):
 
 	downloaderAndExtractor.download()
 
-	# Backup/clear the .exe and script files
+	# Treat the install as "started" once the "download" stage is complete
+	fileVersionManager.saveVersionInstallStarted()
+
+	###################### Backup/clear the .exe and script files, and old graphics ####################################
 	backupOrRemoveFiles(conf.installPath)
 
-	# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
-	graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
+	if fileVersionManager.fullUpdateRequired():
+		# Remove old graphics from a previous installation, as they can conflict with the voice-only patch
+		graphicsPathsToDelete = [os.path.join(conf.installPath, x) for x in ['big', 'bmp', 'en']]
 
-	for folderPath in graphicsPathsToDelete:
-		if os.path.exists(folderPath):
-			print("Deleting {}".format(folderPath))
-			try:
-				shutil.rmtree(folderPath)
-			except:
-				print("WARNING: failed to remove folder {}".format(folderPath))
+		for folderPath in graphicsPathsToDelete:
+			if os.path.exists(folderPath):
+				print("Deleting {}".format(folderPath))
+				try:
+					shutil.rmtree(folderPath)
+				except:
+					print("WARNING: failed to remove folder {}".format(folderPath))
 
+	######################################## Extract Archives ##########################################################
 	downloaderAndExtractor.extract()
 
 	############################################# FIX .ARC FILE NAMING #################################################
@@ -173,5 +188,7 @@ def mainUmineko(conf):
 		f.writelines(["mklink saves mysav /J\n", "pause"])
 
 	# For now, don't copy save data
+
+	fileVersionManager.saveVersionInstallFinished()
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")

@@ -192,7 +192,7 @@
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<hr>
-												<h5>This mod variant will download approximately <strong>{{ selectedSubMod.downloadSize }}</strong> of data.
+												<h5>This mod variant will download approximately <strong>{{ selectedSubMod.downloadSize }}</strong> of data, when installing from scratch.<br>
 													You need at least <strong>{{  selectedSubMod.extractSize }}</strong> of free disk space for extraction and temporary files.
 												</h5>
 												<!-- Show the appropriate description depending on the descriptionID -->
@@ -372,7 +372,7 @@
 														<!-- If path was detected automatically, then don't show other path selection options unless asked -->
 														<div v-else>
 															<div v-if="installPathValid" style="color: green"><strong>Game was autodetected at: {{ validatedInstallPath }} ✓</strong></div>
-															<button v-on:click="showPathSelectionButtons = true">Choose a different path</button>
+															<button class="button-small" v-on:click="showPathSelectionButtons = true">Choose a different path</button>
 														</div>
 													</ul>
 												</div>
@@ -423,16 +423,47 @@
 																</div>
 															</div>
 															<br>
+															<strong>Files to be downloaded</strong><br>
+															<table class="umineko-image-table-content">
+																<thead>
+																	<tr>
+																		<th style="width: 50px">DL</th>
+																		<th style="width: 150px">File Name</th>
+																		<th style="width: 100px">File Size</th>
+																		<th style="width: 100%">Update Reason</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr v-for="fileInfo in downloadItemsPreview"
+																	v-bind:class="{ active: fileInfo[2] === true, inactive: fileInfo[2] === false }">
+																		<td v-if="fileInfo[2] === null"></td>
+																		<td v-if="fileInfo[2] === true">✓</td>
+																		<td v-if="fileInfo[2] === false">—</td>
+																		<td>{{ fileInfo[0] }}</td>
+																		<td>{{ fileInfo[1] }}</td>
+																		<td>{{ fileInfo[3] }}</td>
+																	</tr>
+																</tbody>
+															</table>
 															<strong>
+																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
 																<div v-if="haveEnoughFreeSpace === null" class="alert alert-warning">{{ freeSpaceAdvisoryString }}</div>
 																<div v-else-if="haveEnoughFreeSpace" class="alert alert-success" role="alert">{{ freeSpaceAdvisoryString }}</div>
 																<div v-else-if="!haveEnoughFreeSpace" class="alert alert-danger" role="alert">{{ freeSpaceAdvisoryString }}</div>
 															</strong>
 														</div>
-														<ul class="tabs button-tabs">
-															<li><div class="tab-title" v-show="selectedSubMod!==null" v-on:click=doInstall()>
-																<span>Start the installation!</span>
+														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
+															<li><div class="tab-title" v-on:click=doInstall()>
+																<span v-if="fullUpdateRequired">Start the installation!</span>
+																<span v-else>Start Update!</span>
 															</div></li>
+														</ul>
+														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="padding-left: 50px">
+															<li>
+																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: red">
+																	<span>Force Full Re-install</span>
+																</div>
+															</li>
 														</ul>
 													</div>
 												</transition>

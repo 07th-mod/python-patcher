@@ -94,14 +94,14 @@ function setInstallStartedAndBeginPolling() {
 // If the install starts successfully, a interval timer wil call
 // the statusUpdate() function every 1s. Otherwise, the user is notified
 // that the install failed to start.
-function startInstall(subModToInstall, installPath) {
+function startInstall(subModToInstall, installPath, deleteVersionInformation) {
   if (app.installStarted) {
     alert("Installer is already running!");
     return;
   }
 
   doPost('startInstall',
-    { subMod: subModToInstall, installPath },
+    { subMod: subModToInstall, installPath, deleteVersionInformation: deleteVersionInformation === true },
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
@@ -150,12 +150,18 @@ window.onload = function onWindowLoaded() {
       // - false: There is not enough free space
       // - true: There is  enough free space on disk
       haveEnoughFreeSpace: null,
+      // The download items preview includes mod options, and an extra summary row at the end
+      downloadItemsPreview: [],
+      // The number of updated files detected, EXCEPT for mod options
+      numUpdatesRequired: 0,
+      // Whether all the files need to be re-installed, or just part of the files. Mod options are not counted.
+      fullUpdateRequired: true,
     },
     methods: {
-      doInstall() {
+      doInstall(deleteVersionInformation) {
         console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
         console.log(app.selectedSubMod);
-        startInstall(app.selectedSubMod, app.selectedInstallPath);
+        startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
       },
       onChoosePathButtonClicked(pathToInstall) {
         if (pathToInstall === undefined) {
@@ -183,16 +189,42 @@ window.onload = function onWindowLoaded() {
       renderMarkdown(markdownText) {
         return marked(markdownText, { sanitize: true });
       },
-      validateInstallPath() {
+      validateInstallPath(deleteVersionInformation) {
         // Just validate the install - don't actually start the installation
-        doPost('startInstall', { subMod: app.selectedSubMod, installPath: app.selectedInstallPath, validateOnly: true },
+        const args = {
+          subMod: app.selectedSubMod,
+          installPath: app.selectedInstallPath,
+          validateOnly: true,
+          deleteVersionInformation: deleteVersionInformation === true,
+        };
+
+        doPost('startInstall', args,
           (responseData) => {
             app.installPathValid = responseData.installStarted;
             app.validatedInstallPath = responseData.validatedInstallPath;
             app.validationInProgress = false;
             app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
+            app.downloadItemsPreview = responseData.downloadItemsPreview;
+            app.numUpdatesRequired = responseData.numUpdatesRequired;
+            app.fullUpdateRequired = responseData.fullUpdateRequired;
           });
+      },
+      updateAndValidateInstallSettings(newPath) {
+        if (newPath !== null) {
+          app.validationInProgress = true;
+          app.showConfirmation = true;
+          if (app.installPathFocussed) {
+            app.debouncedValidateInstallPath();
+          } else {
+            app.validateInstallPath();
+          }
+        }
+      },
+      askPerformFullInstall() {
+        if (confirm('Are you sure you want to perform a full re-install?')) {
+          app.doInstall(true);
+        }
       },
     },
     computed: {
@@ -237,15 +269,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
-        if (newPath !== null) {
-          app.validationInProgress = true;
-          app.showConfirmation = true;
-          if (app.installPathFocussed) {
-            app.debouncedValidateInstallPath();
-          } else {
-            app.validateInstallPath();
-          }
-        }
+        app.updateAndValidateInstallSettings(newPath);
       },
     },
     created() {
@@ -278,6 +302,11 @@ window.onload = function onWindowLoaded() {
       }
     });
   });
+
+  // When any properties of the selected submod and child properites change,
+  // need to update install settings / refresh download preview
+  app.$watch('selectedSubMod', () => { app.updateAndValidateInstallSettings(app.selectedInstallPath); }, { deep: true });
+
 };
 
 // Add a reminder not to close the window/refresh/navigate out if installer started.

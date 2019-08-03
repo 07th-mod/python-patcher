@@ -73,6 +73,8 @@ public struct FileOverrideDefinition: Codable {
 	/// This override will replace a file with the same name
 	/// - warning: It is an error to specify a name that is not in the `files` of the submod
 	public var name: String
+	/// A unique name across all "files" and "fileOverrides" in a submod. Use the convention "exe-linux", "exe-mac" for example.
+	public var id: String
 	/// The OSes this override should be applied on
 	public var os: [OS]
 	/// - If non-null, will apply to the game if they have the given Unity version (Higurashi only)
