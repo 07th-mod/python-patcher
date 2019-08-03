@@ -1,6 +1,10 @@
 .idea/misc.xml
 .idea/python-patcher.iml
 
+# Mod ignore folders
+INSTALLER_LOGS
+cachedDownloadSizes.json
+
 # Created by https://www.gitignore.io/api/macos,linux,python,windows,pycharm
 # Edit at https://www.gitignore.io/?templates=macos,linux,python,windows,pycharm
 

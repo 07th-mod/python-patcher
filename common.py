@@ -147,7 +147,17 @@ class Globals:
 	@staticmethod
 	def loadCachedDownloadSizes():
 		try:
-			Globals.URL_FILE_SIZE_LOOKUP_TABLE, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+			downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+			if Globals.DEVELOPER_MODE and downloadSizesDict is None:
+				print("Download size cache missing - rebuilding cache")
+				import cacheDownloadSizes
+				cacheDownloadSizes.generateCachedDownloadSizes()
+				downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+
+			if downloadSizesDict is None:
+				print("ERROR: Failed to retrieve cachedDownloadSizes.json file")
+			else:
+				Globals.URL_FILE_SIZE_LOOKUP_TABLE = downloadSizesDict
 		except:
 			print("Failed to read URL File Size Lookup Table")
 

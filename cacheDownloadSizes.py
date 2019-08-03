@@ -61,3 +61,7 @@ def generateCachedDownloadSizes():
 
 	with io.open('cachedDownloadSizes.json', 'w', encoding='utf-8') as file:
 		file.write(json.dumps(urlToFileSizeDict, indent=4, sort_keys=True))
+
+
+if __name__ == '__main__':
+	generateCachedDownloadSizes()
