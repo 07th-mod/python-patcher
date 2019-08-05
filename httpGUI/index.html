@@ -100,12 +100,12 @@
 								 fly in animation knows the approximate size of the tiles before the images have been loaded. 
 								I tried fixing this other ways but this seems the most foolproof.-->
 								<div class="image-tile inner-title hover-reveal text-center" 
-								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === subModExtraProperties[subMod.modName].dataFilter) }">
+								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === getSubModExtraProperties(subMod.modName).dataFilter) }">
 									<a v-on:click="nav(subMod.modName)">
-										<img v-bind:alt="subMod.modName" v-bind:src="subModExtraProperties[subMod.modName].img" height="168px">
+										<img v-bind:alt="subMod.modName" v-bind:src="getSubModExtraProperties(subMod.modName).img" height="168px">
 										<div class="title">
 											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
-											<span>{{ subModExtraProperties[subMod.modName].dataFilter }}</span>
+											<span>{{ getSubModExtraProperties(subMod.modName).dataFilter }}</span>
 										</div>
 									</a>
 								</div>

@@ -68,6 +68,12 @@ window.onload = function onWindowLoaded() {
       nav(gameName) {
         setModNameAndNavigate(gameName);
       },
+      getSubModExtraProperties(name) {
+        return _.get(this.subModExtraProperties, name, {
+          img: 'img/games/consolearcs.jpg',
+          dataFilter: 'Question Arcs',
+        });
+      }
     },
     computed: {
 
