@@ -90,7 +90,7 @@ class Globals:
 	GITHUB_MASTER_BASE_URL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
-	JSON_VERSION = 4
+	JSON_VERSION = 5
 
 	# Define constants used throughout the script. Use function calls to enforce variables as const
 	IS_WINDOWS = platform.system() == "Windows"
@@ -436,9 +436,11 @@ def getModList(jsonURI, isURL):
 	try:
 		version = info["version"]
 		if version > Globals.JSON_VERSION:
+			print("\n\n-------------------------------------------------------------------------------")
 			printErrorMessage("Your installer is out of date.")
 			printErrorMessage("Please download the latest version of the installer and try again.")
 			print("\nYour installer is compatible with mod listings up to version {} but the latest listing is version {}".format(Globals.JSON_VERSION, version))
+			print("-------------------------------------------------------------------------------\n")
 			exitWithError()
 	except KeyError:
 		print("Warning: The mod info listing is missing a version number.  Things might not work.")

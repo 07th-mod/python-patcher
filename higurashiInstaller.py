@@ -134,6 +134,8 @@ class Installer:
 			except Exception:
 				print('WARNING: Failed to clean up the [{}] directory'.format(oldCGAlt))
 				traceback.print_exc()
+		else:
+			print("Not cleaning oldCG/oldCGAlt as performing Partial Update")
 
 	def download(self):
 		self.downloaderAndExtractor.download()
@@ -229,14 +231,19 @@ class Installer:
 def main(fullInstallConfiguration):
 	# type: (installConfiguration.FullInstallConfiguration) -> None
 
+	isVoiceOnly = fullInstallConfiguration.subModConfig.subModName == 'voice-only'
+	if isVoiceOnly:
+		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
+
 	# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
 	if common.Globals.IS_WINDOWS:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
 		print("Downloading...")
 		installer.download()
 		installer.saveFileVersionInfoStarted()
-		installer.backupUI()
-		installer.cleanOld()
+		if not isVoiceOnly:
+			installer.backupUI()
+			installer.cleanOld()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
@@ -250,8 +257,9 @@ def main(fullInstallConfiguration):
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
-		installer.backupUI()
-		installer.cleanOld()
+		if not isVoiceOnly:
+			installer.backupUI()
+			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
 		installer.saveFileVersionInfoFinished()
