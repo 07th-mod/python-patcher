@@ -82,6 +82,13 @@
 		]
 	},
 	{
+		"id" : "Minagoroshi Ch.7/voice-only",
+		"files":[
+			{"id": "voices",              "version": "0.0.1"},
+			{"id": "script",              "version": "0.0.1"}
+		]
+	},
+	{
 		"id" : "Console Arcs/full",
 		"files":[
 			{"id": "cg",                  "version": "1.0.0"},

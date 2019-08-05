@@ -1,5 +1,5 @@
 {
-	"version": 4,
+	"version": 5,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -308,6 +308,48 @@
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
 						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=unix&unity=5.5.3p3"}
 					]
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
+							"data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
+							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Minagoroshi Ch.7",
+			"target": "Minagoroshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.7 Minagoroshi",
+			"dataname": "HigurashiEp07_Data",
+			"identifiers" : ["HigurashiEp07_Data", "HigurashiEp07.x86_64", "HigurashiEp07.exe"],
+			"submods": [
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"downloadSize": 0.5e9,
+					"files":[
+						{"name": "voices",  "url":"http://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z",    "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.1/Minagoroshi.Voice.Patch.v0.0.1.zip",             "priority": 5}
+					],
+					"fileOverrides" : []
 				}
 			],
 			"modOptionGroups": [
