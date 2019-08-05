@@ -359,7 +359,7 @@
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
-							"data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -369,7 +369,7 @@
 						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
-							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+							"data": { "url": "http://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				}
