@@ -133,6 +133,7 @@
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
 						{"name": "ui",     "id": "ui-windows-5.4.0f1", "os": ["windows"],      "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.4.0f1"},
+						{"name": "ui",     "id": "ui-windows-5.3.4p1", "os": ["windows"],      "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.4p1"},
 						{"name": "ui",     "id": "ui-windows-5.3.5f1", "os": ["windows"],      "unity": "5.3.5f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.5f1"},
 						{"name": "ui",     "id": "ui-unix-5.4.0f1",    "os": ["linux", "mac"], "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.4.0f1"},
 						{"name": "ui",     "id": "ui-unix-5.3.4.p1",   "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.3.4p1"}
