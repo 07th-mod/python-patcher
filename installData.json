@@ -348,7 +348,7 @@
 					"downloadSize": 0.5e9,
 					"files":[
 						{"name": "voices",  "url":"http://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z",    "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.1/Minagoroshi.Voice.Patch.v0.0.1.zip",             "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip",             "priority": 5}
 					],
 					"fileOverrides" : []
 				}
