@@ -187,7 +187,7 @@ window.onload = function onWindowLoaded() {
         doPost('troubleshoot', { action: 'openSaveFolder', subMod: subModToInstall, installPath }, () => {});
       },
       renderMarkdown(markdownText) {
-        return marked(markdownText, { sanitize: true });
+        return marked(markdownText, { sanitize: true, breaks: true });
       },
       validateInstallPath(deleteVersionInformation) {
         // Just validate the install - don't actually start the installation

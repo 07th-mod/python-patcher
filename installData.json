@@ -468,11 +468,11 @@
 					"radio": [
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
-							"name": "Pachinko Sprites", "description": "* The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n * An additional 550MB of download is required.\n * Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Ryukishi Sprites", "description": "* The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n * An additional 550MB of download is required.\n * Please note that some scenes may still show the PS3 sprites.",
+							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -553,11 +553,11 @@
 					"radio": [
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
-							"name": "Pachinko Sprites", "description": "* The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n * An additional 550MB of download is required.\n * Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
 							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Ryukishi Sprites", "description": "* The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n * An additional 550MB of download is required.\n * Please note that some scenes may still show the PS3 sprites.",
+							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
 							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Potato.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]

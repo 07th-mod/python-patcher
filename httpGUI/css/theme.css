@@ -43,7 +43,7 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 24px;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #666;
@@ -328,7 +328,7 @@ h4 {
   line-height: 32px;
 }
 h5 {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 24px;
   font-weight: 400;
 }

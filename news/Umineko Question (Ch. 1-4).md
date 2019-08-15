@@ -13,7 +13,7 @@ There may still be some times in the game where the PS3 sprites will appear (CGs
 zoomed in sprites for the Answer arcs). There are also some Pachinko characters which don't have sprites at all -
 they will show up with the PS3 sprites. The character portraits for the Answer Arcs will show as PS3 sprites, too.
 
-### Question Arcs Missing Voices Bug Fix - 15/06/2019
+## Question Arcs Missing Voices Bug Fix - 15/06/2019
 
 Quite a fair way into the game on the Question Arcs, voices would fail to play back (for certain characters).
 

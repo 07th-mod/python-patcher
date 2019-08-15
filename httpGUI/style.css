@@ -51,6 +51,11 @@ they have zero height. This forces the height to some valid value*/
     margin-bottom: 0px;
 }
 
+.installer-markdown h3 {
+    font-size: 1.5em;
+    margin-bottom: 0px;
+}
+
 .installer-markdown p {
     line-height: 16px;
 }
@@ -78,7 +83,6 @@ they have zero height. This forces the height to some valid value*/
 
 .rendered-markdown p {
     text-align: left;
-    margin-bottom: 0;
     line-height: 16px;
 }
 
