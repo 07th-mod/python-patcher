@@ -51,14 +51,13 @@ def findWorkingExecutablePath(executable_paths, flags):
 	Try to execute each path in executable_paths to see which one can be called and returns exit code 0
 	The 'flags' argument is any extra flags required to make the executable return 0 exit code
 	:param executable_paths: a list [] of possible executable paths (eg. "./7za", "7z")
-	:param flags: any extra flags like "-h" required to make the executable have a 0 exit code
+	:param flags: a list [] of any extra flags like "-h" required to make the executable have a 0 exit code
 	:return: the path of the valid executable, or None if no valid executables found
 	"""
 	with open(os.devnull, 'w') as os_devnull:
 		for path in executable_paths:
 			try:
-				if subprocess.call([path, flags], stdout=os_devnull) == 0:
-					print("Found valid executable:", path)
+				if subprocess.call([path] + flags, stdout=os_devnull) == 0:
 					return path
 			except:
 				pass
@@ -132,17 +131,28 @@ class Globals:
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
 		# before this executes
-		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "./.aria2c", "aria2c"], '-h')
+		print("Validating Executables...", end='')
+		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
+		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://07th-mod.com/', '--dry-run=true'])
+
+		if Globals.ARIA_EXECUTABLE is None:
+			print("\nWARNING: aria2 failed to download 07th-mod website. Using fallback detection method.")
+			Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['-h'])
+
 		if Globals.ARIA_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
 			print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 			exitWithError()
+		else:
+			print("Found aria2c at [{}]".format(Globals.ARIA_EXECUTABLE), end='')
 
-		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], '-h')
+		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], ['-h'])
 		if Globals.SEVEN_ZIP_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 			exitWithError()
+		else:
+			print(", Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE), end='')
 
 	@staticmethod
 	def loadCachedDownloadSizes():
