@@ -7,5 +7,6 @@ renderer.link = function newLinkBehavior(href, title, text) {
 };
 
 marked.setOptions({
-  renderer: renderer
+  renderer: renderer,
+  breaks: true,
 });

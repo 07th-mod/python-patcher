@@ -92,7 +92,7 @@ function setModNameAndNavigate(modName) {
 // newsName: The name of the news file to retrieve (check the 'news' folder in the git repo for a list of valid names)
 function replaceElementWithNews(elementID, newsName) {
   doPost('getNews', newsName, (response) => {
-    document.getElementById(elementID).innerHTML = marked(response, { sanitize: true, breaks: true });
+    document.getElementById(elementID).innerHTML = DOMPurify.sanitize(marked(response));
   });
 }
 
