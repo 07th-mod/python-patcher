@@ -299,13 +299,13 @@
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CG.7z",            "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CGAlt.7z",         "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z",         "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",         "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
 						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=unix&unity=5.5.3p3"}
 					]
@@ -348,13 +348,13 @@
 					"downloadSize": 1.5e9,
 					"files": [
 						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CG.7z", "priority": 0},
-						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z", "priority": 0},
+						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=win&unity=5.6.7f1"},
 						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=unix&unity=5.6.7f1"}
 					]
