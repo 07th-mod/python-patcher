@@ -110,7 +110,7 @@
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
 			{"id": "graphics",                  "version": "1.0.0"},
-			{"id": "script",                    "version": "1.0.3"},
+			{"id": "script",                    "version": "1.0.4"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.0.0"},
 			{"id": "os-specific-update",        "version": "1.0.0"},
