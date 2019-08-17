@@ -345,7 +345,7 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 0,
+					"downloadSize": 1.5e9,
 					"files": [
 						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CG.7z", "priority": 0},
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z", "priority": 0},
