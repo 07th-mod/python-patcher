@@ -1,16 +1,27 @@
 import concurrent.futures
 import io
 import json
+import typing
 from collections import OrderedDict
 
 import common
 import installConfiguration
 
-def generateCachedDownloadSizes():
-	#setup globals necessary for download
-	common.Globals.scanForExecutables()
+def getAllURLsFromModList(modList, shouldPrint=False):
+	# type: (typing.Any, typing.Optional[bool]) -> typing.List[str]
+	"""
+	This function parses the modList (from common.getModList()), and returns all downloadable URLs contained in it.
+	Metalinks are treated as just "one" URL, even if they contain multiple files inside.
 
-	modList = common.getModList("installData.json", isURL=False)
+	:param modList: JSON modList object from common.getModList()
+	:param shouldPrint: Enables/Disables debug printing
+	:return: a list of URLs (str) from the modList JSON object
+	"""
+	if shouldPrint:
+		customPrint = print
+	else:
+		def customPrint(*args, **kwargs):
+			pass
 
 	subModconfigList = []
 	for mod in modList:
@@ -21,27 +32,35 @@ def generateCachedDownloadSizes():
 	# Extract all URLs from the JSON file
 	allURLsSet = OrderedDict()
 	for submod in subModconfigList:
-		print(submod)
+		customPrint(submod)
 
-		print("files:")
+		customPrint("files:")
 		for file in submod.files:
-			print(file.url)
+			customPrint(file.url)
 			allURLsSet[file.url] = None
 
-		print("overrides:")
+		customPrint("overrides:")
 		for fileOverride in submod.fileOverrides:
-			print(fileOverride.url)
+			customPrint(fileOverride.url)
 			allURLsSet[fileOverride.url] = None
 
 		for option in submod.modOptions:
 			if option.type == 'downloadAndExtract':
 				if option.data is not None:
-					print(option.data['url'])
+					customPrint(option.data['url'])
 					allURLsSet[option.data['url']] = None
 
-	print("\n\n")
+	customPrint("\n\n")
 
-	allURLs = [x for x in allURLsSet.keys() if x is not None]
+	return [x for x in allURLsSet.keys() if x is not None]
+
+def generateCachedDownloadSizes():
+	#setup globals necessary for download
+	common.Globals.scanForExecutables()
+
+	modList = common.getModList("installData.json", isURL=False)
+
+	allURLs = getAllURLsFromModList(modList)
 
 	def queryAndPrint(url):
 		res = common.DownloaderAndExtractor.getExtractableItem(url, '.')

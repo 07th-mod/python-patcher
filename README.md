@@ -22,12 +22,22 @@ fail (I have only seen this happen once).
 
 The patcher reads the file [installData.json](installData.json) to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in [JSONValidator.swift](JSONValidator/Sources/JSONValidator/JSONValidator.swift)
 
-## Developer's note about remote files
+## Developer Mode
 
-The installer will prefer local files (on disk) if they are present, instead of remote files (from github). Specifically: 
+Developer mode will be activated if an `installData.json` is found on disk adjacent to the install script. This will be the case if you clone the git repository, then run the script.
+
+In this mode, the installer will prefer local files (on disk) if they are present, instead of remote files (from github). This mode will Specifically: 
 
 - `installData.json`
 - all .md files in the `news` folder
+- `cachedDownloadSizes.json`
+
+
+## Cached Download Sizes
+
+The Github repository contains a file called `cachedDownloadSizes.json` to allow the installer to calculate the size of a mod without having to query each download link. When the installer runs in normal mode, it downloads this file from Github each time the installer is run.
+
+When the installer is run in developer mode, it checks that all URLs in `installData.json` are present in `cachedDownloadSizes.json` - if not the `cachedDownloadSizes.json` file is automatically regenerated. Please commit this `cachedDownloadSizes.json` to the git repository each time it changes.
 
 ## HTTPGUI / Web Interface
 

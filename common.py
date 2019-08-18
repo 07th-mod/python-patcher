@@ -155,19 +155,38 @@ class Globals:
 			print(", Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE), end='')
 
 	@staticmethod
-	def loadCachedDownloadSizes():
+	def loadCachedDownloadSizes(modList):
+		"""
+		In normal mode:
+		  - Load cached download sizes from Github (`cachedDownloadSizes.json` in repo root).
+		  - On failure to retrieve, will leave the lookup table as an empty dict
+		In developer mode:
+		  - Load cached download sizes from `cachedDownloadSizes.json` on disk
+		  - If any URLs from installData.json are missing, this function will automatically update `cachedDownloadSizes.json`
+
+		:param modList: The JSON object returned by common.getModList()
+		"""
 		try:
-			downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
-			if Globals.DEVELOPER_MODE and downloadSizesDict is None:
-				print("Download size cache missing - rebuilding cache")
-				import cacheDownloadSizes
-				cacheDownloadSizes.generateCachedDownloadSizes()
+			if Globals.DEVELOPER_MODE:
 				downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
+			else:
+				downloadSizesDict, _error = getJSON(Globals.GITHUB_MASTER_BASE_URL + 'cachedDownloadSizes.json', isURL=True)
 
 			if downloadSizesDict is None:
 				print("ERROR: Failed to retrieve cachedDownloadSizes.json file")
 			else:
 				Globals.URL_FILE_SIZE_LOOKUP_TABLE = downloadSizesDict
+
+			# In developer mode, check that all URLs in the json file also exist in the downloadList.
+			# If they don't, regenerate the downloadList
+			if Globals.DEVELOPER_MODE:
+				import cacheDownloadSizes
+				for urlToCheck in cacheDownloadSizes.getAllURLsFromModList(modList):
+					if urlToCheck not in Globals.URL_FILE_SIZE_LOOKUP_TABLE:
+						print("DEVELOPER: cachedDownloadSizes.json is missing url {} - regenerating list".format(urlToCheck))
+						cacheDownloadSizes.generateCachedDownloadSizes()
+						break
+
 		except:
 			print("Failed to read URL File Size Lookup Table")
 
