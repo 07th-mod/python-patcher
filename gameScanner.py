@@ -73,54 +73,6 @@ def findPossibleGamePathsWindows():
 
 	return []
 
-def findPossibleGamePaths(gameName):
-	"""
-	If supported, searches the computer for things that might be Higurashi games
-	Currently only does things on Mac OS and Windows
-	TODO: Find ways to search for games on Linux
-
-	:param str gameName: The name of the game to search for (should be either "Higurashi" or "Umineko"), used to reduce the time spent searching on Mac OS
-	:return: A list of game paths that might be Higurashi games
-	:rtype: list[str]
-	"""
-	allPossibleGamePaths = []
-
-	if common.Globals.IS_WINDOWS:
-		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
-
-	if common.Globals.IS_MAC:
-		# mdfind is kind of slow, don't run it more than we have to
-		if gameName == "Higurashi":
-			allPossibleGamePaths.extend(
-				x for x in subprocess
-					.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Higurashi*'"])
-					.decode("utf-8")
-					.split("\n") if x
-			)
-		elif gameName == "Umineko":
-			for gamePath in subprocess.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Umineko*'"]).decode("utf-8").split("\n"):
-				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
-				gogPath = os.path.join(gamePath, "Contents/Resources/game")
-				if os.path.exists(gogPath):
-					allPossibleGamePaths.append(gogPath)
-		else:
-			print("Warning: ran findPossibleGamePaths with an unknown game")
-
-		# add all files in the default steam common folder for Mac
-		try:
-			steamCommonPath = "~/Library/Application Support/Steam/steamapps/common/"
-			for gameFolderName in os.listdir(steamCommonPath):
-				allPossibleGamePaths.append(
-					os.path.normpath(
-						os.path.join(steamCommonPath, gameFolderName)
-					)
-				)
-		except:
-			print("Warning: MacOS - failed to add default steam common folder paths")
-
-	#if all methods fail, return empty list
-	return sorted(allPossibleGamePaths)
-
 # Get paths which COULD be game paths.
 def getMaybeGamePaths():
 	"""
@@ -151,6 +103,24 @@ def getMaybeGamePaths():
 			gogPath = os.path.join(gamePath, "Contents/Resources/game")
 			if os.path.exists(gogPath):
 				allPossibleGamePaths.append(gogPath)
+
+	# Scan hardcoded paths for game subfolders
+	hardCodedGameContainingPaths = []
+	if common.Globals.IS_MAC:
+		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common/")
+	if common.Globals.IS_WINDOWS:
+		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
+
+	for hardCodedPath in hardCodedGameContainingPaths:
+		try:
+			for gameFolderName in os.listdir(hardCodedPath):
+				allPossibleGamePaths.append(
+					os.path.normpath(
+						os.path.join(hardCodedPath, gameFolderName)
+					)
+				)
+		except:
+			print("Warning: Failed to scan hard coded path: {}".format(hardCodedPath))
 
 	# if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
