@@ -24,14 +24,13 @@ The patcher reads the file [installData.json](installData.json) to figure out wh
 
 ## Developer Mode
 
-Developer mode will be activated if an `installData.json` is found on disk adjacent to the install script. This will be the case if you clone the git repository, then run the script.
+The installer has a global variable called DEVELOPER_MODE, which controls how it behaves. Developer mode will be activated if an `installData.json` is found on disk adjacent to the install script. This will be the case if you clone the git repository, then run the script.
 
-In this mode, the installer will prefer local files (on disk) if they are present, instead of remote files (from github). This mode will Specifically: 
+In developer mode, the installer will prefer local files (on disk) if they are present, instead of remote files (from github). This mode will Specifically: 
 
 - `installData.json`
 - all .md files in the `news` folder
 - `cachedDownloadSizes.json`
-
 
 ## Cached Download Sizes
 

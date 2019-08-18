@@ -35,6 +35,7 @@ if __name__ == "__main__":
 	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
 	if os.path.exists("installData.json"):
 		common.Globals.DEVELOPER_MODE = True
+	print("NOTE: Developer mode is enabled (installData.json detected on disk)")
 
 	# redirect stdout to both a file and console
 	# TODO: on MAC using a .app file, not sure if this logfile will be writeable
