@@ -86,6 +86,7 @@
 		"id": "Minagoroshi Ch.7/full",
 		"files": [
 			{"id": "cg",                  "version": "1.0.2"},
+			{"id": "cgalt",               "version": "1.0.0"},
 			{"id": "movie",               "version": "1.0.1"},
 			{"id": "voices",              "version": "1.0.0"},
 			{"id": "script",              "version": "1.0.0"},

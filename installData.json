@@ -348,6 +348,7 @@
 					"downloadSize": 1.5e9,
 					"files": [
 						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CG.7z", "priority": 0},
+						{"name": "cgalt",   "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CGAlt.7z", "priority": 0},
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
