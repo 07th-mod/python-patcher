@@ -379,6 +379,7 @@
 														<!-- If path was detected automatically, then don't show other path selection options unless asked -->
 														<div v-else>
 															<div v-if="installPathValid" style="color: green"><strong>Game was autodetected at: {{ validatedInstallPath }} ✓</strong></div>
+															<div v-else-if="validationInProgress" style="color: goldenrod"><strong>Please wait, path detection in progress...</strong></div>
 															<button class="button-small" v-on:click="showPathSelectionButtons = true">Choose a different path</button>
 														</div>
 													</ul>

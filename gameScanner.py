@@ -114,11 +114,9 @@ def getMaybeGamePaths():
 	for hardCodedPath in hardCodedGameContainingPaths:
 		try:
 			for gameFolderName in os.listdir(hardCodedPath):
-				allPossibleGamePaths.append(
-					os.path.normpath(
-						os.path.join(hardCodedPath, gameFolderName)
-					)
-				)
+				gameFolderPath = os.path.normpath(os.path.join(hardCodedPath, gameFolderName))
+				if os.path.isdir(gameFolderPath):
+					allPossibleGamePaths.append(gameFolderPath)
 		except:
 			print("Warning: Failed to scan hard coded path: {}".format(hardCodedPath))
 
