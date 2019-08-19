@@ -506,8 +506,6 @@ class InstallerGUI:
 							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
 							'family': subModConfig.family,
 							'identifiers': subModConfig.identifiers,
-							'downloadSize': common.prettyPrintFileSize(subModConfig.downloadSize), #TODO: these two variables are not used anymore. Should be removed from javascript and here.
-							'extractSize': common.prettyPrintFileSize(subModConfig.downloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING),
 						}
 					)
 

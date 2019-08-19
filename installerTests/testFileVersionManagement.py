@@ -92,7 +92,6 @@ class TestSubModVersion(unittest.TestCase):
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.0e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CG.7z",                "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CGAlt.7z",             "priority": 0},
