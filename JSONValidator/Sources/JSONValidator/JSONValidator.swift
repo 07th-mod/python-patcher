@@ -52,6 +52,8 @@ public struct SubmodDefinition: Codable {
 	/// The base set of files for this mod
 	public var descriptionID: String
 	/// This variable sets which description to display on the web GUI. The actual description text is stored on the webpage, not in the JSON or python side.
+	public var downloadSize: Float
+	/// The approximate download size to install this mod. Expressed in bytes as a floating point number
 	public var files: [FileDefinition]
 	/// Platform-specific overrides of files in `files`
 	public var fileOverrides: [FileOverrideDefinition]
