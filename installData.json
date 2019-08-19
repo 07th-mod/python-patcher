@@ -1,5 +1,5 @@
 {
-	"version": 5,
+	"version": 6,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -12,7 +12,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.0e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CG.7z",                "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CGAlt.7z",             "priority": 0},
@@ -62,7 +61,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.4e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CG.7z",               "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CGAlt.7z",            "priority": 0},
@@ -121,7 +119,6 @@
 				{
 					"name" : "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.3e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CG.7z",             "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CGAlt.7z",          "priority": 0},
@@ -184,7 +181,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 0.8e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CG.7z",              "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CGAlt.7z",           "priority": 0},
@@ -243,7 +239,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.1e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CG.7z",                  "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CGAlt.7z",               "priority": 0},
@@ -295,7 +290,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.6e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CG.7z",            "priority": 0},
 						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CGAlt.7z",         "priority": 0},
@@ -345,7 +339,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 1.5e9,
 					"files": [
 						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CG.7z", "priority": 0},
 						{"name": "cgalt",   "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CGAlt.7z", "priority": 0},
@@ -363,7 +356,6 @@
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
-					"downloadSize": 0.5e9,
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z",    "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip",             "priority": 5}
@@ -406,7 +398,6 @@
 				{
 					"name": "full",
 					"descriptionID": "higurashiFull",
-					"downloadSize": 2.9e9,
 					"files":[
 						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-CG.7z",               "priority": 0},
 						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-BGM.7z",              "priority": 0},
@@ -438,7 +429,6 @@
 				{
 					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
-					"downloadSize": 5.0e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v3.7z.meta4", "priority": 0},
@@ -457,7 +447,6 @@
 				{
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
-					"downloadSize": 2.0e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://07th-mod.com/Beato/script-voice-only.zip", "priority": 0},
@@ -508,7 +497,6 @@
 				{
 					"name" : "novel-mode",
 					"descriptionID": "uminekoAnswerFull",
-					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
@@ -524,7 +512,6 @@
 				{
 					"name" : "adv-mode",
 					"descriptionID": "uminekoAnswerADV",
-					"downloadSize": 7.2e9,
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
@@ -541,7 +528,6 @@
 				{
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
-					"downloadSize": 1.7e9,
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
@@ -593,7 +579,6 @@
 				{
 					"name" : "full",
 					"descriptionID": "uminekoTsubasaOnscripterFull",
-					"downloadSize": 0.3e9,
 					"files":[
 						{"name": "mod", "url":"https://07th-mod.com/Bern/Tsubasa/umineko-tsubasa-ons.zip", "priority": 0}
 					],
@@ -612,7 +597,6 @@
 				{
 					"name" : "full",
 					"descriptionID": "uminekoHaneOnscripterFull",
-					"downloadSize": 0.1e9,
 					"files":[
 						{"name": "mod", "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip", "priority": 0}
 					],
