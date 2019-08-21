@@ -85,14 +85,14 @@
 	{
 		"id": "Minagoroshi Ch.7/full",
 		"files": [
-			{"id": "cg",                  "version": "1.0.2"},
+			{"id": "cg",                  "version": "1.0.3"},
 			{"id": "cgalt",               "version": "1.0.0"},
 			{"id": "movie",               "version": "1.0.1"},
-			{"id": "voices",              "version": "1.0.0"},
-			{"id": "script",              "version": "1.0.0"},
-			{"id": "movie-unix",          "version": "1.0.0"},
-			{"id": "ui-windows",          "version": "1.0.0"},
-			{"id": "ui-unix",             "version": "1.0.0"}
+			{"id": "voices",              "version": "1.0.1"},
+			{"id": "script",              "version": "1.1.0"},
+			{"id": "movie-unix",          "version": "1.0.1"},
+			{"id": "ui-windows",          "version": "1.0.1"},
+			{"id": "ui-unix",             "version": "1.0.1"}
 		]
 	},
 	{
