@@ -612,6 +612,65 @@ class DownloaderAndExtractor:
 		def __repr__(self):
 			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
 
+		def clearDownloadIfNeededAndWriteControlFile(self, downloadDir):
+			# Files from metalinks are checksummed, so clearing old downloads is not required
+			if self.fromMetaLink:
+				return
+
+			# If remote has no date modified, assume file needs to be cleared
+			if self.remoteLastModified is None:
+				print("ExtractableItem: Clearing [{}] as remote has no last-modified".format(self.filename))
+				self._tryDeleteOldDownloadAndAriaFile(downloadDir)
+				return
+
+			# If local date modified is different, clear the file and update control file
+			localDateModifiedControlPath = os.path.join(downloadDir, self._dateModifiedControlFilename())
+			localLastModified = self._readLocalDateModified(localDateModifiedControlPath)
+			if self._normalizeDateModified(localLastModified) != self._normalizeDateModified(self.remoteLastModified):
+				print("ExtractableItem: Clearing [{}] as local [{}] and remote [{}] last-modified differ"
+				      .format(self.filename, localLastModified, self.remoteLastModified))
+				self._tryDeleteOldDownloadAndAriaFile(downloadDir)
+				self._updateLocalDateModified(localDateModifiedControlPath)
+			else:
+				# Take no action if local and remote date modified is the same - can resume the download normally
+				pass
+
+		@staticmethod
+		def _normalizeDateModified(lastModifiedStringOrNone):
+			#type: (Optional[str]) -> Optional[str]
+			return None if lastModifiedStringOrNone is None else lastModifiedStringOrNone.strip()
+
+		def _dateModifiedControlFilename(self):
+			return self.filename + ".dateModified"
+
+		def _readLocalDateModified(self, localDateModifiedControlPath):
+			if not os.path.exists(localDateModifiedControlPath):
+				return None
+
+			try:
+				with io.open(localDateModifiedControlPath, "r", encoding='UTF-8') as f:
+					return f.read()
+			except:
+				print("Failed to load date modified file {}".format(localDateModifiedControlPath))
+				return None
+
+		def _updateLocalDateModified(self, localDateModifiedControlPath):
+			try:
+				with io.open(localDateModifiedControlPath, "w", encoding='UTF-8') as f:
+					f.write(self.remoteLastModified)
+			except:
+				print("Failed to write date modified file {}".format(localDateModifiedControlPath))
+
+		def _tryDeleteOldDownloadAndAriaFile(self, downloadDir):
+			oldDownloadPath = os.path.join(downloadDir, self.filename)
+			try:
+				if os.path.exists(oldDownloadPath):
+					os.remove(oldDownloadPath)
+				if os.path.exists(oldDownloadPath + ".aria2"):
+					os.remove(oldDownloadPath + ".aria2")
+			except Exception as e:
+				print("ExtractableItem: Failed to delete {}: {}".format(oldDownloadPath, e))
+
 	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
 		# type: (List[installConfiguration.ModFile], str, str, int, int) -> None
 		self.modFileList = modFileList
@@ -651,6 +710,10 @@ class DownloaderAndExtractor:
 		# download all urls to the download temp folder
 		makeDirsExistOK(self.downloadTempDir)
 		makeDirsExistOK(self.defaultExtractionDir)
+
+		# check if any downloads have changed - if so, delete the local downloads
+		for extractableItem in self.extractList:
+			extractableItem.clearDownloadIfNeededAndWriteControlFile(self.downloadTempDir)
 
 		totalDownloadSize = self.totalDownloadSize()
 		for i, url in enumerate(self.downloadList):
