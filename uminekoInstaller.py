@@ -25,20 +25,16 @@ def backupOrRemoveFiles(folderToBackup):
 		fullFilePath = os.path.join(folderToBackup, pathToBackup)
 		backupPath = fullFilePath + '.backup'
 
-		#only process the file if it exists on disk
-		if not os.path.isfile(fullFilePath) and not os.path.isdir(fullFilePath):
-			continue
-
-		# backup the file/folder if no backup has been performed previously - otherwise delete the file
-		if os.path.isfile(backupPath) or os.path.isdir(backupPath):
-			print("backupOrRemoveFiles: removing", fullFilePath, "as backup already exists")
-			if os.path.isfile(backupPath):
-				os.remove(fullFilePath)
-			else:
-				shutil.rmtree(fullFilePath)
-		else:
-			print("backupOrRemoveFiles: backing up", fullFilePath)
-			shutil.move(fullFilePath, backupPath)
+		# Backup the file/folders if they exist
+		if os.path.exists(fullFilePath):
+			try:
+				print("backupOrRemoveFiles: Backing up {} to {}".format(fullFilePath, backupPath))
+				if os.path.isfile(fullFilePath):
+					shutil.copy(fullFilePath, backupPath)
+				else:
+					shutil.copytree(fullFilePath, backupPath)
+			except Exception as e:
+				print("backupOrRemoveFiles: Failed to backup {}: {}".format(fullFilePath, e))
 
 #do install given a installer config object
 def mainUmineko(conf):
