@@ -602,11 +602,12 @@ class DownloaderAndExtractor:
 	:return:
 	"""
 	class ExtractableItem:
-		def __init__(self, filename, length, destinationPath, fromMetaLink):
+		def __init__(self, filename, length, destinationPath, fromMetaLink, remoteLastModified):
 			self.filename = filename
 			self.length = length
 			self.destinationPath = os.path.normpath(destinationPath)
 			self.fromMetaLink = fromMetaLink
+			self.remoteLastModified = remoteLastModified
 
 		def __repr__(self):
 			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
@@ -714,14 +715,16 @@ class DownloaderAndExtractor:
 				filename=filename,
 				length=length,
 				destinationPath=extractionDir,
-				fromMetaLink=True) for filename, length in metalinkFilenames]
+				fromMetaLink=True,
+				remoteLastModified=None) for filename, length in metalinkFilenames]
 		else:
-			filename, length = DownloaderAndExtractor.__getFilenameFromURL(url)
+			filename, length, remoteLastModified = DownloaderAndExtractor.__getFilenameFromURL(url)
 			return [DownloaderAndExtractor.ExtractableItem(
 				filename=filename,
 				length=length,
 				destinationPath=extractionDir,
-				fromMetaLink=False)]
+				fromMetaLink=False,
+				remoteLastModified=remoteLastModified)]
 
 	@staticmethod
 	def __urlIsMetalink(url):
@@ -730,12 +733,13 @@ class DownloaderAndExtractor:
 
 	@staticmethod
 	def __getFilenameFromURL(url):
-		# type: (str) -> Tuple[str, int]
+		# type: (str) -> Tuple[str, int, str]
 		"""
 		Returns the filename of the file at the given URL, and it's file size.
 		If the file size cannot be retrieved, returns a file size of 0
 		:param url: The url of a file or a url which will eventually redirect to a file
-		:return: A tuple of (filename, filesize) of the file pointed by the url
+		:return: A tuple of (filename, filesize, remoteLastModified) of the file pointed by the url
+		remoteLastModified can be None if not present in the http response header
 		"""
 
 		# It's not a huge deal if the filename download is insecure (the actual download is done with Aria)
@@ -745,6 +749,7 @@ class DownloaderAndExtractor:
 		# if the url has a contentDisposition header, use that instead
 		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
 		contentDisposition = None
+		remoteLastModified = None
 		try:
 			contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
 			lengthString = httpResponse.getheader('Content-Length')
@@ -756,6 +761,11 @@ class DownloaderAndExtractor:
 			length = int(lengthString)
 		except:
 			length = 0
+
+		try:
+			remoteLastModified = httpResponse.getheader("Last-Modified")
+		except:
+			remoteLastModified = httpResponse.info().getheader("Last-Modified")
 
 		filename = None
 
@@ -775,7 +785,7 @@ class DownloaderAndExtractor:
 			filename = os.path.basename(urlparse(url).path)
 
 
-		return filename, length
+		return filename, length, remoteLastModified
 
 def tryCreateLockFile():
 	# type: () -> ()
