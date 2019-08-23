@@ -393,7 +393,7 @@
 															</label>
 															<br>
 															<label v-bind:for="radioOption.id">
-																<span v-html="renderMarkdown(radioOption.description)"></span>
+																<span class="rendered-markdown" v-html="renderMarkdown(radioOption.description)"></span>
 															</label>
 														</div>
 														<div class="form-check" v-for="checkBoxOption in modOptionGroup.checkBox">
@@ -402,7 +402,7 @@
 																{{ checkBoxOption.name }}
 															</label>
 															<label v-bind:for="checkBoxOption.id">
-																<span v-html="renderMarkdown(checkBoxOption.description)"></span>
+																<span class="rendered-markdown" v-html="renderMarkdown(checkBoxOption.description)"></span>
 															</label>
 														</div>
 													</div>

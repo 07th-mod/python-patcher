@@ -83,7 +83,12 @@ they have zero height. This forces the height to some valid value*/
 
 .rendered-markdown p {
     text-align: left;
-    line-height: 16px;
+    margin-bottom: 10px;
+}
+
+.rendered-markdown ul {
+    list-style: disc outside none;
+    margin-left: 40px;
 }
 
 .section-small-padding {
