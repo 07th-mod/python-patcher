@@ -65,3 +65,33 @@ If you figure out what's causing the problem, please let us know as we really wa
 High resolution screens (greater than 1080p) can also cause problems (mainly on integrated graphics). Forcing your desktop
 screen resolution lower may help. You can test if this is a problem by playing in windowed mode with a small
 window - performance will usually improve.
+
+#### Older news
+
+23/02/2019: On the 05/02/2019 a change was made to the manual mac install instructions which would prevent you from starting the game. It has now been reverted (sorry abou that).
+
+28-01-2019: Cross Platform Installer is now suggested in install instructions. Wiki has been refactored.
+
+28-01-2019: Add ADV mode to Full Patch of Question Arcs
+
+17-11-18: Add beta version of Question Arcs in 1080p resolution (previously resolution was 960p, resulting in some blurriness). You can install it via the installer or manually. Add ability to toggle language with 'Tab' button.
+
+2-10-18: Add Japanese Language mode (thanks Naoki!). Note: currently doesn't work for "Voice Only" or answer arcs "ADV mode", due to those versions using a different script.
+
+15-07-18: Some small changes to both arcs (to update you need both the latest script file and the latest update zip)
+
+- For Question arcs only, add the option to view the original game's videos since some consider the PS3 openings too spoilery. (Question arcs issue #101)
+- Use English title logo for Question arcs (Question arcs issue #100)
+- Fix transparency of images for one scene for Answer arcs (use alphablend mode images)
+
+06-06-18: For Chiru Arcs only, minor update to script and assets (see issue [#47](https://github.com/07th-mod/umineko-answer/issues/47))
+
+05-05-18: For Question Arcs only, fix some missing voice delays.
+
+01-05-18: Update all .exes to give a reminder if you forget to rename the `0.utf` to `0.u` instead of the generic/incorrect error message. Backup of the old .exes can be found [here](https://github.com/07th-mod/resources/releases/download/Beato/umineko_exe_backup_2018-05-01.7z).
+
+13-04-18: Add [missing Maria/Rosa Alternate Sprites](https://github.com/07th-mod/umineko-question/issues/93) to the merged update pack (pack v4 cumulative) for Question Arcs only.
+
+02-04-18: Question arc script was updated to fix voice/unvoiced delay bugs.
+
+17-02-18: **Did Steam update your game, breaking your patch?** Follow the [Question Arc Instructions](https://github.com/07th-mod/umineko-question#warning---steam-updates) or the [Answer Arc Instructions](https://github.com/07th-mod/umineko-answer#warning---steam-updates).
