@@ -4,8 +4,6 @@ Repository for the cross-platform python-based installer.
 
 ## Bootstrap Files
 
-You must have Git LFS installed to download the bootstrap files.
-
 You can build the bootstrap archives by running make_archives.py
 
 ## Python Development Environment
@@ -97,16 +95,6 @@ There are some additional options which had to be set:
 ```
 
 This ensures that releases are only deployed on tagged pushes, not every push.
-
-### Windows Builds
-
-We have had some issues with windows defender stalling downloads on our windows builds (it seems to do with us
-distributing a python distribution).
-
-On Chrome and Edge (not Firefox), when you downloaded the old zip, it would get stuck at 100% while the zip file was being scanned.
-Chrome would then refuse to download any other files while the windows defender service would be stuck at 30% CPU for 20 minutes or more.
-
-To fix this, we have encrypted the python distribution and the httpGUI archives with the password 'password', so windows defender has to wait until the files are extracted before it can scan them.
 
 #### Useful Resources
 
