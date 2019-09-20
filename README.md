@@ -96,6 +96,20 @@ There are some additional options which had to be set:
 
 This ensures that releases are only deployed on tagged pushes, not every push.
 
+### Compiling the Windows Loader
+
+The windows loader is not well documented. Please contact one of the dev team members if you have trouble building - it is more than likely there is an error in the instructions below, rather than somethign wrong on your end.
+
+The installer is mostly setup to build on travis - if you want to build locally, you'll need to do the following (WINDOWS ONLY):
+
+- Install Rust
+- Download `7za.exe` (you may need to rename it to `7za.exe` if it is called `7z.exe`), and place it next to `travis_build_script.py`
+- Open a command window
+- In the command window, set the `TRAVIS_TAG` environment variable using `set TRAVIS_TAG=v9.9.9`
+- Run `python travis_build_script.py win` (make sure to include the `win` part), **in the same command window**
+
+The built exe will be located in the `travis_installer_output` folder
+
 #### Useful Resources
 
 - <https://github.com/cclauss/Travis-CI-Python-on-three-OSes>
