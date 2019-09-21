@@ -61,7 +61,7 @@
 			{"id": "cgalt",               "version": "1.1.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.1.0"},
-			{"id": "script",              "version": "4.7.0"},
+			{"id": "script",              "version": "4.7.1"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows-5.5.3p3",  "version": "1.1.0"},
 			{"id": "ui-windows-5.5.3p1",  "version": "1.1.0"},
@@ -76,7 +76,7 @@
 			{"id": "cgalt",               "version": "1.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.0"},
-			{"id": "script",              "version": "2.7.0"},
+			{"id": "script",              "version": "2.7.1"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.1.0"},
 			{"id": "ui-unix",             "version": "1.1.0"}
