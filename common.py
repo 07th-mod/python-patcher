@@ -47,6 +47,7 @@ except:
 	pass
 
 def findWorkingExecutablePath(executable_paths, flags):
+	#type: (List[str], List[str]) -> str
 	"""
 	Try to execute each path in executable_paths to see which one can be called and returns exit code 0
 	The 'flags' argument is any extra flags required to make the executable return 0 exit code
@@ -57,7 +58,7 @@ def findWorkingExecutablePath(executable_paths, flags):
 	with open(os.devnull, 'w') as os_devnull:
 		for path in executable_paths:
 			try:
-				if subprocess.call([path] + flags, stdout=os_devnull) == 0:
+				if subprocess.call([path] + flags, stdout=os_devnull, stderr=os_devnull) == 0:
 					return path
 			except:
 				pass
@@ -105,6 +106,7 @@ class Globals:
 
 	ARIA_EXECUTABLE = None
 	SEVEN_ZIP_EXECUTABLE = None
+	CURL_EXECUTABLE = None # Not required, but if available will be used to download filenames on systems with old SSL versions
 
 	#Print this string from the installer thread to notify of an error during the installation.
 	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
@@ -132,6 +134,8 @@ class Globals:
 		# query available executables. If any installation of executables is done in the python script, it must be done
 		# before this executes
 		print("Validating Executables...", end='')
+		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl"], ["-I", "https://07th-mod.com/"])
+
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
 		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://07th-mod.com/', '--dry-run=true'])
 
@@ -806,29 +810,43 @@ class DownloaderAndExtractor:
 		"""
 
 		# It's not a huge deal if the filename download is insecure (the actual download is done with Aria)
-		if SSL_VERSION_IS_OLD and url[0:5] == "https":
+		if SSL_VERSION_IS_OLD and Globals.CURL_EXECUTABLE is None and url[0:5] == "https":
 			url = "http" + url[5:]
 
 		# if the url has a contentDisposition header, use that instead
-		httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
 		contentDisposition = None
 		remoteLastModified = None
-		try:
-			contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
-			lengthString = httpResponse.getheader('Content-Length')
-		except AttributeError:
-			contentDisposition = httpResponse.info().getheader("Content-Disposition")  # python 2
-			lengthString = httpResponse.info().getheader('Content-Length')
+		responseURL = url
+		if SSL_VERSION_IS_OLD and Globals.CURL_EXECUTABLE is not None:
+			# On old SSL if we have curl use that instead
+			with open(os.devnull, 'w') as os_devnull:
+				# Get the header, the -X GET is required because the github download links return a 403 if you try to send a HEAD request
+				headers = subprocess.check_output(["curl", "-ILX", "GET", url], stderr=os_devnull).decode("utf-8")
+			# If there's redirects curl may print multiple headers with multiple content dispositions.  We want the last one
+			contentDisposition = re.findall("Content-Disposition: (.+)", headers, re.IGNORECASE)
+			contentDisposition = contentDisposition[-1].strip() if contentDisposition else None
+			lengthString = re.findall("Content-Length: (.+)", headers, re.IGNORECASE)
+			lengthString = lengthString[-1].strip() if lengthString else None
+			remoteLastModified = re.findall("Last-Modified: (.+)", headers, re.IGNORECASE)
+			remoteLastModified = remoteLastModified[-1].strip() if remoteLastModified else None
+			responseURL = re.findall("Location: (.+)", headers, re.IGNORECASE)
+			responseURL = responseURL[-1].strip() if responseURL else url
+		else:
+			httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
+			try:
+				contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
+				lengthString = httpResponse.getheader('Content-Length')
+				remoteLastModified = httpResponse.getheader("Last-Modified")
+			except AttributeError:
+				contentDisposition = httpResponse.info().getheader("Content-Disposition")  # python 2
+				lengthString = httpResponse.info().getheader('Content-Length')
+				remoteLastModified = httpResponse.info().getheader("Last-Modified")
+			responseURL = httpResponse.url
 
 		try:
 			length = int(lengthString)
 		except:
 			length = 0
-
-		try:
-			remoteLastModified = httpResponse.getheader("Last-Modified")
-		except:
-			remoteLastModified = httpResponse.info().getheader("Last-Modified")
 
 		filename = None
 
@@ -841,7 +859,7 @@ class DownloaderAndExtractor:
 
 		# try to set the filename based on the redirected url
 		if filename is None:
-			filename = os.path.basename(urlparse(httpResponse.url).path)
+			filename = os.path.basename(urlparse(responseURL).path)
 
 		# default filename is derived from original URL
 		if filename is None:
