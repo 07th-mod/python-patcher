@@ -6,6 +6,8 @@ import subprocess
 import sys
 import datetime
 
+print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
+
 BUILD_LINUX_MAC = True
 if len(sys.argv) == 2:
 	if "win" in sys.argv[1].lower():
@@ -92,14 +94,17 @@ try_remove_tree(bootstrap_copy_folder)
 try_remove_tree(output_folder)
 try_remove_tree(staging_folder)
 
+# Fix for Python 3.8 - For copytree to ignore folders correctly, they must exist before the copy process begins
 # Make sure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
+os.makedirs(staging_folder, exist_ok=True)
+os.makedirs(bootstrap_copy_folder, exist_ok=True)
 
 # copy bootstrap folder to a temp folder
-shutil.copytree('bootstrap', bootstrap_copy_folder)
+shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
 
 # copy all files in the root github directory, except those in ignore_patterns
-shutil.copytree('.', staging_folder, ignore=ignore_filter)
+shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
 
 # Save the build information in the staging folder. Will later be read by installer.
 with open(os.path.join(staging_folder, 'build_info.txt'), 'w', encoding='utf-8') as build_info_file:
