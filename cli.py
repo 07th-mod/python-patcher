@@ -28,15 +28,19 @@ def main(*, game_name, game_path, mod_type, mod_options, is_steam):
         print(f'Could not find a mod matching "{game_name}"')
         return
     neededSubMod = suitableSubMods[0]
+    neededModOptions = []
     for i in mod_options:
-        found = False
-        for j in neededSubMod.modOptions:
-            if j.id == i:
-                found = True
-                j.value = True
-        if not found:
-            print(f"No match found for option {i}")
-            return
+        neededModOptions += [
+            x
+            for x in neededSubMod.modOptions
+            if all(y in x.id.lower().split() for y in i.lower().split("-"))
+        ]
+    if len(neededModOptions) != len(mod_options):
+        print("Couldn't find specified mod options.")
+        return
+    for i in neededSubMod.modOptions:
+        if i.id in [x.id for x in neededModOptions]:
+            i.value = True
     install_config = installConfiguration.FullInstallConfiguration(
         neededSubMod, game_path, is_steam
     )
@@ -87,7 +91,7 @@ if __name__ == "__main__":
         dest="mod_options",
         default=[],
         help=(
-            "Enable a specific mod option by its ID. "
+            'Enable a specific mod option, e.g. "bgm-fix." '
             "Can be repeated multiple times to enable many options."
         ),
     )
