@@ -77,7 +77,7 @@ if __name__ == "__main__":
         "-m",
         "--mod-type",
         dest="mod_type",
-        required="true",
+        required=True,
         help=(
             'Submod type, can be "full" or "voice-only".'
             "For Umineko Answer Arcs, this should be "
