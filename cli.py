@@ -89,6 +89,7 @@ if __name__ == "__main__":
         "--mod-option",
         action="append",
         dest="mod_options",
+        metavar="MOD_OPTION",
         default=[],
         help=(
             'Enable a specific mod option, e.g. "bgm-fix". '
