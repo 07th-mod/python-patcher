@@ -30,6 +30,36 @@ dirname = os.path.dirname(sys.argv[0])
 if dirname.strip():
 	os.chdir(dirname)
 
+
+def check07thModServerConnection():
+	"""
+	Makes sure that we can connect to the 07th-mod server
+	(Patches will fail to download if we can't)
+	"""
+	try:
+		testFile = urlopen(Request("http://07th-mod.com/", headers={"User-Agent": ""}))
+		testFile.close()
+	except HTTPError as error:
+		print(error)
+		print("Couldn't reach 07th Mod Server.  The installer will not be able to download patch files.")
+		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
+		common.exitWithError()
+
+def getModList(is_developer=True):
+	if is_developer and os.path.exists('installData.json'):
+		return common.getModList("installData.json", isURL=False)
+	else:
+		return common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
+
+def getSubModConfigList(modList):
+	subModconfigList = []
+	for mod in modList:
+		for submod in mod['submods']:
+			conf = installConfiguration.SubModConfig(mod, submod)
+			logger.printNoTerminal(conf)
+			subModconfigList.append(conf)
+	return subModconfigList
+
 if __name__ == "__main__":
 	# Enable developer mode if we detect the program is run from the git repository
 	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
@@ -59,40 +89,12 @@ if __name__ == "__main__":
 		print("-------------------------------------------------------------")
 		input()
 
-	def check07thModServerConnection():
-		"""
-		Makes sure that we can connect to the 07th-mod server
-		(Patches will fail to download if we can't)
-		"""
-		try:
-			testFile = urlopen(Request("http://07th-mod.com/", headers={"User-Agent": ""}))
-			testFile.close()
-		except HTTPError as error:
-			print(error)
-			print("Couldn't reach 07th Mod Server.  The installer will not be able to download patch files.")
-			print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
-			common.exitWithError()
-
-
 	check07thModServerConnection()
-
 	common.Globals.scanForExecutables()
-
-	# Scan for moddable games on the user's computer before starting installation
-	if common.Globals.DEVELOPER_MODE and os.path.exists("installData.json"):
-		# Use local `installData.json` if it's there (if cloned from github)
-		modList = common.getModList("installData.json", isURL=False)
-	else:
-		modList = common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
-
+	modList = getModList(common.Globals.DEVELOPER_MODE)
 	common.Globals.loadCachedDownloadSizes(modList)
-
-	subModconfigList = []
-	for mod in modList:
-		for submod in mod['submods']:
-			conf = installConfiguration.SubModConfig(mod, submod)
-			logger.printNoTerminal(conf)
-			subModconfigList.append(conf)
+	subModconfigList = getSubModConfigList(modList)
+	
 
 	print("\n\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 	print(" - Do not close this window until you are finished with the installer! Closing this window will\n"
