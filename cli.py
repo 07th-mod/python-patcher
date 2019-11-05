@@ -91,7 +91,7 @@ if __name__ == "__main__":
         dest="mod_options",
         default=[],
         help=(
-            'Enable a specific mod option, e.g. "bgm-fix." '
+            'Enable a specific mod option, e.g. "bgm-fix". '
             "Can be repeated multiple times to enable many options."
         ),
     )
