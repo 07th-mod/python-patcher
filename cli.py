@@ -24,7 +24,7 @@ def main(*, game_name, game_path, mod_type, mod_options, is_steam):
         if all(y in x.modName.lower().split() for y in game_name.lower().split("-"))
         and x.subModName == mod_type
     ]
-    if len(suitableSubMods) == 0:
+    if len(suitableSubMods) != 1:
         print(f'Could not find a mod matching "{game_name}"')
         return
     neededSubMod = suitableSubMods[0]
