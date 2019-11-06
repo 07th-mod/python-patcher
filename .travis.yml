@@ -4,12 +4,13 @@ matrix:
   include:
   # Use this linux machine to build the linux release and run Swift tests
   - name: Build Linux Installer and Run Swift Tests
-    python: 3.7
+    python: 3.8
     dist: xenial
     before_install:
     - sudo apt-get install -y aria2
     - sudo apt-get install -y p7zip-full
     - bash travis_install_swift.sh
+    - pip3 install --upgrade pip
     env:
       - BUILD_MODE=NORMAL
       - RUN_TESTS=TRUE
@@ -19,14 +20,13 @@ matrix:
     language: shell
     before_install:
     - choco install aria2
-    - choco install python
+    - choco install python3
     - choco install rust-ms --forcex86
-    - python -m pip install --upgrade pip
     env:
-      - PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    # ----------- UPDATE THIS LINE EACH TIME PYTHON VERSION CHANGES ----------------
+      - PATH=/c/Python38:/c/Python38/Scripts:$PATH
+    # ------------------------------------------------------------------------------
       - BUILD_MODE=WINDOWS
-# TODO: Not sure if upgrading pip is necessary. This would save time across all machines.
-install: pip3 install --upgrade pip
 # The below tasks are run across all machines, but gated using if statements on the environment variables
 script:
 - if [ "$BUILD_MODE" = "NORMAL" ]; then python travis_build_script.py && bash travis_validate_json.sh ; fi
