@@ -13,8 +13,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CG.7z",                "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-CGAlt.7z",             "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-Graphics.7z",                "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
@@ -71,8 +70,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CG.7z",               "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-CGAlt.7z",            "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-Graphics.7z",               "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
@@ -138,8 +136,7 @@
 					"name" : "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CG.7z",             "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-CGAlt.7z",          "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-Graphics.7z",             "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
 						{"name": "ui",      "url": null,                                                            "priority": 0},
@@ -209,8 +206,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CG.7z",              "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-CGAlt.7z",           "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-Graphics.7z",              "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
@@ -267,8 +263,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CG.7z",                  "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Meakashi-CGAlt.7z",               "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-Graphics.7z",                  "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
@@ -318,8 +313,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CG.7z",            "priority": 0},
-						{"name": "cgalt",   "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-CGAlt.7z",         "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-Graphics.7z",            "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",         "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
@@ -367,8 +361,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CG.7z", "priority": 0},
-						{"name": "cgalt",   "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-CGAlt.7z", "priority": 0},
+						{"name": "cg",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-Graphics.7z", "priority": 0},
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
