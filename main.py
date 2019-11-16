@@ -24,13 +24,6 @@ try:
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 
-# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
-# Since we want to properly find things like `./aria2c`, we should move to that path first.
-dirname = os.path.dirname(sys.argv[0])
-if dirname.strip():
-	os.chdir(dirname)
-
-
 def check07thModServerConnection():
 	"""
 	Makes sure that we can connect to the 07th-mod server
@@ -61,6 +54,11 @@ def getSubModConfigList(modList):
 	return subModconfigList
 
 if __name__ == "__main__":
+	# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
+	# Since we want to properly find things like `./aria2c`, we should move to that path first.
+	dirname = os.path.dirname(sys.argv[0])
+	if dirname.strip():
+		os.chdir(dirname)
 	# Enable developer mode if we detect the program is run from the git repository
 	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
 	if os.path.exists("installData.json"):
