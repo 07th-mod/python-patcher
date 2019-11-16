@@ -9,7 +9,7 @@ import installConfiguration
 import sys
 
 
-def main(*, game_name, game_path, mod_type, mod_options, is_steam):
+def main(*, game_name, game_path, mod_type, mod_options=[], is_steam=True):
     sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
     logger.setGlobalLogger(sys.stdout)
     sys.stderr = logger.StdErrRedirector(sys.stdout)
