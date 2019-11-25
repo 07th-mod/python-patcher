@@ -6,6 +6,7 @@ import os
 import pprint
 import socket
 import sys
+import traceback
 
 import common
 import gameScanner
@@ -31,8 +32,7 @@ def check07thModServerConnection():
 	(Patches will fail to download if we can't)
 	"""
 	try:
-		testFile = urlopen(Request("http://07th-mod.com/", headers={"User-Agent": ""}))
-		testFile.close()
+		testFile = common.downloadFile("http://07th-mod.com/", is_text=True)
 	except Exception as error:
 		traceback.print_exc()
 		print(
@@ -96,9 +96,9 @@ if __name__ == "__main__":
 		print("-------------------------------------------------------------")
 		input()
 
-	check07thModServerConnection()
 	common.Globals.scanForExecutables()
 	common.Globals.scanCertLocation()
+	check07thModServerConnection()
 	modList = getModList(common.Globals.DEVELOPER_MODE)
 	common.Globals.loadCachedDownloadSizes(modList)
 	subModconfigList = getSubModConfigList(modList)

@@ -132,6 +132,7 @@ class Globals:
 	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
 
 	CA_CERT_PATH = None
+	URLOPEN_IS_BROKEN = False
 
 	@staticmethod
 	def scanForExecutables():
@@ -476,13 +477,12 @@ def tryGetRemoteNews(newsName):
 	url = Globals.GITHUB_MASTER_BASE_URL + 'news/' + quote(newsName) + '.md'
 	try:
 		if Globals.DEVELOPER_MODE and os.path.exists(localPath):
-			file = open(localPath, 'rb') #read as bytes to match urlopen in python 3
+			with io.open(localPath, 'r', encoding='utf-8') as file:
+				return file.read()
 		else:
-			file = urlopen(Request(url, headers={"User-Agent": ""}))
+			return downloadFile(url, is_text=True)
 	except HTTPError as error:
 		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
-
-	return file.read().decode('utf-8')
 
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
@@ -494,11 +494,9 @@ def getDonationStatus():
 	donationStatusRegex = re.compile(r'<progress\s*value=(\d+).*data-months-remaining=(\d+)>', re.IGNORECASE)
 
 	try:
-		file = urlopen(Request(r"http://07th-mod.com/wiki/", headers={"User-Agent": ""}))
+		entirePage = downloadFile(r"http://07th-mod.com/wiki/", is_text=True)
 	except HTTPError as error:
 		return None, None
-
-	entirePage = file.read().decode('utf-8')
 
 	match = donationStatusRegex.search(entirePage)
 	if match:
@@ -517,25 +515,15 @@ def getJSON(jsonURI, isURL):
 	tmpdir = None
 	try:
 		if isURL:
-			if not SSL_VERSION_IS_OLD:
-				file = urlopen(Request(jsonURI, headers={"User-Agent": ""}))
-			else:
-				tmpdir = tempfile.mkdtemp()
-				if aria(url=jsonURI, downloadDir=tmpdir, outputFile="info.json") != 0:
-					return None, Exception("ERROR - could not download modList [{}]. Installation Stopped")
-
-				file = io.open(os.path.join(tmpdir, "info.json"), "r", encoding='utf-8')
+			jsonString = downloadFile(jsonURI, is_text=True)
+			info = json.loads(jsonString, encoding='utf-8')
 		else:
 			file = io.open(jsonURI, "r", encoding='utf-8')
+			info = json.load(file, encoding='utf-8')
 	except HTTPError as error:
 		return None, error
 	except Exception as anyError:
 		return None, anyError
-
-	info = json.load(file, encoding='utf-8')
-	file.close()
-	if tmpdir:
-		shutil.rmtree(tmpdir)
 
 	return info, None
 
@@ -963,15 +951,15 @@ class DownloaderAndExtractor:
 		if SSL_VERSION_IS_OLD and Globals.CURL_EXECUTABLE is None and url[0:5] == "https":
 			url = "http" + url[5:]
 
-		# if the url has a contentDisposition header, use that instead
-		contentDisposition = None
-		remoteLastModified = None
-		responseURL = url
-		if SSL_VERSION_IS_OLD and Globals.CURL_EXECUTABLE is not None:
+		def queryUsingCURL(queryUrl):
+			if Globals.CURL_EXECUTABLE is None:
+				raise Exception("URLOpen Metadata Query FAILED - No CURL executable available for fallback (URL [{}])".format(url))
+
 			# On old SSL if we have curl use that instead
 			with open(os.devnull, 'w') as os_devnull:
 				# Get the header, the -X GET is required because the github download links return a 403 if you try to send a HEAD request
-				headers = subprocess.check_output(["curl", "-ILX", "GET", url], stderr=os_devnull).decode("utf-8")
+				headers = subprocess.check_output([Globals.CURL_EXECUTABLE, "-ILX", "GET", queryUrl],
+				                                  stderr=os_devnull).decode("utf-8")
 			# If there's redirects curl may print multiple headers with multiple content dispositions.  We want the last one
 			contentDisposition = re.findall("Content-Disposition: (.+)", headers, re.IGNORECASE)
 			contentDisposition = contentDisposition[-1].strip() if contentDisposition else None
@@ -980,9 +968,13 @@ class DownloaderAndExtractor:
 			remoteLastModified = re.findall("Last-Modified: (.+)", headers, re.IGNORECASE)
 			remoteLastModified = remoteLastModified[-1].strip() if remoteLastModified else None
 			responseURL = re.findall("Location: (.+)", headers, re.IGNORECASE)
-			responseURL = responseURL[-1].strip() if responseURL else url
-		else:
-			httpResponse = urlopen(Request(url, headers={"User-Agent": ""}))
+			responseURL = responseURL[-1].strip() if responseURL else queryUrl
+
+			return contentDisposition, remoteLastModified, responseURL, lengthString
+
+		def queryUsingURLOpen(queryUrl):
+			httpResponse = urlopen(Request(queryUrl, headers={"User-Agent": ""}))
+
 			try:
 				contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
 				lengthString = httpResponse.getheader('Content-Length')
@@ -992,6 +984,18 @@ class DownloaderAndExtractor:
 				lengthString = httpResponse.info().getheader('Content-Length')
 				remoteLastModified = httpResponse.info().getheader("Last-Modified")
 			responseURL = httpResponse.url
+
+			return contentDisposition, remoteLastModified, responseURL, lengthString
+
+		if Globals.URLOPEN_IS_BROKEN or (SSL_VERSION_IS_OLD and Globals.CURL_EXECUTABLE is not None):
+			contentDisposition, remoteLastModified, responseURL, lengthString = queryUsingCURL(url)
+		else:
+			try:
+				contentDisposition, remoteLastModified, responseURL, lengthString = queryUsingURLOpen(url)
+			except:
+				Globals.URLOPEN_IS_BROKEN = True
+				traceback.print_exc()
+				contentDisposition, remoteLastModified, responseURL, lengthString = queryUsingCURL(url)
 
 		try:
 			length = int(lengthString)
@@ -1114,3 +1118,51 @@ def group_by(values, keyFunc):
 		grouped[key].append(value)
 
 	return grouped
+
+def downloadFile(url, is_text):
+	"""
+	Downloads a file from the given URL.
+	Will either return "bytes" if is_text = False, or a unicode string if is_text = True
+	Raises an exception on error.
+
+	:param url:
+	:return:
+	"""
+	def downloadUsingURLOpen(download_url):
+		file = urlopen(Request(download_url, headers={"User-Agent": ""}))
+		data = file.read()
+		file.close()
+		return data
+
+	def downloadUsingAria2c(download_url):
+		# Download to a temporary file
+		tmpname = "temporary.tmp"
+		tmpdir = tempfile.mkdtemp()
+		if aria(url=download_url, downloadDir=tmpdir, outputFile=tmpname) != 0:
+			raise Exception("ERROR - could not download [{}] with aria2c".format(download_url))
+
+		# Read out the temporary file to memory
+		temppath = os.path.join(tmpdir, tmpname)
+		file = open(temppath, 'rb')
+		data = file.read()
+		file.close()
+
+		if tmpdir:
+			shutil.rmtree(tmpdir)
+
+		return data
+
+	try:
+		if SSL_VERSION_IS_OLD or Globals.URLOPEN_IS_BROKEN:
+			data = downloadUsingAria2c(url)
+		else:
+			data = downloadUsingURLOpen(url)
+	except:
+		traceback.print_exc()
+		Globals.URLOPEN_IS_BROKEN = True
+		data = downloadUsingAria2c(url)
+
+	if is_text:
+		data = data.decode('utf-8')
+
+	return data
