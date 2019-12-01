@@ -30,11 +30,13 @@ def main(*, game_name, game_path, mod_type, mod_options=[], is_steam=True):
     neededSubMod = suitableSubMods[0]
     neededModOptions = []
     for i in mod_options:
-        neededModOptions += [
+        neededModOption = [
             x
             for x in neededSubMod.modOptions
             if all(y in x.id.lower().split() for y in i.lower().split("-"))
         ]
+        if len(neededModOption == 1):
+            neededModOptions += neededModOption
     if len(neededModOptions) != len(mod_options):
         print("Couldn't find specified mod options.")
         return
