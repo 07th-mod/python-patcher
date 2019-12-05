@@ -133,7 +133,7 @@ class Globals:
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
 		# before this executes
-		print("Validating Executables...", end='')
+		print("Validating Executables...")
 		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl"], ["-I", "https://07th-mod.com/"])
 
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
@@ -148,7 +148,7 @@ class Globals:
 			print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 			exitWithError()
 		else:
-			print("Found aria2c at [{}]".format(Globals.ARIA_EXECUTABLE), end='')
+			print("Found aria2c at [{}]".format(Globals.ARIA_EXECUTABLE))
 
 		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], ['-h'])
 		if Globals.SEVEN_ZIP_EXECUTABLE is None:
@@ -156,7 +156,7 @@ class Globals:
 			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 			exitWithError()
 		else:
-			print(", Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE), end='')
+			print("Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE))
 
 	@staticmethod
 	def loadCachedDownloadSizes(modList):
