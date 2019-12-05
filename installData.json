@@ -518,7 +518,7 @@
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato-v2.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				}
