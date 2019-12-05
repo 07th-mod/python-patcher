@@ -184,15 +184,19 @@ class Globals:
 			# In developer mode, check that all URLs in the json file also exist in the downloadList.
 			# If they don't, regenerate the downloadList
 			if Globals.DEVELOPER_MODE:
-				import cacheDownloadSizes
-				for urlToCheck in cacheDownloadSizes.getAllURLsFromModList(modList):
-					if urlToCheck not in Globals.URL_FILE_SIZE_LOOKUP_TABLE:
-						print("DEVELOPER: cachedDownloadSizes.json is missing url {} - regenerating list".format(urlToCheck))
-						cacheDownloadSizes.generateCachedDownloadSizes()
-						break
+				if sys.version_info >= (3, 0):
+					import cacheDownloadSizes
+					for urlToCheck in cacheDownloadSizes.getAllURLsFromModList(modList):
+						if urlToCheck not in Globals.URL_FILE_SIZE_LOOKUP_TABLE:
+							print("DEVELOPER: cachedDownloadSizes.json is missing url {} - regenerating list".format(urlToCheck))
+							cacheDownloadSizes.generateCachedDownloadSizes()
+							break
+				else:
+					print("DEVELOPER: skipping cachedDownloadSizes.json regeneration as you are running Python 2. Please use Python 3 to regenerate the download size cache.")
 
-		except:
-			print("Failed to read URL File Size Lookup Table")
+		except Exception:
+			print("Developer ERROR: Failed to read URL File Size Lookup Table")
+			traceback.print_exc()
 
 	@staticmethod
 	def getBuildInfo():
