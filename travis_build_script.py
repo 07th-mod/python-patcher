@@ -5,13 +5,17 @@ import shutil
 import subprocess
 import sys
 import datetime
+import platform
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
 
 BUILD_LINUX_MAC = True
+# If user specified which platform to build for, use that platform. Otherwise, attempt to detect platform automatically.
 if len(sys.argv) == 2:
 	if "win" in sys.argv[1].lower():
 		BUILD_LINUX_MAC = False
+else:
+	BUILD_LINUX_MAC = not (platform.system() == "Windows")
 
 print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
 
