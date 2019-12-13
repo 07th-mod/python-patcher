@@ -3,8 +3,7 @@
 use std::path::{Path, PathBuf};
 
 mod archive_extractor;
-mod console_widget;
-mod process_monitor;
+mod process_runner;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
 mod windows_utilities;

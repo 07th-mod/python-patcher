@@ -3,8 +3,7 @@ use glium::glutin::{Event, WindowEvent};
 use imgui::*;
 
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
-use crate::console_widget::ConsoleWidget;
-use crate::process_monitor::ProcessMonitor;
+use crate::process_runner::ProcessRunner;
 use crate::support::ApplicationGUI;
 use crate::windows_utilities;
 
@@ -64,12 +63,12 @@ impl<'ui> SimpleUI for Ui<'ui> {
 }
 
 pub struct InstallStartedState {
-	pub python_monitor: ProcessMonitor,
+	pub python_monitor: ProcessRunner,
 	pub is_graphical: bool,
 }
 
 impl InstallStartedState {
-	pub fn new(python_monitor: ProcessMonitor, is_graphical: bool) -> InstallStartedState {
+	pub fn new(python_monitor: ProcessRunner, is_graphical: bool) -> InstallStartedState {
 		InstallStartedState {
 			python_monitor,
 			is_graphical,
@@ -116,7 +115,6 @@ impl InstallerState {
 
 struct UIState {
 	window_size: [f32; 2],
-	console: ConsoleWidget,
 	show_developer_tools: bool,
 	show_console: bool,
 	close_requested: bool,
@@ -132,7 +130,6 @@ impl UIState {
 	pub fn new(window_size: [f32; 2]) -> UIState {
 		UIState {
 			window_size,
-			console: ConsoleWidget::new(400, [0., 350.]),
 			show_developer_tools: false,
 			show_console: false,
 			close_requested: false,
@@ -172,10 +169,7 @@ impl InstallerGUI {
 
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
-		ui.separator();
 
-		// Show the console once the install has started
-		self.display_console(ui);
 		ui.separator();
 
 		// Show the advanced tools section
@@ -247,15 +241,15 @@ impl InstallerGUI {
 					.build(&ui);
 			}
 			InstallerProgression::WaitingUserPickInstallType => {
+				ui.text_red(im_str!("Please click 'Run Installer'"));
+				ui.text_red(im_str!(
+					"If you have problems, try the alternative installer (Advanced Tools -> 'Command Line Installer')"
+				));
 				if ui.simple_button(im_str!("Run Installer")) {
 					if let Err(e) = self.start_install(true) {
 						println!("Failed to start install! {:?}", e)
 					}
 				}
-				ui.text_red(im_str!("Please click 'Run Installer'"));
-				ui.text_red(im_str!(
-					"If you have problems, try the alternative installer (Advanced Tools -> 'Command Line Installer')"
-				));
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
@@ -264,7 +258,7 @@ impl InstallerGUI {
 					));
 				} else {
 					ui.text_yellow(im_str!(
-						"Console Installer Started - Please use the 'Console Input' below"
+						"Console Installer Started - Please use the console window that just opened."
 					));
 				}
 			}
@@ -292,6 +286,9 @@ impl InstallerGUI {
 				ui.same_line(0.);
 			}
 
+			// Show python installer logs. NOTE: the output of this launcher is currently not logged.
+			self.show_logs_button(ui);
+
 			// Show windows' 'cmd' console
 			if ui.checkbox(
 				im_str!("Show Debug Console"),
@@ -314,66 +311,17 @@ impl InstallerGUI {
 		}
 	}
 
-	// Show console if install has started
-	fn display_console(&mut self, ui: &Ui) {
-		if let InstallerProgression::InstallStarted(state) = &mut self.state.progression {
-			// Pass-through stdout and stderr to console, but also show on main GUI
-			while let Ok(string) = state.python_monitor.stdout_read_line() {
-				print!("{}", string);
-				self.ui_state.console.add_line(string);
-			}
-
-			while let Ok(string) = state.python_monitor.stderr_read_line() {
-				eprint!("{}", string);
-				self.ui_state.console.add_line(string);
-			}
-
-			ui.text(im_str!("Installer Console:"));
-
-			// Show the user a warning if the in-built terminal might be broken
-			if state.python_monitor.stdin_has_terminated() {
-				if state.is_graphical {
-					ui.text_yellow("Warning: console input was disconnected");
-				} else {
-					ui.text_red(
-						"ERROR: console input was disconnected - try restarting the installer",
-					);
-				}
-			}
-
-			// Show the console, and check if the user wants to send text via the console
-			if let Some(input_no_newline) = self.ui_state.console.show(&ui) {
-				// Send the text to the python process. Repeat the text on the console to give user feedback
-				if let Err(e) = state.python_monitor.stdin_write_add_nl(&input_no_newline) {
-					self.ui_state
-						.console
-						.add_error(format!(">> Failed to send [{}]", &input_no_newline));
-					self.ui_state
-						.console
-						.add_error(format!(">> Reason [{}]", e));
-				} else {
-					self.ui_state
-						.console
-						.add_input(format!(">> {}", &input_no_newline));
-				}
-			}
-
-			ui.same_line(0.);
-			self.show_logs_button(ui);
-		} else {
-			self.show_logs_button(ui);
-		}
-	}
-
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
 	fn start_install(&mut self, is_graphical: bool) -> Result<(), Box<dyn std::error::Error>> {
 		let script_name = if is_graphical {
 			"main.py"
 		} else {
+			// Interactive CLI installer needs console visible so user can see and type into it.
+			windows_utilities::show_console_window();
 			"cli_interactive.py"
 		};
 
-		let python_monitor = ProcessMonitor::new(
+		let python_monitor = ProcessRunner::new(
 			&self.config.python_path,
 			self.config.sub_folder,
 			&["-u", "-E", script_name],
@@ -403,7 +351,7 @@ impl InstallerGUI {
 	}
 
 	fn show_logs_button(&self, ui: &Ui) {
-		if ui.button(im_str!("Show Installer Log Folder"), [0., 0.]) {
+		if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
 			let _ = windows_utilities::system_open(&self.config.logs_folder);
 		}
 	}
@@ -464,7 +412,7 @@ impl ApplicationGUI for InstallerGUI {
 }
 
 pub fn ui_loop() {
-	let window_size = [900., 600.];
+	let window_size = [900., 400.];
 	let system = support::init(
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
