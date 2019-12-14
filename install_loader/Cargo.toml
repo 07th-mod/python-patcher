@@ -9,3 +9,18 @@ edition = "2018"
 [dependencies]
 xz2 = "0.1"
 tar = "0.4"
+progress-streams = "*"
+regex = "1"
+
+# imgui dependencies
+clipboard = "0.5"
+glium = { version = "0.25", default-features = true }
+image = "0.22"
+imgui = { version = "0.3.0-pre", git = "https://github.com/Gekkio/imgui-rs" }
+imgui-glium-renderer = { version = "0.3.0-pre", git = "https://github.com/Gekkio/imgui-rs"}
+imgui-winit-support = { version = "0.3.0-pre", git = "https://github.com/Gekkio/imgui-rs" }
+
+# Windows specific dependencies
+winapi = "*"
+user32-sys = "*"
+kernel32-sys = "*"
