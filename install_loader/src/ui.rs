@@ -82,9 +82,9 @@ pub struct ExtractingPythonState {
 }
 
 impl ExtractingPythonState {
-	pub fn new() -> ExtractingPythonState {
+	pub fn new(force_extraction: bool) -> ExtractingPythonState {
 		ExtractingPythonState {
-			extractor: ArchiveExtractor::new(),
+			extractor: ArchiveExtractor::new(force_extraction),
 			progress_percentage: 0,
 		}
 	}
@@ -108,7 +108,7 @@ pub struct InstallerState {
 impl InstallerState {
 	pub fn new() -> InstallerState {
 		InstallerState {
-			progression: InstallerProgression::ExtractingPython(ExtractingPythonState::new()),
+			progression: InstallerProgression::ExtractingPython(ExtractingPythonState::new(false)),
 		}
 	}
 }
@@ -286,8 +286,26 @@ impl InstallerGUI {
 				ui.same_line(0.);
 			}
 
-			// Show python installer logs. NOTE: the output of this launcher is currently not logged.
-			self.show_logs_button(ui);
+			// Button which shows the python installer logs folder.
+			// NOTE: the output of this launcher is currently not logged.
+			if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
+				let _ = windows_utilities::system_open(&self.config.logs_folder);
+			}
+
+			// Button which forces re-extraction
+			match self.state.progression {
+				InstallerProgression::WaitingUserPickInstallType
+				| InstallerProgression::InstallFinished
+				| InstallerProgression::InstallFailed(_) => {
+					ui.same_line(0.);
+					if ui.simple_button(im_str!("Force Re-Extraction")) {
+						self.state.progression = InstallerProgression::ExtractingPython(
+							ExtractingPythonState::new(true),
+						);
+					}
+				}
+				_ => {}
+			}
 
 			// Show windows' 'cmd' console
 			if ui.checkbox(
@@ -348,12 +366,6 @@ impl InstallerGUI {
 		}
 
 		self.state.progression = InstallerProgression::InstallFinished;
-	}
-
-	fn show_logs_button(&self, ui: &Ui) {
-		if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
-			let _ = windows_utilities::system_open(&self.config.logs_folder);
-		}
 	}
 
 	// Power saving mode is determined by the following

@@ -21,12 +21,14 @@ pub enum ExtractionStatus {
 
 pub struct ArchiveExtractor {
 	receiver: ExtractionStatusInternal,
+	force_extraction: bool,
 }
 
 impl ArchiveExtractor {
-	pub fn new() -> ArchiveExtractor {
+	pub fn new(force_extraction: bool) -> ArchiveExtractor {
 		ArchiveExtractor {
 			receiver: ExtractionStatusInternal::NotStarted,
+			force_extraction,
 		}
 	}
 
@@ -34,7 +36,7 @@ impl ArchiveExtractor {
 		match self.receiver {
 			ExtractionStatusInternal::NotStarted => {
 				let (sender, receiver) = mpsc::channel::<Result<usize, &str>>();
-				extract_archive_new_thread(sub_folder_path, sender);
+				extract_archive_new_thread(sub_folder_path, sender, self.force_extraction);
 				self.receiver = ExtractionStatusInternal::Started(receiver);
 			}
 			_ => {}
@@ -85,19 +87,24 @@ fn extraction_required<P: AsRef<Path>>(saved_git_tag_path: P) -> bool {
 fn extract_archive_new_thread(
 	sub_folder_path: &Path,
 	progress_update: Sender<Result<usize, &'static str>>,
+	force_extraction: bool,
 ) {
 	let mut path_copy = PathBuf::new();
 	path_copy.push(sub_folder_path);
 	thread::spawn(move || {
 		println!("Spawning extraction thread");
-		extract_archive(path_copy.as_path(), progress_update);
+		extract_archive(path_copy.as_path(), progress_update, force_extraction);
 	});
 }
 
-fn extract_archive(sub_folder_path: &Path, progress_update: Sender<Result<usize, &str>>) {
+fn extract_archive(
+	sub_folder_path: &Path,
+	progress_update: Sender<Result<usize, &str>>,
+	force_extraction: bool,
+) {
 	let saved_git_tag_path = sub_folder_path.join("installer_loader_extraction_lock.txt");
 
-	if extraction_required(&saved_git_tag_path) {
+	if force_extraction || extraction_required(&saved_git_tag_path) {
 		// During compilation, include the installer archive in .tar.xz format
 		//NOTE: The below file must be placed adjacent to this source file!
 		//The archive should not contain any subfolders - one will be created automatically
