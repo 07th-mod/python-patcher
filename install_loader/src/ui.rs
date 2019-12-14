@@ -424,7 +424,7 @@ impl ApplicationGUI for InstallerGUI {
 }
 
 pub fn ui_loop() {
-	let window_size = [900., 400.];
+	let window_size = [900., 500.];
 	let system = support::init(
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
