@@ -60,14 +60,9 @@ pub fn init<G: ApplicationGUI>(
 	}
 
 	let hidpi_factor = platform.hidpi_factor();
-	let font_size = (13.0 * hidpi_factor) as f32;
+	// Set font size to 13 if using the default font
+	let font_size = (20.0 * hidpi_factor) as f32;
 	imgui.fonts().add_font(&[
-		FontSource::DefaultFontData {
-			config: Some(FontConfig {
-				size_pixels: font_size,
-				..FontConfig::default()
-			}),
-		},
 		FontSource::TtfData {
 			data: include_bytes!("Roboto-Regular.ttf"),
 			size_pixels: font_size,
@@ -77,7 +72,14 @@ pub fn init<G: ApplicationGUI>(
 				..FontConfig::default()
 			}),
 		},
+		FontSource::DefaultFontData {
+			config: Some(FontConfig {
+				size_pixels: font_size,
+				..FontConfig::default()
+			}),
+		},
 	]);
+
 
 	imgui.io_mut().font_global_scale = (1.0 / hidpi_factor) as f32;
 
