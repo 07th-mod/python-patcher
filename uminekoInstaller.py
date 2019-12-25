@@ -8,6 +8,7 @@ import fileVersionManagement
 import gameScanner
 import installConfiguration
 import logger
+import steamGridExtractor
 
 def backupOrRemoveFiles(folderToBackup):
 	"""
@@ -193,6 +194,7 @@ pause
 
 	# For now, don't copy save data
 
+	steamGridExtractor.extractSteamGrid()
 	fileVersionManager.saveVersionInstallFinished()
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")

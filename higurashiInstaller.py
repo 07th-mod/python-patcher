@@ -12,6 +12,7 @@ import fileVersionManagement
 import gameScanner
 import installConfiguration
 import logger
+import steamGridExtractor
 
 
 def on_rm_error(func, path, exc_info):
@@ -262,6 +263,7 @@ def main(fullInstallConfiguration):
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		steamGridExtractor.extractSteamGrid()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
 
