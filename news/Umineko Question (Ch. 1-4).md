@@ -1,5 +1,28 @@
 # Changelog
 
+## Fix Disappearing Issue in ADV mode, NVL linebreak fix, various other fixes - 23/12/2019
+
+On 23/11/2019, a fix was applied to fix the backlog disappearing, which was successful. It also applied a fix for the text disappearing issue, but that only fixed some of the bugs in the script.
+
+This most recent update will hopefully fix the disappearing text issue for good. This would occur when playing ADV mode (only affects Question Arcs). The text would be displayed, but upon reaching the point where the line would wrap/a page break would occur, the text would disappear.
+
+You can see (spoilery) example here, but it's very obvious while you're playing when it happens: https://github.com/07th-mod/umineko-question/issues/147
+
+I have decided to issue a warning that if you're using ADV mode, to expect there to be some bugs. Please report any bugs to us on Github or Discord so they can be fixed.
+
+In addition, a somewhat separate issue of double-spaced line breaks not being properly displayed in NVL mode was also fixed.
+
+I would **highly recommend upgrading** the next time you reach the end of an episode (remember, save files don't work properly when the script changes, so you need to start a new chapter after a script update).
+
+List of fixes:
+
+- Fix `br` (double spaced line breaks) in NVL mode
+- Force clickwait before text overflows when text is displayed automatically (ADV)
+- Spot fix for graphical textbox artifact at end of episode 4 (ADV)
+- Fix voicedelay causing unecessary delay before text is displayed (NVL and ADV)
+- Fix places where empty textbox remains on screen during a delay (ADV, possibly NVL)
+- Fix some invalid/wrong nametags (ADV)
+
 ## Fix Text Overflow Bug - 19/08/2019
 
 Fix bug where text would overflow the text box if there were repeated "automatic" lines (lines which appear without clicking). This would have happened a handful of times during the course of the game.
