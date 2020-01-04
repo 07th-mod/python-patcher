@@ -571,10 +571,16 @@ class InstallerGUI:
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
 					)
+					CWDHaveEnoughFreeSpaceInstallerPath, CWDFreeSpaceAdvisoryStringInstallerPath = common.checkFreeSpace(
+						installPath = os.getcwd(),
+						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
+					)
 
 					retval['validatedInstallPath'] = fullInstallConfiguration.installPath
 					retval['haveEnoughFreeSpace'] = haveEnoughFreeSpace
 					retval['freeSpaceAdvisoryString'] = freeSpaceAdvisoryString
+					retval['CWDHaveEnoughFreeSpace'] = CWDHaveEnoughFreeSpaceInstallerPath
+					retval['CWDFreeSpaceAdvisoryString'] = CWDFreeSpaceAdvisoryStringInstallerPath
 					retval['downloadItemsPreview'] = downloadItemsPreview
 					retval['numUpdatesRequired'] = numUpdatesRequired
 					retval['fullUpdateRequired'] = fullUpdateRequired

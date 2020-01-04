@@ -145,11 +145,13 @@ window.onload = function onWindowLoaded() {
       metaInfo: null,
       // freeSpaceAdvisoryString: a message to the user indicating whether there is enough space on the selected install path
       freeSpaceAdvisoryString: null,
+      CWDFreeSpaceAdvisoryString: null,
       // haveEnoughFreeSpace: Indicates the free space status according to the following:
       // - null: Couldn't query the free space. freeSpaceAdvisoryString will still have a message in this case.
       // - false: There is not enough free space
       // - true: There is  enough free space on disk
       haveEnoughFreeSpace: null,
+      CWDHaveEnoughFreeSpace: null,
       // The download items preview includes mod options, and an extra summary row at the end
       downloadItemsPreview: [],
       // The number of updated files detected, EXCEPT for mod options
@@ -204,7 +206,9 @@ window.onload = function onWindowLoaded() {
             app.validatedInstallPath = responseData.validatedInstallPath;
             app.validationInProgress = false;
             app.freeSpaceAdvisoryString = responseData.freeSpaceAdvisoryString;
+            app.CWDFreeSpaceAdvisoryString = responseData.CWDFreeSpaceAdvisoryString;
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
+            app.CWDHaveEnoughFreeSpace = responseData.CWDHaveEnoughFreeSpace;
             app.downloadItemsPreview = responseData.downloadItemsPreview;
             app.numUpdatesRequired = responseData.numUpdatesRequired;
             app.fullUpdateRequired = responseData.fullUpdateRequired;

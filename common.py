@@ -928,20 +928,20 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 		from shutil import disk_usage
 		free_space = disk_usage(installPath).free
 	except:
-		print("Free Disk Space query failed - probably using Python 2")
+		print("Failed to query amount of free disk space - probably using Python 2 on MacOS")
 		pass
 
-	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space for extraction and temporary files.".format(recommendedFreeSpaceString)
+	freeSpaceAdvisoryString = "Install requires approximately {} of free disk space at [{}] for extraction and temporary files.".format(installPath, recommendedFreeSpaceString)
 	haveEnoughFreeSpace = None
 
 	if free_space is not None:
 		freeSpaceString = prettyPrintFileSize(free_space)
 		if free_space < recommendedFreeSpaceBytes:
-			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! " \
-			                          "(have {}, need {})".format(freeSpaceString, recommendedFreeSpaceString)
+			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! at [{}]" \
+			                          "(have {}, need {})".format(installPath, freeSpaceString, recommendedFreeSpaceString)
 			haveEnoughFreeSpace = False
 		else:
-			freeSpaceAdvisoryString = "You have enough free disk space (have {}, need {})".format(freeSpaceString,
+			freeSpaceAdvisoryString = "You have enough free disk space at [{}] (have {}, need {})".format(installPath, freeSpaceString,
 			                                                                                      recommendedFreeSpaceString)
 			haveEnoughFreeSpace = True
 
