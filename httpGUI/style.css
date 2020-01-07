@@ -185,3 +185,38 @@ The snackbar - position it at the bottom and in the middle of the screen */
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.mod-option-group {
+    background-color: #a4b7ac;
+    color: #f7f7f7;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.mod-option-group a:link {
+    color: blue;
+}
+
+.mod-option-group a:visited {
+    color: blue;
+}
+
+.mod-option-group a:hover {
+    color: purple;
+}
+
+.mod-option-group a:active {
+    color: purple;
+}
+
+.mod-option-group-active {
+    background-color: #47b475;
+    color: white;
+}
+
+.mod-option-group ul {
+    padding-bottom: 10px;
+}
