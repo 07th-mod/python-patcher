@@ -521,6 +521,12 @@
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato-v2.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
+				},
+				{
+					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
+					"checkBox": [
+						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
+					]
 				}
 			]
 		},
@@ -603,7 +609,14 @@
 							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Potato.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
+				},
+				{
+					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
+					"checkBox": [
+						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
+					]
 				}
+
 			]
 		},
 		{

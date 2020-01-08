@@ -10,6 +10,11 @@ import installConfiguration
 import logger
 import steamGridExtractor
 
+try:
+	from typing import List
+except:
+	pass
+
 def backupOrRemoveFiles(folderToBackup):
 	"""
 	Backs up files for both question and answer arcs
@@ -36,6 +41,15 @@ def backupOrRemoveFiles(folderToBackup):
 					shutil.copytree(fullFilePath, backupPath)
 			except Exception as e:
 				print("backupOrRemoveFiles: Failed to backup {}: {}".format(fullFilePath, e))
+
+def deleteExtractablesFromFolder(folderContainingItems, extractableItemList):
+	#type: (str, List[common.DownloaderAndExtractor.ExtractableItem]) -> None
+	for extractableItem in extractableItemList:
+		extractableItemPath = os.path.join(folderContainingItems, extractableItem.filename)
+		if os.path.exists(extractableItemPath):
+			print("Removing: [{}]".format(extractableItemPath))
+			os.remove(extractableItemPath)
+
 
 #do install given a installer config object
 def mainUmineko(conf):
@@ -109,11 +123,8 @@ def mainUmineko(conf):
 	downloaderAndExtractor.printPreview()
 
 	# Delete all non-checksummed files from the download folder, if they exist
-	for extractableItem in downloaderAndExtractor.extractList:
-		extractableItemPath = os.path.join(downloadTempDir, extractableItem.filename)
-		if not extractableItem.fromMetaLink and os.path.exists(extractableItemPath):
-			print("Removing existing non-checksummed download: [{}]".format(extractableItemPath))
-			os.remove(extractableItemPath)
+	print("Removing non-checksummed downloads:")
+	deleteExtractablesFromFolder(downloadTempDir, [x for x in downloaderAndExtractor.extractList if not x.fromMetaLink])
 
 	downloaderAndExtractor.download()
 
@@ -196,5 +207,9 @@ pause
 
 	steamGridExtractor.extractSteamGrid()
 	fileVersionManager.saveVersionInstallFinished()
+
+	if not parser.keepDownloads:
+		print("Removing temporary downloads:")
+		deleteExtractablesFromFolder(downloadTempDir, downloaderAndExtractor.extractList)
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko install script completed!")

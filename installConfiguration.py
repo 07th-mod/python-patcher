@@ -138,6 +138,7 @@ class ModOptionParser:
 	def __init__(self, fullInstallConfiguration):
 		self.config = fullInstallConfiguration # type: FullInstallConfiguration
 		self.downloadAndExtractOptionsByPriority = [] # type: List[DownloadAndExtractOption]
+		self.keepDownloads = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		print('MOD OPTIONS:\n')
@@ -154,6 +155,8 @@ class ModOptionParser:
 							modOption.data['priority']
 						)
 					)
+				elif modOption.type == 'keepDownloads':
+					self.keepDownloads = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
