@@ -230,6 +230,16 @@ window.onload = function onWindowLoaded() {
           app.doInstall(true);
         }
       },
+      alertClassFromMaybeBool(maybeBool) {
+        switch(maybeBool) {
+          case true:
+            return 'alert-success';
+          case false:
+            return 'alert-danger';
+          default:
+            return 'alert-warning';
+        }
+      },
     },
     computed: {
       modHandles() {
