@@ -107,6 +107,7 @@ public struct ModOptionGroup: Codable {
 
 public enum ModOptionType: String, Codable {
 	case downloadAndExtract
+	case keepDownloads
 }
 
 public struct ModOptionEntry: Codable {

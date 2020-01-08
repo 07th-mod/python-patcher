@@ -89,7 +89,9 @@ final class JSONValidatorTests: XCTestCase {
 				if numNonNil != 1 {
 					XCTFail("\(mod.name) option \(option.name) must have either a radio button or checkBox but not both")
 				}
-				option.checkBox?.forEach { XCTAssertNotNil($0.data, "CheckBoxes must have data but \(mod.name) option \(option.name) doesn't!") }
+				if case .downloadAndExtract = option.type {
+					option.checkBox?.forEach { XCTAssertNotNil($0.data, "CheckBoxes for 'downloadAndExtract' must have data but \(mod.name) option \(option.name) doesn't!") }
+				}
 			}
 		}
 	}
