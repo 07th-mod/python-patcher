@@ -3,6 +3,7 @@
 use std::path::{Path, PathBuf};
 
 mod archive_extractor;
+mod panic_handler;
 mod process_runner;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
@@ -30,14 +31,14 @@ impl InstallerConfig {
 }
 
 fn main() -> std::io::Result<()> {
+	panic_handler::set_hook(String::from("07th-mod_crash.log"));
+
 	// Hide the console for windows users to make the installer less scary
 	// the console window can un-hidden later if necessary
 	windows_utilities::hide_console_window();
 
 	// UI is on "main" thread, so the installer thread is forced to close when the UI window is closed.
 	ui::ui_loop();
-
-	//handle.join().unwrap();
 
 	Ok(())
 }

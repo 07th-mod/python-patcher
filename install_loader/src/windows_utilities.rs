@@ -2,11 +2,13 @@ extern crate kernel32;
 extern crate user32;
 extern crate winapi;
 
+use regex::Regex;
 use std::error::Error;
 use std::ffi::OsStr;
 use std::fmt::Debug;
 use std::path::Path;
-use std::process::{Child, Command};
+use std::process;
+use std::process::Command;
 use std::ptr;
 
 // https://stackoverflow.com/questions/29763647/how-to-make-a-program-that-does-not-display-the-console-window
@@ -39,17 +41,32 @@ NOTE: paths won't open properly on windows if they contain backslashes. Set 'nor
 
 This function might be Windows specific. Move to a different file if it becomes cross-platform
 ***/
-pub(crate) fn system_open<S: AsRef<OsStr> + Debug>(path: S) -> Result<Child, Box<dyn Error>> {
-	let canonical_path = Path::new(&path).canonicalize()?;
-	let re = regex::Regex::new(r"^\\\\\?\\").unwrap();
-	let fixed_path = re.replace(canonical_path.to_str().unwrap(), "");
+pub(crate) fn system_open<S>(path: S) -> Result<process::Child, Box<dyn Error>>
+where
+	S: AsRef<OsStr> + Debug,
+{
+	let normalized_path = get_existing_file_normalized_path(&path)?;
 
 	println!(
 		"Path [{:?}] has been intepreted as [{:?}]",
-		path, fixed_path
+		&path, normalized_path
 	);
-	let child = Command::new("explorer")
-		.arg(fixed_path.to_string())
-		.spawn()?;
-	Ok(child)
+
+	Ok(Command::new("explorer").arg(normalized_path).spawn()?)
+}
+
+/// Gets normalized path of an EXISTING file. This function will fail if the path/file doesn't exist
+pub fn get_existing_file_normalized_path<S>(path: S) -> Result<String, Box<dyn Error>>
+where
+	S: AsRef<OsStr> + Debug,
+{
+	let canonical_path = Path::new(&path).canonicalize()?;
+	let canonical_path = canonical_path
+		.to_str()
+		.ok_or("Can't determine canonical path")?;
+
+	// Path returned from canonicalize() has UNC prefix like "\\?\", which is removed below
+	Ok(Regex::new(r"^\\\\\?\\")?
+		.replace(canonical_path, "")
+		.to_string())
 }
