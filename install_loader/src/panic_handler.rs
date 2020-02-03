@@ -44,25 +44,22 @@ Please help us by reporting the error and submitting the crash log
 	// Print installer version
 	expl.push_str(&format!("Installer Version: [{}]\n", env!("TRAVIS_TAG")));
 
-	// Print cause of the error
-	expl.push_str(&format!(
-		"Error Cause: [{}]\n",
-		&info
-			.payload()
-			.downcast_ref::<&str>()
-			.unwrap_or(&"Error Cause: (Error cause not reported)")
-	));
+	// Retrieve information about the panic and append to crash message
+	let location_str = match info.location() {
+		Some(location) => format!("{}", location),
+		None => format!("Panic location unknown."),
+	};
 
-	// Print line number if available
-	if let Some(location) = info.location() {
-		expl.push_str(&format!(
-			"Error Location: File [{}] at line [{}]\n",
-			location.file(),
-			location.line()
-		));
-	} else {
-		expl.push_str("Error Location: Panic location unknown.\n")
-	}
+	let msg = match info.payload().downcast_ref::<&'static str>() {
+		Some(s) => *s,
+		None => match info.payload().downcast_ref::<String>() {
+			Some(s) => &s[..],
+			None => "Box<Any>",
+		},
+	};
+
+	expl.push_str(format!("Thread panicked at '{}', {}\n", msg, location_str).as_str());
+
 	expl.push_str("-----------------------------------\n");
 
 	expl
