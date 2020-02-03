@@ -4,10 +4,14 @@ use std::io;
 use std::io::{BufRead, Write};
 use std::panic::PanicInfo;
 
+use crate::archive_extractor::ExtractionStatus;
+use crate::process_runner::ProcessRunner;
 use crate::windows_utilities;
+use crate::{archive_extractor, InstallerConfig};
+use std::error::Error;
 
 /// This function blocks until the user to presses enter in the console
-fn pause(msg: &str) {
+fn pause(msg: &str) -> Option<String> {
 	// We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
 	let mut stderr = io::stderr();
 	write!(stderr, "{}", msg).unwrap();
@@ -15,9 +19,14 @@ fn pause(msg: &str) {
 
 	// Block until user presses Enter
 	let stdin = io::stdin();
-	for _line in stdin.lock().lines() {
-		break;
+	for line in stdin.lock().lines() {
+		match line {
+			Ok(line) => return Some(line),
+			Err(_) => break,
+		}
 	}
+
+	None
 }
 
 /// Creates a new file, then writes string to file
@@ -65,6 +74,63 @@ Please help us by reporting the error and submitting the crash log
 	expl
 }
 
+fn fallback_installer() -> Result<(), Box<dyn Error>> {
+	eprintln!("\n------------- NOTE: 'Safe Mode' Installer is available ----------\n");
+
+	let script_name = {
+		let user_choice = pause(
+			r#"Please choose which installer to run:
+  0: Web-based installer (Try this first)
+  1: Simple Text-based installer
+
+> (Please type '0' or '1', then press ENTER)
+"#,
+		);
+
+		let graphical = "main.py";
+		let text = "cli_interactive.py";
+
+		match user_choice {
+			None => graphical,
+			Some(choice) => match choice.to_lowercase().trim() {
+				"0" => graphical,
+				"1" => text,
+				_ => graphical,
+			},
+		}
+	};
+
+	let config = InstallerConfig::new();
+	let mut extractor = archive_extractor::ArchiveExtractor::new(false);
+	extractor.start_extraction(config.sub_folder);
+
+	loop {
+		match extractor.poll_status() {
+			ExtractionStatus::Started(Some(progress)) => {
+				println!("Extraction is {}% complete", progress);
+			}
+			ExtractionStatus::Finished => {
+				break;
+			}
+			ExtractionStatus::Error(err) => {
+				println!("Error during extraction: {}", err);
+				break;
+			}
+			_ => {}
+		}
+		std::thread::sleep(std::time::Duration::from_millis(500));
+	}
+
+	println!("Extraction Complete - Please wait while installer starts in your browser...");
+
+	ProcessRunner::new(
+		&config.python_path,
+		config.sub_folder,
+		&["-u", "-E", script_name],
+	)?
+	.wait()
+}
+
 /// When called, changes the default panic handler to print useful information to the end user and
 /// log it to the specified file.
 /// The function will wait until the user presses "Enter" before terminating, so the user can read
@@ -86,7 +152,7 @@ pub fn set_hook(log_filename: String) {
 		// Write log file, then print where the log file was written
 		if let Ok(()) = write_string_to_file(&log_filename, &short_error_message) {
 			eprintln!(
-				"\nThe crash log has been written to:\n [{:}]\n",
+				"The crash log has been written to:\n [{:}]\n",
 				&windows_utilities::get_existing_file_normalized_path(&log_filename)
 					.unwrap_or(log_filename.clone()),
 			);
@@ -94,12 +160,10 @@ pub fn set_hook(log_filename: String) {
 			eprintln!("Error: Crash log could not be written!");
 		}
 
-		// Don't immediately show backtrace as it may confuse the user - wait till they press enter
-		pause("Press ENTER to show detailed crash information...");
-		eprintln!("{}", backtrace);
-		eprintln!("\nTIP: Press CTRL-A, CTRL-C to copy this text, then paste it to us on Discord");
+		if let Err(error) = fallback_installer() {
+			println!("Fallback Installer Error: {}", error);
+		};
 
-		// Prevent window from closing immediately (so user can read error message)
-		pause("\nPress ENTER to close this window...");
+		pause("\nInstaller finished. Press any key to exit.");
 	}));
 }

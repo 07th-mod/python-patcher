@@ -37,4 +37,9 @@ impl ProcessRunner {
 		self.child.wait()?;
 		Ok(())
 	}
+
+	pub fn wait(&mut self) -> Result<(), Box<dyn Error>> {
+		self.child.wait()?;
+		Ok(())
+	}
 }
