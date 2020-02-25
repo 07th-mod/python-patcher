@@ -469,10 +469,10 @@
 																<span v-else>Start Update!</span>
 															</div></li>
 														</ul>
-														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="padding-left: 50px">
+														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="float: right">
 															<li>
-																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: red">
-																	<span>Force Full Re-install</span>
+																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: darkred">
+																	<span>Re-install from scratch</span>
 																</div>
 															</li>
 														</ul>
