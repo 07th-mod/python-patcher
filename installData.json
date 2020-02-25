@@ -430,7 +430,17 @@
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
+				},
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"checkBox": [
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - If you're using the Steam version of the game on Windows, no further action is required. \n - If you're using any other version of the game, you **must** use the correct `sharedassets0.assets` file as described in the [full instructions](https://github.com/orian34/minagoroshi/releases), or else **the UI won't appear correctly**. The `sharedassets0.assets` files are located in the `HigurashiEp07_Data` folder of your chosen install path on Windows and Linux, and can be found on Mac by right clicking on the application, choosing `Show Package Contents`, then navigating into the `Contents` then `Resources` then `Data` folders. \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/minagoroshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/minagoroshi/releases/download/v1.0.0/Minagoroshi.Patch.FR.v1.0.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
 				}
+
 			]
 		},
 		{

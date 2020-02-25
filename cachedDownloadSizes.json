@@ -30,7 +30,7 @@
     "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Potato.7z.meta4": 415730842,
     "https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4": 1660497187,
     "https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip": 96548862,
-    "https://07th-mod.com/Bern/script-adv-mode.zip": 3835280,
+    "https://07th-mod.com/Bern/script-adv-mode.zip": 3835371,
     "https://07th-mod.com/Bern/script-full.zip": 3992897,
     "https://07th-mod.com/Bern/script-voice-only.zip": 3646261,
     "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip": 11390551,
@@ -104,10 +104,11 @@
     "https://07th-mod.com/ui.php?chapter=watanagashi&os=unix&unity=5.2.2f1": 7720696,
     "https://07th-mod.com/ui.php?chapter=watanagashi&os=win&unity=5.2.2f1": 7727150,
     "https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip": 1109069,
-    "https://github.com/orian34/himatsubushi/releases/download/v1.3.0/Himatsubushi.Patch.FR.v1.3.7z": 92286466,
-    "https://github.com/orian34/meakashi/releases/download/v1.0.0/Meakashi.Patch.FR.v1.0.7z": 84090134,
-    "https://github.com/orian34/onikakushi/releases/download/v1.3.0/Onikakushi.Patch.FR.v1.3.7z": 73758422,
-    "https://github.com/orian34/tatarigoroshi/releases/download/v1.3.0/Tatarigoroshi.Patch.FR.v1.3.7z": 85157083,
-    "https://github.com/orian34/tsumihoroboshi/releases/download/v1.0.0/Tsumihoroboshi.Patch.FR.v1.0.7z": 92109504,
-    "https://github.com/orian34/watanagashi/releases/download/v1.3.0/Watanagashi.Patch.FR.v1.3.7z": 79389497
+    "https://github.com/orian34/himatsubushi/releases/download/v1.3.0/Himatsubushi.Patch.FR.v1.3.7z": 92506539,
+    "https://github.com/orian34/meakashi/releases/download/v1.0.0/Meakashi.Patch.FR.v1.0.7z": 84173774,
+    "https://github.com/orian34/minagoroshi/releases/download/v1.0.0/Minagoroshi.Patch.FR.v1.0.7z": 87170762,
+    "https://github.com/orian34/onikakushi/releases/download/v1.3.0/Onikakushi.Patch.FR.v1.3.7z": 73838057,
+    "https://github.com/orian34/tatarigoroshi/releases/download/v1.3.0/Tatarigoroshi.Patch.FR.v1.3.7z": 85260170,
+    "https://github.com/orian34/tsumihoroboshi/releases/download/v1.0.0/Tsumihoroboshi.Patch.FR.v1.0.7z": 92154169,
+    "https://github.com/orian34/watanagashi/releases/download/v1.3.0/Watanagashi.Patch.FR.v1.3.7z": 79474617
 }
