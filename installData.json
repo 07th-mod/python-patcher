@@ -456,7 +456,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-CG.7z",               "priority": 0},
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-Graphics.7z",               "priority": 0},
 						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-BGM.7z",              "priority": 0},
 						{"name": "se",      "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-SE.7z",               "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie.7z",            "priority": 0},
