@@ -1,6 +1,9 @@
 import XCTest
 import PedanticJSONDecoder
 @testable import JSONValidator
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 let rootDirectory = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 let installData = rootDirectory.appendingPathComponent("installData.json", isDirectory: false)
@@ -138,6 +141,13 @@ final class JSONValidatorTests: XCTestCase {
 					XCTFail("Failed to download \(url) (at \(codingPath)): \(error)")
 				}
 				else if let response = response as? HTTPURLResponse {
+					// Open source Foundation doesn't properly follow HTTP 300s
+					if response.statusCode / 100 == 3, let loc = response.allHeaderFields["location"].flatMap({ $0 as? String }).flatMap(URL.init(string:)) {
+						var request = request
+						request.url = loc
+						tryDownload(request, fulfilling: expectation, url: loc, codingPath: codingPath, tries: tries - 1)
+						return
+					}
 					if response.statusCode != 200 && response.statusCode != 206 {
 						XCTFail("Failed to download \(url) (at \(codingPath)): response code was \(response.statusCode)")
 					}
