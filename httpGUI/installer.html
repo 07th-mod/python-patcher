@@ -319,8 +319,8 @@
 													<table class="umineko-image-table-content">
 														<thead>
 															<tr>
-																<th>Alchemist/PS3 sprites</th>
-																<th>Mangagamer/Pachinko sprites</th>
+																<th>PS3 sprites</th>
+																<th>Pachinko sprites</th>
 																<th>Ryukishi sprites</th>
 															</tr>
 														</thead>
@@ -331,8 +331,7 @@
 																<td><img src="img/umineko/sprite_potato.png"></td>
 															</tr>
 														</tbody>
-													</table><br>
-													A more detailed sprite comparison, with more characters, may be found <a href="https://07th-mod.com/wiki/Umineko/img/umineko-sprite-comparison.png">here</a>.
+													</table>
 												</div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div>
@@ -470,10 +469,10 @@
 																<span v-else>Start Update!</span>
 															</div></li>
 														</ul>
-														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="padding-left: 50px">
+														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="float: right">
 															<li>
-																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: red">
-																	<span>Force Full Re-install</span>
+																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: darkred">
+																	<span>Re-install from scratch</span>
 																</div>
 															</li>
 														</ul>
