@@ -518,12 +518,25 @@
 			"modOptionGroups": [
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
+					"checkBox": [
 						{
-							"name": "Restore BGM", "description": "Restores uncensored system0.ogg BGM",
+							"name": "Restore system0", "description": "Restores uncensored system0.ogg BGM",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"}
+						{
+							"name": "Use SuiSui☆SWEETS(^-^)", "description": "Uses the PS3 song \"SuiSui☆SWEETS(^-^)!\" in place of Tsurupettan",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-ps3-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "CG options", "type": "downloadAndExtract",
+					"submods" : ["full"],
+					"checkBox": [
+						{
+							"name": "Restore tsurupettan CG", "description": "Use original CG for the \"Tsurupettan\" scene",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-original-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
 					]
 				},
 				{
