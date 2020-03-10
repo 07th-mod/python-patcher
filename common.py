@@ -380,6 +380,16 @@ def sevenZipExtract(archive_path, outputDir=None):
 		arguments.append('-o' + outputDir)
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
+def sevenZipTest(archive_path):
+	"""
+	Validate/Test a 7-zip archive.
+
+	:param archive_path: The path to the archive to test
+	:return: The 7-zip return code as an int (0 is Success),
+	"""
+	arguments = [Globals.SEVEN_ZIP_EXECUTABLE, "t", archive_path]
+	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
+
 def tryGetRemoteNews(newsName):
 	"""
 	:param changelogName: the name of the changelog to retrieve, without file extension
@@ -609,6 +619,8 @@ class DownloaderAndExtractor:
 	:param extractionDir:	The folder where archives will be extracted to, and where any files will be copied to
 	:return:
 	"""
+	MAX_DOWNLOAD_ATTEMPTS = 3
+
 	class ExtractableItem:
 		def __init__(self, filename, length, destinationPath, fromMetaLink, remoteLastModified):
 			self.filename = filename
@@ -690,7 +702,10 @@ class DownloaderAndExtractor:
 		self.downloadProgressAmount = downloadProgressAmount
 		self.extractionProgressAmount = extractionProgressAmount
 
+		# Invariant: downloadList and extractablesForEachDownload should always be the same size
 		self.downloadList = [] # type: List[str]
+		self.extractablesForEachDownload = [] # type: List[List[DownloaderAndExtractor.ExtractableItem]]
+
 		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
 	def buildDownloadAndExtractionList(self):
@@ -704,10 +719,10 @@ class DownloaderAndExtractor:
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
+			extractables = DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
 			self.downloadList.append(file.url)
-			self.extractList.extend(
-				DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
-			)
+			self.extractablesForEachDownload.append(extractables)
+			self.extractList.extend(extractables)
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -719,17 +734,64 @@ class DownloaderAndExtractor:
 		makeDirsExistOK(self.downloadTempDir)
 		makeDirsExistOK(self.defaultExtractionDir)
 
-		# check if any downloads have changed - if so, delete the local downloads
+		# check if any downloads have been modified on the server - if so, delete the local downloads
 		for extractableItem in self.extractList:
 			extractableItem.clearDownloadIfNeededAndWriteControlFile(self.downloadTempDir)
 
 		totalDownloadSize = self.totalDownloadSize()
 		for i, url in enumerate(self.downloadList):
-			overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
-			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}]"
-			                                              .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url))
-			if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
-				raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
+			extractables = self.extractablesForEachDownload[i]
+			attempt = 0
+			for attempt in range(DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS):
+				overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
+				commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}] (Attempt: {}/{})"
+				                                              .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS))
+				if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
+					raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
+
+				# If all extractables were valid, then we are finished with this download item
+				# and can move on to the next one
+				if not self.extractablesHasInvalidArchives(extractables):
+					break
+			else:
+				# Too many attempts
+				raise Exception("ERROR - Tried to download [{}] {} times, but file was corrupted each time. Installation Stopped".format(url, attempt + 1))
+
+	def extractablesHasInvalidArchives(self, extractables):
+		# type:(List[DownloaderAndExtractor.ExtractableItem]) -> Optional[bool]
+		"""
+		NOTE: this validation function won't check certain types of files, and just skip over them:
+		  - extractables from metalinks won't be checked as they should be guarenteed to download correctly
+		  - extractables which aren't archives don't have a method to be checked, so they will be skipped
+
+		If the file is a non-checksummed archive, test it to make sure it downloaded correctly.
+		If it did not download correctly, delete the file.
+
+		:param extractables:
+		:return: returns true if at least one input extractable is invalid
+		"""
+		atLeastOneInvalid = False
+
+		for extractableItem in extractables: #type: DownloaderAndExtractor.ExtractableItem
+			# If the item was from a metalink, assume it was already verified/skip verification
+			if extractableItem.fromMetaLink:
+				continue
+
+			# If the file doesn't look like an archive, skip it as we don't know how to validate it
+			_, extension = os.path.splitext(extractableItem.filename)
+			if extension not in ['.zip', '.7z']:
+				continue
+
+			# Use 7z to test if the archive is valid
+			extractableItemPath = os.path.join(self.downloadTempDir, extractableItem.filename)
+			if sevenZipTest(extractableItemPath) == 0:
+				continue
+
+			# Archive is not valid, so delete the item and flag that this set of files needs to be re-downloaded
+			os.remove(extractableItemPath)
+			atLeastOneInvalid = True
+
+		return atLeastOneInvalid
 
 	def extract(self):
 		if not self.downloadAndExtractionListsBuilt:
