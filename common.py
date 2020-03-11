@@ -109,7 +109,7 @@ class Globals:
 	CURL_EXECUTABLE = None # Not required, but if available will be used to download filenames on systems with old SSL versions
 
 	#Print this string from the installer thread to notify of an error during the installation.
-	INSTALLER_MESSAGE_ERROR_PREFIX = "07th Mod - Install failed due to error: "
+	INSTALLER_MESSAGE_ERROR_PREFIX = "Install Failed!: "
 
 	LOG_FOLDER = 'INSTALLER_LOGS'
 	LOG_BASENAME = datetime.datetime.now().strftime('MOD-INSTALLER-LOG-%Y-%m-%d_%H-%M-%S.txt')
