@@ -460,7 +460,18 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print('{}{}'.format(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX, e))
+				textToShowUser = 'Unexpected Error - See Details'
+
+				if 'WinError 5' in str(e):
+					textToShowUser = common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
+
+				if isinstance(e, common.SevenZipException):
+					textToShowUser = 'SevenZip Extraction Failed - See Details'
+
+				print('{}\n{}\n\n----- Details -----\n{}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
+				                                             textToShowUser,
+				                                             e))
+
 				raise
 			common.tryDeleteLockFile()
 

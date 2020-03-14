@@ -129,6 +129,8 @@ class Globals:
 
 	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
+	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -250,7 +252,9 @@ def openURLInBrowser(url):
 # - using --summary-interval=5 for aria2c to force the long summary to be printed more often (which gives a newline)
 # - OR running aria2c in RPC mode
 # 7z would also need to be checked on all platforms as working correctly.
-def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
+# lineMonitor must be an object with a "process(line)" function, which will be called at each newline, %, or ']' char
+# It can be used to monitor the output of the process being run.
+def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, lineMonitor=None):
 	print("----- BEGIN EXECUTING COMMAND: [{}] -----".format(" ".join(arguments)))
 
 	# need universal_newlines=True so stdout is opened in normal. However, this might result in garbled japanese(unicode) characters!
@@ -287,7 +291,10 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 							writeOutBuffer = True
 
 						if writeOutBuffer:
-							print(''.join(stringBuffer), end='')
+							line = ''.join(stringBuffer)
+							print(line, end='')
+							if lineMonitor:
+								lineMonitor.process(line)
 							stringBuffer = []
 					else:
 						break
@@ -309,7 +316,11 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False):
 def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIPV6=False, outputFile=None):
 	"""
 	Calls aria2c with some default arguments:
-	TODO: list what each default argument does as comments next to arguments array?
+
+	Note about continuing downloads/control file save frequency
+	By default, aria2c saves the control file every 60s, or when aria2c is closed non-forcefully.
+	This means that if you close aria2c forcefully, you will lose up to the last 1 minute of download.
+	This value can be changed with --auto-save-interval=<SEC>, but we have left it as the default here.
 
 	:param downloadDir: The directory to store the downloaded file(s)
 	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
@@ -318,20 +329,20 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 	"""
 	arguments = [
 		Globals.ARIA_EXECUTABLE,
-		"--file-allocation=none",
-		'--continue=true',
-		'--retry-wait=5',
+		"--file-allocation=none", # Pre-allocate space where the downloaded file will be saved
+		'--continue=true', # Allow continuing the download of a partially downloaded file (is this flag actually necessary?)
+		'--retry-wait=5',  # Seconds to wait between retries
 		'-m 0', # max number of retries (0=unlimited). In some cases, like server rejects download, aria2c won't retry.
 		'-x 8', # max connections to the same server
 		'-s 8', # Split - Try to use N connections per each download item
 		'-j 1', # max concurrent download items (eg number of separate urls which can be downloaded in parallel)
+		'--auto-file-renaming=false',
 		# By default, if aria2c detects a file already exists with the same name, and is different size to the file
 		# being downloaded (lets call this 'test.zip'), it will save to a different name ('test.2.zip', 'test.3.zip' etc)
 		# This option prevents this from happening. Continuing existing downloads where the file size is the same is still supported.
-		'--auto-file-renaming=false',
+		'--allow-overwrite=true',
 		# By default, aria2c will just error out if auto-renaming is disabled. Enabling this option allows aria2c to overwrite existing files,
 		# if they cannot be continued (by the --continue argument)
-		'--allow-overwrite=true',
 	]
 
 	if followMetaLink:
@@ -366,7 +377,50 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 	# 	return subprocess.call(arguments, stdout=outfile)
 	return runProcessOutputToTempFile(arguments, ariaMode=True)
 
-def sevenZipExtract(archive_path, outputDir=None):
+
+class SevenZipMonitor:
+	regexSevenZipError = re.compile(r'^\s*ERROR:.*')
+
+	def __init__(self):
+		self.error_access_denied = False
+		self.error_delete_output_file = False
+		self.error_data = False
+		self.unknown_error_string = None
+
+	def process(self, line):
+		if SevenZipMonitor.regexSevenZipError.match(line):
+			got_error = False
+
+			if 'Data Error' in line:
+				self.error_data = True
+				got_error = True
+
+			if 'Access is denied' in line:
+				self.error_access_denied = True
+				got_error = True
+
+			if 'Can not delete output file' in line:
+				self.error_access_denied = True
+				got_error = True
+
+			if not got_error:
+				self.unknown_error_string = line
+
+	def getErrorMessage(self):
+		errors = []
+
+		if self.error_access_denied or self.error_delete_output_file:
+			errors.append(Globals.PERMISSON_DENIED_ERROR_MESSAGE)
+
+		if self.error_data:
+			errors.append("Archive Corrupted Error: This error should never happen - please send the 07th-mod team your install log")
+
+		if self.unknown_error_string:
+			errors.append("Unknown Error: {}. You may want to check our Installer FAQ: http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#installer-faq-and-troubleshooting or get help on our Discord Server: https://discord.gg/pf5VhF9".format(self.unknown_error_string))
+
+		return '\n'.join(errors)
+
+def sevenZipExtract(archive_path, outputDir=None, lineMonitor=None):
 	arguments = [Globals.SEVEN_ZIP_EXECUTABLE,
 				 "x",
 				 archive_path,
@@ -378,7 +432,7 @@ def sevenZipExtract(archive_path, outputDir=None):
 
 	if outputDir:
 		arguments.append('-o' + outputDir)
-	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
+	return runProcessOutputToTempFile(arguments, sevenZipMode=True, lineMonitor=lineMonitor)
 
 def sevenZipTest(archive_path):
 	"""
@@ -545,13 +599,22 @@ def getMetalinkFilenames(url):
 
 	return filename_length_pairs
 
+class SevenZipException(Exception):
+	def __init__(self, errorReason):
+		# type: (str) -> None
+		self.errorReason = errorReason  # type: str
+
+	def __str__(self):
+		return self.errorReason
+
 def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
 	makeDirsExistOK(destinationFolder)
 	sourcePath = os.path.join(sourceFolder, filename)
 
 	if '.7z' in filename.lower() or '.zip' in filename.lower():
-		if sevenZipExtract(sourcePath, outputDir=destinationFolder) != 0:
-			raise Exception("ERROR - could not extract [{}]. Installation Stopped".format(sourcePath))
+		monitor = SevenZipMonitor()
+		if sevenZipExtract(sourcePath, outputDir=destinationFolder, lineMonitor=monitor) != 0:
+			raise SevenZipException("{}\n\n Could not extract [{}]".format(monitor.getErrorMessage(), sourcePath))
 
 	else:
 		try:
