@@ -84,6 +84,27 @@ def _decodeJSONRequest(jsonString):
 	json_compatible_dict = json.loads(jsonString)
 	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
 
+def _getSevenZipSubTaskDescription(message):
+	# type: (str) -> Optional[str]
+	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
+	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
+	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
+	if sevenZipMessage:
+		return "Extracting - {}".format(sevenZipMessage)
+
+	sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
+	if sevenZipFileCount:
+		return "Extracting - {}".format(sevenZipFileCount)
+
+	sevenZipExtractionStartedString = commandLineParser.tryGetSevenZipExtractionStarted(message)
+	if sevenZipExtractionStartedString:
+		return sevenZipExtractionStartedString
+
+	sevenZipTestArchiveString = commandLineParser.tryGetSevenZipTestArchive(message)
+	if sevenZipTestArchiveString:
+		return sevenZipTestArchiveString
+
+	return None
 
 def _loggerMessageToStatusDict(message):
 	# Search for an update like "<<< Status: 45% [[Extracting Umineko-Graphics-1080p.7z]] >>>"
@@ -104,20 +125,9 @@ def _loggerMessageToStatusDict(message):
 		}
 
 	sevenZipMessageAndPercent = {}
-
-	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
-	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
-	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
-	if sevenZipMessage:
-		sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipMessage)
-	else:
-		sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
-		if sevenZipFileCount:
-			sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipFileCount)
-		else:
-			sevenZipExtractionStartedString = commandLineParser.tryGetSevenZipExtractionStarted(message)
-			if sevenZipExtractionStartedString:
-				sevenZipMessageAndPercent['subTaskDescription'] = sevenZipExtractionStartedString
+	subTaskDescription =  _getSevenZipSubTaskDescription(message)
+	if subTaskDescription:
+		sevenZipMessageAndPercent['subTaskDescription'] = subTaskDescription
 
 	# Look for a line with just a percent on it (eg 51%)
 	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
