@@ -31,7 +31,12 @@ def findPossibleGamePathsWindows():
 
 	allSteamPaths = []
 	try:
-		registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
+		try:
+			registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
+		except WindowsError:
+			# I installed Steam on a Win 10 64-bit machine and it used this alternate registry key location. Not sure why.
+			registryKey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'Software\Wow6432Node\Valve\Steam')
+
 		defaultSteamPath, _regType = winreg.QueryValueEx(registryKey, 'SteamPath')
 		allSteamPaths.append(defaultSteamPath)
 		winreg.CloseKey(registryKey)
