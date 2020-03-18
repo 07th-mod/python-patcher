@@ -782,10 +782,7 @@ class DownloaderAndExtractor:
 		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
-			extractables = DownloaderAndExtractor.getExtractableItem(url=file.url, extractionDir=self.defaultExtractionDir)
-			self.downloadList.append(file.url)
-			self.extractablesForEachDownload.append(extractables)
-			self.extractList.extend(extractables)
+			self.addItemManually(file.url, self.defaultExtractionDir)
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -879,8 +876,10 @@ class DownloaderAndExtractor:
 		:param url: The URL or metalink to download
 		:param extractionDir: The folder where the file(s) will be extracted
 		"""
+		extractables = DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir)
 		self.downloadList.append(url)
-		self.extractList.extend(DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir))
+		self.extractablesForEachDownload.append(extractables)
+		self.extractList.extend(extractables)
 
 	def printPreview(self):
 		pretty_file_size = prettyPrintFileSize(self.totalDownloadSize())
