@@ -84,6 +84,27 @@ def _decodeJSONRequest(jsonString):
 	json_compatible_dict = json.loads(jsonString)
 	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
 
+def _getSevenZipSubTaskDescription(message):
+	# type: (str) -> Optional[str]
+	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
+	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
+	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
+	if sevenZipMessage:
+		return "Extracting - {}".format(sevenZipMessage)
+
+	sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
+	if sevenZipFileCount:
+		return "Extracting - {}".format(sevenZipFileCount)
+
+	sevenZipExtractionStartedString = commandLineParser.tryGetSevenZipExtractionStarted(message)
+	if sevenZipExtractionStartedString:
+		return sevenZipExtractionStartedString
+
+	sevenZipTestArchiveString = commandLineParser.tryGetSevenZipTestArchive(message)
+	if sevenZipTestArchiveString:
+		return sevenZipTestArchiveString
+
+	return None
 
 def _loggerMessageToStatusDict(message):
 	# Search for an update like "<<< Status: 45% [[Extracting Umineko-Graphics-1080p.7z]] >>>"
@@ -104,20 +125,9 @@ def _loggerMessageToStatusDict(message):
 		}
 
 	sevenZipMessageAndPercent = {}
-
-	# Look for a 7z line showing the file count and filename: "404 - big\bmp\background\cg\dragon_a.png"
-	# Sometimes 7z emits just the file count without the filename (will appear as a line with a number on it)
-	sevenZipMessage = commandLineParser.tryGetSevenZipFilecountAndFileNameString(message)
-	if sevenZipMessage:
-		sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipMessage)
-	else:
-		sevenZipFileCount = commandLineParser.tryGetSevenZipFileCount(message)
-		if sevenZipFileCount:
-			sevenZipMessageAndPercent['subTaskDescription'] = "Extracting - {}".format(sevenZipFileCount)
-		else:
-			sevenZipExtractionStartedString = commandLineParser.tryGetSevenZipExtractionStarted(message)
-			if sevenZipExtractionStartedString:
-				sevenZipMessageAndPercent['subTaskDescription'] = sevenZipExtractionStartedString
+	subTaskDescription =  _getSevenZipSubTaskDescription(message)
+	if subTaskDescription:
+		sevenZipMessageAndPercent['subTaskDescription'] = subTaskDescription
 
 	# Look for a line with just a percent on it (eg 51%)
 	sevenZipPercent = commandLineParser.tryGetSevenZipPercent(message)
@@ -450,7 +460,18 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				print('{}{}'.format(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX, e))
+				textToShowUser = 'Unexpected Error - See Details'
+
+				if 'WinError 5' in str(e):
+					textToShowUser = common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
+
+				if isinstance(e, common.SevenZipException):
+					textToShowUser = 'SevenZip Extraction Failed - See Details'
+
+				print('{}\n{}\n\n----- Details -----\n{}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
+				                                             textToShowUser,
+				                                             e))
+
 				raise
 			common.tryDeleteLockFile()
 
@@ -729,7 +750,12 @@ class InstallerGUI:
 				print('Exception Thrown handling request {}: {}'.format(requestType, exception))
 				traceback.print_exc()
 				return _makeJSONResponse('error', {
-					'errorReason': 'Exception handling [{}] request: {}'.format(requestType, traceback.format_exc())
+					'errorReason':
+"""ERROR: {}
+
+----- Detailed Exception Information -----
+Exception while handling [{}] request:
+{}""".format(exception, requestType, traceback.format_exc())
 				})
 
 			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
