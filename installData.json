@@ -524,7 +524,7 @@
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Use SuiSui☆SWEETS(^-^)", "description": "Uses the PS3 song \"SuiSui☆SWEETS(^-^)!\" in place of Tsurupettan",
+							"name": "Use SuiSui-SWEETS(^-^)", "description": "Uses the PS3 song \"SuiSui-SWEETS(^-^)!\" in place of Tsurupettan",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-ps3-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
