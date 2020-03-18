@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import argparse
 import main as gui_main
 import common

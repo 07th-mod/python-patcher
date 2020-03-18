@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import concurrent.futures
 import io
 import json

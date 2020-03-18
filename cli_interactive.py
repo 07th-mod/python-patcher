@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 try:
 	from typing import List, Optional, Dict, Set, Any, Callable
 except:
