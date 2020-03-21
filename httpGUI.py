@@ -325,8 +325,8 @@ def modOptionsToWebFormat(modOptions):
 		return {'name': opt.name, 'id': opt.id, 'description': opt.description}
 
 	httpFormattedOptions = []
-	for groupName, groupOptionsIterator in itertools.groupby(modOptions, key=lambda x: x.group):
-		groupOptions = list(groupOptionsIterator)
+
+	for groupName, groupOptions in common.group_by(modOptions, keyFunc=lambda x: x.group).items():
 		radioOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if o.isRadio]
 		checkBoxOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if not o.isRadio]
 		httpFormattedOptions.append({

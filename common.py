@@ -42,7 +42,7 @@ except ImportError:
 	SSL_VERSION_IS_OLD = True
 
 try:
-	from typing import Optional, List, Tuple, Dict
+	from typing import Optional, List, Tuple, Dict, Callable, Any
 except:
 	pass
 
@@ -1070,3 +1070,25 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 			haveEnoughFreeSpace = True
 
 	return haveEnoughFreeSpace, freeSpaceAdvisoryString
+
+def group_by(values, keyFunc):
+	# type: (List, Callable[[Any], Any]) -> Dict
+	"""
+	This function groups 'values' according to the keyFunc.
+	All values where keyFunc(value) is the same (called the 'key') will be grouped together.
+
+	This function differs from itertools.groupby() in that it doesn't require the input be sorted.
+	It will also preserve the order of the input values
+	:return: A dict of the form keyFunc(value): List[Any], with one entry for each key paired with its grouped values
+	"""
+	# Don't use defaultdict as user will expect a regular dict returned
+	grouped = {}
+
+	for value in values:
+		key = keyFunc(value)
+		if key not in grouped:
+			grouped[key] = []
+
+		grouped[key].append(value)
+
+	return grouped
