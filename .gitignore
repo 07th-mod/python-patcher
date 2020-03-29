@@ -15,6 +15,8 @@ Umineko Hane Downloads
 install_loader/.idea
 install_loader/.vs
 travis_installer_output
+travis_installer_bootstrap_copy
+travis_installer_staging
 
 .idea/misc.xml
 .idea/python-patcher.iml
