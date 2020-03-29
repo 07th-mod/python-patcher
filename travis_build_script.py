@@ -78,6 +78,19 @@ ignore_paths = [
 	'news',
 	'install_loader',
 	'installerTests',
+	'Onikakushi Ch.1 Downloads',
+	'Watanagashi Ch.2 Downloads',
+	'Tatarigoroshi Ch.3 Downloads',
+	'Himatsubushi Ch.4 Downloads',
+	'Meakashi Ch.5 Downloads',
+	'Tsumihoroboshi Ch.6 Downloads',
+	'Minagoroshi Ch.7 Downloads',
+	'Console Arcs Downloads',
+	'Umineko Question (Ch. 1-4) Downloads',
+	'Umineko Answer (Ch. 5-8) Downloads',
+	'Umineko Tsubasa Downloads',
+	'Umineko Hane Downloads',
+	'INSTALLER_LOGS',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
