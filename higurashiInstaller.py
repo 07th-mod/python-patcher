@@ -165,6 +165,37 @@ class Installer:
 				toPath = os.path.join(self.directory, "Contents/Resources/PlayerIcon.icns")
 			)
 
+	def _languagePatchIsEnabled(self):
+		"""If any options with 'Language Patch' in the name, assume language patch was applied"""
+		for option in self.info.subModConfig.modOptions:
+			if option.value and 'Language Patch' in option.name:
+				return True
+
+		return False
+
+	def applyLanguageSpecificSharedAssets(self):
+		# Don't need to apply any special UI if no language patch
+		if not self._languagePatchIsEnabled():
+			return
+
+		# If don't know own unity version, don't attempt to apply any UI
+		if self.info.unityVersion is None:
+			return
+
+		# Use the sharedassets file with matching os/unityversion if provided by the language patch
+		versionString = self.info.unityVersion
+		osString = common.Globals.OS_STRING
+
+		for altUIFilename in os.listdir(self.dataDirectory):
+			if versionString in altUIFilename.lower() and osString in altUIFilename.lower():
+				print("Language Patch UI: Attempting to use {} UI File".format(altUIFilename))
+				altUIPath = os.path.join(self.dataDirectory, altUIFilename)
+				uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
+				shutil.copy(altUIPath, uiPath)
+				return
+
+		print("Language Patch UI: No UI/sharedassets0 found for ({},{}) - using default sharedassets0.assets".format(osString, versionString))
+
 
 	def _moveDirectoryIntoPlace(self, fromDir, toDir):
 		# type: (str, str) -> None

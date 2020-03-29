@@ -19,6 +19,7 @@ class FullInstallConfiguration:
 		self.installPath = path # type: str
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
+		self.unityVersion = None
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir=""):
@@ -59,6 +60,9 @@ class FullInstallConfiguration:
 				continue
 			candidates = [x for x in self.subModConfig.fileOverrides if x.name == key and common.Globals.OS_STRING in x.os]
 			raise FailedFileOverrideException(key, candidates, unity=unityVersion, steam=self.isSteam)
+
+		# Save the unity version for future use
+		self.unityVersion = unityVersion
 
 		# Pre-sort by the file's native order, to ensure deterministic ordering for files with the same priority
 		overriddenFiles = sorted(filesDict.values(), key=lambda x: x.nativeOrder)
