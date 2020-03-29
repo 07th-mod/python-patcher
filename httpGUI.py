@@ -288,7 +288,10 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 			# For now, assume all data sent back is JSON
 			self.send_header('Content-Type', 'application/json')
 			self.end_headers()
-			self.wfile.write(response_string.encode('utf-8'))
+			try:
+				self.wfile.write(response_string.encode('utf-8'))
+			except ConnectionAbortedError:
+				print("Info: Browser aborted a connection - probably not a problem")
 
 	# The default HTTPServer allows multiple servers on the same address without error
 	# we would prefer for an error to be raised, so you know if you had multiple copies of the installer open at once
