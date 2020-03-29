@@ -42,4 +42,11 @@ impl ProcessRunner {
 		self.child.wait()?;
 		Ok(())
 	}
+
+	pub fn task_has_failed_nonblocking(&mut self) -> bool {
+		match self.child.try_wait() {
+			Ok(Some(exit_status)) => !exit_status.success(),
+			_ => false,
+		}
+	}
 }

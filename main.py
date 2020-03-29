@@ -12,6 +12,7 @@ import gameScanner
 import httpGUI
 import installConfiguration
 import logger
+import traceback
 
 try: input = raw_input
 except NameError: pass
@@ -32,10 +33,18 @@ def check07thModServerConnection():
 	try:
 		testFile = urlopen(Request("http://07th-mod.com/", headers={"User-Agent": ""}))
 		testFile.close()
-	except HTTPError as error:
-		print(error)
-		print("Couldn't reach 07th Mod Server.  The installer will not be able to download patch files.")
-		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
+	except Exception as error:
+		traceback.print_exc()
+		print(
+"""\n\n------------------------------------------------------------------------
+Error: Couldn't reach 07th Mod Server! The installer requires a valid internet connection
+
+Please check the following:
+- You have a working internet connection
+- Note that Japan is blocked from downloading (VPNs are compatible with this installer, however...)
+- Check our Wiki for more solutions: http://www.07th-mod.com/wiki/Installer/faq/ 
+------------------------------------------------------------------------
+""")
 		common.exitWithError()
 
 def getModList(is_developer=True):

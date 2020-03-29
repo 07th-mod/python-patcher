@@ -76,6 +76,20 @@ impl InstallStartedState {
 	}
 }
 
+pub struct InstallFailedState {
+	pub failure_reason: String,
+	pub console_window_displayed: bool,
+}
+
+impl InstallFailedState {
+	pub fn new(failure_reason: String) -> InstallFailedState {
+		InstallFailedState {
+			failure_reason,
+			console_window_displayed: false,
+		}
+	}
+}
+
 pub struct ExtractingPythonState {
 	pub extractor: ArchiveExtractor,
 	pub progress_percentage: usize,
@@ -95,7 +109,7 @@ pub enum InstallerProgression {
 	WaitingUserPickInstallType,
 	InstallStarted(InstallStartedState),
 	InstallFinished,
-	InstallFailed(String),
+	InstallFailed(InstallFailedState),
 }
 
 pub struct InstallerState {
@@ -194,7 +208,7 @@ impl InstallerGUI {
 				}
 				ExtractionStatus::Error(error_str) => {
 					self.state.progression =
-						InstallerProgression::InstallFailed(String::from(error_str))
+						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(error_str)))
 				}
 			}
 		}
@@ -229,7 +243,7 @@ impl InstallerGUI {
 
 	fn display_main_installer_flow(&mut self, ui: &Ui) {
 		// Display parts of the UI which depend on the installer progression
-		match &self.state.progression {
+		match &mut self.state.progression {
 			InstallerProgression::ExtractingPython(extraction_state) => {
 				ui.text_yellow(im_str!("Please wait for extraction to finish..."));
 				ProgressBar::new((extraction_state.progress_percentage as f32) / 100.0f32)
@@ -261,13 +275,24 @@ impl InstallerGUI {
 						"Console Installer Started - Please use the console window that just opened."
 					));
 				}
+
+				if graphical_install.python_monitor.task_has_failed_nonblocking() {
+					self.state.progression = InstallerProgression::InstallFailed(
+						InstallFailedState::new(String::from("Python Installer Failed - See Console Window"))
+					)
+				}
 			}
 			InstallerProgression::InstallFinished => {
 				ui.text_yellow(im_str!("Please wait - Installer is closing"));
 			}
-			InstallerProgression::InstallFailed(failure_reason) => {
+			InstallerProgression::InstallFailed(install_failed_state) => {
 				ui.text_red(im_str!("The installation failed!"));
-				ui.text_red(im_str!("[{}]", failure_reason));
+				ui.text_red(im_str!("[{}]", install_failed_state.failure_reason));
+
+				if !install_failed_state.console_window_displayed {
+					windows_utilities::show_console_window();
+					install_failed_state.console_window_displayed = true;
+				}
 			}
 		};
 	}
