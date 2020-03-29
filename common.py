@@ -209,10 +209,8 @@ class Globals:
 			Globals.BUILD_INFO = 'No build_info.txt file found - probably a dev release.'
 
 def exitWithError():
-	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
+	""" Pause-before-exit on Windows used to be handled here, but is now handled in the installer_loader """
 	print("ERROR: The installer cannot continue. Press any key to exit...")
-	if Globals.IS_WINDOWS:
-		read_input()
 	sys.exit(1)
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
