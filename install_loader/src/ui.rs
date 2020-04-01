@@ -138,6 +138,8 @@ struct UIState {
 	mouse_activity_timer: TimeoutTimer,
 	// True when this program has focus, false otherwise (not individual ImGUI windows)
 	program_is_focused: bool,
+	// True if the user ticked the Safe-Mode checkbox
+	safe_mode_enabled: bool,
 }
 
 impl UIState {
@@ -152,6 +154,7 @@ impl UIState {
 				MOUSE_ACTIVITY_TIMEOUT_SECS,
 			)),
 			program_is_focused: true,
+			safe_mode_enabled: false,
 		}
 	}
 }
@@ -175,6 +178,8 @@ impl InstallerGUI {
 	}
 
 	pub fn display_ui(&mut self, ui: &Ui) {
+		ui.new_line();
+
 		// Update the installer based on the extraction status
 		self.extraction_update();
 
@@ -184,7 +189,7 @@ impl InstallerGUI {
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
 
-		ui.separator();
+		ui.new_line();
 
 		// Show the advanced tools section
 		self.display_advanced_tools(ui);
@@ -257,10 +262,14 @@ impl InstallerGUI {
 			InstallerProgression::WaitingUserPickInstallType => {
 				ui.text_red(im_str!("Please click 'Run Installer'"));
 				ui.text_red(im_str!(
-					"If you have problems, try the alternative installer (Advanced Tools -> 'Command Line Installer')"
+					"If you have problems, enable 'Run in Safe-Mode' for the text-based installer"
 				));
-				if ui.simple_button(im_str!("Run Installer")) {
-					if let Err(e) = self.start_install(true) {
+
+				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
+				ui.same_line_with_spacing(0., 20.);
+				ui.checkbox(im_str!("Run in Safe-Mode"), &mut self.ui_state.safe_mode_enabled);
+				if install_button_clicked {
+					if let Err(e) = self.start_install(!self.ui_state.safe_mode_enabled) {
 						println!("Failed to start install! {:?}", e)
 					}
 				}
@@ -268,7 +277,10 @@ impl InstallerGUI {
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
 					ui.text_yellow(im_str!(
-						"Please wait - Installer will launch in your Web Browser"
+						"Please wait - Installer will launch in your web browser"
+					));
+					ui.text_red(im_str!(
+						"If the web browser fails to load, restart this launcher, then enable the 'Run in Safe-Mode' option"
 					));
 				} else {
 					ui.text_yellow(im_str!(
@@ -301,16 +313,6 @@ impl InstallerGUI {
 	fn display_advanced_tools(&mut self, ui: &Ui) {
 		// Advanced Tools Section
 		if ui.collapsing_header(im_str!("Advanced Tools")).build() {
-			// Run the alternative, Comamnd line installer
-			if let InstallerProgression::WaitingUserPickInstallType = self.state.progression {
-				if ui.simple_button(im_str!("Run Command Line Installer")) {
-					if let Err(e) = self.start_install(false) {
-						println!("Error starting install: {:?}", e);
-					}
-				}
-				ui.same_line(0.);
-			}
-
 			// Button which shows the python installer logs folder.
 			// NOTE: the output of this launcher is currently not logged.
 			if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
