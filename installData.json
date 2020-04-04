@@ -433,6 +433,7 @@
 				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
 					"checkBox": [
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - If you're using the Steam version of the game on Windows, no further action is required. \n - If you're using any other version of the game, you **must** use the correct `sharedassets0.assets` file as described in the [full instructions](https://github.com/orian34/minagoroshi/releases), or else **the UI won't appear correctly**. The `sharedassets0.assets` files are located in the `HigurashiEp07_Data` folder of your chosen install path on Windows and Linux, and can be found on Mac by right clicking on the application, choosing `Show Package Contents`, then navigating into the `Contents` then `Resources` then `Data` folders. \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/minagoroshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
