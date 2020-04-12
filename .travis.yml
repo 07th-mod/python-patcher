@@ -9,7 +9,6 @@ matrix:
     before_install:
     - sudo apt-get install -y aria2
     - sudo apt-get install -y p7zip-full
-    - bash travis_install_swift.sh
     - pip3 install --upgrade pip
     env:
       - BUILD_MODE=NORMAL
@@ -29,7 +28,7 @@ matrix:
       - BUILD_MODE=WINDOWS
 # The below tasks are run across all machines, but gated using if statements on the environment variables
 script:
-- if [ "$BUILD_MODE" = "NORMAL" ]; then python travis_build_script.py && bash travis_validate_json.sh ; fi
+- if [ "$BUILD_MODE" = "NORMAL" ]; then python travis_build_script.py ; fi
 - if [ "$BUILD_MODE" = "WINDOWS" ]; then python3 travis_build_script.py win || python travis_build_script.py win ; fi
 deploy:
   provider: releases
