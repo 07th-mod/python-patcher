@@ -307,6 +307,13 @@ window.onload = function onWindowLoaded() {
     app.os = responseData.os;
     console.log(app.selectedSubMod);
 
+    // For Higurashi, select the 'Full' patch by default
+    app.possibleSubMods.forEach((subMod) => {
+      if (subMod.family === 'higurashi' && subMod.subModName === 'full') {
+        app.selectedSubMod = subMod;
+      }
+    });
+
     replaceElementWithNews('modNews', app.selectedMod);
     replaceElementWithBuildInfo('build-info');
     doPost('getInstallerMetaInfo', [], (response) => {
