@@ -280,6 +280,7 @@ def main(fullInstallConfiguration):
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
 		steamGridExtractor.extractSteamGrid()
+		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
@@ -295,6 +296,7 @@ def main(fullInstallConfiguration):
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
 
