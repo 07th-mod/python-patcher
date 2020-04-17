@@ -165,7 +165,8 @@
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "os-specific-update-unix",   "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"}
+			{"id": "exe-mac",                   "version": "1.0.0"},
+			{"id": "common-lib",                "version": "1.0.0"}
 		]
 	},
 	{
@@ -175,7 +176,8 @@
 			{"id": "script",                    "version": "1.1.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"}
+			{"id": "exe-mac",                   "version": "1.0.0"},
+			{"id": "common-lib",                "version": "1.0.0"}
 		]
 	},
 	{
@@ -187,7 +189,8 @@
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.3.4"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"}
+			{"id": "exe-mac",                   "version": "1.0.0"},
+			{"id": "common-lib",                "version": "1.0.0"}
 		]
 	},
 	{
@@ -200,7 +203,8 @@
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.3.4"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"}
+			{"id": "exe-mac",                   "version": "1.0.0"},
+			{"id": "common-lib",                "version": "1.0.0"}
 		]
 	},
 	{
@@ -210,7 +214,8 @@
 			{"id": "script",                    "version": "1.1.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"}
+			{"id": "exe-mac",                   "version": "1.0.0"},
+			{"id": "common-lib",                "version": "1.0.0"}
 		]
 	},
 	{
