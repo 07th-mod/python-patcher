@@ -97,12 +97,12 @@ def getMaybeGamePaths():
 	if common.Globals.IS_MAC:
 		# mdfind is kind of slow, don't run it more than we have to
 		allPossibleGamePaths.extend(
-			x for x in subprocess.check_output(["mdfind", "kind:Application", "Higurashi"])
+			x for x in subprocess.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Higurashi*'"])
 				.decode("utf-8")
 				.split("\n") if x
 		)
 
-		for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
+		for gamePath in subprocess.check_output(["mdfind", "kMDItemContentType == com.apple.application-bundle && ** == '*Umineko*'"]).decode("utf-8").split("\n"):
 			allPossibleGamePaths.append(gamePath)
 			# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
 			gogPath = os.path.join(gamePath, "Contents/Resources/game")
