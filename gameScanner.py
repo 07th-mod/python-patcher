@@ -115,6 +115,9 @@ def getMaybeGamePaths():
 		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common/")
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
+	if common.Globals.IS_LINUX:
+		hardCodedGameContainingPaths.append(os.path.realpath(os.path.expanduser("~/.steam/steam/steamapps/common/")))
+		hardCodedGameContainingPaths.append(os.path.realpath(os.path.expanduser("~/.steam/steambeta/steamapps/common/")))
 
 	for hardCodedPath in hardCodedGameContainingPaths:
 		try:
