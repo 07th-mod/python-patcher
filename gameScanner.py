@@ -116,10 +116,11 @@ def getMaybeGamePaths():
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
 	if common.Globals.IS_LINUX:
-		hardCodedGameContainingPaths.append(os.path.realpath(os.path.expanduser("~/.steam/steam/steamapps/common/")))
-		hardCodedGameContainingPaths.append(os.path.realpath(os.path.expanduser("~/.steam/steambeta/steamapps/common/")))
+		hardCodedGameContainingPaths.append("~/.steam/steam/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/.steam/steambeta/steamapps/common/")
 
-	for hardCodedPath in hardCodedGameContainingPaths:
+	for hardCodedPathNotNormalized in hardCodedGameContainingPaths:
+		hardCodedPath = os.path.realpath(os.path.expanduser(hardCodedPathNotNormalized))
 		try:
 			for gameFolderName in os.listdir(hardCodedPath):
 				gameFolderPath = os.path.normpath(os.path.join(hardCodedPath, gameFolderName))
