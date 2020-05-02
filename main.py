@@ -98,6 +98,7 @@ if __name__ == "__main__":
 
 	check07thModServerConnection()
 	common.Globals.scanForExecutables()
+	common.Globals.scanCertLocation()
 	modList = getModList(common.Globals.DEVELOPER_MODE)
 	common.Globals.loadCachedDownloadSizes(modList)
 	subModconfigList = getSubModConfigList(modList)

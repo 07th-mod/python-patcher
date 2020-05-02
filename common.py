@@ -131,6 +131,8 @@ class Globals:
 
 	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
 
+	CA_CERT_PATH = None
+
 	@staticmethod
 	def scanForExecutables():
 		# query available executables. If any installation of executables is done in the python script, it must be done
@@ -207,6 +209,25 @@ class Globals:
 				Globals.BUILD_INFO = build_info_file.read()
 		except:
 			Globals.BUILD_INFO = 'No build_info.txt file found - probably a dev release.'
+
+	@staticmethod
+	def scanCertLocation():
+		if Globals.IS_LINUX:
+			# List of cert locations from https://github.com/golang/go/blob/master/src/crypto/x509/root_linux.go
+			for possibleCertLocation in [
+				"/etc/ssl/certs/ca-certificates.crt",  # Debian/Ubuntu/Gentoo etc.
+				"/etc/pki/tls/certs/ca-bundle.crt",  # Fedora/RHEL 6
+				"/etc/ssl/ca-bundle.pem",  # OpenSUSE
+				"/etc/pki/tls/cacert.pem",  # OpenELEC
+				"/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",  # CentOS/RHEL 7
+				"/etc/ssl/cert.pem",  # Alpine Linux
+			]:
+				if os.path.exists(possibleCertLocation):
+					Globals.CA_CERT_PATH = possibleCertLocation
+					print("CA Cert - found at: {}".format(Globals.CA_CERT_PATH))
+					return
+
+		print("CA Cert - using default certificate")
 
 def exitWithError():
 	""" Pause-before-exit on Windows used to be handled here, but is now handled in the installer_loader """
@@ -364,6 +385,9 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 
 	if outputFile:
 		arguments.append("--out=" + outputFile)
+
+	if Globals.CA_CERT_PATH is not None:
+		arguments.append("--ca-certificate=" + Globals.CA_CERT_PATH)
 
 	# On linux, there is some problem where the console buffer is not read by runProcessOutputToTempFile(...) until
 	# a newline is printed. I was unable to fix this properly, however setting 'summary-interval' (default 60s) lower will
