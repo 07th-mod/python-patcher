@@ -652,11 +652,11 @@
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "Restore system0", "description": "Restores uncensored system0.ogg BGM",
+							"name": "Restore system0", "description": "The unmodded game's \"system0\" BGM is missing a sample from Star Trek: Nemesis (removed for copyright reasons) - this option restores the missing sample.",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Use SuiSui-SWEETS(^-^)", "description": "Uses the PS3 song \"SuiSui-SWEETS(^-^)!\" in place of Tsurupettan",
+							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the unmodded game replaces the Touhou song \"SuiSui-SWEETS(^-^)\" with another song for copyright reasons. This option restores the orignal Touhou song.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-ps3-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -666,7 +666,7 @@
 					"submods" : ["full"],
 					"checkBox": [
 						{
-							"name": "Restore tsurupettan CG", "description": "Use original CG for the \"Tsurupettan\" scene",
+							"name": "Restore tsurupettan CG", "description": "- In one scene, the unmodded game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores the orignal Touhou CG.\n- Note that the CG is the original Ryukishi CG, so it won't match the PS3 graphics, if that bothers you.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-original-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -756,7 +756,7 @@
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
 						{
-							"name": "Restore and Repair BGM", "description": "Restores uncensored system0.ogg BGM and repairs damaged kuina.ogg at 53 second mark",
+							"name": "Restore and Repair BGM", "description": "- The unmodded game's \"system0\" BGM is missing a sample from Star Trek: Nemesis (removed for copyright reasons) - this option restores the missing sample.\n- The unmodded game's \"kuina.ogg\" was slightly corrupted at the 53 second mark - this option repairs the corruption.",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"}
