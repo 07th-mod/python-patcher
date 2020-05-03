@@ -25,6 +25,21 @@ import installConfiguration
 
 class VersionManager:
 	localVersionFileName = "installedVersionData.json"
+	def userDidPartialReinstall(self, gameInstallTimeProbePath):
+		"""
+		:param gameInstallTimeProbePath: A file to probe to determine when the game was installed
+		:return: True if user did a partial re-install. Returns false if not sure.
+				Could possibly return True if user has been messing/copying their game folder around
+		"""
+		if not os.path.exists(self.localVersionFilePath) or not os.path.exists(gameInstallTimeProbePath):
+			print("userDidPartialReinstall: localVersionFilePath or gameInstallTimeProbePath was missing - assuming no partial reinstall")
+			return False
+
+		# If the game was installed AFTER when the mod was applied, user has probably partially re-installed the game
+		# by using steam to uninstall, then re-install the game, rather than deleting the game folder fully
+		# For the game files, the "created" date is the date the game was installed
+		# For the version file, the "modified" date is when the game mod was last applied
+		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
 	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None):
 		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo]) -> None

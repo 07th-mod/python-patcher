@@ -358,6 +358,7 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 			modOptions[checkBoxID].value = True
 
 def getDownloadPreview(fullInstallConfig):
+	#type: (installConfiguration.FullInstallConfiguration) -> Any
 	####### Preview which files are going to be downloaded #######
 	# Higurashi installer needs datadirectory set to determine unity version
 	dataDirectory = os.path.join(fullInstallConfig.installPath,
@@ -369,6 +370,19 @@ def getDownloadPreview(fullInstallConfig):
 		subMod=fullInstallConfig.subModConfig,
 		modFileList=modFileList,
 		localVersionFolder=fullInstallConfig.installPath)
+
+	# Check for partial re-install (see https://github.com/07th-mod/python-patcher/issues/93)
+	if fullInstallConfig.subModConfig.family == 'higurashi':
+		installTimeProbePath = os.path.join(dataDirectory, 'Managed', 'UnityEngine.dll')
+	elif fullInstallConfig.subModConfig.family == 'umineko':
+		installTimeProbePath = os.path.join(fullInstallConfig.installPath, 'fonts', 'oldface0.ttf')
+	else:
+		installTimeProbePath = None
+
+	if installTimeProbePath is None:
+		partialReinstallDetected = False
+	else:
+		partialReinstallDetected = fileVersionManager.userDidPartialReinstall(installTimeProbePath)
 
 	# Generate rows for the normal/overridden files
 	totalDownload = 0
@@ -398,7 +412,7 @@ def getDownloadPreview(fullInstallConfig):
 	                         row[2],
 	                         row[3]) for row in downloadItemsPreview]
 
-	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired()
+	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired(), partialReinstallDetected
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
@@ -590,7 +604,7 @@ class InstallerGUI:
 					if deleteVersionInformation:
 						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
 
-					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired = getDownloadPreview(fullInstallConfiguration)
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected = getDownloadPreview(fullInstallConfiguration)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
@@ -608,6 +622,7 @@ class InstallerGUI:
 					retval['downloadItemsPreview'] = downloadItemsPreview
 					retval['numUpdatesRequired'] = numUpdatesRequired
 					retval['fullUpdateRequired'] = fullUpdateRequired
+					retval['partialReinstallDetected'] = partialReinstallDetected
 				return retval
 
 			# requestData: Not necessary - will be ignored
