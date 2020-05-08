@@ -138,8 +138,9 @@ if __name__ == "__main__":
 	# Ask the user where they want to install the game
 	while True:
 		installPath = input(
-			"\n---- Please paste the game path below ----\n---- It should contain one of {} ----\n>>".format(subModToInstall.identifiers)
+			"\n---- Please copy and paste the game path below ----\nIt should contain one of {}\nDO NOT include the quotation characters [\"] or ['] in your path!\nExample: C:\\Program Files\\Steam\\steamapps\\common\\Umineko (for Umineko Question Arcs)\n>>".format(subModToInstall.identifiers)
 		)
+
 		print("Validating [{}]".format(installPath))
 		fullInstallConfigList = tryGetFullInstallConfig(subModToInstall, installPath)
 		if fullInstallConfigList:
