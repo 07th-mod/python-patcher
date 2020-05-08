@@ -94,7 +94,7 @@ if __name__ == "__main__":
 		print("Please change your hostname to only contain ASCII characters, then restart the installer.")
 		print("You can press ENTER to try to run the installer despite this problem.")
 		print("-------------------------------------------------------------")
-		input()
+		common.exitWithError()
 
 	common.Globals.scanForExecutables()
 	common.Globals.scanCertLocation()
