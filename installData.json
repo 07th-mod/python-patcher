@@ -656,7 +656,7 @@
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the unmodded game replaces the Touhou song \"SuiSui-SWEETS(^-^)\" with another song for copyright reasons. This option restores the orignal Touhou song.",
+							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the PS3 game replaces the Touhou song \"Tsurupettan\" with another song, \"Use SuiSui-SWEETS(^-^)\", for copyright reasons. This option allows you to use the song from the PS3 version.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-ps3-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -666,7 +666,7 @@
 					"submods" : ["full"],
 					"checkBox": [
 						{
-							"name": "Restore tsurupettan CG", "description": "- In one scene, the unmodded game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores the orignal Touhou CG.\n- Note that the CG is the original Ryukishi CG, so it won't match the PS3 graphics, if that bothers you.",
+							"name": "Restore tsurupettan CG", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores the orignal Touhou CG.\n- Note that the CG is the original Ryukishi CG, so it won't match the PS3 graphics, if that bothers you.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-original-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
