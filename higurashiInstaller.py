@@ -254,6 +254,9 @@ class Installer:
 			if configCFBundleIdentifier and parsed["CFBundleIdentifier"] != configCFBundleIdentifier:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", configCFBundleIdentifier, infoPlist])
 
+			# Removes the quarantine attribute from the game (which could cause it to get launched read-only, breaking the script compiler)
+			subprocess.call(["xattr", "-d", "com.apple.quarantine", self.directory])
+
 	def saveFileVersionInfoStarted(self):
 		self.fileVersionManager.saveVersionInstallStarted()
 
