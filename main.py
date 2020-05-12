@@ -6,6 +6,7 @@ import os
 import pprint
 import socket
 import sys
+import threading
 import traceback
 
 import common
@@ -96,14 +97,6 @@ if __name__ == "__main__":
 		print("-------------------------------------------------------------")
 		common.exitWithError()
 
-	common.Globals.scanForExecutables()
-	common.Globals.scanCertLocation()
-	check07thModServerConnection()
-	modList = getModList(common.Globals.DEVELOPER_MODE)
-	common.Globals.loadCachedDownloadSizes(modList)
-	subModconfigList = getSubModConfigList(modList)
-	
-
 	print("\n\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 	print(" - Do not close this window until you are finished with the installer! Closing this window will\n"
 	      "   stop the installer!")
@@ -111,7 +104,23 @@ if __name__ == "__main__":
 	print(" - On the web page, click the game you want to mod to start the installation.")
 	print("\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 
-	installerGUI = httpGUI.InstallerGUI(subModconfigList)
+	installerGUI = httpGUI.InstallerGUI()
+
+	def doInstallerInit():
+		try:
+			common.Globals.scanForExecutables()
+			common.Globals.scanCertLocation()
+			check07thModServerConnection()
+			modList = getModList(common.Globals.DEVELOPER_MODE)
+			common.Globals.loadCachedDownloadSizes(modList)
+			subModconfigList = getSubModConfigList(modList)
+			installerGUI.setSubModconfigs(subModconfigList)
+		except Exception as e:
+			installerGUI.setInitError(str(e))
+
+	# The installer initialization (scan for executables, check network, retrieve mod list) is launched
+	# concurrently with the Web GUI. The Web GUI shows a loading screen until init is complete.
+	threading.Thread(target=doInstallerInit).start()
 	installerGUI.server_test()
 
 	exit()

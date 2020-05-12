@@ -423,15 +423,36 @@ class InstallerGUIException(Exception):
 		return self.errorReason
 
 class InstallerGUI:
-	def __init__(self, allSubModConfigs):
+	def __init__(self):
 		"""
 		:param allSubModList: a list of SubModConfigs derived from the json file (should contain ALL submods in the file)
 		"""
-		self.allSubModConfigs = allSubModConfigs # type: List[installConfiguration.SubModConfig]
-		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, installConfiguration.SubModConfig]
+		# These two variables are set in setSubModconfigs().
+		self.allSubModConfigs = None # type: List[installConfiguration.SubModConfig]
+		self.idToSubMod = None # type: Dict[int, installConfiguration.SubModConfig]
+		self.initCompleted = False # type: bool # true if config loaded/init finished, false otherwise
+		self.initErrorMessage = None # type: Optional[str] # None if no error, str containing an error message if an error occured during init
+
 		self.messageBuffer = []
 		self.threadHandle = None # type: Optional[threading.Thread]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
+
+	def setSubModconfigs(self, allSubModConfigs):
+		"""
+		Set the submodconfigs to be used for the install.
+		This also allows the browser to proceed from the loading screen.
+		"""
+		self.allSubModConfigs = allSubModConfigs # type: List[installConfiguration.SubModConfig]
+		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, installConfiguration.SubModConfig]
+		self.initCompleted = True
+
+	def setInitError(self, errorMessage):
+		#type: (str) -> None
+		"""
+		Use to indicate an error occured during initialization.
+		The error message will cleared the next time the browser checks retrieves the init status
+		"""
+		self.initErrorMessage = errorMessage
 
 	def installAlreadyInProgress(self):
 		return self.threadHandle and self.threadHandle.is_alive()
@@ -741,6 +762,15 @@ class InstallerGUI:
 
 					return {}
 
+			def getInitStatus(requestData):
+				initError = None
+				if self.initErrorMessage is not None:
+					initError = self.initErrorMessage
+					self.initErrorMessage = None
+
+				return { 'initCompleted': self.initCompleted,
+				         'initErrorMessage': initError,
+				         'consoleLines': logger.getGlobalLogger().threadSafeReadAll()}
 
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
@@ -753,6 +783,7 @@ class InstallerGUI:
 				'troubleshoot' : troubleshoot,
 				'showFileChooser' : showFileChooser,
 				'getInstallerMetaInfo': getInstallerMetaInfo,
+				'getInitStatus': getInitStatus,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
@@ -784,7 +815,7 @@ Exception while handling [{}] request:
 		}
 
 		def on_server_started(web_server):
-			web_server_url = 'http://{}:{}'.format(*web_server.server_address)
+			web_server_url = 'http://{}:{}/loading_screen.html'.format(*web_server.server_address)
 			common.openURLInBrowser(web_server_url)
 			print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
 

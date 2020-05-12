@@ -1,0 +1,67 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+		<link rel="icon" type="image/png" href="favicon.png" />
+        <meta charset="utf-8">
+        <title>07th-Mod Installer Index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/flexslider.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+		<div class="main-container">
+			<div class="row masonry-loader text-center">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<h1>07th-Mod Installer</h1>
+					<h3>Please Wait...</h3>
+					<div id="terminal" class="text-left"><p>Terminal Output</p></div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+		</div>
+		<script>
+			let terminal = document.getElementById('terminal');
+
+			function checkInitCompleted() {
+				console.log("Checking if init completed");
+				getInitStatus(status => {
+					status.consoleLines.forEach((consoleLine) => {
+						// insert message at top of the terminal, so don't have to implement autoscroll
+						terminal.appendChild(document.createTextNode(consoleLine), terminal.firstChild);
+						terminal.scrollTop = terminal.scrollHeight;
+					});
+					
+					if(status.initErrorMessage !== null)
+					{
+						alert(status.initErrorMessage);
+					}
+
+					if(status.initCompleted)
+					{
+						window.location = '.'
+					}
+					else
+					{
+						window.setTimeout(checkInitCompleted, 500);
+					}
+				});
+			}
+
+			window.setTimeout(checkInitCompleted, 500);
+		</script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script>
+			// Warn the user if they are on Internet Explorer - we don't support it!
+			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
+				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
+			}
+		</script>
+		</body>
+	</html>
