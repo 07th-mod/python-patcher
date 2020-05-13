@@ -72,9 +72,11 @@ window.onload = function onWindowLoaded() {
       nav(gameName) {
         setModNameAndNavigate(gameName);
       },
+      // if subModExtraProperties missing a game, use wrong image
+      // to make it obvious that the table needs to be updated
       getSubModExtraProperties(name) {
         return _.get(this.subModExtraProperties, name, {
-          img: 'img/games/consolearcs.jpg',
+          img: 'img/umineko/sprite_potato.png',
           dataFilter: 'Question Arcs',
         });
       }
