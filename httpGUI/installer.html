@@ -490,7 +490,14 @@
 			</transition>
 			<section class="section-small-padding bg-secondary">
 			<div class="container">
-				<div id="modNews" class="installer-markdown"></div>
+				<h3>
+				<div v-if="changelogURL === null">
+					📝 Changlog URL Missing! Tell the developers to fix it!
+				</div>
+				<div v-else>
+					<a v-bind:href="changelogURL" target="_blank">📝 Click here to view the latest Changelog</a>
+				</div>
+				</h3>
 				<div id="build-info">Loading Build Information...</div>
 			</div>
 			</section>

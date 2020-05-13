@@ -152,6 +152,8 @@ window.onload = function onWindowLoaded() {
       numUpdatesRequired: 0,
       // Whether all the files need to be re-installed, or just part of the files. Mod options are not counted.
       fullUpdateRequired: true,
+      // URL of the mod changelog for this game (github releases page). If no URL available, is null.
+      changelogURL: null,
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -313,7 +315,21 @@ window.onload = function onWindowLoaded() {
       }
     });
 
-    replaceElementWithNews('modNews', app.selectedMod);
+    app.changelogURL = _.get({
+      'Umineko Question (Ch. 1-4)': 'https://github.com/07th-mod/umineko-question/releases/',
+      'Umineko Answer (Ch. 5-8)': 'https://github.com/07th-mod/umineko-answer/releases/',
+      'Umineko Tsubasa': 'https://github.com/07th-mod/umineko-tsubasa-ons/releases',
+      'Umineko Hane': 'https://github.com/07th-mod/umineko-hane-ons/releases',
+      'Console Arcs': 'https://github.com/07th-mod/higurashi-console-arcs/releases',
+      'Onikakushi Ch.1': 'https://github.com/07th-mod/onikakushi/releases',
+      'Watanagashi Ch.2': 'https://github.com/07th-mod/watanagashi/releases',
+      'Tatarigoroshi Ch.3': 'https://github.com/07th-mod/tatarigoroshi/releases',
+      'Himatsubushi Ch.4': 'https://github.com/07th-mod/himatsubushi/releases',
+      'Meakashi Ch.5': 'https://github.com/07th-mod/meakashi/releases',
+      'Tsumihoroboshi Ch.6': 'https://github.com/07th-mod/tsumihoroboshi/releases',
+      'Minagoroshi Ch.7': 'https://github.com/07th-mod/minagoroshi/releases',
+    }, app.selectedMod, null);
+
     replaceElementWithBuildInfo('build-info');
     doPost('getInstallerMetaInfo', [], (response) => {
       app.metaInfo = response;
