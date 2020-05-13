@@ -16,39 +16,36 @@
     </head>
     <body>
 		<div class="main-container">
-			<div class="row masonry-loader text-center">
+			<div class="row">
 				<div class="col-md-1"></div>
 				<div class="col-md-10">
 					<h1>07th-Mod Installer</h1>
 					<h3>Please Wait...</h3>
-					<div id="terminal" class="text-left"><p>Terminal Output</p></div>
+					<div id="terminal"><p>Terminal Output</p></div>
+					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
+					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
 				</div>
 				<div class="col-md-1"></div>
 			</div>
 		</div>
 		<script>
 			let terminal = document.getElementById('terminal');
+			let autoScrollCheckbox = document.getElementById('autoscrollCheckbox');
 
 			function checkInitCompleted() {
 				console.log("Checking if init completed");
 				getInitStatus(status => {
 					status.consoleLines.forEach((consoleLine) => {
-						// insert message at top of the terminal, so don't have to implement autoscroll
-						terminal.appendChild(document.createTextNode(consoleLine), terminal.firstChild);
-						terminal.scrollTop = terminal.scrollHeight;
+						addToTerminal(terminal, consoleLine, autoScrollCheckbox, 5000);
 					});
 					
-					if(status.initErrorMessage !== null)
-					{
+					if(status.initErrorMessage !== null) {
 						alert(status.initErrorMessage);
 					}
 
-					if(status.initCompleted)
-					{
+					if(status.initCompleted) {
 						window.location = '.'
-					}
-					else
-					{
+					} else {
 						window.setTimeout(checkInitCompleted, 500);
 					}
 				});

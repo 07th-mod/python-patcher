@@ -124,3 +124,25 @@ function getInitStatus(onStatusReceived) {
     onStatusReceived(response);
   });
 }
+
+// This function can be used to implement a basic terminal. It adds the string
+// 'msg' to element 'terminalElement' as a child node, effectively doing a
+// 'print()' statement, but appending to a particular html element.
+
+// The total number of elements displayed is limited by the 'maxLines' argument
+// Autoscrolling will be enabled if the checkbox
+// 'autoscrollCheckboxElement' (must be given as argument) is checked
+function addToTerminal(terminalElement, msg, autoscrollCheckboxElement, maxLines) {
+  terminalElement.appendChild(document.createTextNode(msg), terminalElement.firstChild);
+
+  // limit max number of lines - remove in blocks of 100 elements to improve performance
+  if (terminalElement.childNodes.length > maxLines) {
+    for (let i = 0; i < 100 && terminalElement.hasChildNodes(); i += 1) {
+      terminalElement.removeChild(terminalElement.firstChild);
+    }
+  }
+
+  if (autoscrollCheckboxElement.checked) {
+    terminalElement.scrollTop = terminalElement.scrollHeight;
+  }
+}

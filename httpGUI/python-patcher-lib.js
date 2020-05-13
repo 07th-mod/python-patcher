@@ -29,7 +29,6 @@ function statusUpdate() {
   doPost('statusUpdate',
     { },
     (responseData) => {
-      console.log(responseData);
       responseData.forEach((status) => {
         if (status.overallPercentage !== undefined) {
           app.overallPercentage = status.overallPercentage;
@@ -62,12 +61,7 @@ function statusUpdate() {
           const lineIsBlank = status.msg.trim().length === 0;
           numberOfBlankLinesInARow = lineIsBlank ? numberOfBlankLinesInARow + 1 : 0;
           if (!lineIsBlank || numberOfBlankLinesInARow < 3) {
-            // insert message at top of the terminal, so don't have to implement autoscroll
-            el.terminal.insertBefore(document.createTextNode(status.msg), el.terminal.firstChild);
-            // limit max number of lines to 5000
-            if (el.terminal.childNodes.length > 5000) {
-              el.terminal.removeChild(el.terminal.lastChild);
-            }
+            addToTerminal(el.terminal, status.msg, el.autoscrollCheckbox, 5000);
           }
           // If status.msg is defined, status.error will also be defined
           if (status.error) {
@@ -298,6 +292,7 @@ window.onload = function onWindowLoaded() {
 
   el = {
     terminal: document.getElementById('terminal'),
+    autoscrollCheckbox: document.getElementById('autoscrollCheckbox'),
   };
 
   // populate the app.subModList with subMods from the python server
