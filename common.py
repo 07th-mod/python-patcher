@@ -150,16 +150,14 @@ class Globals:
 
 		if Globals.ARIA_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
-			print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
-			exitWithError()
+			raise Exception("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 		else:
 			print("Found aria2c at [{}]".format(Globals.ARIA_EXECUTABLE))
 
 		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], ['-h'])
 		if Globals.SEVEN_ZIP_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
-			print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
-			exitWithError()
+			raise Exception("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 		else:
 			print("Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE))
 
@@ -534,25 +532,24 @@ def getModList(jsonURI, isURL):
 	:return: A list of mod info objects
 	:rtype: list[dict]
 	"""
-	def errorHandler(error):
-		print(error)
-		print("Couldn't reach 07th Mod Server to download patch info")
-		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
-		exitWithError()
-
 	info, exception = getJSON(jsonURI, isURL)
 	if info is None:
-		errorHandler(exception)
+		raise Exception("""Couldn't reach 07th Mod Server to download patch info
+Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)
+
+Detailed Error: {}""".format(exception))
 
 	try:
 		version = info["version"]
 		if version > Globals.JSON_VERSION:
-			print("\n\n-------------------------------------------------------------------------------")
 			printErrorMessage("Your installer is out of date.")
 			printErrorMessage("Please download the latest version of the installer and try again.")
-			print("\nYour installer is compatible with mod listings up to version {} but the latest listing is version {}".format(Globals.JSON_VERSION, version))
-			print("-------------------------------------------------------------------------------\n")
-			exitWithError()
+			raise Exception("""-------------------------------------------------------------------------------
+Your installer is out of date.
+Please download the latest version of the installer and try again.
+
+Your installer is compatible with mod listings up to version {} but the latest listing is version {}
+-------------------------------------------------------------------------------""".format(Globals.JSON_VERSION, version))
 	except KeyError:
 		print("Warning: The mod info listing is missing a version number.  Things might not work.")
 		return info

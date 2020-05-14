@@ -36,8 +36,7 @@ def check07thModServerConnection():
 		testFile = common.downloadFile("http://07th-mod.com/", is_text=True)
 	except Exception as error:
 		traceback.print_exc()
-		print(
-"""\n\n------------------------------------------------------------------------
+		raise Exception("""\n\n------------------------------------------------------------------------
 Error: Couldn't reach 07th Mod Server! The installer requires a valid internet connection
 
 Please check the following:
@@ -46,7 +45,7 @@ Please check the following:
 - Check our Wiki for more solutions: http://www.07th-mod.com/wiki/Installer/faq/ 
 ------------------------------------------------------------------------
 """)
-		common.exitWithError()
+
 
 def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):
@@ -116,6 +115,7 @@ if __name__ == "__main__":
 			subModconfigList = getSubModConfigList(modList)
 			installerGUI.setSubModconfigs(subModconfigList)
 		except Exception as e:
+			print(e)
 			installerGUI.setInitError(str(e))
 
 	# The installer initialization (scan for executables, check network, retrieve mod list) is launched
