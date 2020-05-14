@@ -62,6 +62,10 @@ window.onload = function onWindowLoaded() {
           img: 'img/games/header7.jpg',
           dataFilter: 'Answer Arcs',
         },
+        'Matsuribayashi Ch.8': {
+          img: 'img/games/header8.jpg',
+          dataFilter: 'Answer Arcs',
+        },
       },
       // Data filters are defined manually so you can set the order
       dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],
