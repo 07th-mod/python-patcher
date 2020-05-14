@@ -22,8 +22,8 @@ window.onload = function onWindowLoaded() {
       });
 
       if (status.initErrorMessage !== null) {
-        alert(status.initErrorMessage);
         app.errorMessage = status.initErrorMessage;
+        document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
       }
 
       if (status.initCompleted) {
