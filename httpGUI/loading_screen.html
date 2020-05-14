@@ -15,6 +15,7 @@
         <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
     </head>
     <body>
+		<div id="app" class="main-container" v-cloak>
 		<div class="main-container">
 			<div class="row">
 				<div class="col-md-1"></div>
@@ -24,36 +25,20 @@
 					<div id="terminal"><p>Terminal Output</p></div>
 					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
 					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
+					<div v-if='errorMessage !== null'>
+						<h2 style="color: red;">Installer init failed :(</h2>
+						<p>You must restart the installer by first closing all windows including the launcher, then starting it again (after you've fixed the error)</p>
+						<h3>Error Message</h3>
+						<pre>{{ errorMessage }}</pre>
+					</div>
 				</div>
 				<div class="col-md-1"></div>
 			</div>
 		</div>
-		<script>
-			let terminal = document.getElementById('terminal');
-			let autoScrollCheckbox = document.getElementById('autoscrollCheckbox');
-
-			function checkInitCompleted() {
-				console.log("Checking if init completed");
-				getInitStatus(status => {
-					status.consoleLines.forEach((consoleLine) => {
-						addToTerminal(terminal, consoleLine, autoScrollCheckbox, 5000);
-					});
-					
-					if(status.initErrorMessage !== null) {
-						alert(status.initErrorMessage);
-					}
-
-					if(status.initCompleted) {
-						window.location = '.'
-					} else {
-						window.setTimeout(checkInitCompleted, 500);
-					}
-				});
-			}
-
-			window.setTimeout(checkInitCompleted, 500);
-		</script>
+		</div>
+		<script src="js/vue.js"></script>
 		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-loading-screen.js"></script>
 		<script>
 			// Warn the user if they are on Internet Explorer - we don't support it!
 			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
