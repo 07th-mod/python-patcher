@@ -575,6 +575,47 @@
 		},
 		{
 			"family": "higurashi",
+			"name": "Matsuribayashi Ch.8",
+			"target": "Matsuribayashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.8 Matsuribayashi",
+			"dataname": "HigurashiEp08_Data",
+			"identifiers" : ["HigurashiEp08_Data", "HigurashiEp08.x86_64", "HigurashiEp08.exe"],
+			"submods": [
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Matsuribayashi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/tag/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
 			"name": "Console Arcs",
 			"target": "Himatsubushi",
 			"CFBundleName": "Higurashi When They Cry - Console Arcs",
