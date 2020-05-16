@@ -242,7 +242,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       askPerformFullInstall() {
-        if (confirm(`Are you sure you want to perform a full re-install?\n${app.getInstallWarningText()}`)) {
+        if (confirm(`Are you sure you want to perform a full re-install?`)) {
           app.doInstall(true);
         }
       },
