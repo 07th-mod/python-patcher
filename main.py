@@ -27,26 +27,6 @@ try:
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 
-def check07thModServerConnection():
-	"""
-	Makes sure that we can connect to the 07th-mod server
-	(Patches will fail to download if we can't)
-	"""
-	try:
-		testFile = common.downloadFile("https://07th-mod.com/", is_text=True)
-	except Exception as error:
-		traceback.print_exc()
-		raise Exception("""\n\n------------------------------------------------------------------------
-Error: Couldn't reach 07th Mod Server! The installer requires a valid internet connection
-
-Please check the following:
-- You have a working internet connection
-- Note that Japan is blocked from downloading (VPNs are compatible with this installer, however...)
-- Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
-------------------------------------------------------------------------
-""")
-
-
 def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):
 		return common.getModList("installData.json", isURL=False)
@@ -72,7 +52,7 @@ if __name__ == "__main__":
 	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
 	if os.path.exists("installData.json"):
 		common.Globals.DEVELOPER_MODE = True
-		print("NOTE: Developer mode is enabled (installData.json detected on disk)")
+		print("""------ NOTE: Developer mode is enabled (will use installData.json from disk) ----""")
 
 	# redirect stdout to both a file and console
 	# TODO: on MAC using a .app file, not sure if this logfile will be writeable
@@ -134,9 +114,9 @@ if __name__ == "__main__":
 
 			# Run remaining init tasks concurrently
 			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)
-			common.startAndJoinThreads(
-				[t_getSubModConfig, common.makeThread(check07thModServerConnection), common.makeThread(thread_unimportantTasks)]
-			)
+			t_unimportantTasks = common.makeThread(thread_unimportantTasks)
+
+			common.startAndJoinThreads([t_getSubModConfig, t_unimportantTasks])
 
 			# Indicate init is complete. This causes the browser to advance from loading_screen.html to index.html
 			installerGUI.setSubModconfigs(t_getSubModConfig.result)
