@@ -38,14 +38,14 @@ def userAskYesNo(choiceText):
 
 
 def userPickFromList(choices, overallDescription, customFormatter=None):
-	# type: (List[Any], str, Callable[[Any], str]) -> Any
+	# type: (List[Any], str, Callable[[Any], str]) -> (Any, int)
 
 	if customFormatter is None:
 		customFormatter = lambda x: x
 
 	# If only one choice, just return that choice
 	if len(choices) == 1:
-		return choices[0]
+		return choices[0], 0
 
 	while True:
 		print("\n---- {} ----".format(overallDescription))
@@ -56,7 +56,8 @@ def userPickFromList(choices, overallDescription, customFormatter=None):
 
 		# Collect response from the user. If it's invalid, loop again.
 		try:
-			return choices[int(input("(Type the number of your choice, then hit enter)\n>>")) - 1]
+			choice_index = int(input("(Type the number of your choice, then hit enter)\n>>")) - 1
+			return choices[choice_index], choice_index
 		except:
 			print("Invalid response, please try again.")
 			continue
@@ -104,10 +105,33 @@ def askUserOptions(subModToInstall):
 		return "[{}]:\n{}\n".format(option.name, option.description)
 
 	for (optionGroupName, optionList) in radioOptions.items():
-		chosenRadioOption = userPickFromList(optionList, "Please choose [{}]".format(optionGroupName),
+		chosenRadioOption, _ = userPickFromList(optionList, "Please choose [{}]".format(optionGroupName),
 		                                     customFormatter=customFormatter)
 		chosenRadioOption.value = True
 
+def askUserInstallPathGetFullInstallConfig():
+	# type: () -> FullInstallConfiguration
+	manualPathMarker = "Choose Path Manually"
+	fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subModToInstall])
+	_, installConfigIndex = userPickFromList([x.installPath for x in fullInstallConfigs] + [manualPathMarker],
+	                                         "Please choose the game path to install to")
+
+	if installConfigIndex < len(fullInstallConfigs):
+		return fullInstallConfigs[installConfigIndex]
+	else:
+		# Ask the user where they want to install the game
+		while True:
+			installPath = input(
+				"\n---- Please copy and paste the game path below ----\nIt should contain one of {}\nDO NOT include the quotation characters [\"] or ['] in your path!\nExample: C:\\Program Files\\Steam\\steamapps\\common\\Umineko (for Umineko Question Arcs)\n>>".format(
+					subModToInstall.identifiers)
+			)
+
+			print("Validating [{}]".format(installPath))
+			fullInstallConfigList = tryGetFullInstallConfig(subModToInstall, installPath)
+			if fullInstallConfigList:
+				return fullInstallConfigList[0]  # type: FullInstallConfiguration
+			else:
+				print("---- Invalid game path, please try again ----")
 
 if __name__ == "__main__":
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
@@ -127,27 +151,15 @@ if __name__ == "__main__":
 			uniqueGameNames.append(subMod.modName)
 
 	# Ask the user which game they want to install
-	gameName = userPickFromList(uniqueGameNames, "Please choose the game you want to mod")
+	gameName, _ = userPickFromList(uniqueGameNames, "Please choose the game you want to mod")
 
 	# Get a list of variants with that name
 	modVariants = [subMod for subMod in subModList if subMod.modName == gameName] #type: List[SubModConfig]
 
 	# Ask the user which submod they want to install
-	subModToInstall = userPickFromList(modVariants, "Please choose which variant to install") #type: SubModConfig
+	subModToInstall, _ = userPickFromList(modVariants, "Please choose which variant to install") #type: SubModConfig
 
-	# Ask the user where they want to install the game
-	while True:
-		installPath = input(
-			"\n---- Please copy and paste the game path below ----\nIt should contain one of {}\nDO NOT include the quotation characters [\"] or ['] in your path!\nExample: C:\\Program Files\\Steam\\steamapps\\common\\Umineko (for Umineko Question Arcs)\n>>".format(subModToInstall.identifiers)
-		)
-
-		print("Validating [{}]".format(installPath))
-		fullInstallConfigList = tryGetFullInstallConfig(subModToInstall, installPath)
-		if fullInstallConfigList:
-			fullInstallConfig = fullInstallConfigList[0] #type: FullInstallConfiguration
-			break
-		else:
-			print("---- Invalid game path, please try again ----")
+	fullInstallConfig = askUserInstallPathGetFullInstallConfig()
 
 	# Ask the user what options they want to install
 	# Note: this function directly modifies the submod's options
