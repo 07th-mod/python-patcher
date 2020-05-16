@@ -787,6 +787,8 @@ class DownloaderAndExtractor:
 
 		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
 
+		self.addItemLock = threading.Lock()
+
 	def buildDownloadAndExtractionList(self):
 		#type: () -> None
 		"""
@@ -796,9 +798,12 @@ class DownloaderAndExtractor:
 		"""
 		if not self.suppressDownloadStatus:
 			commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
+
+		queryThreads = []
 		for i, file in enumerate(self.modFileList):
-			print("Querying URL: [{}]".format(file.url))
-			self.addItemManually(file.url, self.defaultExtractionDir)
+			queryThreads.append(makeThread(lambda url=file.url: self.addItemManually(url, self.defaultExtractionDir)))
+
+		startAndJoinThreads(queryThreads)
 
 		self.downloadAndExtractionListsBuilt = True
 
@@ -894,9 +899,13 @@ class DownloaderAndExtractor:
 		:param extractionDir: The folder where the file(s) will be extracted
 		"""
 		extractables = DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir)
+		print("Aquired lock: {}".format(url))
+		self.addItemLock.acquire()
 		self.downloadList.append(url)
 		self.extractablesForEachDownload.append(extractables)
 		self.extractList.extend(extractables)
+		self.addItemLock.release()
+		print("Released lock: {}".format(url))
 
 	def printPreview(self):
 		pretty_file_size = prettyPrintFileSize(self.totalDownloadSize())
