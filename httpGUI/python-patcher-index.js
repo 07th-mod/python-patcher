@@ -70,6 +70,15 @@ window.onload = function onWindowLoaded() {
       globalNews: 'News not loaded',
       donationProgress: 'N months',
       donationMonthsRemaining: 'XXX%',
+      metaInfo: {
+        buildInfo: '', // Installer Build Version and Date
+        lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
+        operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
+        installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
+        news: '', // News across all mods, fetched from github
+        donationMonthsRemaining: '', // How many months the server can be paid for with current funding
+        donationProgressPercent: '', // How close funding is to the 12 month donation goal, in percent
+      },
     },
     methods: {
       nav(gameName) {
@@ -95,7 +104,6 @@ window.onload = function onWindowLoaded() {
       if (!this.masonryInitialized) {
         this.masonryInitialized = true;
         initializeMasonry();
-        console.log("initing masonry");
       }
     },
     created() {
@@ -107,20 +115,13 @@ window.onload = function onWindowLoaded() {
           modNameToSubModHandleMap[subModHandle.modName] = subModHandle;
         });
 
-        app.globalNews = DOMPurify.sanitize(marked(responseData.news));
-        app.donationProgress = responseData.donationProgressPercent;
-        app.donationMonthsRemaining = responseData.donationMonthsRemaining;
+        app.metaInfo = responseData.metaInfo;
+        app.globalNews = DOMPurify.sanitize(marked(app.metaInfo.news));
 
         app.uniqueSubMods = Object.values(modNameToSubModHandleMap);
         app.uniqueSubMods.sort((a, b) => a.id - b.id);
         console.log(app.uniqueSubMods);
-
-        //add image url to each submod
       });
-
-      setTimeout(() => {
-          replaceElementWithBuildInfo('build-info');
-      }, 500);
     },
   });
 };

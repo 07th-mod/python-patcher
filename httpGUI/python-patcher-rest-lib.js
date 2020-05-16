@@ -88,15 +88,6 @@ function setModNameAndNavigate(modName) {
   });
 }
 
-function replaceElementWithBuildInfo(elementID) {
-  // Retrieve the donation status
-  doPost('getInstallerMetaInfo', [], (response) => {
-    if (response.buildInfo !== null) {
-      document.getElementById(elementID).textContent = response.buildInfo;
-    }
-  });
-}
-
 function getInitStatus(onStatusReceived) {
   // Retrieve the donation status
   doPost('getInitStatus', [], (response) => {

@@ -583,10 +583,15 @@ class InstallerGUI:
 				return {'selectedMod' : self.selectedModName,
 						'subModHandles' : subModHandles,
 						'logFilePath': os.path.abspath(common.Globals.LOG_FILE_PATH),
-						'os' : common.Globals.OS_STRING,
-						'news' : self.remoteNews,
-						'donationMonthsRemaining' : self.donationMonthsRemaining,
-						'donationProgressPercent' : self.donationProgressPercent,
+						'metaInfo': {
+							'buildInfo': common.Globals.BUILD_INFO, # Installer Build Version and Date
+							'lockFileExists': common.lockFileExists(), # This indicates if a install is already running in a different instance, or a previous install was killed while running
+							'operatingSystem': common.Globals.OS_STRING, # The operating system - either 'windows', 'linux', or 'mac'
+							'installAlreadyInProgress': self.installAlreadyInProgress(), # This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
+							'news': self.remoteNews, # News across all mods, fetched from github
+							'donationMonthsRemaining': self.donationMonthsRemaining, # How many months the server can be paid for with current funding
+							'donationProgressPercent': self.donationProgressPercent, # How close funding is to the 12 month donation goal, in percent
+							},
 						}
 
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install, or None to get ALL possible games
@@ -668,14 +673,6 @@ class InstallerGUI:
 			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
 			def statusUpdate(requestData):
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
-
-			def getInstallerMetaInfo(requestData):
-				return {
-					'buildInfo': common.Globals.BUILD_INFO,
-					'lockFileExists': common.lockFileExists(), # Indicate if it looks like install already in progress
-					'operatingSystem': common.Globals.OS_STRING,
-					'installAlreadyInProgress': self.installAlreadyInProgress(),
-				}
 
 			# This causes a TKInter window to open allowing the user to choose a game path.
 			# The request data should be the submod ID.
@@ -786,7 +783,6 @@ class InstallerGUI:
 				'statusUpdate' : statusUpdate,
 				'troubleshoot' : troubleshoot,
 				'showFileChooser' : showFileChooser,
-				'getInstallerMetaInfo': getInstallerMetaInfo,
 				'getInitStatus': getInitStatus,
 			}
 

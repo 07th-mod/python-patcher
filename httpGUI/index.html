@@ -132,12 +132,12 @@
 					<div class="container">
 						<h4>Donation Status</h4>
 						<p>
-							Server time remaining: <b>{{ donationMonthsRemaining }}</b><b> months</b><br>
-							This year's funding goal is <b>{{ donationProgress }}</b>% complete.<br>
+							Server time remaining: <b>{{ metaInfo.donationMonthsRemaining }}</b><b> months</b><br>
+							This year's funding goal is <b>{{ metaInfo.donationProgress }}</b>% complete.<br>
 							<a href="http://07th-mod.com/wiki/Donations/">Click Here</a> to Donate!<br>
 						</p>
 					</div>
-					<div id="build-info" class="container">Loading Build Information...</div>
+					<div class="container">{{ metaInfo.buildInfo }}</div>
 				</section>
 		</div>
 		</div>

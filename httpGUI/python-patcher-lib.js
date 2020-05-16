@@ -139,9 +139,15 @@ window.onload = function onWindowLoaded() {
       os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
       showPathSelectionButtons: true, // Set to true to show UI for path selection
       // metaInfo: meta info about the installer environment, etc. Contains:
-      //  - lockFileExists: This indicates if a install is already running in a different instance, or a previous install was killed while running
-      //  - operatingSystem: The operating system - either 'windows', 'linux', or 'mac'
-      metaInfo: null,
+      metaInfo: {
+        buildInfo: '', // Installer Build Version and Date
+        lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
+        operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
+        installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
+        news: '', // News across all mods, fetched from github
+        donationMonthsRemaining: '', // How many months the server can be paid for with current funding
+        donationProgressPercent: '', // How close funding is to the 12 month donation goal, in percent
+      },
       // freeSpaceAdvisoryString: a message to the user indicating whether there is enough space on the selected install path
       freeSpaceAdvisoryString: null,
       CWDFreeSpaceAdvisoryString: null,
@@ -319,7 +325,6 @@ window.onload = function onWindowLoaded() {
     app.selectedMod = responseData.selectedMod;
     app.logFilePath = responseData.logFilePath;
     app.os = responseData.os;
-    console.log(app.selectedSubMod);
 
     // For Higurashi, select the 'Full' patch by default
     app.possibleSubMods.forEach((subMod) => {
@@ -343,13 +348,10 @@ window.onload = function onWindowLoaded() {
       'Minagoroshi Ch.7': 'https://github.com/07th-mod/minagoroshi/releases',
     }, app.selectedMod, null);
 
-    replaceElementWithBuildInfo('build-info');
-    doPost('getInstallerMetaInfo', [], (response) => {
-      app.metaInfo = response;
-      if (app.metaInfo.installAlreadyInProgress) {
-        setInstallStartedAndBeginPolling();
-      }
-    });
+    app.metaInfo = responseData.metaInfo;
+    if (app.metaInfo.installAlreadyInProgress) {
+      setInstallStartedAndBeginPolling();
+    }
   });
 
   // When any properties of the selected submod and child properites change,
