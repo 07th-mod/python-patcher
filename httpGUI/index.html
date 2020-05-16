@@ -51,7 +51,9 @@
 							</div>
 							<div class="col-md-6 text-center">
 								<div class="feature bordered hidden-xs hidden-sm boxed">
-									<div id="globalNews" class="rendered-markdown"></div>
+									<div class="rendered-markdown">
+										<span v-html="globalNews"></span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -130,8 +132,8 @@
 					<div class="container">
 						<h4>Donation Status</h4>
 						<p>
-							Server time remaining: <b id="donationMonthsRemaining"></b><b> months</b><br>
-							This year's funding goal is <b id="donationProgress"></b>% complete.<br>
+							Server time remaining: <b>{{ donationMonthsRemaining }}</b><b> months</b><br>
+							This year's funding goal is <b>{{ donationProgress }}</b>% complete.<br>
 							<a href="http://07th-mod.com/wiki/Donations/">Click Here</a> to Donate!<br>
 						</p>
 					</div>

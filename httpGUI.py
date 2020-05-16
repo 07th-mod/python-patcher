@@ -437,6 +437,16 @@ class InstallerGUI:
 		self.threadHandle = None # type: Optional[threading.Thread]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
+		self.remoteNews = ""
+		self.donationMonthsRemaining = ""
+		self.donationProgressPercent = ""
+
+	def loadNews(self):
+		self.remoteNews = common.tryGetRemoteNews('news')
+
+	def loadDonationStatus(self):
+		self.donationMonthsRemaining, self.donationProgressPercent = common.getDonationStatus()
+
 	def setSubModconfigs(self, allSubModConfigs):
 		"""
 		Set the submodconfigs to be used for the install.
@@ -574,6 +584,9 @@ class InstallerGUI:
 						'subModHandles' : subModHandles,
 						'logFilePath': os.path.abspath(common.Globals.LOG_FILE_PATH),
 						'os' : common.Globals.OS_STRING,
+						'news' : self.remoteNews,
+						'donationMonthsRemaining' : self.donationMonthsRemaining,
+						'donationProgressPercent' : self.donationProgressPercent,
 						}
 
 			# requestData: A dictionary, which contains a field 'id' containing the ID of the subMod to install, or None to get ALL possible games
@@ -655,16 +668,6 @@ class InstallerGUI:
 			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
 			def statusUpdate(requestData):
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
-
-			def getNews(requestData):
-				return common.tryGetRemoteNews(requestData)
-
-			def getDonationStatus(requestData):
-				monthsRemaining, progressPercent = common.getDonationStatus()
-				return  {
-					'monthsRemaining': monthsRemaining,
-					'progressPercent': progressPercent,
-				}
 
 			def getInstallerMetaInfo(requestData):
 				return {
@@ -781,8 +784,6 @@ class InstallerGUI:
 				'gamePaths' : getGamePathsHandler,
 				'startInstall' : startInstallHandler,
 				'statusUpdate' : statusUpdate,
-				'getNews' : getNews,
-				'getDonationStatus' : getDonationStatus,
 				'troubleshoot' : troubleshoot,
 				'showFileChooser' : showFileChooser,
 				'getInstallerMetaInfo': getInstallerMetaInfo,

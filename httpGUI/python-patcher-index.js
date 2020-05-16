@@ -67,6 +67,9 @@ window.onload = function onWindowLoaded() {
       dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],
       currentDataFilter: null,
       masonryInitialized: false,
+      globalNews: 'News not loaded',
+      donationProgress: 'N months',
+      donationMonthsRemaining: 'XXX%',
     },
     methods: {
       nav(gameName) {
@@ -104,6 +107,10 @@ window.onload = function onWindowLoaded() {
           modNameToSubModHandleMap[subModHandle.modName] = subModHandle;
         });
 
+        app.globalNews = DOMPurify.sanitize(marked(responseData.news));
+        app.donationProgress = responseData.donationProgressPercent;
+        app.donationMonthsRemaining = responseData.donationMonthsRemaining;
+
         app.uniqueSubMods = Object.values(modNameToSubModHandleMap);
         app.uniqueSubMods.sort((a, b) => a.id - b.id);
         console.log(app.uniqueSubMods);
@@ -112,9 +119,7 @@ window.onload = function onWindowLoaded() {
       });
 
       setTimeout(() => {
-          replaceElementWithNews('globalNews', 'news');
           replaceElementWithBuildInfo('build-info');
-          replaceDonationStatus('donationMonthsRemaining', 'donationProgress');
       }, 500);
     },
   });

@@ -111,6 +111,11 @@ if __name__ == "__main__":
 			common.Globals.scanCertLocation()
 			check07thModServerConnection()
 			modList = getModList(common.Globals.DEVELOPER_MODE)
+			try:
+				installerGUI.loadDonationStatus()
+				installerGUI.loadNews()
+			except Exception as e:
+				print(e)
 			common.Globals.loadCachedDownloadSizes(modList)
 			subModconfigList = getSubModConfigList(modList)
 			installerGUI.setSubModconfigs(subModconfigList)

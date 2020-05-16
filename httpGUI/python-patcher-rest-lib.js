@@ -88,27 +88,6 @@ function setModNameAndNavigate(modName) {
   });
 }
 
-// elementID: The element whose innerHTML will be replaced with the news markdown as HTML
-// newsName: The name of the news file to retrieve (check the 'news' folder in the git repo for a list of valid names)
-function replaceElementWithNews(elementID, newsName) {
-  doPost('getNews', newsName, (response) => {
-    document.getElementById(elementID).innerHTML = DOMPurify.sanitize(marked(response));
-  });
-}
-
-//TODO: Should use Vue instead of this
-function replaceDonationStatus(elementIDMonthsRemaining, elementIDProgressPercent) {
-  // Retrieve the donation status
-  doPost('getDonationStatus', [], (response) => {
-    if (response.monthsRemaining !== null) {
-      document.getElementById(elementIDMonthsRemaining).textContent = response.monthsRemaining;
-    }
-    if (response.progressPercent !== null) {
-      document.getElementById(elementIDProgressPercent).textContent = response.progressPercent;
-    }
-  });
-}
-
 function replaceElementWithBuildInfo(elementID) {
   // Retrieve the donation status
   doPost('getInstallerMetaInfo', [], (response) => {
