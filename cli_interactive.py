@@ -22,10 +22,12 @@ import uminekoNScripterInstaller
 import higurashiInstaller
 
 
-def userAskYesNo(choiceText):
-	# type: (str) -> bool
+def userAskYesNo(headerText, descriptionText=None):
+	# type: (str, str) -> bool
 	while True:
-		print("\n---- {} ----".format(choiceText))
+		print("\n---- {} ----".format(headerText))
+		if descriptionText is not None:
+			print(descriptionText)
 
 		response = input("(Please type 'y' or 'n', then hit enter)\n>>")
 		if len(response) > 0:
@@ -95,10 +97,8 @@ def askUserOptions(subModToInstall):
 
 	# Ask the user about each check box option
 	for option in checkBoxOptions:
-		option.value = userAskYesNo(
-			"""Would you like to enable option [{}]?
-			Description: [{}]""".format(option.name, option.description)
-		)
+		option.value = userAskYesNo("Would you like to enable option [{}]?".format(option.name),
+		                            "Description: [{}]".format(option.description))
 
 	# Ask the user about each group of radio options
 	def customFormatter(option):
