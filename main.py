@@ -33,7 +33,7 @@ def check07thModServerConnection():
 	(Patches will fail to download if we can't)
 	"""
 	try:
-		testFile = common.downloadFile("http://07th-mod.com/", is_text=True)
+		testFile = common.downloadFile("https://07th-mod.com/", is_text=True)
 	except Exception as error:
 		traceback.print_exc()
 		raise Exception("""\n\n------------------------------------------------------------------------
@@ -42,7 +42,7 @@ Error: Couldn't reach 07th Mod Server! The installer requires a valid internet c
 Please check the following:
 - You have a working internet connection
 - Note that Japan is blocked from downloading (VPNs are compatible with this installer, however...)
-- Check our Wiki for more solutions: http://www.07th-mod.com/wiki/Installer/faq/ 
+- Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
 ------------------------------------------------------------------------
 """)
 

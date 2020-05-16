@@ -66,7 +66,7 @@ To use the plugin:
 ## Command line interface
 
 The installer also ships with an alternative command line interface
-for advanced users. For instructions, please refer to [this section](http://07th-mod.com/wiki/Umineko/Umineko-Part-3a-Cross-Platform-Installer/#power-users) of the wiki.
+for advanced users. For instructions, please refer to [this section](https://07th-mod.com/wiki/Umineko/Umineko-Part-3a-Cross-Platform-Installer/#power-users) of the wiki.
 
 ## Travis Setup
 

@@ -129,7 +129,7 @@ class Globals:
 
 	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
-	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
+	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
 
 	CA_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
@@ -445,7 +445,7 @@ class SevenZipMonitor:
 			errors.append("Archive Corrupted Error: This error should never happen - please send the 07th-mod team your install log")
 
 		if self.unknown_error_string:
-			errors.append("Unknown Error: {}. You may want to check our Installer FAQ: http://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#installer-faq-and-troubleshooting or get help on our Discord Server: https://discord.gg/pf5VhF9".format(self.unknown_error_string))
+			errors.append("Unknown Error: {}. You may want to check our Installer FAQ: https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#installer-faq-and-troubleshooting or get help on our Discord Server: https://discord.gg/pf5VhF9".format(self.unknown_error_string))
 
 		return '\n'.join(errors)
 
@@ -500,7 +500,7 @@ def getDonationStatus():
 	donationStatusRegex = re.compile(r'<progress\s*value=(\d+).*data-months-remaining=(\d+)>', re.IGNORECASE)
 
 	try:
-		entirePage = downloadFile(r"http://07th-mod.com/wiki/", is_text=True)
+		entirePage = downloadFile(r"https://07th-mod.com/wiki/", is_text=True)
 	except HTTPError as error:
 		return None, None
 

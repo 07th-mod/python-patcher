@@ -114,7 +114,7 @@ class TestSubModVersion(unittest.TestCase):
 						{"name": "Default BGM", "description": "Use the default Background Music"},
 						{
 							"name": "Old BGM", "description": "Restores the music tracks from the original release (pre-2019)",
-							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -124,7 +124,7 @@ class TestSubModVersion(unittest.TestCase):
 						{"name": "Default SE", "description": "Use the default Sound Effects", "data":null},
 						{
 							"name": "Old SE", "description": "Restores the SE from the original release (pre-2019)",
-							"data": {"url": "http://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -133,7 +133,7 @@ class TestSubModVersion(unittest.TestCase):
 					"checkBox": [
 						{
 							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
-							"data": {"url": "http://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 20}
+							"data": {"url": "https://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 20}
 						}
 					]
 				}
