@@ -1180,15 +1180,23 @@ def makeThread(target):
 			t.result = target()
 		except BaseException as exc:
 			t.failure = exc
-	t = threading.Thread(target=_target)
+	t = threading.Thread(target=_target, name=target.__name__)
 	join = t.join
 	def _join(timeout=None):
 		join(timeout=timeout)
+		print("Thread {} ".format(t.name), end='')
 		if hasattr(t, "result"):
+			print("finished successfully")
 			return t.result
 		else:
+			print("failed")
 			raise t.failure
 	t.join = _join
+	start = t.start
+	def _start():
+		print("Thread {} started".format(t.name))
+		start()
+	t.start = _start
 	return t
 
 def startAndJoinThreads(threads):
