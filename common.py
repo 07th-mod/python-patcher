@@ -135,12 +135,11 @@ class Globals:
 	URLOPEN_IS_BROKEN = False
 
 	@staticmethod
-	def scanForExecutables():
-		# query available executables. If any installation of executables is done in the python script, it must be done
-		# before this executes
-		print("Validating Executables...")
+	def scanForCURL():
 		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl"], ["-I", "https://07th-mod.com/"])
 
+	@staticmethod
+	def scanForAria():
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
 		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://07th-mod.com/', '--dry-run=true'])
 
@@ -154,12 +153,21 @@ class Globals:
 		else:
 			print("Found aria2c at [{}]".format(Globals.ARIA_EXECUTABLE))
 
+	@staticmethod
+	def scanForSevenZip():
 		Globals.SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za64", "./7za", "./.7za", "7za", "./7z", "7z"], ['-h'])
 		if Globals.SEVEN_ZIP_EXECUTABLE is None:
 			# TODO: automatically download and install dependencies
 			raise Exception("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
 		else:
 			print("Found 7-zip at [{}]".format(Globals.SEVEN_ZIP_EXECUTABLE))
+
+	@staticmethod
+	def scanForExecutables():
+		print("Validating Executables...")
+		startAndJoinThreads(
+			[makeThread(t) for t in [Globals.scanForCURL, Globals.scanForAria, Globals.scanForSevenZip]]
+		)
 
 	@staticmethod
 	def loadCachedDownloadSizes(modList):
@@ -1165,3 +1173,28 @@ def downloadFile(url, is_text):
 		data = data.decode('utf-8')
 
 	return data
+
+def makeThread(target):
+	def _target():
+		try:
+			t.result = target()
+		except BaseException as exc:
+			t.failure = exc
+	t = threading.Thread(target=_target)
+	join = t.join
+	def _join(timeout=None):
+		join(timeout=timeout)
+		if hasattr(t, "result"):
+			return t.result
+		else:
+			raise t.failure
+	t.join = _join
+	return t
+
+def startAndJoinThreads(threads):
+	# type: (list[threading.Thread]) -> ()
+	for thread in threads:
+		thread.start()
+
+	for thread in threads:
+		thread.join()

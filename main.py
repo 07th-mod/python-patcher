@@ -105,22 +105,44 @@ if __name__ == "__main__":
 
 	installerGUI = httpGUI.InstallerGUI()
 
-	def doInstallerInit():
+	def thread_getSubModConfigList():
+		modList = getModList(common.Globals.DEVELOPER_MODE)
+		common.Globals.loadCachedDownloadSizes(modList)
+		return getSubModConfigList(modList)
+
+	def thread_unimportantTasks():
+		t_loadNews = common.makeThread(installerGUI.loadNews)
+		t_loadDonations = common.makeThread(installerGUI.loadDonationStatus)
+		t_loadNews.start()
+		t_loadDonations.start()
+
 		try:
-			common.Globals.scanForExecutables()
-			common.Globals.scanCertLocation()
-			check07thModServerConnection()
-			modList = getModList(common.Globals.DEVELOPER_MODE)
-			try:
-				installerGUI.loadDonationStatus()
-				installerGUI.loadNews()
-			except Exception as e:
-				print(e)
-			common.Globals.loadCachedDownloadSizes(modList)
-			subModconfigList = getSubModConfigList(modList)
-			installerGUI.setSubModconfigs(subModconfigList)
+			t_loadNews.join(timeout=6)
 		except Exception as e:
 			print(e)
+
+		try:
+			t_loadDonations.join(timeout=6)
+		except Exception as e:
+			print(e)
+
+	def doInstallerInit():
+		try:
+			# Executable scanning must happen first, as other init operations might require Aria or CURL to download
+			common.Globals.scanForExecutables()
+			common.Globals.scanCertLocation()
+
+			# Run remaining init tasks concurrently
+			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)
+			common.startAndJoinThreads(
+				[t_getSubModConfig, common.makeThread(check07thModServerConnection), common.makeThread(thread_unimportantTasks)]
+			)
+
+			# Indicate init is complete. This causes the browser to advance from loading_screen.html to index.html
+			installerGUI.setSubModconfigs(t_getSubModConfig.result)
+		except Exception as e:
+			print(e)
+			# Indicate init failed. This causes the browser to show an error message.
 			installerGUI.setInitError(str(e))
 
 	# The installer initialization (scan for executables, check network, retrieve mod list) is launched
