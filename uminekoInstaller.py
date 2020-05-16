@@ -205,7 +205,7 @@ pause
 
 	# For now, don't copy save data
 	if conf.installSteamGrid:
-		steamGridExtractor.extractSteamGrid()
+		steamGridExtractor.extractSteamGrid(downloadTempDir)
 	fileVersionManager.saveVersionInstallFinished()
 
 	if not parser.keepDownloads:

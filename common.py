@@ -761,12 +761,13 @@ class DownloaderAndExtractor:
 			except Exception as e:
 				print("ExtractableItem: Failed to delete {}: {}".format(oldDownloadPath, e))
 
-	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45):
-		# type: (List[installConfiguration.ModFile], str, str, int, int) -> None
+	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45, supressDownloadStatus=False):
+		# type: (List[installConfiguration.ModFile], str, str, int, int, bool) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.defaultExtractionDir = extractionDir
 		self.downloadAndExtractionListsBuilt = False
+		self.suppressDownloadStatus = supressDownloadStatus
 
 		# These variables indicate how much download and extract should count towards the total reported progress
 		self.downloadProgressAmount = downloadProgressAmount
@@ -785,8 +786,8 @@ class DownloaderAndExtractor:
 		If there are existing values in the self.downloadList or self.extractList, they are retained
 		:return:
 		"""
-
-		commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
+		if not self.suppressDownloadStatus:
+			commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
 			print("Querying URL: [{}]".format(file.url))
 			self.addItemManually(file.url, self.defaultExtractionDir)
@@ -811,8 +812,9 @@ class DownloaderAndExtractor:
 			attempt = 0
 			for attempt in range(DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS):
 				overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
-				commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}] (Attempt: {}/{})"
-				                                              .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS))
+				if not self.suppressDownloadStatus:
+					commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}] (Attempt: {}/{})"
+					                                          .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS))
 				if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 					raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
 

@@ -4,7 +4,7 @@ import common
 import glob
 import shutil
 import os
-
+import commandLineParser
 
 def getUserDataFolders():
     if not common.Globals.IS_WINDOWS:
@@ -24,12 +24,24 @@ def getUserDataFolders():
         return None
 
 
-def extractSteamGrid():
+def extractSteamGrid(downloadDir):
     try:
         userDataFolders = getUserDataFolders()
-        print("Extracting Steam Grid Icons to {}".format(userDataFolders))
+
+        commandLineParser.printSeventhModStatusUpdate(98, "Downloading and Extracting Steam Grid")
+        print("Downloading and Extracting Steam Grid Icons to {}".format(userDataFolders))
+
+        downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=[],
+                                                               downloadTempDir=downloadDir,
+                                                               extractionDir=downloadDir,
+                                                               supressDownloadStatus=True)
+        downloaderAndExtractor.addItemManually(url="https://07th-mod.com/installer/steamgrid/higumi-steamgrid.zip",
+                                               extractionDir=downloadDir)
+        downloaderAndExtractor.download()
+
+        # Extract to each steam user's data folder (steam has one folder per user)
         if userDataFolders:
             for i in userDataFolders:
-                shutil.unpack_archive("higumi-steamgrid.zip", i)
+                shutil.unpack_archive(os.path.join(downloadDir, "higumi-steamgrid.zip"), i)
     except:
         pass
