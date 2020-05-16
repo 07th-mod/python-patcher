@@ -27,6 +27,7 @@ def getUserDataFolders():
 def extractSteamGrid():
     try:
         userDataFolders = getUserDataFolders()
+        print("Extracting Steam Grid Icons to {}".format(userDataFolders))
         if userDataFolders:
             for i in userDataFolders:
                 shutil.unpack_archive("higumi-steamgrid.zip", i)

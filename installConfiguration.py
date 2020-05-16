@@ -20,6 +20,7 @@ class FullInstallConfiguration:
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 		self.unityVersion = None
+		self.installSteamGrid = False
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir=""):

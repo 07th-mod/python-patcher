@@ -95,7 +95,12 @@ function startInstall(subModToInstall, installPath, deleteVersionInformation) {
   }
 
   doPost('startInstall',
-    { subMod: subModToInstall, installPath, deleteVersionInformation: deleteVersionInformation === true },
+    {
+      subMod: subModToInstall,
+      installPath,
+      deleteVersionInformation: deleteVersionInformation === true,
+      installSteamGrid: app.installSteamGrid,
+    },
     (responseData) => {
       console.log(responseData);
       if (responseData.installStarted) {
@@ -154,6 +159,8 @@ window.onload = function onWindowLoaded() {
       fullUpdateRequired: true,
       // URL of the mod changelog for this game (github releases page). If no URL available, is null.
       changelogURL: null,
+      // User set option passed to installer which controls whether steam icon and header art will be updated.
+      installSteamGrid: true,
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -196,6 +203,7 @@ window.onload = function onWindowLoaded() {
           installPath: app.selectedInstallPath,
           validateOnly: true,
           deleteVersionInformation: deleteVersionInformation === true,
+          installSteamGrid: app.installSteamGrid,
         };
 
         doPost('startInstall', args,
