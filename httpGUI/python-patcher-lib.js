@@ -157,9 +157,11 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       doInstall(deleteVersionInformation) {
-        console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
-        console.log(app.selectedSubMod);
-        startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
+        if (confirm(`Are you sure you want to install the mod?\n${app.getInstallWarningText()}`)) {
+          console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
+          console.log(app.selectedSubMod);
+          startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
+        }
       },
       onChoosePathButtonClicked(pathToInstall) {
         if (pathToInstall === undefined) {
@@ -226,7 +228,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       askPerformFullInstall() {
-        if (confirm('Are you sure you want to perform a full re-install?')) {
+        if (confirm(`Are you sure you want to perform a full re-install?\n${app.getInstallWarningText()}`)) {
           app.doInstall(true);
         }
       },
@@ -239,6 +241,9 @@ window.onload = function onWindowLoaded() {
           default:
             return 'alert-warning';
         }
+      },
+      getInstallWarningText() {
+        return `This will PERMANENTLY modify files in the game folder:\n\n${app.selectedInstallPath}\n\nPlease take a backup of this folder if you have custom scripts, sprites, voices etc. or wish to revert to unmodded later.`;
       },
     },
     computed: {

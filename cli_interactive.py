@@ -155,6 +155,10 @@ if __name__ == "__main__":
 
 	# Summarize install choices (print submod and path)
 	print("\n--------- INSTALL CONFIRMATION ---------")
+	print("This will PERMANENTLY modify files in the game folder:")
+	print(fullInstallConfig.installPath)
+	print("Please take a backup of this folder if you have custom scripts, sprites, voices etc. or wish to revert to unmodded later.")
+	print("------------------------------------------")
 	print("You have chosen to install [{}], variant [{}]".format(subModToInstall.modName, subModToInstall.subModName))
 	print("The mod will install to [{}]".format(fullInstallConfig.installPath))
 	lastGroup = None
