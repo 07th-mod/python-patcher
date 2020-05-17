@@ -213,19 +213,20 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromFolder(gamePath)
 		subModConfigsInThisGamePath = set()
+
+		possibleSteamPaths = [
+			os.path.join(gamePath, "steam_api.dll"),
+			os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
+			os.path.join(gamePath, "libsteam_api.so")
+		]
+
+		isSteam = False
+		for possibleSteamPath in possibleSteamPaths:
+			if os.path.exists(possibleSteamPath):
+				isSteam = True
+
 		for possibleIdentifier in possibleIdentifiers:
 			try:
-				possibleSteamPaths = [
-					os.path.join(gamePath, "steam_api.dll"),
-					os.path.join(gamePath, "Contents/Plugins/CSteamworks.bundle"),
-					os.path.join(gamePath, "libsteam_api.so")
-				]
-
-				isSteam = False
-				for possibleSteamPath in possibleSteamPaths:
-					if os.path.exists(possibleSteamPath):
-						isSteam = True
-
 				# Add each submod which is compatible with the found identifier, unless it has already been detected at this path.
 				for subModConfig in subModConfigDictionary[possibleIdentifier]:
 					if subModConfig not in subModConfigsInThisGamePath:
