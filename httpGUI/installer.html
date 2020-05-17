@@ -57,23 +57,26 @@
 					</div>
 			</section>
 			<transition name="fade">
-			<div class="container text-center mt40 install-finished-div" v-show="installFinished">
+			<div class="container mt40 install-finished-div" v-show="installFinished">
 			<hr>
 			<!-- Displayed when the install finishes successfully -->
 			<section class="section-small-padding" v-show="!installFailed">
 				<h1 style="color: green;">The install was successful!</h1>
 				<h4>IMPORTANT INFO BEFORE YOU PLAY</h4>
 				<div v-if="selectedMod === null ? false : selectedMod.includes('Umineko')">
-					<h4>We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a><br>for known issues with our mod.</h4>
+					<h4>⚠️We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Umineko/Umineko-Part-0-TroubleShooting-and-FAQ/">Umineko FAQ</a><br>for known issues with our mod.</h4>
 					<p>For Umineko, please note that Steam save synchronization is disabled.</p>
 					<p>This is to <b>prevent the game breaking if steam ever updates the game.</b></p>
 					<p>Please run "EnableSteamSync.bat" file in the game folder if you really want to enable it</p>
 				</div>
 				<div v-else>
-					<h4>We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a><br>for known issues with our mod.</h4>
-					<p><strong>Warning</strong>: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
+					<h4>⚠️We <b>highly</b> recommend you read the <a href="https://07th-mod.com/wiki/Higurashi/FAQ/">Higurashi FAQ</a><br>for known issues with our mod.</h4>
+					<p>⚠️<strong>Warning</strong>: The first time you start the game, the game will 'freeze' on a <b>white screen</b> for up to 2 minutes while scripts are compiling.</p>
 					<p>This is normal, however if the game freezes on a <b>black screen</b> it's likely something went wrong - please contact us on Discord if this happens.</p>
 				</div>
+				<br>
+				If you still have problems, queries, please follow the <a href="https://07th-mod.com/wiki/Installer/support/">Support Checklist</a>.
+				We also have a discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
 			</section>
 			<!-- Displayed when the install fails-->
 			<section class="section-small-padding" v-show="installFailed">
@@ -90,11 +93,12 @@
 			<!-- Displayed always-->
 			<hr>
 			<div class="mb40">
-				<h4>Install Information and Links</h4>
+				<h4>⚠️ Game/Mod Uninstall Warning</h4>
 				<p>
-					The mod was installed to: <strong>{{ selectedInstallPath }}</strong><br>
-					The install log was saved to: <strong>{{ logFilePath }}</strong><br><br>
-					If you still have problems, queries, or just want to discuss the game, please join our discord server: <a href="https://discord.gg/pf5VhF9">https://discord.gg/pf5VhF9</a>
+					<strong>Steam (and possibly other launchers) will not properly uninstall the game/mod.</strong><br>
+					To properly uninstall the game, manually delete the game folder: <strong>{{ selectedInstallPath }}</strong><br>
+					After the folder is deleted, you can run the Steam uninstaller to remove the game from your game library.<br>
+					Save files should be kept even after an uninstall, but check section 4 of <a href="https://07th-mod.com/wiki/Installer/support/">the installer support page</a> if you want to find your saves.
 				</p>
 			</div>
 			<hr>
@@ -105,6 +109,14 @@
 				<p><strong>07th-mod_installer\install_data\[GAME NAME] Downloads</strong> folder</p>
 				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
 				<p>You can also back-up the downloads if you wish to install again in the future.</p>
+			</div>
+			<hr>
+			<div class="mb40">
+				<h4>Install Information</h4>
+				<p>
+					The mod was installed to: <strong>{{ selectedInstallPath }}</strong><br>
+					The install log was saved to: <strong>{{ logFilePath }}</strong>
+				</p>
 			</div>
 			<hr>
 			</div>
