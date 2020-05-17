@@ -162,9 +162,24 @@ def getPossibleIdentifiersFromFolder(folderPath):
 
 	return os.listdir(folderPath)
 
+def gamePathIsPartiallyUninstalled(gamePath):
+	#type: (str) -> bool
+	"""Returns true if game path is partially uninstalled (was uninstalled through Steam)"""
+	if glob.glob(os.path.join(gamePath, 'HigurashiEp0?_Data')) and not glob.glob(
+		os.path.join(gamePath, 'HigurashiEp0?.exe')):
+		print("Warning: Detected partial Higurashi install at {}. You may want to delete this manually.".format(gamePath))
+		return True
+
+	umineko_exe_exists = os.path.exists(os.path.join(gamePath, 'Umineko1to4.exe')) or \
+	                     os.path.exists(os.path.join(gamePath, 'Umineko5to8.exe'))
+	if os.path.exists(os.path.join(gamePath, '0.u')) and not umineko_exe_exists:
+		print("Warning: Detected partial Umineko install at {}. You may want to delete this manually".format(gamePath))
+		return True
+
+	return False
 
 def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPaths=True):
-	# type: (List[installConfiguration.SubModConfig], [str], bool) -> [installConfiguration.FullInstallConfiguration]
+	# type: (List[installConfiguration.SubModConfig], [str], bool) -> [installConfiguration.FullInstallConfiguration, List[str]]
 	"""
 	This function has two purposes:
 		- When given a specific game path ('possiblePaths' argument), it checks if any of the given SubModConfig
@@ -177,11 +192,14 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 
 	:param subModConfigList: A **list** of SubModConfig which are to be searched for on disk
 	:param possiblePaths: (Optional) Specify folders to check if the given SubModConfig can be installed into that path.
-	:return:    A list of FullInstallConfig, each representing a valid install path that the
+	:return:    1. A list of FullInstallConfig, each representing a valid install path that the
 				given SubModConfig(s) couldbe installed into.
+				2. A list of games which were "partially uninstalled" by Steam - steam deletes game files, but not the mod
+				files. The user should be notified to delete these files manually.
 	"""
 
 	returnedFullConfigs = []
+	returnedPartiallyUninstalledPaths = []
 	pathsToBeScanned = possiblePaths
 
 	if not pathsToBeScanned:
@@ -225,6 +243,9 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 			if os.path.exists(possibleSteamPath):
 				isSteam = True
 
+		if gamePathIsPartiallyUninstalled(gamePath):
+			returnedPartiallyUninstalledPaths.append(gamePath)
+
 		for possibleIdentifier in possibleIdentifiers:
 			try:
 				# Add each submod which is compatible with the found identifier, unless it has already been detected at this path.
@@ -237,7 +258,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 			except KeyError:
 				pass
 
-	return returnedFullConfigs
+	return returnedFullConfigs, returnedPartiallyUninstalledPaths
 
 def scanUserSelectedPath(subModConfigList, gameExecutablePath):
 	# type: (List[SubModConfig], [str]) -> ([FullInstallConfiguration], str)
@@ -257,7 +278,7 @@ def scanUserSelectedPath(subModConfigList, gameExecutablePath):
 		# Search upwards for the game path, in case user has selected a deep subfolder of the game path
 		alreadyScanned = set()
 		for scanAttempt in range(10):
-			fullInstallConfigs = scanForFullInstallConfigs(subModConfigList=subModConfigList,
+			fullInstallConfigs, _ = scanForFullInstallConfigs(subModConfigList=subModConfigList,
 			                                               possiblePaths=[gameExecutablePath],
 			                                               scanExtraPaths= scanAttempt==0)
 			if fullInstallConfigs:

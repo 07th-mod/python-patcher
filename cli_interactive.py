@@ -70,7 +70,7 @@ def tryGetFullInstallConfig(subMod, installPath):
 	# type: (SubModConfig, str) -> List[FullInstallConfiguration]
 	fullInstallConfigs = None
 	if os.path.isdir(installPath):
-		fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+		fullInstallConfigs, _ = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 	# If normal scan fails, then scan the path using the more in-depth 'scanUserSelectedPath(...)' function
 	if not fullInstallConfigs:
@@ -112,7 +112,18 @@ def askUserOptions(subModToInstall):
 def askUserInstallPathGetFullInstallConfig():
 	# type: () -> FullInstallConfiguration
 	manualPathMarker = "Choose Path Manually"
-	fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subModToInstall])
+	fullInstallConfigs, partiallyUninstalledPaths = gameScanner.scanForFullInstallConfigs([subModToInstall])
+
+	if partiallyUninstalledPaths:
+		print("-----------------------------------------------------------------")
+		print("WARNING: The following games were uninstalled via Steam, but the mod files still remain on disk:")
+		for path in partiallyUninstalledPaths:
+			print(" - {}".format(path))
+		print("Please manually delete these folders to free disk space and avoid problems with the installer.")
+		print("-----------------------------------------------------------------")
+
+	userAskYesNo("Have you read the above message?")
+
 	_, installConfigIndex = userPickFromList([x.installPath for x in fullInstallConfigs] + [manualPathMarker],
 	                                         "Please choose the game path to install to")
 

@@ -164,6 +164,14 @@
 								<div class="tabbed-content button-tabs vertical">
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="col-md-8">
+										<section class="section-small-padding" v-show="partiallyUninstalledPaths.length > 0">
+											<h3>⚠️Warning: The following games were uninstalled via Steam, but the mod files still remain on disk</h3>
+											<strong>Please manually delete these folders to free disk space and avoid problems with the installer. Click to open each path:</strong>
+											<ul class="bullets">
+											<li v-for="path in partiallyUninstalledPaths"><a href="#" v-on:click='showInFileBrowser(path)'>{{ path }}</a></li>
+											</ul>
+										</section>
+										<br><br>
 										<div v-if="metaInfo !== null">
 										<div class="alert alert-danger" role="alert"
 										v-if="	selectedSubMod !== null &&

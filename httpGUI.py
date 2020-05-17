@@ -476,7 +476,7 @@ class InstallerGUI:
 
 		fullInstallConfigs = None
 		if os.path.isdir(installPath):
-			fullInstallConfigs = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
+			fullInstallConfigs, _ = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
 		# If normal scan fails, then scan the path using the more in-depth 'scanUserSelectedPath(...)' function
 		if not fullInstallConfigs:
@@ -602,7 +602,7 @@ class InstallerGUI:
 			def getGamePathsHandler(requestData):
 				id = requestData['id']
 				selectedSubMods = [self.idToSubMod[id]] if id is not None else self.allSubModConfigs
-				fullInstallConfigs = gameScanner.scanForFullInstallConfigs(selectedSubMods)
+				fullInstallConfigs, partiallyUninstalledPaths = gameScanner.scanForFullInstallConfigs(selectedSubMods)
 				fullInstallConfigHandles = []
 				for fullConfig in fullInstallConfigs:
 					fullInstallConfigHandles.append(
@@ -614,7 +614,11 @@ class InstallerGUI:
 							'isSteam' : fullConfig.isSteam,
 						}
 					)
-				return fullInstallConfigHandles
+
+				return {
+					'fullInstallConfigHandles': fullInstallConfigHandles,
+					'partiallyUninstalledPaths': partiallyUninstalledPaths, # Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
+				}
 
 			#TODO: for security reasons, can't get full path from browser. Either need to copy paste, or open a
 			# tk window . Adding a tk window would then require tk dependencies (no problem except requring tk on linux)
@@ -775,6 +779,10 @@ class InstallerGUI:
 				         'initErrorMessage': initError,
 				         'consoleLines': logger.getGlobalLogger().threadSafeReadAll()}
 
+			def showInFileBrowser(requestData):
+				if os.path.exists(requestData):
+					common.trySystemOpen(requestData, normalizePath=True)
+
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
@@ -784,6 +792,7 @@ class InstallerGUI:
 				'troubleshoot' : troubleshoot,
 				'showFileChooser' : showFileChooser,
 				'getInitStatus': getInitStatus,
+				'showInFileBrowser': showInFileBrowser,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

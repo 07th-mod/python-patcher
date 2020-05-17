@@ -167,6 +167,8 @@ window.onload = function onWindowLoaded() {
       changelogURL: null,
       // User set option passed to installer which controls whether steam icon and header art will be updated.
       installSteamGrid: true,
+      // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
+      partiallyUninstalledPaths: [],
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -259,6 +261,9 @@ window.onload = function onWindowLoaded() {
       getInstallWarningText() {
         return `This will PERMANENTLY modify files in the game folder:\n\n${app.selectedInstallPath}\n\nPlease take a backup of this folder if you have custom scripts, sprites, voices etc. or wish to revert to unmodded later.`;
       },
+      showInFileBrowser(path) {
+        doPost('showInFileBrowser', path, (responseData) => {});
+      },
     },
     computed: {
       modHandles() {
@@ -290,7 +295,8 @@ window.onload = function onWindowLoaded() {
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (newSelectedSubMod !== null) {
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
-            console.log(responseData); this.fullInstallConfigs = responseData;
+            this.partiallyUninstalledPaths = responseData.partiallyUninstalledPaths;
+            this.fullInstallConfigs = responseData.fullInstallConfigHandles;
             // If there is only one detected install path, select it
             if (this.fullInstallConfigs.length === 1) {
               this.selectedInstallPath = this.fullInstallConfigs[0].path;

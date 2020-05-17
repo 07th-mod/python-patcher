@@ -38,9 +38,9 @@ window.onload = function onWindowLoaded() {
     console.log(responseData);
   });
 
-  doPost('gamePaths', { id: null }, (allDetectedSubMods) => {
+  doPost('gamePaths', { id: null }, (response) => {
     const pathToSubModMap = {};
-    allDetectedSubMods.forEach((element) => {
+    response.fullInstallConfigHandles.forEach((element) => {
       pathToSubModMap[element.path] = element;
     });
     // filter down such that there is only one submod per path
