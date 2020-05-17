@@ -15,7 +15,6 @@ def main(*, game_name, game_path, mod_type, mod_options=[], is_steam=True):
     sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
     logger.setGlobalLogger(sys.stdout)
     sys.stderr = logger.StdErrRedirector(sys.stdout)
-    gui_main.check07thModServerConnection()
     common.Globals.scanForExecutables()
     modList = gui_main.getModList()
     subModList = gui_main.getSubModConfigList(modList)
