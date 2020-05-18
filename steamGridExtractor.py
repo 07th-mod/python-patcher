@@ -10,7 +10,10 @@ def getUserDataFolders():
     if not common.Globals.IS_WINDOWS:
         return None
 
-    import winreg
+    try:
+        import winreg
+    except ImportError:
+        import _winreg as winreg
 
     try:
         defaultSteamPath = winreg.QueryValueEx(
@@ -43,5 +46,5 @@ def extractSteamGrid(downloadDir):
         if userDataFolders:
             for i in userDataFolders:
                 shutil.unpack_archive(os.path.join(downloadDir, "higumi-steamgrid.zip"), i)
-    except:
-        pass
+    except Exception as e:
+        print("Steamgrid Installation Failed: {}".format(e))
