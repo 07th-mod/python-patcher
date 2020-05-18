@@ -713,13 +713,19 @@ class InstallerGUI:
 					higurashi_log_file_name = 'output_log.txt'
 					gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
 					gameLogExists = os.path.exists(gameLogPath)
-					with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w') as myzip:
-						for filename in os.listdir(common.Globals.LOG_FOLDER):
-							path = os.path.join(common.Globals.LOG_FOLDER, filename)
-							myzip.write(path, os.path.basename(path))
+					# It's possible for zlib not to be available causing ZIP_DEFLATED to fail, so try both methods
+					for compressionType in [zipfile.ZIP_DEFLATED, zipfile.ZIP_STORED]:
+						try:
+							with zipfile.ZipFile(os.path.join(workingDirectory, common.Globals.LOGS_ZIP_FILE_PATH), 'w', compression=compressionType) as myzip:
+								for filename in os.listdir(common.Globals.LOG_FOLDER):
+									path = os.path.join(common.Globals.LOG_FOLDER, filename)
+									myzip.write(path, os.path.basename(path))
 
-						if gameLogExists:
-							myzip.write(gameLogPath, higurashi_log_file_name)
+								if gameLogExists:
+									myzip.write(gameLogPath, higurashi_log_file_name)
+							break
+						except Exception as e:
+							print("Failed to compress with compression type {}: {}".format(compressionType, e))
 
 					print('Game Log [{}] {}'.format(gameLogPath, "was found" if gameLogExists else "WAS NOT FOUND"))
 
