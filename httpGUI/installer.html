@@ -112,10 +112,10 @@
 			</div>
 			<hr>
 			<div class="mb40">
-				<h4>Install Information</h4>
+				<h4>Install Information and Log Files</h4>
 				<p>
 					The mod was installed to: <strong>{{ selectedInstallPath }}</strong><br>
-					The install log was saved to: <strong>{{ logFilePath }}</strong>
+					Check your browser downloads for the install logs (<code>07th-mod-logs.zip</code>), or manually open:<br><strong>{{ logFilePath }}</strong>
 				</p>
 			</div>
 			<hr>
@@ -150,7 +150,7 @@
 							<label for="autoscrollCheckbox">Enable Auto Scroll</label>
 							<div class="tabbed-content button-tabs vertical">
 								<div class="tab-title mb40" style='width:200px;float:right;' v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">
-									<span>Download Log</span>
+									<span>Download Logs</span>
 								</div>
 							</div>
 						</div>

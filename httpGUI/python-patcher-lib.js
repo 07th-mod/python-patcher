@@ -38,6 +38,7 @@ function statusUpdate() {
             app.subTaskDescription = 'Install Finished!';
             app.subTaskPercentage = 100;
             document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
+            app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
           }
         }
         if (status.overallTaskDescription !== undefined) {
@@ -69,6 +70,7 @@ function statusUpdate() {
             app.installFinished = true;
             window.clearInterval(statusUpdateTimerHandle);
             setTimeout(() => { alert(status.msg); }, 100);
+            app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
           }
         }
       });
