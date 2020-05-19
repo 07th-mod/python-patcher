@@ -167,7 +167,7 @@ window.onload = function onWindowLoaded() {
       // URL of the mod changelog for this game (github releases page). If no URL available, is null.
       changelogURL: null,
       // User set option passed to installer which controls whether steam icon and header art will be updated.
-      installSteamGrid: true,
+      installSteamGrid: false,
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
     },
@@ -264,6 +264,9 @@ window.onload = function onWindowLoaded() {
       },
       showInFileBrowser(path) {
         doPost('showInFileBrowser', path, (responseData) => {});
+      },
+      canInstallSteamGrid() {
+        return app.metaInfo.operatingSystem === 'windows' && !app.selectedSubMod.descriptionID.toLowerCase().includes('voiceonly');
       },
     },
     computed: {

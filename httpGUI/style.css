@@ -145,6 +145,10 @@ body {
     margin-bottom: 20px;
 }
 
+.umineko-image-table-horizontal td:first-child {
+    width: 15%;
+}
+
 .umineko-image-table-content th {
     background-color: #47b475;
     color: #fff;
