@@ -138,7 +138,6 @@ window.onload = function onWindowLoaded() {
       validationInProgress: true,
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
-      os: null, // the host operating system detected by the python script - either 'windows', 'linux', or 'mac'
       showPathSelectionButtons: true, // Set to true to show UI for path selection
       // metaInfo: meta info about the installer environment, etc. Contains:
       metaInfo: {
@@ -332,7 +331,7 @@ window.onload = function onWindowLoaded() {
     // the app.selectedSubMod to the first value in the possibleSubMods list
     app.selectedMod = responseData.selectedMod;
     app.logFilePath = responseData.logFilePath;
-    app.os = responseData.os;
+
 
     // For Higurashi, select the 'Full' patch by default
     app.possibleSubMods.forEach((subMod) => {
