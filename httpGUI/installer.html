@@ -385,12 +385,11 @@
 															<!-- Select path manually button -->
 															<li>
 																<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onChoosePathButtonClicked()>
-																	Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[os] }} Manually (Open File Dialog)
+																	Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[metaInfo.operatingSystem] }} Manually (Open File Dialog)
 																</div>
-																<div v-if="os === 'mac'">
-																	MAC USERS: You must select a .app file. For example,
-																<pre>/Users/[USERNAME]/library/application support/steam/
-	steamapps/common/Higurashi When They Cry/HigurashiEp01.app</pre>
+																<div v-if="metaInfo.operatingSystem === 'mac'">
+																	MAC USERS: You must select a .app file. For example:<br>
+																<b>/Users/[USERNAME]/library/application support/steam/steamapps/common/Higurashi When They Cry/HigurashiEp01.app</b>
 																</div>
 																<div v-else>
 																	You can select one of the following: {{ selectedSubMod.identifiers }}<br><br>
