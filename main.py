@@ -74,7 +74,8 @@ if __name__ == "__main__":
 		print("Please change your hostname to only contain ASCII characters, then restart the installer.")
 		print("You can press ENTER to try to run the installer despite this problem.")
 		print("-------------------------------------------------------------")
-		common.exitWithError()
+		raise SystemExit(-1)
+
 
 	print("\n\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 	print(" - Do not close this window until you are finished with the installer! Closing this window will\n"
@@ -129,5 +130,3 @@ if __name__ == "__main__":
 	# concurrently with the Web GUI. The Web GUI shows a loading screen until init is complete.
 	threading.Thread(target=doInstallerInit).start()
 	installerGUI.server_test()
-
-	exit()

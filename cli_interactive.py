@@ -193,7 +193,7 @@ if __name__ == "__main__":
 	# Do one final confirmation before starting the install
 	if not userAskYesNo("Start the install with these settings?"):
 		input("Install Stopped! Press ENTER to quit")
-		exit(-1)
+		raise SystemExit(-1)
 
 	# Begin the install
 	installFunction = {
