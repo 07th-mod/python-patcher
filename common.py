@@ -236,11 +236,6 @@ class Globals:
 
 		print("CA Cert - using default certificate")
 
-def exitWithError():
-	""" Pause-before-exit on Windows used to be handled here, but is now handled in the installer_loader """
-	print("ERROR: The installer cannot continue. Press any key to exit...")
-	sys.exit(1)
-
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
 def makeDirsExistOK(directoryToMake):
 	try:

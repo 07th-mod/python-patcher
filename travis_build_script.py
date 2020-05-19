@@ -27,7 +27,7 @@ def call(args, **kwargs):
 	print("running: {}".format(args))
 	retcode = subprocess.call(args, shell=IS_WINDOWS, **kwargs) # use shell on windows
 	if retcode != 0:
-		exit(retcode)
+		raise SystemExit(retcode)
 
 
 def try_remove_tree(path):
