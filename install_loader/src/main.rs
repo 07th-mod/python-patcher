@@ -8,6 +8,7 @@ mod process_runner;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
 mod windows_utilities;
+mod version;
 
 // Please define these as paths relative to the current directory
 struct InstallerConfig {

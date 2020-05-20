@@ -5,6 +5,7 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::{fs, thread};
 use tar::Archive;
 use xz2::read::XzDecoder;
+use crate::version;
 
 enum ExtractionStatusInternal {
 	NotStarted,
@@ -78,10 +79,10 @@ fn extraction_required<P: AsRef<Path>>(saved_git_tag_path: P) -> bool {
 	println!(
 		"[07th-Mod Installer Loader] Saved: {} -> New: {}",
 		saved_git_tag,
-		env!("TRAVIS_TAG")
+		version::travis_tag()
 	);
 
-	return env!("TRAVIS_TAG").trim() != saved_git_tag.trim();
+	return version::travis_tag().trim() != saved_git_tag.trim();
 }
 
 fn extract_archive_new_thread(
@@ -147,7 +148,7 @@ fn extract_archive(
 }
 
 fn write_extraction_lock<P: AsRef<Path>>(saved_git_tag_path: P) {
-	fs::write(saved_git_tag_path, env!("TRAVIS_TAG"))
+	fs::write(saved_git_tag_path, version::travis_tag())
 		.unwrap_or_else(|e| println!("Warning - Failed to write loader extraction lock: {:?}", e))
 }
 
