@@ -8,6 +8,7 @@ use crate::archive_extractor::ExtractionStatus;
 use crate::process_runner::ProcessRunner;
 use crate::windows_utilities;
 use crate::{archive_extractor, InstallerConfig};
+use crate::version;
 use std::error::Error;
 
 /// This function blocks until the user to presses enter in the console
@@ -51,7 +52,7 @@ Please help us by reporting the error and submitting the crash log
 	);
 
 	// Print installer version
-	expl.push_str(&format!("Installer Version: [{}]\n", env!("TRAVIS_TAG")));
+	expl.push_str(&format!("Installer Version: [{}]\n", version::travis_tag()));
 
 	// Retrieve information about the panic and append to crash message
 	let location_str = match info.location() {

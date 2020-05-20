@@ -6,6 +6,7 @@ use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
 use crate::process_runner::ProcessRunner;
 use crate::support::ApplicationGUI;
 use crate::windows_utilities;
+use crate::version;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -457,7 +458,7 @@ pub fn ui_loop() {
 			[window_size[0] as f32, window_size[1] as f32],
 			InstallerConfig::new(),
 		),
-		concat!("07th-Mod Installer Launcher [", env!("TRAVIS_TAG"), "]"),
+		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
 		window_size,
 	);
 
