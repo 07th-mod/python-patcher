@@ -134,6 +134,8 @@ class Globals:
 	CA_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
 
+	NATIVE_LAUNCHER_PATH = None
+
 	@staticmethod
 	def scanForCURL():
 		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl"], ["-I", "https://07th-mod.com/"])

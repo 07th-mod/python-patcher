@@ -29,7 +29,7 @@ impl Error for WinHRESULTFailed {
 }
 
 #[derive(Debug, Clone)]
-struct UserCancelled;
+pub struct UserCancelled;
 
 impl Display for UserCancelled {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
