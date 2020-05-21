@@ -8,6 +8,9 @@ import subprocess
 import sys
 import datetime
 import platform
+from io import BytesIO
+from zipfile import ZipFile
+from urllib.request import urlopen
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
 
@@ -22,6 +25,8 @@ else:
 print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
 
 IS_WINDOWS = sys.platform == "win32"
+
+EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-embed-win32.zip"
 
 def call(args, **kwargs):
 	print("running: {}".format(args))
@@ -140,9 +145,11 @@ for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 	else:
 		call(['cp', '-r', staging_folder + '/.', osInstallData])
 
-# FOR WINDOWS ONLY: Extract the python archive, then delete the archive
-call(["7z", "x", f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z', f'-o./{bootstrap_copy_folder}/higu_win_installer_32/install_data/'])
-try_remove_tree(f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python_archive.7z')
+# FOR WINDOWS BUILDS ONLY: Download and Extract the embedded python archive
+if not BUILD_LINUX_MAC:
+	ZipFile(
+		BytesIO(urlopen(EMBEDDED_PYTHON_ZIP_URL).read())
+	).extractall(path=f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/python')
 
 # RELATIVE PATHS MUST CONTAIN ./
 if BUILD_LINUX_MAC:

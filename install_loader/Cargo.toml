@@ -10,6 +10,7 @@ tar = "0.4"
 progress-streams = "*"
 regex = "1"
 backtrace = "*"
+clap = "2.33.1"
 
 # imgui dependencies
 clipboard = "0.5"
@@ -20,6 +21,5 @@ imgui-glium-renderer = { version = "0.3.0-pre", git = "https://github.com/Gekkio
 imgui-winit-support = { version = "0.3.0-pre", git = "https://github.com/Gekkio/imgui-rs" }
 
 # Windows specific dependencies
-winapi = "*"
-user32-sys = "*"
-kernel32-sys = "*"
+winapi = { version = "*", features = ["shobjidl", "shtypes"] }
+widestring = "*"
