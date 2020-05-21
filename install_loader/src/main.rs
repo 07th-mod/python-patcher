@@ -1,5 +1,7 @@
 #![warn(clippy::all)]
 
+use clap::{App, Arg, ArgMatches};
+use std::error::Error;
 use std::path::{Path, PathBuf};
 
 mod archive_extractor;
@@ -7,8 +9,9 @@ mod panic_handler;
 mod process_runner;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
-mod windows_utilities;
 mod version;
+mod windows_dialog;
+mod windows_utilities;
 
 // Please define these as paths relative to the current directory
 struct InstallerConfig {
@@ -31,7 +34,41 @@ impl InstallerConfig {
 	}
 }
 
-fn main() -> std::io::Result<()> {
+fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
+	// Expect filters to be given as description1, filter1, description2, filter2
+	let filters: Vec<(&str, &str)> = match matches.values_of("filters") {
+		Some(filter_args) if filter_args.len() > 0 => filter_args
+			.collect::<Vec<&str>>()
+			.chunks_exact(2)
+			.map(|chunk| (chunk[0], chunk[1]))
+			.collect(),
+		// If a zero length filter is supplied then the dialog will have no file ext dropdown
+		// Supplying a default filter ensures a file ext dropdown is shown.
+		_ => vec![("All Files", "*.*")],
+	};
+
+	print!("{}", windows_dialog::dialog_open(filters)?);
+
+	Ok(())
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+	let matches = App::new("07th-mod Installer Loader")
+	.version(version::travis_tag())
+	.about("Loader which extracts and starts the Python-based 07th-mod Installer.")
+	.subcommand(App::new("open")
+	    .about("Shows an open dialog and writes the chosen path to stdout. Returns 0 if successful, 1 on failure or if user pressed cancel")
+		.arg(Arg::with_name("filters")
+            .help(r#"Sets the description and filters to use - defaults to all files.
+For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#)
+			.multiple(true))
+	)
+	.get_matches();
+
+	if let Some(matches) = matches.subcommand_matches("open") {
+		return handle_open_command(matches);
+	}
+
 	panic_handler::set_hook(String::from("07th-mod_crash.log"));
 
 	// Hide the console for windows users to make the installer less scary

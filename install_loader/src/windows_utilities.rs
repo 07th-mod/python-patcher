@@ -1,5 +1,3 @@
-extern crate kernel32;
-extern crate user32;
 extern crate winapi;
 
 use regex::Regex;
@@ -15,10 +13,10 @@ use std::ptr;
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633548%28v=vs.85%29.aspx
 // cmd_show should be one of SW_HIDE, SW_SHOW etc. from winapi::um::winuser
 fn set_console_window_display_mode(cmd_show: winapi::ctypes::c_int) {
-	let window = unsafe { kernel32::GetConsoleWindow() };
+	let window = unsafe { winapi::um::wincon::GetConsoleWindow() };
 	if window != ptr::null_mut() {
 		unsafe {
-			user32::ShowWindow(window, cmd_show);
+			winapi::um::winuser::ShowWindow(window, cmd_show);
 		}
 	}
 }
