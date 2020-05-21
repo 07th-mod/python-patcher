@@ -1,20 +1,23 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
-import datetime
 import os
+import sys
+
+# Embedded python doesn't have current directory as path
+if os.getcwd() not in sys.path:
+	print("Startup: Adding {} to path".format(os.getcwd()))
+	sys.path.append(os.getcwd())
+
+import datetime
 import pprint
 import socket
-import sys
 import threading
-import traceback
 
 import common
-import gameScanner
 import httpGUI
 import installConfiguration
 import logger
-import traceback
 
 try: input = raw_input
 except NameError: pass
@@ -43,6 +46,10 @@ def getSubModConfigList(modList):
 	return subModconfigList
 
 if __name__ == "__main__":
+	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
+	if len(sys.argv) > 1:
+		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
+
 	# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
 	# Since we want to properly find things like `./aria2c`, we should move to that path first.
 	dirname = os.path.dirname(sys.argv[0])

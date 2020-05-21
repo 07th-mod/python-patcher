@@ -71,6 +71,30 @@ def _TKAskPath(subMod):
 
 	return installFolder
 
+def askPathWindows(subMod):
+	nativeLauncherPath = common.Globals.NATIVE_LAUNCHER_PATH
+	if nativeLauncherPath is None:
+		print("askPathWindows error: launcher path not set, using guessed path")
+		nativeLauncherPath = '../07th-Mod.Installer.Windows.exe'
+
+	args = [
+		nativeLauncherPath, "open",
+		"Game Executable", ";".join(subMod.identifiers),
+		"Any In Game Folder", "*.*"
+	]
+
+	print("askPathWindows: Executing {}".format(args))
+	# If there is an error or the program returns non-zero exit code,
+	# this will throw an exception, which will be shown to the user
+	# If the user pressed "Cancel", returns the empty string.
+	return subprocess.check_output(args).decode("utf-8")
+
+def askPath(subMod):
+	if common.Globals.IS_WINDOWS:
+		return askPathWindows(subMod)
+	else:
+		return _TKAskPath(subMod)
+
 def _makeJSONResponse(responseType, responseDataJson):
 	# type: (str, object) -> str
 	return json.dumps({
@@ -684,7 +708,7 @@ class InstallerGUI:
 			# The function returns None (Javascript null) if the user failed to select a path by pressing 'cancel'.
 			def showFileChooser(requestDataSubModID):
 				subMod = self.idToSubMod[requestDataSubModID]
-				selectedPath = _TKAskPath(subMod)
+				selectedPath = askPath(subMod)
 				return { 'path': selectedPath if selectedPath else None }
 
 			def unknownRequestHandler(requestData):
@@ -703,7 +727,7 @@ class InstallerGUI:
 				def _getInstallPath():
 					_installPath = requestData.get('installPath', None)
 					if _installPath is None:
-						userSelectedPath = os.path.dirname(_TKAskPath(subMod))
+						userSelectedPath = os.path.dirname(askPath(subMod))
 						fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
 						_installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
 					return _installPath

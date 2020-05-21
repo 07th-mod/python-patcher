@@ -5,8 +5,9 @@ use imgui::*;
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
 use crate::process_runner::ProcessRunner;
 use crate::support::ApplicationGUI;
-use crate::windows_utilities;
 use crate::version;
+use crate::windows_utilities;
+use std::ffi::OsStr;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -359,19 +360,32 @@ impl InstallerGUI {
 
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
 	fn start_install(&mut self, is_graphical: bool) -> Result<(), Box<dyn std::error::Error>> {
-		let script_name = if is_graphical {
+		let script_name = OsStr::new(if is_graphical {
 			"main.py"
 		} else {
 			// Interactive CLI installer needs console visible so user can see and type into it.
 			windows_utilities::show_console_window();
 			"cli_interactive.py"
-		};
+		});
 
-		let python_monitor = ProcessRunner::new(
-			&self.config.python_path,
-			self.config.sub_folder,
-			&["-u", "-E", script_name],
-		)?;
+		let python_monitor = if let Ok(path) = std::env::current_exe() {
+			ProcessRunner::new(
+				&self.config.python_path,
+				self.config.sub_folder,
+				&[
+					OsStr::new("-u"),
+					OsStr::new("-E"),
+					script_name,
+					path.as_os_str(),
+				],
+			)
+		} else {
+			ProcessRunner::new(
+				&self.config.python_path,
+				self.config.sub_folder,
+				&[OsStr::new("-u"), OsStr::new("-E"), script_name],
+			)
+		}?;
 
 		self.state.progression = InstallerProgression::InstallStarted(InstallStartedState::new(
 			python_monitor,
