@@ -166,7 +166,16 @@ if not BUILD_LINUX_MAC:
 	try_remove_tree(tar_path)
 	try_remove_tree(xz_path)
 	call(['7z', 'a', '-aoa', tar_path, f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/*'])
-	call(['7z', 'a', '-aoa', xz_path, tar_path])
+	call([
+			'7z',
+			'a',
+			'-mx=9',     # max compression level
+			'-md=256m',  # 256m dictionary size (memory used for compression is much higher than this)
+			'-mmt=3',    # use 3 threads (using > 3 threads results in increased archive size)
+			'-aoa',
+			xz_path,
+			tar_path
+		])
 
 	# Compile the rust loader
 	# If not using a manifest file, DO NOT put the words "install", "patch", "update", etc. in the filename,
