@@ -1,0 +1,93 @@
+# Useful Links
+# Python with Github Actions: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Test and Deploy
+
+# Run this workflow on every push or pull request
+on:
+  - push
+  - pull_request
+
+# Uncomment to run this workflow only when a tag is pushed
+# Can set custom wildcards instead of '*', like 'v*' for tags starting with v
+# NOTE: Releases are only published on tags, see "Release" step below
+#on:
+#  push:
+#    tags:
+#      - '*'
+
+# Docs on sharing data between jobs (between VMs): https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts#passing-data-between-jobs-in-a-workflow
+jobs:
+  # Windows Build
+  windows_build:
+    name: Windows Build
+    runs-on: windows-latest
+    steps:
+      # Download the repository
+      - uses: actions/checkout@v2
+
+      # Configure Rust for 32-bit builds
+      - name: Configure Rust for 32-bit
+        run: |
+          rustup target add i686-pc-windows-msvc
+          rustup default stable-i686-pc-windows-msvc
+
+      # Run Python Deploy Script
+      - name: Run Deploy Script
+        run: python travis_build_script.py
+
+      # Upload Artifact
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v1
+        with:
+          name: windows-loader-exe
+          path: travis_installer_output/07th-Mod.Installer.Windows.exe
+
+  # Linux/Mac Build
+  linux_mac_build:
+    name: Linux and Mac Build
+    needs: windows_build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      # Download the repository
+      - uses: actions/checkout@v2
+
+      # Setup Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Run JSON Validation script
+      - name: Validate JSON
+        run: bash travis_validate_json.sh
+
+      # Run Python Deploy Script
+      - name: Run Deploy Script
+        run: python travis_build_script.py
+
+      # Download windows .exe artifact
+      - name: Download Windows .exe artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: windows-loader-exe
+          path: travis_installer_output
+
+      # Publish a release
+      # For more info on options see: https://github.com/softprops/action-gh-release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/') # only publish tagged commits
+        with:
+          files: |
+            travis_installer_output/07th-Mod.Installer.mac.zip
+            travis_installer_output/07th-Mod.Installer.linux.tar.gz
+            travis_installer_output/07th-Mod.Installer.Windows.exe
+          body_path: github_actions_changelog_template.txt
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
