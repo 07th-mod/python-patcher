@@ -1,0 +1,18 @@
+If you have issues with this release, please use the [1.1.24 release](https://github.com/07th-mod/python-patcher/releases/tag/v1.1.24).
+
+----
+
+**Please download the installer to your computer, then run it. Don't run the file directly from your browser.**
+
+**Having trouble with installation or the game itself?**
+Follow the [**Support Checklist**](https://07th-mod.com/wiki/support-checklist/) to get your problem solved
+
+----
+
+#### Known Issue: Higurashi on Ubuntu (or Linux users with GNOME Desktop)
+
+GNOME Desktop (the default on Ubuntu) will cause Higurashi Ep.4 and upwards to crash the entire desktop when you start the game. This happens even on the base game (without any mods applied). A workaround for this is to install XFCE desktop. You can follow [this guide](https://linuxconfig.org/how-to-install-xubuntu-desktop-on-ubuntu-18-04-bionic-beaver-linux) to install XFCE desktop (it can be installed alongside GNOME). Please make sure you can launch the base game before applying any mods (for ease of installation, please don't make any saves on the base game).
+
+----
+#### Important Changes
+- put your changes here
