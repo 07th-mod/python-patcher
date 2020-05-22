@@ -8,11 +8,14 @@ import subprocess
 import sys
 import datetime
 import platform
+import tempfile
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
+
+GIT_TAG = os.environ.get("GITHUB_REF")
 
 BUILD_LINUX_MAC = True
 # If user specified which platform to build for, use that platform. Otherwise, attempt to detect platform automatically.
@@ -60,7 +63,7 @@ def tar_gz(input_path, output_filename: str):
 print("\nTravis python build script started\n")
 
 # first, copy the files we want into a staging folder
-staging_folder = 'travis_installer_staging'
+staging_folder = os.path.join(tempfile.gettempdir(), '07th-mod_patcher_staging')
 output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
 
@@ -76,6 +79,7 @@ ignore_paths = [
 	'httpGUI/node_modules',
 	'bootstrap',
 	'.git',
+	'.github',
 	'.idea',
 	'.gitignore',
 	'.travis.yml',
@@ -96,6 +100,7 @@ ignore_paths = [
 	'Umineko Tsubasa Downloads',
 	'Umineko Hane Downloads',
 	'INSTALLER_LOGS',
+	'github_actions_changelog_template.txt',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
@@ -118,22 +123,24 @@ try_remove_tree(bootstrap_copy_folder)
 try_remove_tree(output_folder)
 try_remove_tree(staging_folder)
 
-# Fix for Python 3.8 - For copytree to ignore folders correctly, they must exist before the copy process begins
 # Make sure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
-os.makedirs(staging_folder, exist_ok=True)
-os.makedirs(bootstrap_copy_folder, exist_ok=True)
 
 # copy bootstrap folder to a temp folder
-shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
+shutil.copytree('bootstrap', bootstrap_copy_folder)
 
+# Note: previously the script created output folder in advance and then used dirs_exist_ok=True to
+# sidestep a problem in Python 3.8 where copying from the current folder
+# '.' would not ignore the destination folder even when applied as an ignore folder (the function caches
+# ignore folders *before* creating the output folder), leading to endless recursive copying behavior.
+# We now use a temp folder not in the cwd which avoids this behavior and should work on any Python 3.X version
 # copy all files in the root github directory, except those in ignore_patterns
-shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
+shutil.copytree('.', staging_folder, ignore=ignore_filter)
 
 # Save the build information in the staging folder. Will later be read by installer.
 with open(os.path.join(staging_folder, 'build_info.txt'), 'w', encoding='utf-8') as build_info_file:
 	build_info_file.write(f'Build Date: {datetime.datetime.now()}\n')
-	build_info_file.write(f'Git Tag (Version): {os.environ.get("TRAVIS_TAG")}\n')
+	build_info_file.write(f'Git Tag (Version): {GIT_TAG}\n')
 
 # now, copy the staged files into each os's bootstrap folder's install_data directory
 for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
