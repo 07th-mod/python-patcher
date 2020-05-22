@@ -385,7 +385,8 @@
 															<!-- Select path manually button -->
 															<li>
 																<div class="tab-title" v-show="selectedSubMod!==null" v-on:click=onChoosePathButtonClicked()>
-																	Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[metaInfo.operatingSystem] }} Manually (Open File Dialog)
+																	Select {{ {'mac':'Application (.app file)', 'windows':'Game Executable (.exe file)','linux':'Game Executable', null:'Game Executable'}[metaInfo.operatingSystem] }} Manually (Open File Dialog) <br>
+																	NOTE: Check your task bar for a flashing icon if no window appeared.
 																</div>
 																<div v-if="metaInfo.operatingSystem === 'mac'">
 																	MAC USERS: You must select a .app file. For example:<br>
