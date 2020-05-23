@@ -508,6 +508,14 @@ class InstallerGUI:
 			print(errorMessage)
 
 		if validateOnly:
+			# Check for user selecting the old nscripter version of umineko a game
+			if subMod.family in ['higurashi', 'umineko'] and (
+				os.path.exists(os.path.join(installPath, 'nscript.dat')) or # if the user entered the game folder
+				os.path.exists(os.path.join(os.path.dirname(installPath), 'nscript.dat')) # if the user entered the .exe path
+			):
+				raise Exception("You have selected the OLD NScripter version of Higurashi or Umineko\n"
+				                "You need the NEW Steam/Mangagamer/GOG Version of the game for the mod to work correctly.")
+
 			return (True, fullInstallConfigs[0]) if fullInstallConfigs else (False, '')
 		else:
 			if not fullInstallConfigs:
