@@ -586,7 +586,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Matsuribayashi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/tag/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/download/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5}
 					],
 					"fileOverrides" : []
 				}
