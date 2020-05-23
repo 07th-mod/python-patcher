@@ -36,7 +36,7 @@ class FullInstallConfiguration:
 			with open(assetsbundlePath, "rb") as assetsBundle:
 				unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
 				print("Read unity version " + unityVersion)
-				if int(unityVersion[0]) < 5:
+				if int(unityVersion.split('.')[0]) < 5:
 					raise OldUnityException(unityVersion)
 
 		for fileOverride in self.subModConfig.fileOverrides:
