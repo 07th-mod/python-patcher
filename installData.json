@@ -611,6 +611,16 @@
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						}
 					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "http://07th-mod.com/nipah/Matsuribayashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
 				}
 			]
 		},
