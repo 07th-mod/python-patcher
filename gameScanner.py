@@ -295,3 +295,29 @@ def scanUserSelectedPath(subModConfigList, gameExecutablePath):
 		return None, errorMessage
 
 	return None, "scanUserSelectedPath(): game executable path is falsey: [{}]".format(gameExecutablePath)
+
+def gameIsUnsupported(subMod, installPath):
+	#type: (installConfiguration.SubModConfig, str) -> (bool, str)
+	"""
+	Check for if user selected path is not supported by our mod
+	system.arc = Old MG version of Higurashi
+	nscript.dat = Old Nscripter version of games
+
+	:returns if unsupported, returns (True, identifier), giving the identifier that caused the unsupported detection
+	if supported, returns (False, None)
+	"""
+	identifiers = []
+	if subMod.family == 'higurashi':
+		identifiers = ['system.arc', 'nscript.dat']
+	elif subMod.family == 'umineko':
+		identifiers = ['nscript.dat']
+
+	# If user selected a file, need to check parent directory instead. Just check both.
+	installPathsToCheck = [installPath, os.path.dirname(installPath)]
+
+	for identifier in identifiers:
+		for path in installPathsToCheck:
+			if os.path.exists(os.path.join(path, identifier)):
+				return True, identifier
+
+	return False, None
