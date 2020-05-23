@@ -27,10 +27,6 @@ pub fn init<G: ApplicationGUI>(
 	title: &str,
 	window_size: [f64; 2],
 ) -> System<G> {
-	let title = match title.rfind('/') {
-		Some(idx) => title.split_at(idx + 1).1,
-		None => title,
-	};
 	let events_loop = glutin::EventsLoop::new();
 	let context = glutin::ContextBuilder::new().with_vsync(true);
 	let builder = glutin::WindowBuilder::new()
