@@ -3,14 +3,14 @@
 // DEPENDENCIES: This file depends on `python-patcher-rest-lib.js`. Make sure that file is loaded first.
 
 Vue.component('dropdown-game-menu', {
+  props: ['handles'],
   data() {
-    let menuData = {
-      families: {},
-    };
-
-    doPost('subModHandles', [], (responseData) => {
+    return {};
+  },
+  computed: {
+    families() {
       const modNameToSubModHandleMap = {};
-      responseData.subModHandles.forEach((subModHandle) => {
+      this.handles.forEach((subModHandle) => {
         modNameToSubModHandleMap[subModHandle.modName] = subModHandle;
       });
 
@@ -27,10 +27,8 @@ Vue.component('dropdown-game-menu', {
         delete families.umineko_nscripter;
       }
 
-      menuData.families = families;
-    });
-
-    return menuData;
+      return families;
+    },
   },
   methods: {
     remapFamily(familyName) {

@@ -12,6 +12,7 @@ window.onload = function onWindowLoaded() {
   app = new Vue({
     el: '#app',
     data: {
+      subModList: [],
       uniqueSubMods: [],
     },
     methods: {
@@ -35,6 +36,7 @@ window.onload = function onWindowLoaded() {
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {
+    app.subModList = responseData.subModHandles;
     console.log(responseData);
   });
 

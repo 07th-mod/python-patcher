@@ -12,6 +12,7 @@ window.onload = function onWindowLoaded() {
   app = new Vue({
     el: '#app',
     data: {
+      subModList: [],
       uniqueSubMods: [],
       subModExtraProperties: {
         'Umineko Question (Ch. 1-4)': {
@@ -113,6 +114,7 @@ window.onload = function onWindowLoaded() {
     created() {
       // populate the app.subModList with subMods from the python server
       doPost('subModHandles', [], (responseData) => {
+        app.subModList = responseData.subModHandles;
         const modNameToSubModHandleMap = {};
         console.log(responseData);
         responseData.subModHandles.forEach((subModHandle) => {
