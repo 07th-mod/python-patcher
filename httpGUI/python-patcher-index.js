@@ -127,6 +127,11 @@ window.onload = function onWindowLoaded() {
         app.uniqueSubMods = Object.values(modNameToSubModHandleMap);
         app.uniqueSubMods.sort((a, b) => a.id - b.id);
         console.log(app.uniqueSubMods);
+
+        // Force user back to the install page if the tried to leave
+        if (app.metaInfo.installAlreadyInProgress) {
+          window.location = 'installer.html';
+        }
       });
     },
   });

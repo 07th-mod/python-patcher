@@ -465,6 +465,9 @@ class InstallerGUI:
 		self.donationMonthsRemaining = ""
 		self.donationProgressPercent = ""
 
+		self.lastInstallPath = "" #type: str
+		self.lastSubModID = 0 #type: int
+
 	def loadNews(self):
 		self.remoteNews = common.tryGetRemoteNews('news')
 
@@ -555,6 +558,10 @@ class InstallerGUI:
 				raise
 			common.tryDeleteLockFile()
 
+		# Save the install path and submod.id in case the web UI refreshes the install page and forgets it
+		self.lastInstallPath = installPath
+		self.lastSubModID = fullInstallSettings.subModConfig.id
+
 		# This lock file allows the installer to detect if there is already an install in progress in a different instance of the program
 		# This lock file method is not foolproof, but should handle most cases
 		# It is cleaned up when the install finishes (even if the install was unsuccessful), but is NOT cleaned up
@@ -581,8 +588,13 @@ class InstallerGUI:
 			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
 			# responseData: a dictionary indicating if it's a valid selection (true, false)
 			def setModName(requestData):
-				userSelectedModToInstall = requestData['modName']
 				modNames = [config.modName for config in self.allSubModConfigs]
+
+				# Changing the selected mod while install is in progress is not allowed
+				if self.installAlreadyInProgress():
+					return {'valid': True, 'modNames': modNames}
+
+				userSelectedModToInstall = requestData['modName']
 				modNameValid = userSelectedModToInstall in modNames
 				if modNameValid:
 					self.selectedModName = userSelectedModToInstall
@@ -618,6 +630,8 @@ class InstallerGUI:
 							'lockFileExists': common.lockFileExists(), # This indicates if a install is already running in a different instance, or a previous install was killed while running
 							'operatingSystem': common.Globals.OS_STRING, # The operating system - either 'windows', 'linux', or 'mac'
 							'installAlreadyInProgress': self.installAlreadyInProgress(), # This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
+							'lastInstallPath': self.lastInstallPath, # The last path installed to - only valid if an install is currently running.
+							'lastSubModID': self.lastSubModID, # The ID of the last submod installed to - only valid if an install is currently running.
 							'news': self.remoteNews, # News across all mods, fetched from github
 							'donationMonthsRemaining': self.donationMonthsRemaining, # How many months the server can be paid for with current funding
 							'donationProgressPercent': self.donationProgressPercent, # How close funding is to the 12 month donation goal, in percent
@@ -728,15 +742,8 @@ class InstallerGUI:
 				id = requestData['subMod']['id']
 				subMod = self.idToSubMod[id]
 
-				# If the requestData included the install path, use that. Otherwise, open a dialog to choose the path
-				# returns the empty string if user cancels selecting a path
 				def _getInstallPath():
-					_installPath = requestData.get('installPath', None)
-					if _installPath is None:
-						userSelectedPath = os.path.dirname(askPath(subMod))
-						fullInstallConfigs, errorMessage = gameScanner.scanUserSelectedPath([subMod], userSelectedPath)
-						_installPath = '' if not fullInstallConfigs else fullInstallConfigs[0].installPath
-					return _installPath
+					return requestData.get('installPath', None)
 
 				if action == 'getLogsZip':
 					installPath = _getInstallPath()

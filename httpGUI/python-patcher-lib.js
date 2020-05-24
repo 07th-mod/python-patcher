@@ -297,6 +297,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
+        if (app.installStarted) { return; }
         if (newSelectedSubMod !== null) {
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
             this.partiallyUninstalledPaths = responseData.partiallyUninstalledPaths;
@@ -312,6 +313,7 @@ window.onload = function onWindowLoaded() {
         }
       },
       selectedInstallPath: function onSelectedInstallPathChanged(newPath, oldPath) {
+        if (app.installStarted) { return; }
         app.updateAndValidateInstallSettings(newPath);
       },
     },
@@ -359,7 +361,16 @@ window.onload = function onWindowLoaded() {
     }, app.selectedMod, null);
 
     app.metaInfo = responseData.metaInfo;
+
+    // If an install is already in progress during page load, restore enough of
+    // the app state so the installer doesn't break
     if (app.metaInfo.installAlreadyInProgress) {
+      app.selectedInstallPath = app.metaInfo.lastInstallPath;
+      app.possibleSubMods.forEach((subMod) => {
+        if (subMod.id === app.metaInfo.lastSubModID) {
+          app.selectedSubMod = subMod;
+        }
+      });
       setInstallStartedAndBeginPolling();
     }
   });
