@@ -26,6 +26,27 @@ jobs:
       # Download the repository
       - uses: actions/checkout@v2
 
+      # Restore cached cargo files to speed up future Rust builds
+      # This follows the example at https://github.com/actions/cache
+      # The cache will be saved automatically before the workflow ends
+      # NOTE: Caches are cleared if not used for 7 days
+      # NOTE: "Cache cargo registry" gives a "Can't unlink already-existing object" error. It should be fine anyway.
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo build
+        uses: actions/cache@v1
+        with:
+          path: install_loader/target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
       # Configure Rust for 32-bit builds
       - name: Configure Rust for 32-bit
         run: |
