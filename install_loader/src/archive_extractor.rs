@@ -1,3 +1,4 @@
+use crate::version;
 use progress_streams::ProgressReader;
 use std::path::{Path, PathBuf};
 use std::sync::mpsc;
@@ -5,7 +6,6 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::{fs, thread};
 use tar::Archive;
 use xz2::read::XzDecoder;
-use crate::version;
 
 enum ExtractionStatusInternal {
 	NotStarted,
@@ -70,6 +70,11 @@ impl ArchiveExtractor {
 }
 
 fn extraction_required<P: AsRef<Path>>(saved_git_tag_path: P) -> bool {
+	// Developer builds always extract
+	if version::is_developer_build() {
+		return true;
+	}
+
 	// try to load the last extracted installer's git tag
 	let saved_git_tag = match fs::read_to_string(saved_git_tag_path) {
 		Ok(val) => val,
