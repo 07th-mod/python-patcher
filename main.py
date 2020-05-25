@@ -13,11 +13,13 @@ import datetime
 import pprint
 import socket
 import threading
+import traceback
 
 import common
 import httpGUI
 import installConfiguration
 import logger
+import fileVersionManagement
 
 try: input = raw_input
 except NameError: pass
@@ -126,12 +128,16 @@ if __name__ == "__main__":
 
 			common.startAndJoinThreads([t_getSubModConfig, t_unimportantTasks])
 
+			if common.Globals.DEVELOPER_MODE:
+				fileVersionManagement.Developer_ValidateVersionDataJSON(t_getSubModConfig.result)
+
 			# Indicate init is complete. This causes the browser to advance from loading_screen.html to index.html
 			installerGUI.setSubModconfigs(t_getSubModConfig.result)
 		except Exception as e:
-			print(e)
+			errorString = "{}\n\n{}".format(e, traceback.format_exc())
+			print(traceback.format_exc())
 			# Indicate init failed. This causes the browser to show an error message.
-			installerGUI.setInitError(str(e))
+			installerGUI.setInitError(errorString)
 
 	# The installer initialization (scan for executables, check network, retrieve mod list) is launched
 	# concurrently with the Web GUI. The Web GUI shows a loading screen until init is complete.

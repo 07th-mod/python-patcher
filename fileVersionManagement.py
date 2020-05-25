@@ -7,7 +7,7 @@ import os
 import logger
 
 try:
-	from typing import List, Dict, Optional
+	from typing import List, Dict, Optional, Set
 except:
 	pass
 
@@ -308,3 +308,38 @@ class FileVersion:
 
 	def __repr__(self):
 		return "{}-{}".format(self.id, self.version)
+
+def Developer_ValidateVersionDataJSON(modList):
+	#type: (List[installConfiguration.SubModConfig]) -> None
+
+	onDiskVersionData, error = common.getJSON("versionData.json", isURL=False)
+
+	# reformat versionData as mapping of { versionID : set(file.id) }
+	reformattedVersionData = {}  # type: Dict[str, Set[str]]
+	for versionData in onDiskVersionData:
+		reformattedVersionData[versionData['id']] = set(file['id'] for file in versionData['files'])
+
+	failureStrings = []
+	for subMod in modList:
+		# The ID in the versionData.json is of the format "game/mod_variant"
+		versionID = subMod.modName + '/' + subMod.subModName
+
+		# Check versionData has a listing for this submod
+		if versionID not in reformattedVersionData:
+			failureStrings.append(
+				"DEVELOPER ERROR: versionData.json is missing the game/submod pair: {}".format(versionID))
+			continue
+
+		# Check each file in the submod exists in the versionData.json
+		for file in subMod.files:
+			# Items with file.url = None are not downloaded/installed, so skip them
+			if file.url is None:
+				continue
+
+			if file.name not in reformattedVersionData[versionID]:
+				failureStrings.append(
+					"DEVELOPER ERROR: versionData.json is missing the file: [{}] from [{}]".format(
+						file.name, versionID))
+
+	if failureStrings:
+		raise Exception('\n'.join(failureStrings))

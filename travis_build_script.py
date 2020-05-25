@@ -60,6 +60,24 @@ def tar_gz(input_path, output_filename: str):
 	call(["7z", "a", output_filename, tempFileName])
 	os.remove(tempFileName)
 
+def pre_build_validation():
+	import installConfiguration
+	import common
+	import fileVersionManagement
+	print("Travis validation started")
+
+	# Code is modified version of main.getSubModConfigList since I don't want to import/setup logger.py
+	sub_mod_configs = []
+	for mod in common.getModList("installData.json", isURL=False):
+		for submod in mod['submods']:
+			conf = installConfiguration.SubModConfig(mod, submod)
+			sub_mod_configs.append(conf)
+
+	fileVersionManagement.Developer_ValidateVersionDataJSON(sub_mod_configs)
+	print("Travis validation success")
+
+pre_build_validation()
+
 print("\nTravis python build script started\n")
 
 # first, copy the files we want into a staging folder
