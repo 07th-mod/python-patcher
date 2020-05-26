@@ -222,7 +222,8 @@
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
-			{"id": "common-lib",                "version": "1.0.0"}
+			{"id": "common-lib",                "version": "1.0.0"},
+			{"id": "update",                    "version": "1.0.0"}
 		]
 	},
 	{
