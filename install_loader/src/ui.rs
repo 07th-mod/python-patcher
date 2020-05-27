@@ -40,6 +40,7 @@ pub trait SimpleUI {
 	fn show_developer_tools(&self);
 	fn text_red<T: AsRef<str>>(&self, text: T);
 	fn text_yellow<T: AsRef<str>>(&self, text: T);
+	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &ImStr, text: T);
 }
 
 impl<'ui> SimpleUI for Ui<'ui> {
@@ -61,6 +62,15 @@ impl<'ui> SimpleUI for Ui<'ui> {
 
 	fn text_yellow<T: AsRef<str>>(&self, text: T) {
 		self.text_colored([1.0, 1.0, 0.0, 1.0], text);
+	}
+
+	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &ImStr, text: T) {
+		self.popup_modal(modal_name).build(|| {
+			self.text(text);
+			if self.button(im_str!("OK"), [0.0, 0.0]) {
+				self.close_current_popup();
+			}
+		});
 	}
 }
 
@@ -108,6 +118,7 @@ impl ExtractingPythonState {
 
 pub enum InstallerProgression {
 	ExtractingPython(ExtractingPythonState),
+	UserNeedsCPPRedistributable,
 	WaitingUserPickInstallType,
 	InstallStarted(InstallStartedState),
 	InstallFinished,
@@ -211,7 +222,11 @@ impl InstallerGUI {
 				}
 				ExtractionStatus::Started(None) => {}
 				ExtractionStatus::Finished => {
-					self.state.progression = InstallerProgression::WaitingUserPickInstallType;
+					self.state.progression = if windows_utilities::x86_cpp_redist_is_installed() {
+						InstallerProgression::WaitingUserPickInstallType
+					} else {
+						InstallerProgression::UserNeedsCPPRedistributable
+					};
 				}
 				ExtractionStatus::Error(error_str) => {
 					self.state.progression = InstallerProgression::InstallFailed(
@@ -231,6 +246,7 @@ impl InstallerGUI {
 			self.ui_state.close_requested = false;
 			match self.state.progression {
 				InstallerProgression::ExtractingPython(_)
+				| InstallerProgression::UserNeedsCPPRedistributable
 				| InstallerProgression::WaitingUserPickInstallType => self.quit(),
 				_ => ui.open_popup(confirm_exit_modal_name),
 			}
@@ -261,6 +277,64 @@ impl InstallerGUI {
 						extraction_state.progress_percentage
 					))
 					.build(&ui);
+			}
+			InstallerProgression::UserNeedsCPPRedistributable => {
+				let download_failure_modal_name = im_str!("Download Failure (C++ Redistributable)");
+				let open_failure_modal_name = im_str!("Open Failure (C++ Redistributable)");
+				let redist_missing_modal_name = im_str!("Redist Missing (C++ Redistributable)");
+
+				ui.text_yellow(im_str!("Warning: You are missing the Visual C++ Redistributable (x86), needed to run the installer!"));
+				ui.text_yellow(im_str!(
+					"Please download and install it using the buttons below."
+				));
+
+				ui.new_line();
+				if ui.simple_button(im_str!("Option 1: Download Directly")) {
+					if let Err(_) = windows_utilities::cpp_redist_download_in_browser() {
+						ui.open_popup(download_failure_modal_name);
+					}
+				}
+				if ui.simple_button(im_str!(
+					"Option 2: Visit C++ Redistributable Website (Choose [x86: vc_redist.x86.exe])"
+				)) {
+					if let Err(_) = windows_utilities::cpp_redist_open_website() {
+						ui.open_popup(open_failure_modal_name);
+					}
+				}
+				ui.text(im_str!(
+					"If the redist install gets stuck for a long time, restart your computer and try again"
+				));
+
+				ui.new_line();
+				if ui.simple_button(im_str!("Click here when you have finished installing")) {
+					if windows_utilities::x86_cpp_redist_is_installed() {
+						self.state.progression = InstallerProgression::WaitingUserPickInstallType;
+					} else {
+						ui.open_popup(redist_missing_modal_name);
+					}
+				}
+
+				// Modal informing the user that the page/download couldn't be opened
+				ui.build_ok_modal(
+					download_failure_modal_name,
+					im_str!("Couldn't download directly - please visit website to download"),
+				);
+				ui.build_ok_modal(
+					open_failure_modal_name,
+					im_str!("Couldn't open Microsoft website - please try to visit manually"),
+				);
+
+				// Exit confirmation modal triggered by the above
+				ui.popup_modal(redist_missing_modal_name).build(|| {
+					ui.text("You still seem to be missing the redist. Are you sure you want to continue?");
+					if ui.button(im_str!("Yes, continue anyway"), [0.0, 0.0]) {
+						ui.close_current_popup();
+						self.state.progression = InstallerProgression::WaitingUserPickInstallType;
+					}
+					if ui.button(im_str!("No, let me fix it"), [0.0, 0.0]) {
+						ui.close_current_popup();
+					}
+				});
 			}
 			InstallerProgression::WaitingUserPickInstallType => {
 				ui.text_red(im_str!("Please click 'Run Installer'"));

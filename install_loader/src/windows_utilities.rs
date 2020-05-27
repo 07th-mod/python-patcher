@@ -1,3 +1,4 @@
+extern crate open;
 extern crate winapi;
 
 use regex::Regex;
@@ -67,4 +68,44 @@ where
 	Ok(Regex::new(r"^\\\\\?\\")?
 		.replace(canonical_path, "")
 		.to_string())
+}
+
+/// This function checks for the 32-bit version of the Visual C++ Redist.
+/// On 32 bit systems it checks the "System32" folder, and on 64-bit systems, it checks the "SysWOW64" folder.
+/// See here for details: https://www.quora.com/What-is-the-difference-between-system32-and-SysWow64
+/// It checks these folders for "ucrtbase.dll" and "vcruntime140.dll" (you probably only need to check for "ucrtbase.dll" though)
+///
+/// The Visual C++ Redist is required to run python, see: https://docs.python.org/3/using/windows.html#the-embeddable-package
+pub fn x86_cpp_redist_is_installed() -> bool {
+	// Need to handle if windows is not on the C: drive - use environment variable to determine location
+	let windows_folder = std::env::var("windir").unwrap_or(String::from(r"C:\Windows"));
+
+	let windows_dll_32bit_folder = match os_info::get().bitness() {
+		os_info::Bitness::X32 => "System32", //32-bit windows stores 32-bit dlls in the System32 folder
+		os_info::Bitness::X64 => "SysWOW64", //64-bit windows stores 32-bit dlls in the SysWOW64 folder
+		_ => "SysWOW64", // I don't think this can happen on Windows - just assume 64-bit
+	};
+
+	for dll_filename in vec!["vcruntime140.dll", "ucrtbase.dll"] {
+		let dll_path = Path::new(&windows_folder)
+			.join(windows_dll_32bit_folder)
+			.join(dll_filename);
+
+		if !dll_path.exists() {
+			println!("CPP Redist Check failed - can't find: [{:?}]", dll_path);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+pub fn cpp_redist_download_in_browser() -> std::io::Result<std::process::ExitStatus> {
+	open::that("https://aka.ms/vs/16/release/vc_redist.x86.exe")
+}
+
+pub fn cpp_redist_open_website() -> std::io::Result<std::process::ExitStatus> {
+	open::that(
+		"https://support.microsoft.com/en-au/help/2977003/the-latest-supported-visual-c-download",
+	)
 }
