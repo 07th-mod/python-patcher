@@ -1,5 +1,5 @@
 {
-	"version": 8,
+	"version": 9,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -868,6 +868,25 @@
 					"descriptionID": "uminekoHaneOnscripterFull",
 					"files":[
 						{"name": "mod", "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip", "priority": 0}
+					],
+					"fileOverrides" : []
+				}
+			]
+		},
+		{
+			"family": "umineko_nscripter",
+			"name" : "Umineko Saku",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["うみねこのなく頃に咲.exe", "snow.dll"],
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoSakuFull",
+					"files":[
+						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/Saku/UminekoSaku-Graphics.7z", "priority": 0}
 					],
 					"fileOverrides" : []
 				}

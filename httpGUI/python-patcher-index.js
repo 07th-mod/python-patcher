@@ -31,6 +31,10 @@ window.onload = function onWindowLoaded() {
           img: 'img/games/header_umineko_hane.jpg',
           dataFilter: 'Bonus Content',
         },
+        'Umineko Saku': {
+          img: 'img/games/header_umineko_saku.jpg',
+          dataFilter: 'Bonus Content'
+        },
         'Console Arcs': {
           img: 'img/games/console.jpg',
           dataFilter: 'Console Arcs',
