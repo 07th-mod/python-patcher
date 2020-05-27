@@ -384,6 +384,9 @@ impl InstallerGUI {
 			InstallerProgression::InstallFailed(install_failed_state) => {
 				ui.text_red(im_str!("The installation failed!"));
 				ui.text_red(im_str!("[{}]", install_failed_state.failure_reason));
+				if ui.simple_button(im_str!("Open 07th-mod Support Page")) {
+					let _ = open::that("https://07th-mod.com/wiki/Installer/support/");
+				}
 
 				if !install_failed_state.console_window_displayed {
 					windows_utilities::show_console_window();
