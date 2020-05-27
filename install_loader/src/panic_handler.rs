@@ -6,17 +6,17 @@ use std::panic::PanicInfo;
 
 use crate::archive_extractor::ExtractionStatus;
 use crate::process_runner::ProcessRunner;
+use crate::version;
 use crate::windows_utilities;
 use crate::{archive_extractor, InstallerConfig};
-use crate::version;
 use std::error::Error;
 
 /// This function blocks until the user to presses enter in the console
 fn pause(msg: &str) -> Option<String> {
 	// We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
 	let mut stderr = io::stderr();
-	write!(stderr, "{}", msg).unwrap();
-	stderr.flush().unwrap();
+	let _ = write!(stderr, "{}", msg);
+	let _ = stderr.flush();
 
 	// Block until user presses Enter
 	let stdin = io::stdin();
