@@ -214,8 +214,9 @@ impl InstallerGUI {
 					self.state.progression = InstallerProgression::WaitingUserPickInstallType;
 				}
 				ExtractionStatus::Error(error_str) => {
-					self.state.progression =
-						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(error_str)))
+					self.state.progression = InstallerProgression::InstallFailed(
+						InstallFailedState::new(String::from(error_str)),
+					)
 				}
 			}
 		}
@@ -269,7 +270,10 @@ impl InstallerGUI {
 
 				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
 				ui.same_line_with_spacing(0., 20.);
-				ui.checkbox(im_str!("Run in Safe-Mode"), &mut self.ui_state.safe_mode_enabled);
+				ui.checkbox(
+					im_str!("Run in Safe-Mode"),
+					&mut self.ui_state.safe_mode_enabled,
+				);
 				if install_button_clicked {
 					if let Err(e) = self.start_install(!self.ui_state.safe_mode_enabled) {
 						println!("Failed to start install! {:?}", e)
@@ -290,10 +294,14 @@ impl InstallerGUI {
 					));
 				}
 
-				if graphical_install.python_monitor.task_has_failed_nonblocking() {
-					self.state.progression = InstallerProgression::InstallFailed(
-						InstallFailedState::new(String::from("Python Installer Failed - See Console Window"))
-					)
+				if graphical_install
+					.python_monitor
+					.task_has_failed_nonblocking()
+				{
+					self.state.progression =
+						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(
+							"Python Installer Failed - See Console Window",
+						)))
 				}
 			}
 			InstallerProgression::InstallFinished => {
