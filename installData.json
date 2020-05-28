@@ -707,8 +707,8 @@
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
-							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the PS3 game replaces the Touhou song \"Tsurupettan\" with a new song, \"SuiSui-SWEETS(^-^)\", for copyright reasons. This option allows you to use the song from the PS3 version.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-ps3-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
+							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the PS3 game replaces a copyrighted song with a new original song, \"SuiSui-SWEETS(^-^)\". This option allows you to use the song from the PS3 version.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-Sweets.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -717,8 +717,8 @@
 					"submods" : ["full"],
 					"checkBox": [
 						{
-							"name": "Restore tsurupettan CG", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores the orignal Touhou CG.\n- Note that the CG is the original Ryukishi CG, so it won't match the PS3 graphics, if that bothers you.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-original-tsurupettan.7z", "relativeExtractionPath": ".", "priority": 10}
+							"name": "Make Jessica British", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores allows you to use the censored PS3 CG.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
