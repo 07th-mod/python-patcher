@@ -1,5 +1,13 @@
 from __future__ import unicode_literals
 
+import os
+import sys
+
+# Embedded python doesn't have current directory as path
+if os.getcwd() not in sys.path:
+    print("Startup: Adding {} to path".format(os.getcwd()))
+    sys.path.append(os.getcwd())
+
 import argparse
 import main as gui_main
 import common

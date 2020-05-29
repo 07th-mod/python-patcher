@@ -8,6 +8,11 @@ except:
 import os
 import sys
 
+# Embedded python doesn't have current directory as path
+if os.getcwd() not in sys.path:
+	print("Startup: Adding {} to path".format(os.getcwd()))
+	sys.path.append(os.getcwd())
+
 # Python 2/3 input() function fix
 try: input = raw_input
 except NameError: pass
