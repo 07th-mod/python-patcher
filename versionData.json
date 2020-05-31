@@ -241,7 +241,7 @@
 	{
 		"id": "Umineko Saku/full",
 		"files": [
-			{"id": "script",                 "version": "0.0.1"},
+			{"id": "script",                 "version": "0.0.2"},
 			{"id": "graphics",               "version": "0.5.0"}
 		]
 	}
