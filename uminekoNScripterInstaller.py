@@ -75,11 +75,6 @@ def main(conf):
 	# Extract files
 	fileVersionManager.saveVersionInstallStarted()
 	downloaderAndExtractor.extract()
-	# Rename 0.utf back to its proper name (for Umineko Saku)
-	utfPath = os.path.join(conf.installPath, '0.utf')
-	if os.path.exists(utfPath):
-		os.remove(utfPath)
-	os.rename(os.path.join(conf.installPath, '0.u'), utfPath)
 
 	fileVersionManager.saveVersionInstallFinished()
 	commandLineParser.printSeventhModStatusUpdate(100, "Umineko Hane install script completed!")

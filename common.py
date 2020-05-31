@@ -873,7 +873,25 @@ class DownloaderAndExtractor:
 
 		return atLeastOneInvalid
 
-	def extract(self):
+	def extract(self, remapPaths=lambda x,y: (x,y)):
+		#type: (Callable[[str, str], Tuple[str, str]]) -> None
+		"""
+		This function does the following for each item downloaded earlier:
+		- if the downloaded item is a .7z or .zip file, it is extracted to the destination folder
+		- if the download item is any other file, it is copied to the destination folder.
+
+		"remapPaths" argument:
+		If provided, this function is used to remap the destination paths of the extracted files.
+		The function should return a new destination folder/filename, where the files will be extracted to.
+
+		:param remapPaths: This parameter is a function which takes two arguments, and returns a tuple:
+		- arg1: the destination folder that the file will be extracted to
+		- arg2: the destination filename that the file will be given
+		- return: the new (destinationFolder, destinationFilename) as a tuple
+
+		Note that if the file is an archive (.7z or .zip file), then you can only change the output folder
+		(where it will be extracted to), not the output filename.
+		"""
 		if not self.downloadAndExtractionListsBuilt:
 			self.buildDownloadAndExtractionList()
 
@@ -881,13 +899,13 @@ class DownloaderAndExtractor:
 		for i, extractableItem in enumerate(self.extractList):
 			overallPercentage = self.downloadProgressAmount + int(i*self.extractionProgressAmount/len(self.extractList))
 			commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Extracting {}".format(extractableItem))
-			fileNameNoExt, extension = os.path.splitext(extractableItem.filename)
 
-			#TODO: the '.u' and '.utf' logic is specific to umineko - shouldn't be in this class
+			destinationFolder, destinationFileName = remapPaths(extractableItem.destinationPath, extractableItem.filename)
+
 			extractOrCopyFile(extractableItem.filename,
 			                  self.downloadTempDir,
-			                  extractableItem.destinationPath,
-			                  copiedOutputFileName=(fileNameNoExt + '.u') if '.utf' in extension else extractableItem.filename)
+			                  destinationFolder,
+			                  destinationFileName)
 
 	def addItemManually(self, url, extractionDir):
 		"""

@@ -147,7 +147,14 @@ def mainUmineko(conf):
 					print("WARNING: failed to remove folder {}".format(folderPath))
 
 	######################################## Extract Archives ##########################################################
-	downloaderAndExtractor.extract()
+	def remapPaths(originalFolder, originalFilename):
+		fileNameNoExt, extension = os.path.splitext(originalFilename)
+		if '.utf' in extension:
+			return originalFolder, (fileNameNoExt + '.u')
+		else:
+			return originalFolder, originalFilename
+
+	downloaderAndExtractor.extract(remapPaths)
 
 	############################################# FIX .ARC FILE NAMING #################################################
 	# Steam release has arc files labeled arc.nsa, arc1.nsa, arc2.nsa, arc3.nsa.
