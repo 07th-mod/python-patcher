@@ -265,6 +265,13 @@ impl InstallerGUI {
 		});
 	}
 
+	/// Note: Should add a 'return' after every state change.
+	/// The rust compiler will (rightfully) complain if you try to mutate the state after
+	/// changing state, as it would no longer be correctly destructured/matched at that point.
+	///
+	/// Adding a return after changing state ensures that no other code can act on the now invalidly
+	/// destructured state. On the next time the function is called, the match statement can then
+	/// correctly destructure/match the new state.
 	fn display_main_installer_flow(&mut self, ui: &Ui) {
 		// Display parts of the UI which depend on the installer progression
 		match &mut self.state.progression {
@@ -309,6 +316,7 @@ impl InstallerGUI {
 				if ui.simple_button(im_str!("Click here when you have finished installing")) {
 					if windows_utilities::x86_cpp_redist_is_installed() {
 						self.state.progression = InstallerProgression::WaitingUserPickInstallType;
+						return;
 					} else {
 						ui.open_popup(redist_missing_modal_name);
 					}
@@ -330,6 +338,7 @@ impl InstallerGUI {
 					if ui.button(im_str!("Yes, continue anyway"), [0.0, 0.0]) {
 						ui.close_current_popup();
 						self.state.progression = InstallerProgression::WaitingUserPickInstallType;
+						return;
 					}
 					if ui.button(im_str!("No, let me fix it"), [0.0, 0.0]) {
 						ui.close_current_popup();
@@ -376,6 +385,7 @@ impl InstallerGUI {
 						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(
 							"Python Installer Failed - See Console Window",
 						)))
+					return;
 				}
 			}
 			InstallerProgression::InstallFinished => {
