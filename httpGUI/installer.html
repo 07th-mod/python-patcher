@@ -177,10 +177,10 @@
 										v-if="	selectedSubMod !== null &&
 												selectedSubMod.family === 'higurashi' &&
 												metaInfo.operatingSystem === 'linux'"><strong>
-												Warning: GNOME Desktop (the default on Ubuntu) will cause Higurashi Ep.4 and upwards to crash the entire desktop when you start the game.
+												Warning: GNOME/MATE Desktop (the default on Ubuntu and Fedora Linux) will cause Higurashi Ep.4 and upwards to <strong>crash the entire desktop when you start the game.</strong>
 												This happens even on the base game (without any mods applied).<br><br>
-												A workaround for this is to install XFCE desktop. You can follow this guide to install XFCE desktop (it can be installed alongside GNOME).
-												Please make sure you can launch the base game before applying any mods (for ease of installation, please don't make any saves on the base game).
+												A workaround for this is to install XFCE desktop (please look up instructions for your specific operating system).<br><br>
+												Please make sure you can launch the base game before applying any mods (please don't make any saves on the base game as they are not compatible with the mod).
 										</strong></div>
 										<div class="alert alert-warning" role="alert" v-if="!metaInfo.installAlreadyInProgress && metaInfo.lockFileExists"><strong>
 											Warning: It appears an install is already in progress, or the last install was closed unexpectedly.<br>
