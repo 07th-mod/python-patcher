@@ -153,8 +153,8 @@ if __name__ == "__main__":
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
-	gui_main.check07thModServerConnection()
 	common.Globals.scanForExecutables()
+	gui_main.check07thModServerConnection()
 	modList = gui_main.getModList()
 	subModList = gui_main.getSubModConfigList(modList) #type: List[SubModConfig]
 
