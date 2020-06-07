@@ -384,7 +384,7 @@ impl InstallerGUI {
 					self.state.progression =
 						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(
 							"Python Installer Failed - See Console Window",
-						)))
+						)));
 					return;
 				}
 			}
