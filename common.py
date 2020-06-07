@@ -540,15 +540,15 @@ def getModList(jsonURI, isURL):
 	info, exception = getJSON(jsonURI, isURL)
 	if info is None:
 		raise Exception("""------------------------------------------------------------------------
-Error: Couldn't reach 07th Mod Server to download mod list!
+Error: Couldn't reach Github to download mod list! ({})
 
 Please check the following:
 - You have a working internet connection
-- Note that Japan is blocked from downloading (VPNs are compatible with this installer, however...)
+- Check if you can manually download the following file ({})
 - Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
 
 Detailed Error: {}
-------------------------------------------------------------------------""".format(exception))
+------------------------------------------------------------------------""".format(jsonURI, jsonURI, exception))
 
 	try:
 		version = info["version"]
