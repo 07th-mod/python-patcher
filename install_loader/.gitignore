@@ -1,3 +1,5 @@
 /target
 **/*.rs.bk
 07th-mod_installer
+src/install_data.tar
+src/install_data.tar.xz

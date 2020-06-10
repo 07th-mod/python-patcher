@@ -1,0 +1,13 @@
+[package]
+name = "winutil"
+version = "0.1.0"
+authors = ["drojf"]
+edition = "2018"
+
+[dependencies]
+clap = "2.33.1"
+winapi = { version = "*", features = ["shobjidl", "shtypes", "combaseapi", "winerror", "objbase"] }
+widestring = "*"
+
+[profile.release]
+codegen-units = 1

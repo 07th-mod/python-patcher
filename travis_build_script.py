@@ -119,6 +119,7 @@ ignore_paths = [
 	'Umineko Hane Downloads',
 	'INSTALLER_LOGS',
 	'github_actions_changelog_template.txt',
+	'winutil',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
@@ -184,6 +185,10 @@ if BUILD_LINUX_MAC:
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer_32/', os.path.join(output_folder, '07th-Mod.Installer.win.zip'))
 
 if not BUILD_LINUX_MAC:
+	# Compile the windows utility tool and copy to windows bootstrap folder
+	call(['cargo', 'rustc', '--release', '--', '-C', 'link-arg=/MANIFEST:embed'], cwd='winutil')
+	shutil.copy('winutil/target/release/winutil.exe', f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data/winutil.exe')
+
 	# Create an archive of the contents install_data folder (no subfolder)
 	loader_src_folder = 'install_loader/src'
 	tar_path = os.path.join(loader_src_folder, 'install_data.tar')
