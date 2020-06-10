@@ -135,7 +135,7 @@ window.onload = function onWindowLoaded() {
       selectedInstallPath: null, // After an install successfully started, this contains the install path chosen
       validatedInstallPath: null,
       installPathValid: false,
-      validationInProgress: true,
+      validationInProgress: false,
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       showPathSelectionButtons: true, // Set to true to show UI for path selection

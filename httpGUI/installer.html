@@ -204,7 +204,6 @@
 										<div v-if="selectedSubMod !== null">
 											<div class="tab-content">
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
-												<hr>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
 													<div v-if="selectedSubMod.modName === 'Console Arcs'">
@@ -361,7 +360,9 @@
 												</div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div>
-													<h4 class="uppercase mt40">Choose an install path</h4>
+													<h4 v-if="!installPathValid && !validationInProgress" class="uppercase mt40" style="color: red">Choose an install path ❌</h4>
+													<h4 v-else class="uppercase mt40">Choose an install path</h4>
+													<hr>
 													<ul>
 														<div v-if="showPathSelectionButtons">
 															Currently Chosen Path:<br>
@@ -413,6 +414,7 @@
 												<!-- Install options, displayed as radio buttons and checkboxes -->
 												<div v-if="selectedSubMod.modOptionGroups.length > 0">
 													<h4 class="uppercase mt40">Choose Mod Options</h4>
+													<hr>
 													<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
 														<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
 														<div v-for="radioOption in modOptionGroup.radio">
@@ -458,6 +460,7 @@
 												<transition name="fade">
 													<div v-if="installPathValid">
 														<h4 class="uppercase mt40">Please confirm your install settings:</h4>
+														<hr>
 														<div class="mb40">
 															<strong>Configuration</strong><br>
 															Mod Name: {{ selectedMod }} <br>
@@ -509,19 +512,28 @@
 																</div>
 															</strong>
 														</div>
+														<h4 class="uppercase mt40">Start The Install</h4>
+														<hr>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
-															<li><div class="tab-title" v-on:click=doInstall()>
-																<span v-if="fullUpdateRequired">Start the installation!</span>
-																<span v-else>Start Update!</span>
+															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
+																<span v-if="fullUpdateRequired" style="font-size:24px">🚀 Start the installation! 🚀</span>
+																<span v-else style="font-size:20px">⏫ Start Update!</span>
 															</div></li>
 														</ul>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="float: right">
 															<li>
 																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: darkred">
-																	<span>Re-install from scratch</span>
+																	<span style="font-size:20px">🔄 Re-install from scratch</span>
 																</div>
 															</li>
 														</ul>
+													</div>
+													<div v-else>
+														<br><br>
+														<h3 style="color: red">
+															You must choose an install path before starting the install.
+															Please scroll back up and choose an install path.
+														</h3>
 													</div>
 												</transition>
 											</div>
@@ -533,6 +545,7 @@
 					</div>
 			</section>
 			</transition>
+			<br><br><br><br>
 			<section class="section-small-padding bg-secondary">
 			<div class="container">
 				<h3>
