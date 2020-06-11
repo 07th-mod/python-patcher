@@ -9,7 +9,7 @@ use xz2::read::XzDecoder;
 
 enum ExtractionStatusInternal {
 	NotStarted,
-	Started(Receiver<Result<usize, &'static str>>),
+	Started(Receiver<Result<usize, String>>),
 	Finished,
 }
 
@@ -17,7 +17,7 @@ pub enum ExtractionStatus {
 	NotStarted,
 	Started(Option<usize>),
 	Finished,
-	Error(&'static str),
+	Error(String),
 }
 
 pub struct ArchiveExtractor {
@@ -36,7 +36,7 @@ impl ArchiveExtractor {
 	pub fn start_extraction(&mut self, sub_folder_path: &Path) {
 		match self.receiver {
 			ExtractionStatusInternal::NotStarted => {
-				let (sender, receiver) = mpsc::channel::<Result<usize, &str>>();
+				let (sender, receiver) = mpsc::channel::<Result<usize, String>>();
 				extract_archive_new_thread(sub_folder_path, sender, self.force_extraction);
 				self.receiver = ExtractionStatusInternal::Started(receiver);
 			}
@@ -92,7 +92,7 @@ fn extraction_required<P: AsRef<Path>>(saved_git_tag_path: P) -> bool {
 
 fn extract_archive_new_thread(
 	sub_folder_path: &Path,
-	progress_update: Sender<Result<usize, &'static str>>,
+	progress_update: Sender<Result<usize, String>>,
 	force_extraction: bool,
 ) {
 	let mut path_copy = PathBuf::new();
@@ -105,7 +105,7 @@ fn extract_archive_new_thread(
 
 fn extract_archive(
 	sub_folder_path: &Path,
-	progress_update: Sender<Result<usize, &str>>,
+	progress_update: Sender<Result<usize, String>>,
 	force_extraction: bool,
 ) {
 	let saved_git_tag_path = sub_folder_path.join("installer_loader_extraction_lock.txt");
@@ -116,12 +116,17 @@ fn extract_archive(
 		//The archive should not contain any subfolders - one will be created automatically
 		let archive_bytes = include_bytes!("install_data.tar.xz");
 
-		// Pipe from the XzDecoder (.xz handler) to the Archive (.tar handler), then extract all files.
+		let cwd = std::env::current_dir()
+			.map(|path| path.display().to_string())
+			.unwrap_or(String::from("(Can't get cwd)"));
+
 		println!(
-			"[07th-Mod Installer Loader] Please wait. Extracting to [{}]",
+			"07th-Mod Installer Loader: Please wait. Extracting to [{}\\{}]",
+			cwd,
 			sub_folder_path.display()
 		);
 
+		// Pipe from the XzDecoder (.xz handler) to the Archive (.tar handler), then extract all files.
 		let mut progress_counter = ProgressCounter::new(archive_bytes.len(), 1_000_000);
 		let intermediate_reader =
 			ProgressReader::new(&archive_bytes[..], |progress_bytes: usize| {
@@ -135,10 +140,12 @@ fn extract_archive(
 		let xz_reader = XzDecoder::new(intermediate_reader);
 
 		if let Err(_e) = Archive::new(xz_reader).unpack(sub_folder_path) {
+			let error_message = format!("Can't extract files. Make sure all installers are closed, you have enough disk space, and try again.\n\
+Also check permissions to write to the folder (try moving installer to a different folder)\n\
+[{}\\{}]\n\
+You can also try 'Run as Administrator', but the installer may not work correctly.", cwd, sub_folder_path.display());
 			progress_update
-				.send(Err(
-					"Can't extract files. Make sure all installers are closed, you have enough disk space, and try again.",
-				))
+				.send(Err(error_message))
 				.expect("Failed to send error progress update");
 		} else {
 			// Extraction was successful. Write extraction lock with installer version,
