@@ -117,6 +117,8 @@ impl ExtractingPythonState {
 }
 
 pub enum InstallerProgression {
+	PreExtractionChecks,
+	PreExtractionChecksFailed(String),
 	ExtractingPython(ExtractingPythonState),
 	UserNeedsCPPRedistributable,
 	WaitingUserPickInstallType,
@@ -135,7 +137,7 @@ pub struct InstallerState {
 impl InstallerState {
 	pub fn new() -> InstallerState {
 		InstallerState {
-			progression: InstallerProgression::ExtractingPython(ExtractingPythonState::new(false)),
+			progression: InstallerProgression::PreExtractionChecks,
 		}
 	}
 }
@@ -244,11 +246,17 @@ impl InstallerGUI {
 		let confirm_exit_modal_name = im_str!("Confirm Exit");
 		if self.ui_state.close_requested {
 			self.ui_state.close_requested = false;
+
+			// This match statement decides which states require an exit confirmation
 			match self.state.progression {
-				InstallerProgression::ExtractingPython(_)
+				InstallerProgression::PreExtractionChecks
+				| InstallerProgression::PreExtractionChecksFailed(_)
+				| InstallerProgression::ExtractingPython(_)
 				| InstallerProgression::UserNeedsCPPRedistributable
 				| InstallerProgression::WaitingUserPickInstallType => self.quit(),
-				_ => ui.open_popup(confirm_exit_modal_name),
+				InstallerProgression::InstallStarted(_)
+				| InstallerProgression::InstallFinished
+				| InstallerProgression::InstallFailed(_) => ui.open_popup(confirm_exit_modal_name),
 			}
 		}
 
@@ -275,6 +283,27 @@ impl InstallerGUI {
 	fn display_main_installer_flow(&mut self, ui: &Ui) {
 		// Display parts of the UI which depend on the installer progression
 		match &mut self.state.progression {
+			InstallerProgression::PreExtractionChecks => {
+				if windows_utilities::installer_is_in_temp_folder().unwrap_or(false) {
+					self.state.progression = InstallerProgression::PreExtractionChecksFailed(
+						String::from("WARNING: It appears you're running the installer from a temporary folder, which may cause the installer to fail.\n
+Please download the installer to your Downloads or other known location, then run it from there.")
+					);
+					return;
+				}
+
+				self.state.progression =
+					InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+				return;
+			}
+			InstallerProgression::PreExtractionChecksFailed(reason) => {
+				ui.text_yellow(reason);
+				if ui.simple_button(im_str!("Try to continue install anyway")) {
+					self.state.progression =
+						InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+					return;
+				}
+			}
 			InstallerProgression::ExtractingPython(extraction_state) => {
 				ui.text_yellow(im_str!("Please wait for extraction to finish..."));
 				ProgressBar::new((extraction_state.progress_percentage as f32) / 100.0f32)
@@ -406,7 +435,7 @@ impl InstallerGUI {
 		};
 	}
 
-	// Advanced tools used if something went wrong. Hidden by default untlick you expend the header
+	// Advanced tools used if something went wrong. Hidden by default unless you expand the header
 	fn display_advanced_tools(&mut self, ui: &Ui) {
 		// Advanced Tools Section
 		if ui.collapsing_header(im_str!("Advanced Tools")).build() {

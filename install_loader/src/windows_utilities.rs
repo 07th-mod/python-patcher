@@ -109,3 +109,8 @@ pub fn cpp_redist_open_website() -> std::io::Result<std::process::ExitStatus> {
 		"https://support.microsoft.com/en-au/help/2977003/the-latest-supported-visual-c-download",
 	)
 }
+
+pub fn installer_is_in_temp_folder() -> Result<bool, Box<dyn Error>> {
+	let app_data = format!("{}\\AppData", std::env::var("USERPROFILE")?);
+	Ok(std::env::current_exe()?.starts_with(app_data.as_str()))
+}
