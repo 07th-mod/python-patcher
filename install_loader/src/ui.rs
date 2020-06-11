@@ -230,10 +230,10 @@ impl InstallerGUI {
 						InstallerProgression::UserNeedsCPPRedistributable
 					};
 				}
-				ExtractionStatus::Error(error_str) => {
-					self.state.progression = InstallerProgression::InstallFailed(
-						InstallFailedState::new(String::from(error_str)),
-					)
+				ExtractionStatus::Error(error) => {
+					println!("\n\nERROR: {}", error);
+					self.state.progression =
+						InstallerProgression::InstallFailed(InstallFailedState::new(error))
 				}
 			}
 		}
