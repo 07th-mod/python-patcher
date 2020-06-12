@@ -15,19 +15,32 @@ use std::error::Error;
 fn pause(msg: &str) -> Option<String> {
 	// We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
 	let mut stderr = io::stderr();
-	let _ = write!(stderr, "{}", msg);
+	let _ = write!(stderr, "\n\n{}", msg);
 	let _ = stderr.flush();
 
 	// Block until user presses Enter
 	let stdin = io::stdin();
 	for line in stdin.lock().lines() {
 		match line {
-			Ok(line) => return Some(line),
+			Ok(line) => return Some(line.trim().to_string()),
 			Err(_) => break,
 		}
 	}
 
 	None
+}
+
+fn loop_until_valid_input(msg: &str, choices: Vec<&str>) -> String {
+	loop {
+		match pause(msg) {
+			Some(msg) => {
+				if choices.contains(&msg.as_str()) {
+					return msg;
+				}
+			}
+			_ => {}
+		}
+	}
 }
 
 /// Creates a new file, then writes string to file
@@ -41,7 +54,7 @@ fn get_short_crash_message(info: &PanicInfo) -> String {
 	let mut expl = String::new();
 
 	expl.push_str(
-		r#"The 07th-mod Installer has crashed! :(
+		r#"The 07th-mod Installer has crashed, however fallback mode is still available, follow the prompts below!
 
 Please help us by reporting the error and submitting the crash log
  - on our Discord server: https://discord.gg/pf5VhF9
@@ -76,8 +89,59 @@ Please help us by reporting the error and submitting the crash log
 }
 
 fn fallback_installer() -> Result<(), Box<dyn Error>> {
-	eprintln!("\n------------- NOTE: 'Safe Mode' Installer is available ----------\n");
+	eprintln!("\n------------- NOTE: 'Fallback Mode' is available ----------");
 
+	// Check if the installer is being run from a temporary folder
+	let msg = r"Warning: It appears you're running the installer from a temporary folder, which may cause the installer to fail.
+Please download the installer to your Downloads or other known location, then run it from there.
+
+> (If you wish to continue anyway, type 'y' and press ENTER)
+";
+	if windows_utilities::installer_is_in_temp_folder().unwrap_or(false) {
+		loop_until_valid_input(msg, vec!["y"]);
+	}
+
+	// Check for VC redist
+	let msg_vc_1 = r#"Warning: You are missing the Visual C++ Redistributable (x86), needed to run the installer!
+0: to download directly (https://aka.ms/vs/16/release/vc_redist.x86.exe)
+1: open the Microsoft website to download it yourself
+
+> (Please type '0' or '1', then press ENTER)
+"#;
+
+	let msg_vc_2 = r#"Press ENTER once you've finished installing the redist
+If no web page opened, you can use these links to manually download:
+Direct Download: https://aka.ms/vs/16/release/vc_redist.x86.exe
+Info Page: https://support.microsoft.com/en-au/help/2977003/the-latest-supported-visual-c-download
+
+> (Once you've finished installing the redist, press ENTER)
+"#;
+
+	let msg_vc_3 = r#"It looks like the redist is still not installed.
+Please make sure it's installed.
+
+> (If you wish to continue anyway, type 'y' and press ENTER)
+"#;
+
+	if !windows_utilities::x86_cpp_redist_is_installed() {
+		match loop_until_valid_input(msg_vc_1, vec!["0", "1"]).as_str() {
+			"0" => {
+				let _ = windows_utilities::cpp_redist_download_in_browser();
+			}
+			"1" => {
+				let _ = windows_utilities::cpp_redist_open_website();
+			}
+			_ => {}
+		};
+
+		pause(msg_vc_2);
+
+		if !windows_utilities::x86_cpp_redist_is_installed() {
+			loop_until_valid_input(msg_vc_3, vec!["y"]);
+		}
+	}
+
+	// Check whether the user wants to run the web installer or text installer
 	let script_name = {
 		let user_choice = pause(
 			r#"Please choose which installer to run:
@@ -93,7 +157,7 @@ fn fallback_installer() -> Result<(), Box<dyn Error>> {
 
 		match user_choice {
 			None => graphical,
-			Some(choice) => match choice.to_lowercase().trim() {
+			Some(choice) => match choice.to_lowercase().as_str() {
 				"0" => graphical,
 				"1" => text,
 				_ => graphical,
