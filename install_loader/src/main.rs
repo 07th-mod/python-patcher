@@ -51,27 +51,30 @@ fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 		Ok(path) => {
 			print!("{}", path);
 			Ok(())
-		},
+		}
 		Err(error) if error.is::<windows_dialog::UserCancelled>() => Ok(()),
 		Err(error) => Err(error),
 	}
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let matches = App::new("07th-mod Installer Loader")
-	.version(version::travis_tag())
-	.about("Loader which extracts and starts the Python-based 07th-mod Installer.")
-	.subcommand(App::new("open")
-	    .about(r#"Shows an open dialog and:
+	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
 - if user cancelled, writes nothing to stdout, returns 0
-- if an errror occurred, writes the error to stdout, returns 1"#)
-		.arg(Arg::with_name("filters")
-            .help(r#"Sets the description and filters to use - defaults to all files.
-For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#)
-			.multiple(true))
-	)
-	.get_matches();
+- if an errror occurred, writes the error to stdout, returns 1"#;
+
+	let open_help_msg = r#"Sets the description and filters to use - defaults to all files.
+For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
+
+	let matches = App::new("07th-mod Installer Loader")
+		.version(version::travis_tag())
+		.about("Loader which extracts and starts the Python-based 07th-mod Installer.")
+		.subcommand(
+			App::new("open")
+				.about(open_about_msg)
+				.arg(Arg::with_name("filters").help(open_help_msg).multiple(true)),
+		)
+		.get_matches();
 
 	if let Some(matches) = matches.subcommand_matches("open") {
 		return handle_open_command(matches);
