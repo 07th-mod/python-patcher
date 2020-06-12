@@ -119,6 +119,13 @@
 				</p>
 			</div>
 			<hr>
+			<div>
+				<h4>Want to mod another game? <a href="index.html">Click here to return to the main menu</a></h4>
+			</div>
+			<hr>
+			<div>
+				<h4>Install settings are displayed below for reference only.</h4>
+			</div>
 			</div>
 			</transition>
 			<transition name="fade">
@@ -157,7 +164,7 @@
 				</section>
 			</transition>
 			<transition name="fade">
-			<section class="section-small-padding">
+			<section class="section-small-padding" v-bind:class="{ 'greyed-out-disabled': installStarted }">
 					<div class="container">
 						<div class="row">
 							<div class="col-sm-12">
