@@ -253,9 +253,9 @@ impl InstallerGUI {
 				| InstallerProgression::PreExtractionChecksFailed(_)
 				| InstallerProgression::ExtractingPython(_)
 				| InstallerProgression::UserNeedsCPPRedistributable
-				| InstallerProgression::WaitingUserPickInstallType => self.quit(),
+				| InstallerProgression::WaitingUserPickInstallType
+				| InstallerProgression::InstallFinished => self.quit(),
 				InstallerProgression::InstallStarted(_)
-				| InstallerProgression::InstallFinished
 				| InstallerProgression::InstallFailed(_) => ui.open_popup(confirm_exit_modal_name),
 			}
 		}
@@ -406,19 +406,21 @@ Please download the installer to your Downloads or other known location, then ru
 					));
 				}
 
-				if graphical_install
-					.python_monitor
-					.task_has_failed_nonblocking()
-				{
-					self.state.progression =
+				if let Some(exit_status) = graphical_install.python_monitor.try_wait().unwrap_or(None) {
+					self.state.progression = if exit_status.success() {
+						InstallerProgression::InstallFinished
+					} else {
 						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(
 							"Python Installer Failed - See Console Window",
-						)));
+						)))
+					};
 					return;
 				}
 			}
 			InstallerProgression::InstallFinished => {
-				ui.text_yellow(im_str!("Please wait - Installer is closing"));
+				ui.text_yellow(im_str!(
+					"The install is finished. You can now close this window."
+				));
 			}
 			InstallerProgression::InstallFailed(install_failed_state) => {
 				ui.text_red(im_str!("The installation failed!"));
