@@ -171,8 +171,8 @@ def _loggerMessageToStatusDict(message):
 	return {"msg": displayedMessage,
 	        "error": True if message.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX) else False}
 
-def start_server(working_directory, post_handlers, serverStartedCallback=lambda _: None):
-	# type: (str, dict, function) -> None
+def start_server(working_directory, post_handlers, installRunningLock, serverStartedCallback=lambda _: None):
+	# type: (str, dict, threading.RLock, function) -> None
 	"""
 	Starts a http server which handles POST requests with callbacks by the given 'post_handlers' argument.
 
@@ -322,6 +322,15 @@ def start_server(working_directory, post_handlers, serverStartedCallback=lambda 
 	# Using Port '0' lets the OS choose an unused port
 	httpd = HTTPServerNoReuse(("127.0.0.1", 0), CustomHandler)
 
+	# Spawn a thread to cause a shutdown of the server if lock is released
+	def shutdownThread():
+		print("Shutdown thread started")
+		installRunningLock.acquire()
+		print("Lock released - initiating shutdown")
+		httpd.shutdown()
+
+	threading.Thread(target=shutdownThread).start()
+
 	# note: calling the http server constructor will immediately start listening for connections,
 	# however it won't give a response until "serve_forever()" is called. This allows running the
 	# serverStartedCallback() before we block by calling serve_forever()
@@ -462,6 +471,12 @@ class InstallerGUI:
 
 		self.lastInstallPath = "" #type: str
 		self.lastSubModID = 0 #type: int
+
+		self.installRunningLock = threading.RLock()
+		self.installRunningLock.acquire()
+
+	def shutdown(self):
+		self.installRunningLock.release()
 
 	def loadNews(self):
 		self.remoteNews = common.tryGetRemoteNews('news')
@@ -820,6 +835,11 @@ class InstallerGUI:
 			def showInFileBrowser(requestData):
 				if os.path.exists(requestData):
 					common.trySystemOpen(requestData, normalizePath=True)
+				return {}
+
+			def shutdown(_requestData):
+				self.shutdown()
+				return {}
 
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
@@ -831,6 +851,7 @@ class InstallerGUI:
 				'showFileChooser' : showFileChooser,
 				'getInitStatus': getInitStatus,
 				'showInFileBrowser': showInFileBrowser,
+				'shutdown': shutdown,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)
@@ -868,4 +889,5 @@ Exception while handling [{}] request:
 
 		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,
+		             installRunningLock=self.installRunningLock,
 		             serverStartedCallback=on_server_started)

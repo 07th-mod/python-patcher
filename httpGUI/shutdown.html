@@ -4,7 +4,7 @@
     <head>
 		<link id="favicon" rel="icon" type="image/png" href="favicon.png" />
         <meta charset="utf-8">
-        <title>07th-Mod Installer Loading Screen</title>
+        <title>07th-Mod Installer Shutdown</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -15,36 +15,52 @@
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
     </head>
     <body>
-		<div id="app" class="main-container" v-cloak>
 		<div class="main-container">
+			<div class="row" style="height: 30vh"></div>
 			<div class="row">
-				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<h1>07th-Mod Installer</h1>
-					<h3>Please Wait...</h3>
-					<div id="terminal"><p>Terminal Output</p></div>
-					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
-					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
-					<div v-if='errorMessage !== null'>
-						<h2 style="color: red;">Installer init failed :(</h2>
-						<p>Please read the error message below, and try to fix the issue.</p>
-						<p>When you are ready, restart the installer by first closing all windows including the launcher, then start the installer again.</p>
-						<h3>Error Message</h3>
-						<pre>{{ errorMessage }}</pre>
+				<div class="col-md-3"></div>
+				<div class="col-md-6 ">
+				<div class="main-container">
+					<h1>07th-mod Installer </h1>
+					<br>
+					<div id="shutdown-in-progress">
+						<h2>Please wait...Shutting Down...</h2>
+					</div>
+					<div id="shutdown-complete" style="display: none;">
+						<h2>✅ Shutdown Complete</h2>
+						<br>
+						<h2>You can now close this window and the install loader or console window.</h2>
 					</div>
 				</div>
-				<div class="col-md-1"></div>
+				</div>
 			</div>
 		</div>
-		</div>
-		<script src="js/vue.js"></script>
 		<script src="python-patcher-rest-lib.js"></script>
-		<script src="python-patcher-loading-screen.js"></script>
 		<script>
 			// Warn the user if they are on Internet Explorer - we don't support it!
 			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
 				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
 			}
+
+
+			// Tell the web server to shutdown the installer
+			// Since it's possible for POST requests to fail, repeatedly try to exit until the installer acknowledges it.
+			let success = false;
+
+			function checkPostSuccess() {
+				if(!success) {
+					doPost('shutdown', {}, () => {
+						success = true;
+						document.getElementById("shutdown-in-progress").style.display = "none";
+						document.getElementById("shutdown-complete").style.display = "block";
+						console.log("Shutdown Successful")
+					});
+					setTimeout(checkPostSuccess, 1000);
+				}
+			}
+
+			checkPostSuccess();
+
 		</script>
-		</body>
-	</html>
+	</body>
+</html>

@@ -43,10 +43,7 @@ impl ProcessRunner {
 		Ok(())
 	}
 
-	pub fn task_has_failed_nonblocking(&mut self) -> bool {
-		match self.child.try_wait() {
-			Ok(Some(exit_status)) => !exit_status.success(),
-			_ => false,
-		}
+	pub fn try_wait(&mut self) -> std::io::Result<Option<std::process::ExitStatus>> {
+		self.child.try_wait()
 	}
 }
