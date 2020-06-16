@@ -895,7 +895,7 @@
 					"descriptionID": "uminekoSakuTLOnly",
 					"files": [
 						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
-						{"name": "graphics", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Potato.7z"}
+						{"name": "graphics", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Potato.7z", "priority": 0}
 					],
 					"fileOverrides": []
 				}
