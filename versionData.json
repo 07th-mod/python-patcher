@@ -244,5 +244,12 @@
 			{"id": "script",                 "version": "0.3.0"},
 			{"id": "graphics",               "version": "0.9.0"}
 		]
+	},
+	{
+		"id": "Umineko Saku/tl-only",
+		"files": [
+			{"id": "script",                 "version": "0.3.0"},
+			{"id": "graphics",               "version": "0.1.0"}
+		]
 	}
 ]
