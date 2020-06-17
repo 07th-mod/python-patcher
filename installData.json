@@ -886,7 +886,8 @@
 					"descriptionID": "uminekoSakuFull",
 					"files":[
 						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/Saku/UminekoSaku-Graphics.7z", "priority": 0}
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/Saku/UminekoSaku-Graphics.7z", "priority": 0},
+						{"name": "movie", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Movie.7z", "priority": 0}
 					],
 					"fileOverrides" : []
 				},
