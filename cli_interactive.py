@@ -25,7 +25,7 @@ import gameScanner
 import uminekoInstaller
 import uminekoNScripterInstaller
 import higurashiInstaller
-
+from httpGUI import getDownloadPreview
 
 def userAskYesNo(headerText, descriptionText=None):
 	# type: (str, str) -> bool
@@ -149,6 +149,25 @@ def askUserInstallPathGetFullInstallConfig():
 			else:
 				print("---- Invalid game path, please try again ----")
 
+def warnIfSavesIncompatible(fullInstallConfig):
+	downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected, scriptNeedsUpdate = getDownloadPreview(
+		fullInstallConfig)
+
+	if not scriptNeedsUpdate:
+		return
+
+	print("""---------------------------------------------------
+WARNING: Game saves will probably NOT be compatible after this update (global save data should be OK though).
+If you try to load old saves with the mod, they may skip you forward or backward in the game!
+
+- If you're in the middle of a chapter, we suggest you finish up the current chapter first.
+  Then, after installing the mod, use the chapter select menu, and DO NOT load any old saves.
+
+- If you haven't made any saves yet, you can ignore this message.
+
+> Continue install anyway?""")
+	userAskYesNo("Have you read the above message?")
+
 if __name__ == "__main__":
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
@@ -176,6 +195,9 @@ if __name__ == "__main__":
 	subModToInstall, _ = userPickFromList(modVariants, "Please choose which variant to install") #type: SubModConfig
 
 	fullInstallConfig = askUserInstallPathGetFullInstallConfig()
+
+	# Warn the user if installation may cause saves to become incompatible
+	warnIfSavesIncompatible(fullInstallConfig)
 
 	# Ask the user what options they want to install
 	# Note: this function directly modifies the submod's options

@@ -160,6 +160,8 @@ window.onload = function onWindowLoaded() {
       CWDHaveEnoughFreeSpace: null,
       // The download items preview includes mod options, and an extra summary row at the end
       downloadItemsPreview: [],
+      // scriptNeedsUpdate: True if the installer will modify the game script (meaning saves might be invalidated)
+      scriptNeedsUpdate: false,
       // The number of updated files detected, EXCEPT for mod options
       numUpdatesRequired: 0,
       // Whether all the files need to be re-installed, or just part of the files. Mod options are not counted.
@@ -173,11 +175,25 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       doInstall(deleteVersionInformation) {
-        if (confirm(`Are you sure you want to install the mod?\n${app.getInstallWarningText()}`)) {
-          console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
-          console.log(app.selectedSubMod);
-          startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
+        if (!confirm(`Are you sure you want to install the mod?\n${app.getInstallWarningText()}`)) {
+          return;
         }
+
+        if (app.scriptNeedsUpdate && !confirm(`WARNING: Game saves will probably NOT be compatible after this update (global save data should be OK though).
+If you try to load old saves with the mod, they may skip you forward or backward in the game!
+
+- If you're in the middle of a chapter, we suggest you finish up the current chapter first.
+  Then, after installing the mod, use the chapter select menu, and DO NOT load any old saves.
+
+- If you haven't made any saves yet, you can ignore this message.
+
+Continue install anyway?`)) {
+          return;
+        }
+
+        console.log(`Trying to start install to ${app.selectedInstallPath} Submod:`);
+        console.log(app.selectedSubMod);
+        startInstall(app.selectedSubMod, app.selectedInstallPath, deleteVersionInformation);
       },
       onChoosePathButtonClicked(pathToInstall) {
         if (pathToInstall === undefined) {
@@ -225,6 +241,7 @@ window.onload = function onWindowLoaded() {
             app.haveEnoughFreeSpace = responseData.haveEnoughFreeSpace;
             app.CWDHaveEnoughFreeSpace = responseData.CWDHaveEnoughFreeSpace;
             app.downloadItemsPreview = responseData.downloadItemsPreview;
+            app.scriptNeedsUpdate = responseData.scriptNeedsUpdate;
             app.numUpdatesRequired = responseData.numUpdatesRequired;
             app.fullUpdateRequired = responseData.fullUpdateRequired;
 

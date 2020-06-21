@@ -415,12 +415,15 @@ def getDownloadPreview(fullInstallConfig):
 	# Generate rows for the normal/overridden files
 	totalDownload = 0
 	downloadItemsPreview = []
+	scriptNeedsUpdate = False
 	for modFile in modFileList:
 		updateNeeded, updateReason = fileVersionManager.updatesRequiredDict[modFile.id]
 		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(modFile.url)
 		downloadItemsPreview.append((modFile.id, downloadSize, updateNeeded, updateReason))
 		if updateNeeded and downloadSize:
 			totalDownload += downloadSize
+		if 'script' in modFile.id and updateNeeded:
+			scriptNeedsUpdate = True
 
 	# Generate rows for the mod option files
 	parser = installConfiguration.ModOptionParser(fullInstallConfig)
@@ -440,7 +443,7 @@ def getDownloadPreview(fullInstallConfig):
 	                         row[2],
 	                         row[3]) for row in downloadItemsPreview]
 
-	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired(), partialReinstallDetected
+	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired(), partialReinstallDetected, scriptNeedsUpdate
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
@@ -704,7 +707,7 @@ class InstallerGUI:
 					if deleteVersionInformation:
 						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
 
-					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected = getDownloadPreview(fullInstallConfiguration)
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected, scriptNeedsUpdate = getDownloadPreview(fullInstallConfiguration)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING
@@ -723,6 +726,7 @@ class InstallerGUI:
 					retval['numUpdatesRequired'] = numUpdatesRequired
 					retval['fullUpdateRequired'] = fullUpdateRequired
 					retval['partialReinstallDetected'] = partialReinstallDetected
+					retval['scriptNeedsUpdate'] = scriptNeedsUpdate
 				return retval
 
 			# requestData: Not necessary - will be ignored
