@@ -59,8 +59,11 @@ jobs:
           rustup default stable-i686-pc-windows-msvc
 
       # Run Python Deploy Script
+      # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
       - name: Run Deploy Script
-        run: python travis_build_script.py
+        run: |
+          pip install vt-py
+          python travis_build_script.py
 
       # Upload Artifact
       - name: Upload Windows Build
