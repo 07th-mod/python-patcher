@@ -61,6 +61,8 @@ jobs:
       # Run Python Deploy Script
       # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
       - name: Run Deploy Script
+        env:
+          VT_API_KEY: ${{ secrets.VT_API_KEY }}
         run: |
           pip install vt-py
           python travis_build_script.py
