@@ -14,16 +14,9 @@ from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
 
-# On Windows only, vt-py (VirusTotal API) is imported just before use (pip install vt-py)
+# On Windows only, vt-py (VirusTotal API) is imported (pip install vt-py)
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
-
-# Required Environment Variables
-GIT_TAG = os.environ.get("GITHUB_REF")    # Github Tag / Version info
-VT_API_KEY = os.environ.get('VT_API_KEY') # VirusTotal API Key
-if VT_API_KEY is None:
-	print("ERROR: You must provide a VirusTotal API Key using the environment variable 'VT_API_KEY' for this script to work")
-	exit(-1)
 
 BUILD_LINUX_MAC = True
 # If user specified which platform to build for, use that platform. Otherwise, attempt to detect platform automatically.
@@ -38,6 +31,17 @@ print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
 IS_WINDOWS = sys.platform == "win32"
 
 EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-embed-win32.zip"
+
+# Required Environment Variables
+GIT_TAG = os.environ.get("GITHUB_REF")    # Github Tag / Version info
+
+# Windows builds need virustotal import and API key
+if not BUILD_LINUX_MAC:
+	import vt  # VirusTotal - pip install vt-py
+	VT_API_KEY = os.environ.get('VT_API_KEY') # VirusTotal API Key
+	if VT_API_KEY is None:
+		print("ERROR: You must provide a VirusTotal API Key using the environment variable 'VT_API_KEY' for this script to work")
+		exit(-1)
 
 def call(args, **kwargs):
 	print("running: {}".format(args))
@@ -96,10 +100,7 @@ def sha256_of_file(file_path):
 
 	return file_hash.hexdigest()
 
-# This function imports `vt-py` (VirusTotal API)
 def do_scan(api_key, file_path):
-	import vt # VirusTotal - pip install vt-py
-
 	with vt.Client(api_key) as client:
 		try:
 			file = client.get_object(f"/files/{sha256_of_file(file_path)}")
