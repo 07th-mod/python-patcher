@@ -717,7 +717,7 @@
 					"submods" : ["full"],
 					"checkBox": [
 						{
-							"name": "Make Jessica British", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option restores allows you to use the censored PS3 CG.",
+							"name": "Make Jessica British", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option lets you use the censored PS3 CG.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
