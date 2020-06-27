@@ -13,7 +13,8 @@ import hashlib
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
-import vt # VirusTotal - pip install vt-py
+
+# On Windows only, vt-py (VirusTotal API) is imported just before use (pip install vt-py)
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
 
@@ -95,7 +96,10 @@ def sha256_of_file(file_path):
 
 	return file_hash.hexdigest()
 
+# This function imports `vt-py` (VirusTotal API)
 def do_scan(api_key, file_path):
+	import vt # VirusTotal - pip install vt-py
+
 	with vt.Client(api_key) as client:
 		try:
 			file = client.get_object(f"/files/{sha256_of_file(file_path)}")
