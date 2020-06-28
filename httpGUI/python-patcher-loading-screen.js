@@ -7,6 +7,10 @@ window.onload = function onWindowLoaded() {
     el: '#app',
     data: {
       errorMessage: null,
+      initCompleted: false, // set to true once init is completed
+      timeoutError: false, // set to true if init took too long
+      initTimeoutSeconds: 7, // time before timeout error occurs
+      pollCount: 0, // count of how many times the server has been polled for init status
     },
     methods: {
     },
@@ -17,6 +21,8 @@ window.onload = function onWindowLoaded() {
 
   function checkInitCompleted() {
     getInitStatus((status) => {
+      app.pollCount += 1;
+
       status.consoleLines.forEach((consoleLine) => {
         addToTerminal(terminal, consoleLine, autoScrollCheckbox, 5000);
       });
@@ -27,6 +33,7 @@ window.onload = function onWindowLoaded() {
       }
 
       if (status.initCompleted) {
+        app.initCompleted = true;
         window.location = '.';
       } else {
         window.setTimeout(checkInitCompleted, 500);
@@ -34,5 +41,6 @@ window.onload = function onWindowLoaded() {
     });
   }
 
+  window.setTimeout(() => { app.timeoutError = true; }, app.initTimeoutSeconds * 1000);
   window.setTimeout(checkInitCompleted, 500);
 };

@@ -25,6 +25,16 @@
 					<div id="terminal"><p>Terminal Output</p></div>
 					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
 					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
+					<div v-if='!initCompleted'>
+						<p>Status: Waiting for init to complete ({{ pollCount }})
+						<div v-if='timeoutError'>
+							<p><b>Warning:</b> {{ initTimeoutSeconds }} seconds and loading is still not complete.
+								You should wait a little while longer, but you may want to restart the installer (close everything, then start again) or restart your computer and try again.
+								<a href="https://07th-mod.com/wiki/Installer/support/">Contact the 07th-mod team</a> if this happens repeatedly.
+							</p>
+						</div>
+					</div>
+					<div v-else><p>Status: Init completed, launching main page. <a href=".">Click here if redirect doesn't happen automatically.</a></p></div>
 					<div v-if='errorMessage !== null'>
 						<h2 style="color: red;">Installer init failed :(</h2>
 						<p>Please read the error message below, and try to fix the issue.</p>
