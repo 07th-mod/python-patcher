@@ -61,11 +61,16 @@ jobs:
       # Run Python Deploy Script
       # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
       - name: Run Deploy Script
+        run: python travis_build_script.py
+
+      # Run virus scan (only on tagged builds)
+      - name: Run VirusTotal Scan
+        if: startsWith(github.ref, 'refs/tags/') # only scan tagged commits
         env:
           VT_API_KEY: ${{ secrets.VT_API_KEY }}
         run: |
           pip install vt-py
-          python travis_build_script.py
+          python virusTotalScan.py
 
       # Upload Artifact
       - name: Upload Windows Build

@@ -9,12 +9,10 @@ import sys
 import datetime
 import platform
 import tempfile
-import hashlib
+
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
-
-# On Windows only, vt-py (VirusTotal API) is imported (pip install vt-py)
 
 print("--- Running 07th-Mod Installer Build using Python {} ---".format(sys.version))
 
@@ -34,14 +32,6 @@ EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-
 
 # Required Environment Variables
 GIT_TAG = os.environ.get("GITHUB_REF")    # Github Tag / Version info
-
-# Windows builds need virustotal import and API key
-if not BUILD_LINUX_MAC:
-	import vt  # VirusTotal - pip install vt-py
-	VT_API_KEY = os.environ.get('VT_API_KEY') # VirusTotal API Key
-	if VT_API_KEY is None:
-		print("ERROR: You must provide a VirusTotal API Key using the environment variable 'VT_API_KEY' for this script to work")
-		exit(-1)
 
 def call(args, **kwargs):
 	print("running: {}".format(args))
@@ -87,38 +77,6 @@ def pre_build_validation():
 
 	fileVersionManagement.Developer_ValidateVersionDataJSON(sub_mod_configs)
 	print("Travis validation success")
-
-def sha256_of_file(file_path):
-	BLOCK_SIZE = 65536
-
-	file_hash = hashlib.sha256()
-	with open(file_path, 'rb') as f:
-		fb = f.read(BLOCK_SIZE)
-		while len(fb) > 0:
-			file_hash.update(fb)
-			fb = f.read(BLOCK_SIZE)
-
-	return file_hash.hexdigest()
-
-def do_scan(api_key, file_path):
-	with vt.Client(api_key) as client:
-		try:
-			file = client.get_object(f"/files/{sha256_of_file(file_path)}")
-			stats = file.last_analysis_stats
-			results = file.last_analysis_results
-		except vt.APIError as e:
-			print(f"Uploading file as file not already in database ({e})")
-			with open(file_path, "rb") as final_exe_file:
-				analysis = client.scan_file(final_exe_file, wait_for_completion=True)
-				stats = analysis.stats
-				results = analysis.results
-
-		print(stats)
-		print("Scanners with positive results:")
-		for scanner_name, scanner_result_dict in results.items():
-			result = scanner_result_dict["result"]
-			if result:
-				print(f'- {scanner_name}: {result}')
 
 pre_build_validation()
 
@@ -263,10 +221,6 @@ if not BUILD_LINUX_MAC:
 	# Copy the exe to the final output folder
 	final_exe_path = os.path.join(output_folder, loader_exe_name)
 	shutil.copy('install_loader/target/release/install_loader.exe', final_exe_path)
-
-	# Scan the .exe with virustotal
-	print("Beginning VirusTotal Scan...")
-	do_scan(VT_API_KEY, final_exe_path)
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:
