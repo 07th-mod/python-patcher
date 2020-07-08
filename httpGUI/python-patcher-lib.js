@@ -180,7 +180,7 @@ window.onload = function onWindowLoaded() {
         }
 
         if (app.scriptNeedsUpdate && !confirm(`WARNING: Game saves will probably NOT be compatible after this update (global save data should be OK though).
-If you try to load old saves with the mod, they may skip you forward or backward in the game!
+If you try to load old saves with the mod, they may cause skips forward or backward in the game, graphical errors, crashes, or other weird problems!
 
 - If you're in the middle of a chapter, we suggest you finish up the current chapter first.
   Then, after installing the mod, use the chapter select menu, and DO NOT load any old saves.
