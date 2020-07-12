@@ -589,16 +589,12 @@
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Matsuribayashi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5},
-						{"name": "dll", "url": "https://07th-mod.com/rikachama/matsuri-dll-override/this-file-intentionally-left-blank.7z", "priority": 10}
+						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
-						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=5.6.7f1"},
-						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=5.6.7f1"},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
-						{"name": "dll", "id": "dll-gog", "os": ["windows", "linux"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-dll-override/good-old-dll.7z"}
+						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"}
 					]
 				},
 				{
