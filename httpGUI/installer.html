@@ -215,6 +215,10 @@
 												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
+													<div v-if="selectedSubMod.modName === 'Matsuribayashi Ch.8'">
+														⚠️<strong style="color: red">WARNING for GOG users:</strong> The GOG version of Matsuribayashi Ch.8 is currently incompatible with the 'full' patch of our mod. We are waiting for Mangagamer to update the game so that it will work.<br><strong>If you have the GOG version of the game, DO NOT install the mod</strong>, and instead wait for us to announce that the mod is compatible with the GOG release.</strong>
+													</div>
+													<br>
 													<div v-if="selectedSubMod.modName === 'Console Arcs'">
 														<strong style="color: red">WARNING: This will overwrite your Himatsubushi Ch.4 installation with the console arcs.</strong><br>
 														For best results, we recommend you install to a fresh, unmodded Himatsubushi Ch.4 installation, however overwriting a modded version will probably still work.<br>
