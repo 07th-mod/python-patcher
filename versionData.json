@@ -146,7 +146,9 @@
 			{"id": "script",              "version": "1.0.0"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.0.0"},
-			{"id": "ui-unix",             "version": "1.0.0"}
+			{"id": "ui-unix",             "version": "1.0.0"},
+			{"id": "dll",                 "version": "1.0.0"},
+			{"id": "dll-gog",             "version": "1.0.0"}
 		]
 	},
 	{
