@@ -58,6 +58,15 @@ fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+	// This follows the example at https://github.com/ohadravid/win32job-rs
+	// It forces any created sub processes to exit when the main process exits
+	// This includes the python process, and processes called from python like aria2c and 7z
+	let job = win32job::Job::create()?;
+	let mut info = job.query_extended_limit_info()?;
+	info.limit_kill_on_job_close();
+	job.set_extended_limit_info(&mut info)?;
+	job.assign_current_process()?;
+
 	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
 - if user cancelled, writes nothing to stdout, returns 0

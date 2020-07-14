@@ -25,3 +25,4 @@ imgui-winit-support = { version = "0.3.0-pre", git = "https://github.com/Gekkio/
 # Windows specific dependencies
 winapi = { version = "*", features = ["shobjidl", "shtypes"] }
 widestring = "*"
+win32job = "1"
