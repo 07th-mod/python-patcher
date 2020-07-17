@@ -114,3 +114,35 @@ pub fn installer_is_in_temp_folder() -> Result<bool, Box<dyn Error>> {
 	let app_data = format!("{}\\AppData", std::env::var("USERPROFILE")?);
 	Ok(std::env::current_exe()?.starts_with(app_data.as_str()))
 }
+
+fn try_set_kill_on_job_close(job: &mut win32job::Job) -> Result<(), Box<dyn Error>> {
+	let mut info = job.query_extended_limit_info()?;
+	info.limit_kill_on_job_close();
+	job.set_extended_limit_info(&mut info)?;
+	job.assign_current_process()?;
+
+	Ok(())
+}
+
+// Note: The program will be terminated once the returned Job object goes out of scope!
+// Eg. to keep the program running, you must keep the Job object in scope.
+//
+// This follows the example at https://github.com/ohadravid/win32job-rs
+// It forces any created sub processes to exit when the main process exits
+// This includes the python process, and processes called from python like aria2c and 7z
+// Also see: https://stackoverflow.com/questions/23434842/python-how-to-kill-child-processes-when-parent-dies/23587108
+// On Windows 7, creating the job  seems to fail - see workaround at end of main()
+pub fn new_job_kill_on_job_close() -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
+	// first, try to create a job object
+	let mut job = match win32job::Job::create() {
+		Ok(job) => job,
+		Err(e) => return (None, Err(e.into())),
+	};
+
+	// if the job creation was successful, try to set it such that all processes are
+	// killed when the job object goes out of scope (including *this* process!).
+	match try_set_kill_on_job_close(&mut job) {
+		Ok(_) => (Some(job), Ok(())),
+		Err(e) => (Some(job), Err(e.into())),
+	}
+}

@@ -12,7 +12,7 @@ use crate::{archive_extractor, InstallerConfig};
 use std::error::Error;
 
 /// This function blocks until the user to presses enter in the console
-fn pause(msg: &str) -> Option<String> {
+pub fn pause(msg: &str) -> Option<String> {
 	// We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
 	let mut stderr = io::stderr();
 	let _ = write!(stderr, "\n\n{}", msg);
@@ -88,7 +88,7 @@ Please help us by reporting the error and submitting the crash log
 	expl
 }
 
-fn fallback_installer() -> Result<(), Box<dyn Error>> {
+pub fn fallback_installer() -> Result<(), Box<dyn Error>> {
 	eprintln!("\n------------- NOTE: 'Fallback Mode' is available ----------");
 
 	// Check if the installer is being run from a temporary folder

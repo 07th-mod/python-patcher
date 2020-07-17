@@ -58,14 +58,10 @@ fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-	// This follows the example at https://github.com/ohadravid/win32job-rs
-	// It forces any created sub processes to exit when the main process exits
-	// This includes the python process, and processes called from python like aria2c and 7z
-	let job = win32job::Job::create()?;
-	let mut info = job.query_extended_limit_info()?;
-	info.limit_kill_on_job_close();
-	job.set_extended_limit_info(&mut info)?;
-	job.assign_current_process()?;
+	panic_handler::set_hook(String::from("07th-mod_crash.log"));
+
+	// _maybe_job must be kept in scope for the remainder of the program!
+	let (_maybe_job, register_job_result) = windows_utilities::new_job_kill_on_job_close();
 
 	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
@@ -89,14 +85,29 @@ For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
 		return handle_open_command(matches);
 	}
 
-	panic_handler::set_hook(String::from("07th-mod_crash.log"));
+	if register_job_result.is_ok() {
+		// Hide the console for windows users to make the installer less scary
+		// the console window can un-hidden later if necessary
+		windows_utilities::hide_console_window();
 
-	// Hide the console for windows users to make the installer less scary
-	// the console window can un-hidden later if necessary
-	windows_utilities::hide_console_window();
-
-	// UI is on "main" thread, so the installer thread is forced to close when the UI window is closed.
-	ui::ui_loop();
+		// This function blocks forever until the user quits the graphical installer
+		ui::ui_loop();
+	} else {
+		// If job object not registered properly, use fallback/console installer
+		// This ensures that everything is cleaned up properly as windows will automatically
+		// clean up child processes when the console window is closed.
+		println!("Warning: Failed to register job object! You're probably using Windows 7!");
+		println!("Don't worry - you can use the terminal based installer below");
+		if let Err(error) = panic_handler::fallback_installer() {
+			println!("Fallback Installer has failed with: {:?}", error);
+			println!(
+				"Please help us by reporting the error and submitting the crash log
+ - on our Discord server: https://discord.gg/pf5VhF9
+ - or, as a Github issue: https://github.com/07th-mod/python-patcher/issues"
+			);
+			panic_handler::pause("Press ENTER to quit the installer");
+		}
+	}
 
 	Ok(())
 }
