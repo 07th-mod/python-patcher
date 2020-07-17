@@ -406,7 +406,9 @@ Please download the installer to your Downloads or other known location, then ru
 					));
 				}
 
-				if let Some(exit_status) = graphical_install.python_monitor.try_wait().unwrap_or(None) {
+				if let Some(exit_status) =
+					graphical_install.python_monitor.try_wait().unwrap_or(None)
+				{
 					self.state.progression = if exit_status.success() {
 						InstallerProgression::InstallFinished
 					} else {
@@ -421,6 +423,7 @@ Please download the installer to your Downloads or other known location, then ru
 				ui.text_yellow(im_str!(
 					"The install is finished. You can now close this window."
 				));
+				self.quit();
 			}
 			InstallerProgression::InstallFailed(install_failed_state) => {
 				ui.text_red(im_str!("The installation failed!"));

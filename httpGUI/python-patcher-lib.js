@@ -287,6 +287,10 @@ Continue install anyway?`)) {
       canInstallSteamGrid() {
         return app.metaInfo.operatingSystem === 'windows' && !app.selectedSubMod.descriptionID.toLowerCase().includes('voiceonly');
       },
+      abortInstall() {
+        app.installFinished = true;
+        window.location = 'shutdown.html';
+      },
     },
     computed: {
       modHandles() {
