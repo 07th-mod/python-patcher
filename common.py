@@ -751,16 +751,16 @@ class DownloaderAndExtractor:
 			try:
 				with io.open(localDateModifiedControlPath, "r", encoding='UTF-8') as f:
 					return f.read()
-			except:
-				print("Failed to load date modified file {}".format(localDateModifiedControlPath))
+			except Exception as e:
+				print("Failed to load date modified file {}: {}".format(localDateModifiedControlPath, e))
 				return None
 
 		def _updateLocalDateModified(self, localDateModifiedControlPath):
 			try:
 				with io.open(localDateModifiedControlPath, "w", encoding='UTF-8') as f:
 					f.write(self.remoteLastModified)
-			except:
-				print("Failed to write date modified file {}".format(localDateModifiedControlPath))
+			except Exception as e:
+				print("Failed to write date modified file {}: {}".format(localDateModifiedControlPath, e))
 
 		def _tryDeleteOldDownloadAndAriaFile(self, downloadDir):
 			oldDownloadPath = os.path.join(downloadDir, self.filename)
