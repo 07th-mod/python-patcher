@@ -176,7 +176,7 @@
 										<section class="section-small-padding" v-show="partiallyUninstalledPaths.length > 0">
 											<h3>⚠️Warning: The following games were uninstalled via Steam, but the mod files still remain on disk</h3>
 											<strong>Please manually delete these folders to free disk space and avoid problems with the installer. Click to open each path:</strong>
-											<ul class="bullets">
+											<ul class="installer-bullets">
 											<li v-for="path in partiallyUninstalledPaths"><a href="#" v-on:click='showInFileBrowser(path)'>{{ path }}</a></li>
 											</ul>
 										</section>
@@ -228,7 +228,7 @@
 														<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target='_blank'><img src='https://07th-mod.com/wiki/Higurashi/img/flow.png' width='400'></a><br><br>
 													</div>
 													This option combines all the patches available to create the best experience possible. It contains:
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>Full voiceover</li>
 														<li>PS3 backgrounds and CGs in Full HD</li>
 														<li>PS3 sprites with lipsync in 1440p</li>
@@ -252,25 +252,28 @@
 
 													This option <strong>only installs voices</strong>. No graphics are changed.<br><br>
 													Features:<br>
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>Full voiceover</li>
 													</ul>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoVoiceOnly'">
 													This option only installs voice related options. No graphics are changed.<br>
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>Full voiceover</li>
 														<li>Mod menu added to adjust voice/music volume</li>
 														<li>Playing with japanese text is not supported!</li>
 													</ul>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
-													<strong>
-														NOTE: ADV mode is switchable for the Question Arcs, but not for the Answer Arcs.<br>
-														Please keep this in mind when you eventually install the Answer Arcs.
-													</strong><br><br>
+													<strong>NOTE: The Question and Answer arcs differ in how ADV mode is enabled.</strong>
+													<ul class="installer-bullets">
+														<li>In the Question arcs, ADV mode can be toggled at any time from the in-game mod menu</li>
+														<li>In the Answer arcs, ADV mode must be selected at install time</li>
+													</ul>
+													Please keep this in mind when you eventually install the Answer Arcs.
+													<br><br>
 													This patch installs all PS3 content that the team has ported so far:
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>NEW: Has ADV mode, where text is shown in a textbox at the bottom of the screen. In the Question Arcs only, this can be toggled on or off at any time.</li>
 														<li>NEW: Playing with Japanese Text is supported</li>
 														<li>PS3 voices</li>
@@ -285,7 +288,7 @@
 													<strong>NOTE: ADV mode is not in-game switchable for the answer arcs.</strong><br>
 													Please select the "ADV-MODE" option if you want to play with ADV mode.<br><br>
 													This patch installs all PS3 content that the team has ported so far:<br>
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>NEW: Playing with Japanese Text is supported</li>
 														<li>PS3 voices</li>
 														<li>PS3 sprites</li>
@@ -299,7 +302,7 @@
 													Please select the "NOVEL-MODE" option if you want to play with NOVEL mode.<br><br>
 													This patch installs all PS3 content that the team has ported so far:<br>
 													This patch is the same as the "full" variant except it adds ADV mode:
-													<ul class="bullets">
+													<ul class="installer-bullets">
 														<li>WARNING: Playing with Japanese Text is NOT supported</li>
 														<li>Has <b>ADV mode</b>, where text is shown in a textbox at the bottom of the screen.</li>
 														<li>PS3 voices</li>
