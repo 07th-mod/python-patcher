@@ -163,18 +163,28 @@ def getPossibleIdentifiersFromFolder(folderPath):
 	return os.listdir(folderPath)
 
 def gamePathIsPartiallyUninstalled(gamePath):
-	#type: (str) -> bool
-	"""Returns true if game path is partially uninstalled (was uninstalled through Steam)"""
-	if glob.glob(os.path.join(gamePath, 'HigurashiEp0?_Data')) and not glob.glob(
-		os.path.join(gamePath, 'HigurashiEp0?.exe')):
-		print("Warning: Detected partial Higurashi install at {}. You may want to delete this manually.".format(gamePath))
-		return True
+	# type: (str) -> bool
+	try:
+		filesInGamePath = os.listdir(gamePath)
+		def regexExistsInGamePath(regexString):
+			return any(re.match(regexString, name) for name in filesInGamePath)
 
-	umineko_exe_exists = os.path.exists(os.path.join(gamePath, 'Umineko1to4.exe')) or \
-	                     os.path.exists(os.path.join(gamePath, 'Umineko5to8.exe'))
-	if os.path.exists(os.path.join(gamePath, '0.u')) and not umineko_exe_exists:
-		print("Warning: Detected partial Umineko install at {}. You may want to delete this manually".format(gamePath))
-		return True
+		higuFolderExists = regexExistsInGamePath(r"^HigurashiEp\d\d_Data$")
+		higuExeExists = regexExistsInGamePath(r"^HigurashiEp\d\d((.exe)|(.app)|(.x86)|(.x86_64))?$")
+
+		if higuFolderExists and not higuExeExists:
+			print("Warning: Detected partial Higurashi install at {}. You may want to delete this manually.".format(gamePath))
+			return True
+
+		umiScriptExists = '0.u' in filesInGamePath
+		umiExeExists = regexExistsInGamePath(r"^Umineko\dto\d((.exe)|(.app))?$")
+
+		if umiScriptExists and not umiExeExists:
+			print("Warning: Detected partial Umineko install at {}. You may want to delete this manually".format(gamePath))
+			return True
+	except Exception as e:
+		traceback.print_exc()
+		print("Failed to scan for partially uninstalled paths")
 
 	return False
 
