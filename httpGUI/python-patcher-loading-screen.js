@@ -9,7 +9,7 @@ window.onload = function onWindowLoaded() {
       errorMessage: null,
       initCompleted: false, // set to true once init is completed
       timeoutError: false, // set to true if init took too long
-      initTimeoutSeconds: 7, // time before timeout error occurs
+      initTimeoutSeconds: 15, // time before timeout error occurs
       pollCount: 0, // count of how many times the server has been polled for init status
     },
     methods: {
