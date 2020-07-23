@@ -126,8 +126,7 @@ def askUserInstallPathGetFullInstallConfig():
 			print(" - {}".format(path))
 		print("Please manually delete these folders to free disk space and avoid problems with the installer.")
 		print("-----------------------------------------------------------------")
-
-	userAskYesNo("Have you read the above message?")
+		userAskYesNo("Have you read the above message?")
 
 	_, installConfigIndex = userPickFromList([x.installPath for x in fullInstallConfigs] + [manualPathMarker],
 	                                         "Please choose the game path to install to")
