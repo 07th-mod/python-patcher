@@ -150,7 +150,8 @@
 			{"id": "ui-windows-old",      "version": "1.1.0"},
 			{"id": "ui-linux-old",        "version": "1.1.0"},
 			{"id": "system-gog-windows",  "version": "1.0.0"},
-			{"id": "system-gog-linux",    "version": "1.0.0"}
+			{"id": "system-gog-linux",    "version": "1.0.0"},
+			{"id": "system",              "version": "1.0.0"}
 		]
 	},
 	{
