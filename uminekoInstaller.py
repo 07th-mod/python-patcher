@@ -46,10 +46,15 @@ def deleteExtractablesFromFolder(folderContainingItems, extractableItemList):
 	#type: (str, List[common.DownloaderAndExtractor.ExtractableItem]) -> None
 	for extractableItem in extractableItemList:
 		extractableItemPath = os.path.join(folderContainingItems, extractableItem.filename)
+		dateModifiedPath = "{}.dateModified".format(extractableItemPath)
+
 		if os.path.exists(extractableItemPath):
 			print("Removing: [{}]".format(extractableItemPath))
 			os.remove(extractableItemPath)
 
+		if os.path.exists(dateModifiedPath):
+			print("Removing dateModified file: [{}]".format(dateModifiedPath))
+			os.remove(dateModifiedPath)
 
 #do install given a installer config object
 def mainUmineko(conf):
