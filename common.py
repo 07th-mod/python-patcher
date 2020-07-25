@@ -240,10 +240,23 @@ class Globals:
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
 def makeDirsExistOK(directoryToMake):
-	try:
-		os.makedirs(directoryToMake)
-	except OSError:
-		pass
+	if os.path.exists(directoryToMake):
+		return
+
+	# Only return once the folder has actually been created
+	for i in range(5):
+		try:
+			os.makedirs(directoryToMake)
+		except Exception as e:
+			print("Attempt {} to create {} failed: {}".format(i, directoryToMake, e))
+
+		if os.path.exists(directoryToMake):
+			return
+
+		time.sleep(1)
+
+	raise Exception("Couldn't create directory {}".format(directoryToMake))
+
 
 def trySystemOpen(path, normalizePath=False):
 	"""
@@ -582,21 +595,7 @@ def makeExecutable(executablePath):
 def getMetalinkFilenames(url):
 	import xml.etree.ElementTree as ET
 
-	downloadDir = tempfile.mkdtemp()
-
-	# Download the metalink file
-	if aria(downloadDir, url=url) != 0:
-		raise Exception("ERROR - could not download metalink [{}]. Installation Stopped".format(url))
-
-	# Load/Parse the metalink file into memory
-	tree = ET.parse(
-		os.path.join(downloadDir, os.path.basename(url))
-	)
-
-	# Remove the metalink file/folder as soon as it's loaded into memory
-	shutil.rmtree(downloadDir)
-
-	root = tree.getroot()
+	root = ET.fromstring(downloadFile(url, is_text=True))
 
 	def getTagNoNamespace(tag):
 		return tag.split('}')[-1]
@@ -1164,19 +1163,25 @@ def downloadFile(url, is_text):
 
 	def downloadUsingAria2c(download_url):
 		# Download to a temporary file
-		tmpname = "temporary.tmp"
-		tmpdir = tempfile.mkdtemp()
-		if aria(url=download_url, downloadDir=tmpdir, outputFile=tmpname) != 0:
+		tempName = "temporary.tmp"
+
+		tempDirectory = getInstallerTempDir()
+		tempPath = os.path.join(tempDirectory, tempName)
+
+		# Remove the file if it already exists, so the download does not fail
+		removeFileWithCheck(tempPath)
+
+		if aria(url=download_url, downloadDir=tempDirectory, outputFile=tempName) != 0:
 			raise Exception("ERROR - could not download [{}] with aria2c".format(download_url))
 
 		# Read out the temporary file to memory
-		temppath = os.path.join(tmpdir, tmpname)
-		file = open(temppath, 'rb')
+		file = open(tempPath, 'rb')
 		data = file.read()
 		file.close()
 
-		if tmpdir:
-			shutil.rmtree(tmpdir)
+		# Clean up by removing the file as it's no longer needed
+		removeFileWithCheck(tempPath)
+		removeFileWithCheck(tempDirectory, isEmptyFolder=True)
 
 		return data
 
@@ -1227,3 +1232,33 @@ def startAndJoinThreads(threads):
 
 	for thread in threads:
 		thread.join()
+
+def getInstallerTempDir():
+	"""Returns the path of a new, empty temporary directory. It will be located adjacent to the python script like:
+	 `07th-mod_temp_dir/tmpva9f1qz7`
+	 The callee is responsible for cleaning up and removing the directory afterwards."""
+	common_temp_folder_path = "07th-mod_temp_dir"
+	makeDirsExistOK(common_temp_folder_path)
+	temp_folder_path = tempfile.mkdtemp(dir=common_temp_folder_path)
+
+	return temp_folder_path
+
+def removeFileWithCheck(path, isEmptyFolder=False, failOk=False):
+	if not os.path.exists(path):
+		return
+
+	for i in range(5):
+		try:
+			if isEmptyFolder:
+				os.rmdir(path)
+			else:
+				os.remove(path)
+		except Exception as e:
+			print("Attempt {} to remove {} failed: {}".format(i, path, e))
+
+		if failOk or not os.path.exists(path):
+			return
+
+		time.sleep(1)
+
+	raise Exception("Failed to remove file {}".format(path))
