@@ -184,7 +184,7 @@
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "script",                    "version": "1.0.25"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
-			{"id": "rolling-update",            "version": "1.4.0"},
+			{"id": "rolling-update",            "version": "1.4.1"},
 			{"id": "os-specific-update",        "version": "1.0.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "os-specific-update-unix",   "version": "1.0.0"},
