@@ -692,7 +692,7 @@
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v3.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://07th-mod.com/Beato/script-full.zip", "priority": 3},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 2},
 						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
@@ -710,7 +710,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://07th-mod.com/Beato/script-voice-only.zip", "priority": 3},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3},
 						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
@@ -781,7 +781,7 @@
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://07th-mod.com/Bern/script-full.zip", "priority": 3},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
@@ -797,7 +797,7 @@
 					"files":[
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://07th-mod.com/Bern/script-adv-mode.zip", "priority": 3},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
@@ -814,7 +814,7 @@
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
-						{"name": "script", "url":"https://07th-mod.com/Bern/script-voice-only.zip", "priority": 3},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3},
 						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
