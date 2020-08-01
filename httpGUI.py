@@ -596,7 +596,10 @@ class InstallerGUI:
 			# type: (str) -> str
 			requestType, requestData = _decodeJSONRequest(body_string)
 			if requestType not in ['statusUpdate', 'getInitStatus']:
-				logger.printNoTerminal('Got Request [{}] Data [{}]'.format(requestType, requestData))
+				if requestType in ['startInstall']:
+					logger.printNoTerminal('Got Request [{}] (Data Omitted)'.format(requestType))
+				else:
+					logger.printNoTerminal('Got Request [{}] Data [{}]'.format(requestType, requestData))
 
 			# requestData: set which game the user selected by specifying the mods->name field from the json, eg "Onikakushi Ch.1"
 			# responseData: a dictionary indicating if it's a valid selection (true, false)

@@ -285,8 +285,8 @@ class SubModVersionInfo:
 		return updatesRequired
 
 	def __repr__(self):
-		return "id: {} lastAttemptedInstallID: {} files: {}"\
-			.format(self.id, self.lastAttemptedInstallID, ", ".join([x.__repr__() for x in self.fileVersionsDict.values()]))
+		return "id: {} lastAttemptedInstallID: {} files:\n - {}"\
+			.format(self.id, self.lastAttemptedInstallID, "\n - ".join([x.__repr__() for x in self.fileVersionsDict.values()]))
 
 class FileVersion:
 # 	# NOTE: the "id" can be different from the 'name'
