@@ -244,9 +244,6 @@ Continue install anyway?`)) {
             app.scriptNeedsUpdate = responseData.scriptNeedsUpdate;
             app.numUpdatesRequired = responseData.numUpdatesRequired;
             app.fullUpdateRequired = responseData.fullUpdateRequired;
-            if (app.selectedSubMod.modName === 'Matsuribayashi Ch.8' && app.selectedSubMod.subModName === 'full' && app.selectedInstallPath.includes('GOG')) {
-              alert("WARNING: The GOG version of Matsuribayashi Ch.8 is currently incompatible with the 'full' patch of our mod. We are waiting for Mangagamer to update the game so that it will work.\n\nWe suggest you DO NOT install the game, and instead wait us to announce that the mod is compatible with the GOG release.");
-            }
             if (responseData.partialReinstallDetected) {
               alert("WARNING: It appears you re-installed the game without fully deleting the game folder. If you wish to update or re-install, you MUST click the\n'RE-INSTALL FROM SCRATCH' button at the bottom of this page, otherwise the mod may not work!\n\nFor more info, see Install Instructions - Uninstalling Games:\nhttps://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#uninstalling-games\n\nIf this message incorrect (you did not partially re-install the game), ignore this message, and let the mod team know.");
             }
