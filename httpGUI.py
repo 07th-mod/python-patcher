@@ -72,8 +72,13 @@ def _TKAskPath(subMod):
 	return installFolder
 
 def askPathWindows(subMod):
+	nativeLauncherPath = common.Globals.NATIVE_LAUNCHER_PATH
+	if nativeLauncherPath is None:
+		print("askPathWindows error: launcher path not set, using guessed path")
+		nativeLauncherPath = '../07th-Mod.Installer.Windows.exe'
+
 	args = [
-		"winutil", "open",
+		nativeLauncherPath, "open",
 		"Game Executable", ";".join(subMod.identifiers),
 		"Any In Game Folder", "*.*"
 	]

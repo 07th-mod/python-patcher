@@ -24,7 +24,6 @@ travis_installer_staging
 
 # Mod ignore folders
 INSTALLER_LOGS
-07th-mod-logs.zip
 
 # Created by https://www.gitignore.io/api/macos,linux,python,windows,pycharm
 # Edit at https://www.gitignore.io/?templates=macos,linux,python,windows,pycharm

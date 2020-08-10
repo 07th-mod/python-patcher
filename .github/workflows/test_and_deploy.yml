@@ -46,11 +46,6 @@ jobs:
         with:
           path: install_loader/target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo build winutil
-        uses: actions/cache@v1
-        with:
-          path: winutil/target
-          key: ${{ runner.os }}-cargo-build-winutil-${{ hashFiles('**/Cargo.lock') }}
 
       # Configure Rust for 32-bit builds
       - name: Configure Rust for 32-bit
