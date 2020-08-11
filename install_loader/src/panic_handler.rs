@@ -1,15 +1,17 @@
 use backtrace::Backtrace;
+
+use std::error::Error;
 use std::fs::File;
 use std::io;
 use std::io::{BufRead, Write};
 use std::panic::PanicInfo;
 
+use crate::archive_extractor;
 use crate::archive_extractor::ExtractionStatus;
-use crate::process_runner::ProcessRunner;
+use crate::config::InstallerConfig;
+use crate::python_launcher;
 use crate::version;
 use crate::windows_utilities;
-use crate::{archive_extractor, InstallerConfig};
-use std::error::Error;
 
 /// This function blocks until the user to presses enter in the console
 pub fn pause(msg: &str) -> Option<String> {
@@ -142,7 +144,7 @@ Please make sure it's installed.
 	}
 
 	// Check whether the user wants to run the web installer or text installer
-	let script_name = {
+	let graphical = {
 		let user_choice = pause(
 			r#"Please choose which installer to run:
   0: Web-based installer (Try this first)
@@ -152,16 +154,9 @@ Please make sure it's installed.
 "#,
 		);
 
-		let graphical = "main.py";
-		let text = "cli_interactive.py";
-
 		match user_choice {
-			None => graphical,
-			Some(choice) => match choice.to_lowercase().as_str() {
-				"0" => graphical,
-				"1" => text,
-				_ => graphical,
-			},
+			Some(x) if x == "1" => false,
+			_ => true,
 		}
 	};
 
@@ -188,12 +183,7 @@ Please make sure it's installed.
 
 	println!("Extraction Complete - Please wait while installer starts in your browser...");
 
-	ProcessRunner::new(
-		&config.python_path,
-		config.sub_folder,
-		&["-u", "-E", script_name],
-	)?
-	.wait()
+	python_launcher::launch_python_script(&config, graphical)?.wait()
 }
 
 /// When called, changes the default panic handler to print useful information to the end user and

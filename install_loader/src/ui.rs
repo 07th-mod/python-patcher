@@ -1,13 +1,14 @@
-use crate::{support, InstallerConfig};
 use glium::glutin::{Event, WindowEvent};
 use imgui::*;
 
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
+use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
+use crate::python_launcher;
+use crate::support;
 use crate::support::ApplicationGUI;
 use crate::version;
 use crate::windows_utilities;
-use std::ffi::OsStr;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -489,32 +490,11 @@ Please download the installer to your Downloads or other known location, then ru
 
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
 	fn start_install(&mut self, is_graphical: bool) -> Result<(), Box<dyn std::error::Error>> {
-		let script_name = OsStr::new(if is_graphical {
-			"main.py"
-		} else {
-			// Interactive CLI installer needs console visible so user can see and type into it.
+		if !is_graphical {
 			windows_utilities::show_console_window();
-			"cli_interactive.py"
-		});
+		}
 
-		let python_monitor = if let Ok(path) = std::env::current_exe() {
-			ProcessRunner::new(
-				&self.config.python_path,
-				self.config.sub_folder,
-				&[
-					OsStr::new("-u"),
-					OsStr::new("-E"),
-					script_name,
-					path.as_os_str(),
-				],
-			)
-		} else {
-			ProcessRunner::new(
-				&self.config.python_path,
-				self.config.sub_folder,
-				&[OsStr::new("-u"), OsStr::new("-E"), script_name],
-			)
-		}?;
+		let python_monitor = python_launcher::launch_python_script(&self.config, is_graphical)?;
 
 		self.state.progression = InstallerProgression::InstallStarted(InstallStartedState::new(
 			python_monitor,

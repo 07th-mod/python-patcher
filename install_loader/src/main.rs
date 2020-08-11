@@ -2,37 +2,17 @@
 
 use clap::{App, Arg, ArgMatches};
 use std::error::Error;
-use std::path::{Path, PathBuf};
 
 mod archive_extractor;
+mod config;
 mod panic_handler;
 mod process_runner;
+mod python_launcher;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
 mod version;
 mod windows_dialog;
 mod windows_utilities;
-
-// Please define these as paths relative to the current directory
-struct InstallerConfig {
-	sub_folder: &'static Path,
-	logs_folder: PathBuf,
-	python_path: PathBuf,
-}
-
-impl InstallerConfig {
-	pub fn new() -> InstallerConfig {
-		let sub_folder = Path::new("07th-mod_installer");
-		let logs_folder = Path::new(sub_folder).join("INSTALLER_LOGS");
-		let python_path = Path::new(sub_folder).join("python/python.exe");
-
-		InstallerConfig {
-			sub_folder,
-			logs_folder,
-			python_path,
-		}
-	}
-}
 
 fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 	// Expect filters to be given as description1, filter1, description2, filter2
@@ -60,9 +40,6 @@ fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 fn main() -> Result<(), Box<dyn Error>> {
 	panic_handler::set_hook(String::from("07th-mod_crash.log"));
 
-	// _maybe_job must be kept in scope for the remainder of the program!
-	let (_maybe_job, register_job_result) = windows_utilities::new_job_kill_on_job_close();
-
 	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
 - if user cancelled, writes nothing to stdout, returns 0
@@ -84,6 +61,9 @@ For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
 	if let Some(matches) = matches.subcommand_matches("open") {
 		return handle_open_command(matches);
 	}
+
+	// _maybe_job must be kept in scope for the remainder of the program!
+	let (_maybe_job, register_job_result) = windows_utilities::new_job_kill_on_job_close();
 
 	if register_job_result.is_ok() {
 		// Hide the console for windows users to make the installer less scary
