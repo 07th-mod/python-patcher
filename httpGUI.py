@@ -77,6 +77,11 @@ def askPathWindows(subMod):
 		print("askPathWindows error: launcher path not set, using guessed path")
 		nativeLauncherPath = '../07th-Mod.Installer.Windows.exe'
 
+	nativeLauncherPathAbs = os.path.abspath(nativeLauncherPath)
+	print("askPathWindows: Will use launcher exe at [{}]...".format(nativeLauncherPathAbs))
+	if not os.path.exists(nativeLauncherPath):
+		raise Exception("Failed to open file chooser at [{}].\n\nPlease manually copy and paste the game path into the 'Currently Chosen Path' box.".format(nativeLauncherPathAbs))
+
 	args = [
 		nativeLauncherPath, "open",
 		"Game Executable", ";".join(subMod.identifiers),

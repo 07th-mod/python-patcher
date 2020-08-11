@@ -78,6 +78,10 @@ if __name__ == "__main__":
 	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
 	if len(sys.argv) > 1:
 		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
+		print("Launcher is located at [{}]".format(common.Globals.NATIVE_LAUNCHER_PATH))
+	else:
+		if common.Globals.IS_WINDOWS:
+			print("WARNING: Launcher path not given to Python script. The file chooser may not work properly.")
 
 	# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
 	# Since we want to properly find things like `./aria2c`, we should move to that path first.
