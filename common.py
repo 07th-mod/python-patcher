@@ -129,7 +129,7 @@ class Globals:
 
 	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
-	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
+	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at https://07th-mod.com/wiki/Installer/faq/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
 
 	CA_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
