@@ -172,6 +172,20 @@ class Globals:
 		)
 
 	@staticmethod
+	def macUnQuarantineExecutable(path):
+		errorString = None
+		try:
+			exit_code = subprocess.call(["xattr", "-d", "com.apple.quarantine", path])
+			if exit_code != 0:
+				errorString = "xattr returned exit code {}".format(exit_code)
+		except Exception as e:
+			errorString = str(e)
+
+		if errorString is not None:
+			print("""Error removing quarantine: {}
+You can try manually running [{}] once so the installer can use the file.""".format(errorString, path))
+
+	@staticmethod
 	def loadCachedDownloadSizes(modList):
 		"""
 		In normal mode:

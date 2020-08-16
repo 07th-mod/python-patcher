@@ -149,6 +149,10 @@ if __name__ == "__main__":
 
 	def doInstallerInit():
 		try:
+			if common.Globals.IS_MAC:
+				common.Globals.macUnQuarantineExecutable("./.aria2c")
+				common.Globals.macUnQuarantineExecutable("./.7za")
+
 			# Executable scanning must happen first, as other init operations might require Aria or CURL to download
 			common.Globals.scanForExecutables()
 			common.Globals.scanCertLocation()
