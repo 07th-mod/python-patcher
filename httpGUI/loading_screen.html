@@ -26,8 +26,9 @@
 					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
 					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
 					<div v-if='!initCompleted'>
-						<p>Status: Waiting for init to complete ({{ pollCount }})
-						<div v-if='timeoutError'>
+						<p v-if='errorMessage === null'>Status: Waiting for init to complete ({{ pollCount }})
+						<p v-else>Status: Init Failed
+						<div v-if='timeoutError && errorMessage === null'>
 							<p><b>Warning:</b> {{ initTimeoutSeconds }} seconds and loading is still not complete.
 								You should wait a little while longer, but you may want to restart the installer (close everything, then start again) or restart your computer and try again.
 								<a href="https://07th-mod.com/wiki/Installer/support/">Contact the 07th-mod team</a> if this happens repeatedly.
