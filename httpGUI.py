@@ -71,14 +71,13 @@ def _TKAskPath(subMod):
 
 	return installFolder
 
-def askPathWindows(subMod):
+def askPathWindowsLauncher(subMod):
 	nativeLauncherPath = common.Globals.NATIVE_LAUNCHER_PATH
 	if nativeLauncherPath is None:
-		print("askPathWindows error: launcher path not set, using guessed path")
-		nativeLauncherPath = '../07th-Mod.Installer.Windows.exe'
+		raise Exception("askPathWindowsLauncher error: launcher path not set! aborting this method")
 
 	nativeLauncherPathAbs = os.path.abspath(nativeLauncherPath)
-	print("askPathWindows: Will use launcher exe at [{}]...".format(nativeLauncherPathAbs))
+	print("askPathWindowsLauncher: Will use launcher exe at [{}]...".format(nativeLauncherPathAbs))
 	if not os.path.exists(nativeLauncherPath):
 		raise Exception("Failed to open file chooser at [{}].\n\nPlease manually copy and paste the game path into the 'Currently Chosen Path' box.".format(nativeLauncherPathAbs))
 
@@ -88,11 +87,48 @@ def askPathWindows(subMod):
 		"Any In Game Folder", "*.*"
 	]
 
-	print("askPathWindows: Executing {}".format(args))
+	print("askPathWindowsLauncher: Executing {}".format(args))
 	# If there is an error or the program returns non-zero exit code,
 	# this will throw an exception, which will be shown to the user
 	# If the user pressed "Cancel", returns the empty string.
 	return subprocess.check_output(args).decode("utf-8")
+
+
+# Powershell script based on this example:
+# https://4sysops.com/archives/how-to-create-an-open-file-folder-dialog-box-with-powershell/
+# All properties of the OpenFileDialog object are also shown on that page
+# Filter strings are described here:
+# https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.filedialog.filter?view=netcore-3.1
+def askPathWindowsPowerShell(subMod):
+	filter_list = 'Game Executable|{}|Any In Game Folder (*.*)|*.*'.format(";".join(subMod.identifiers))
+
+	command = [
+		'powershell',
+		'-noprofile',
+		'-command',
+		r"""Add-Type -AssemblyName System.Windows.Forms;
+		$FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
+			InitialDirectory = [Environment]::GetFolderPath('Desktop')
+			Filter = '<<<FILTERLIST>>>'
+			Title = 'Select a game exe like <<<EXE_LIST>>>'
+		};
+		$null = $FileBrowser.ShowDialog();
+		Write-Output $FileBrowser.FileName;
+		""".replace("<<<FILTERLIST>>>", filter_list).replace('<<<EXE_LIST>>>', " or ".join(subMod.identifiers))
+	]
+
+	print("askPathWindowsPowerShell: Executing [{}]".format(''.join(command)))
+	path = subprocess.check_output(command).decode("utf-8").strip('\r\n')
+	print("askPathWindowsPowerShell: Got result [{}]".format(path))
+
+	return path
+
+def askPathWindows(subMod):
+	try:
+		return askPathWindowsLauncher(subMod)
+	except Exception as e:
+		print("Failed to use Windows Launcher to open file chooser {}".format(e))
+		return askPathWindowsPowerShell(subMod)
 
 def askPath(subMod):
 	if common.Globals.IS_WINDOWS:
