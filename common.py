@@ -42,6 +42,11 @@ except ImportError:
 	SSL_VERSION_IS_OLD = True
 
 try:
+	from html.parser import HTMLParser
+except:
+	from HTMLParser import HTMLParser
+
+try:
 	from typing import Optional, List, Tuple, Dict, Callable, Any
 except:
 	pass
@@ -517,22 +522,31 @@ def tryGetRemoteNews(newsName):
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
 	"""
-	:return: (months_remaining, funding_goal_percentage) as a tuple (can both be None if regex failed)
+	:return: (months_remaining, funding_goal_percentage) as a tuple (can both be None if download or parsing failed)
 	"""
-	# NOTE: Even though the markdown has double-quotes, the served page has no quotation
-	#       so do not put any double quotes in the below regex
-	donationStatusRegex = re.compile(r'<progress\s*value=(\d+).*data-months-remaining=(\d+)>', re.IGNORECASE)
-
 	try:
 		entirePage = downloadFile(r"https://07th-mod.com/wiki/", is_text=True)
 	except HTTPError as error:
 		return None, None
 
-	match = donationStatusRegex.search(entirePage)
-	if match:
-		return match.group(2), match.group(1)
+	class DonationHTMLParser(HTMLParser, object):
+		def __init__(self):
+			super(DonationHTMLParser, self).__init__()
+			self.funding_goal_percentage = None
+			self.months_remaining = None
 
-	return None, None
+		def handle_starttag(self, tag, attrs):
+			if tag == "progress":
+				for k, v in attrs:
+					if k == 'value':
+						self.funding_goal_percentage = v
+					elif k == 'data-months-remaining':
+						self.months_remaining = v
+
+	parser = DonationHTMLParser()
+	parser.feed(entirePage)
+
+	return parser.months_remaining, parser.funding_goal_percentage
 
 def getJSON(jsonURI, isURL):
 	#type: (str, bool) -> (Dict, Exception)
