@@ -498,29 +498,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "install_loader"
-version = "0.1.0"
-dependencies = [
- "backtrace 0.3.40 (registry+https://github.com/rust-lang/crates.io-index)",
- "clap 2.33.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "clipboard 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "glium 0.25.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "image 0.22.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "imgui 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
- "imgui-glium-renderer 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
- "imgui-winit-support 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
- "open 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "os_info 2.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "progress-streams 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "regex 1.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "tar 0.4.26 (registry+https://github.com/rust-lang/crates.io-index)",
- "widestring 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "win32job 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "winapi 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
- "xz2 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "jpeg-decoder"
 version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -971,6 +948,29 @@ dependencies = [
 name = "semver-parser"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "seventh_mod_loader"
+version = "0.1.0"
+dependencies = [
+ "backtrace 0.3.40 (registry+https://github.com/rust-lang/crates.io-index)",
+ "clap 2.33.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "clipboard 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glium 0.25.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "image 0.22.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "imgui 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
+ "imgui-glium-renderer 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
+ "imgui-winit-support 0.3.0-pre (git+https://github.com/Gekkio/imgui-rs)",
+ "open 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "os_info 2.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "progress-streams 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex 1.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tar 0.4.26 (registry+https://github.com/rust-lang/crates.io-index)",
+ "widestring 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "win32job 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xz2 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "shared_library"

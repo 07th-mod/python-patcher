@@ -215,7 +215,7 @@ if not BUILD_LINUX_MAC:
 
 	# Copy the exe to the final output folder
 	final_exe_path = os.path.join(output_folder, loader_exe_name)
-	shutil.copy('install_loader/target/release/install_loader.exe', final_exe_path)
+	shutil.copy('install_loader/target/release/seventh_mod_loader.exe', final_exe_path)
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:

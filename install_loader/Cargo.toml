@@ -1,5 +1,5 @@
 [package]
-name = "install_loader"
+name = "seventh_mod_loader"
 version = "0.1.0"
 authors = ["drojf"]
 edition = "2018"
