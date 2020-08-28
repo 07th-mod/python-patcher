@@ -862,7 +862,7 @@ class DownloaderAndExtractor:
 					break
 			else:
 				# Too many attempts
-				raise Exception("ERROR - Tried to download [{}] {} times, but file was corrupted each time. Installation Stopped".format(url, attempt + 1))
+				raise Exception("ERROR - Failed to download [{}] after {} times. Check aria2/7z in log for details. Installation Stopped".format(url, attempt + 1))
 
 	def extractablesHasInvalidArchives(self, extractables):
 		# type:(List[DownloaderAndExtractor.ExtractableItem]) -> Optional[bool]
