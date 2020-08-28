@@ -168,9 +168,8 @@ If you try to load old saves with the mod, they may skip you forward or backward
 	userAskYesNo("Have you read the above message?")
 
 if __name__ == "__main__":
-	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
-	logger.setGlobalLogger(sys.stdout)
-	sys.stderr = logger.StdErrRedirector(sys.stdout)
+	gui_main.installerCommonStartupTasks()
+
 	common.Globals.scanForExecutables()
 	gui_main.check07thModServerConnection()
 	modList = gui_main.getModList()

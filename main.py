@@ -74,25 +74,22 @@ def getSubModConfigList(modList):
 			subModconfigList.append(conf)
 	return subModconfigList
 
-if __name__ == "__main__":
-	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
-	if len(sys.argv) > 1:
-		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
-		print("Launcher is located at [{}]".format(common.Globals.NATIVE_LAUNCHER_PATH))
-	else:
-		if common.Globals.IS_WINDOWS:
-			print("WARNING: Launcher path not given to Python script. The file chooser may not work properly.")
 
+def installerCommonStartupTasks():
+	"""
+	Peforms tasks common to both the normal GUI installer and the CLI Installer
+	- Change current directory to path of the launched python file
+	- Setup logging
+	- Read the launcher path (works only on Windows)
+	- Enable developer mode if installData.json found on disk
+	- Log information about the environment (current dir, python version etc.)
+	- On Windows, check for hostname problems
+	"""
 	# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
 	# Since we want to properly find things like `./aria2c`, we should move to that path first.
 	dirname = os.path.dirname(sys.argv[0])
 	if dirname.strip():
 		os.chdir(dirname)
-	# Enable developer mode if we detect the program is run from the git repository
-	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
-	if os.path.exists("installData.json"):
-		common.Globals.DEVELOPER_MODE = True
-		print("""------ NOTE: Developer mode is enabled (will use installData.json from disk) ----""")
 
 	# redirect stdout to both a file and console
 	# TODO: on MAC using a .app file, not sure if this logfile will be writeable
@@ -100,6 +97,20 @@ if __name__ == "__main__":
 	sys.stdout = logger.Logger(common.Globals.LOG_FILE_PATH)
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
+
+	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
+	if len(sys.argv) > 1:
+		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
+		print("Launcher is located at [{}]".format(common.Globals.NATIVE_LAUNCHER_PATH))
+	else:
+		if common.Globals.IS_WINDOWS:
+			print("WARNING: Launcher path not given to Python script. Will try to use PowerShell file chooser instead of native one.")
+
+	# Enable developer mode if we detect the program is run from the git repository
+	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.
+	if os.path.exists("installData.json"):
+		common.Globals.DEVELOPER_MODE = True
+		print("""------ NOTE: Developer mode is enabled (will use installData.json from disk) ----""")
 
 	print("> Install Started On {}".format(datetime.datetime.now()))
 	common.Globals.getBuildInfo()
@@ -112,10 +123,12 @@ if __name__ == "__main__":
 		print("-------------------------------------------------------------")
 		print("ERROR: It looks like your hostname [{}] contains non-ASCII characters. This may prevent the installer from starting up.".format(socket.gethostname()))
 		print("Please change your hostname to only contain ASCII characters, then restart the installer.")
-		print("You can press ENTER to try to run the installer despite this problem.")
 		print("-------------------------------------------------------------")
 		raise SystemExit(-1)
 
+
+if __name__ == "__main__":
+	installerCommonStartupTasks()
 
 	print("\n\n----------------------------------------- PLEASE READ -----------------------------------------\n")
 	print(" - Do not close this window until you are finished with the installer! Closing this window will\n"
