@@ -2,6 +2,7 @@
 
 use clap::{App, Arg, ArgMatches};
 use std::error::Error;
+use std::path::PathBuf;
 
 mod archive_extractor;
 mod config;
@@ -37,8 +38,29 @@ fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 	}
 }
 
+fn fix_cwd() -> Result<PathBuf, Box<dyn Error>> {
+	let exe_path = std::env::current_exe()?;
+	let containing_path = exe_path.parent().ok_or("Invalid Path")?;
+	std::env::set_current_dir(containing_path)?;
+	Ok(containing_path.to_path_buf())
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
 	panic_handler::set_hook(String::from("07th-mod_crash.log"));
+
+	// Change current directory to .exe path, if current .exe path is known
+	let old_cwd = std::env::current_dir();
+	match fix_cwd() {
+		Ok(new_cwd) => println!(
+			"Successfully changed path from {:?} to {:?}",
+			old_cwd, new_cwd
+		),
+		Err(e) => println!(
+			"Couldn't fix exe path - cwd remains as [{:?}]. Error: [{}]",
+			std::env::current_dir(),
+			e
+		),
+	}
 
 	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
