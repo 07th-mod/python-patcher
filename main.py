@@ -140,6 +140,31 @@ def installerCommonStartupTasks():
 			if os.path.realpath(os.getcwd()).startswith(os.path.realpath(system_root)):
 				errors.append("ERROR: You are trying to run the installer from the system folder [{}]. Please do not use the start menu to launch the installer. Please run the installer from a user writeable folder instead".format(dirname))
 
+	# Check if the current folder is writeable
+	try:
+		# Write some dummy data to a temp file
+		test_data = "test"
+		temp_file_handle, temp_file_path = tempfile.mkstemp(dir='.')
+		with open(temp_file_handle, 'w') as temp_file:
+			temp_file.write(test_data)
+
+		# Wait for the file to appear on the filesystem (in most cases this happens immediately)
+		for i in range(3):
+			if os.path.exists(temp_file_path):
+				break
+			time.sleep(.5)
+
+		# Read back the file and check its contents is the same that was written earlier
+		with open(temp_file_path) as temp_file:
+			if temp_file.read() != test_data:
+				errors.append(
+					"ERROR: File written to installer folder was not readable [{}]. Please run the installer from a user writeable folder instead".format(temp_file_path))
+
+		# Remove the temp file
+		os.remove(temp_file_path)
+	except Exception as e:
+		traceback.print_exc()
+		errors.append("ERROR: Installer folder is not writeable [{}]. Please run the installer from a user writeable folder instead. Full error:\n{}".format(os.getcwd(), e))
 
 	if errors:
 		print('- ')
