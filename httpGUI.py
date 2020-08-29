@@ -434,9 +434,14 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 def getDownloadPreview(fullInstallConfig):
 	#type: (installConfiguration.FullInstallConfiguration) -> Any
 	####### Preview which files are going to be downloaded #######
+
 	# Higurashi installer needs datadirectory set to determine unity version
-	dataDirectory = os.path.join(fullInstallConfig.installPath,
-	                             "Contents/Resources/Data" if common.Globals.IS_MAC else fullInstallConfig.subModConfig.dataName)
+	dataDirectory = ""
+	if fullInstallConfig.subModConfig.family == 'higurashi':
+		if common.Globals.IS_MAC:
+			dataDirectory = os.path.join(fullInstallConfig.installPath, "Contents/Resources/Data")
+		else:
+			dataDirectory = os.path.join(fullInstallConfig.installPath, fullInstallConfig.subModConfig.dataName)
 
 	modFileList = fullInstallConfig.buildFileListSorted(
 		datadir=dataDirectory)  # type: List[installConfiguration.ModFile]

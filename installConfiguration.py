@@ -10,6 +10,26 @@ except:
 	pass # Just needed for pycharm comments
 
 
+def getUnityVersion(datadir):
+	# type: (str) -> str
+	"""
+	Given the datadir of a Higurashi game (like 'HigurashiEp0X_Data'), returns the unity version of the game
+	Raises an exeption if:
+	- The `HigurashiEp0X_Data/resources.assets` file is missing (raises MissingAssetsBundleException)
+	- The `HigurashiEp0X_Data/resources.assets` bundle failed to open (raises error from open() call or read() call)
+	- The Unity version was too old (raises OldUnityException)
+	"""
+	assetsbundlePath = os.path.join(datadir, "resources.assets")
+	if not os.path.exists(assetsbundlePath):
+		raise MissingAssetsBundleException(assetsbundlePath)
+
+	with open(assetsbundlePath, "rb") as assetsBundle:
+		unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
+		print("Unity Version: Read [{}] from [{}]".format(unityVersion, assetsbundlePath))
+		if int(unityVersion.split('.')[0]) < 5:
+			raise OldUnityException(unityVersion)
+		return unityVersion
+
 class FullInstallConfiguration:
 	# contains all the install information required to install the game to a given path
 
@@ -30,14 +50,11 @@ class FullInstallConfiguration:
 		for file in self.subModConfig.files:
 			filesDict[file.name] = file
 
-		unityVersion = None
-		assetsbundlePath = os.path.join(datadir, "resources.assets")
-		if os.path.exists(assetsbundlePath):
-			with open(assetsbundlePath, "rb") as assetsBundle:
-				unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
-				print("Read unity version " + unityVersion)
-				if int(unityVersion.split('.')[0]) < 5:
-					raise OldUnityException(unityVersion)
+		if datadir:
+			unityVersion = getUnityVersion(datadir)
+		else:
+			unityVersion = None
+			print("Unity Version: [{}/Not a Unity game]".format(unityVersion))
 
 		for fileOverride in self.subModConfig.fileOverrides:
 			# skip overrides where OS doesn't match
@@ -280,3 +297,13 @@ class FailedFileOverrideException(Exception):
 			out += ", unity: {}".format(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
 		return out
+
+
+class MissingAssetsBundleException(Exception):
+	def __init__(self, assetsbundlePath):
+		# type: (str) -> None
+		self.assetsbundlePath = assetsbundlePath  # type: str
+
+	def __str__(self):
+		return "Can't determine Unity version - missing `resources.assets` file [{}].\n\n" \
+		       "You probably need to re-install the game, or ask for help on our Discord.".format(self.assetsbundlePath)
