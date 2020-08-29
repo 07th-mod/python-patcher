@@ -5,6 +5,9 @@ import os
 import sys
 
 # Embedded python doesn't have current directory as path
+import tempfile
+import time
+
 if os.getcwd() not in sys.path:
 	print("Startup: Adding {} to path".format(os.getcwd()))
 	sys.path.append(os.getcwd())
@@ -85,6 +88,10 @@ def installerCommonStartupTasks():
 	- Log information about the environment (current dir, python version etc.)
 	- On Windows, check for hostname problems
 	"""
+	errors = []
+
+	print("Installer script name (argv[0]): [{}]".format(sys.argv[0]))
+
 	# If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
 	# Since we want to properly find things like `./aria2c`, we should move to that path first.
 	dirname = os.path.dirname(sys.argv[0])
@@ -118,14 +125,26 @@ def installerCommonStartupTasks():
 	print("Installer Build Information: {}".format(common.Globals.BUILD_INFO))
 	print("Installer is being run from: [{}]".format(os.getcwd()))
 
-	# On Windows, check for non-ascii characters in hostname, which prevent the server starting up
-	if common.Globals.IS_WINDOWS and not all(ord(c) < 128 for c in socket.gethostname()):
-		print("-------------------------------------------------------------")
-		print("ERROR: It looks like your hostname [{}] contains non-ASCII characters. This may prevent the installer from starting up.".format(socket.gethostname()))
-		print("Please change your hostname to only contain ASCII characters, then restart the installer.")
-		print("-------------------------------------------------------------")
-		raise SystemExit(-1)
+	# Windows only checks
+	if common.Globals.IS_WINDOWS:
+		# Check for non-ascii characters in hostname, which prevent the server starting up
+		if not all(ord(c) < 128 for c in socket.gethostname()):
+			errors.append(
+				"ERROR: It looks like your hostname [{}] contains non-ASCII characters. This may prevent the installer from starting up.\n"
+				"Please change your hostname to only contain ASCII characters, then restart the installer.".format(socket.gethostname())
+			)
 
+		# Check if installer is being run from system root (C:\Windows for example)
+		system_root = os.environ.get('SYSTEMROOT')
+		if system_root:
+			if os.path.realpath(os.getcwd()).startswith(os.path.realpath(system_root)):
+				errors.append("ERROR: You are trying to run the installer from the system folder [{}]. Please do not use the start menu to launch the installer. Please run the installer from a user writeable folder instead".format(dirname))
+
+
+	if errors:
+		print('- ')
+		print('\n- '.join(errors))
+		raise SystemExit(-1)
 
 if __name__ == "__main__":
 	installerCommonStartupTasks()
