@@ -113,11 +113,14 @@ def getMaybeGamePaths():
 	hardCodedGameContainingPaths = []
 	if common.Globals.IS_MAC:
 		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/GOG Games")  # Not sure if this is correct for MacOS
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
+		hardCodedGameContainingPaths.append("c:/GOG Games")
 	if common.Globals.IS_LINUX:
 		hardCodedGameContainingPaths.append("~/.steam/steam/steamapps/common/")
 		hardCodedGameContainingPaths.append("~/.steam/steambeta/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/GOG Games")  # GOG's website states this, but is unconfirmed
 
 	for hardCodedPathNotNormalized in hardCodedGameContainingPaths:
 		hardCodedPath = os.path.realpath(os.path.expanduser(hardCodedPathNotNormalized))
