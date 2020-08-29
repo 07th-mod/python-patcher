@@ -49,6 +49,17 @@ def try_remove_tree(path):
 	except FileNotFoundError:
 		pass
 
+# From https://stackoverflow.com/a/12526809/848627, but modified to use scandir
+def clear_folder_if_exists(path):
+	if not os.path.exists(path):
+		return
+
+	with os.scandir(path) as entries:
+		for entry in entries:
+			try:
+				shutil.rmtree(entry.path)
+			except OSError:
+				os.remove(entry.path)
 
 def zip(input_path, output_filename):
 	try_remove_tree(output_filename)
@@ -77,6 +88,13 @@ def pre_build_validation():
 
 	fileVersionManagement.Developer_ValidateVersionDataJSON(sub_mod_configs)
 	print("Travis validation success")
+
+
+print("Python {}".format(sys.version))
+min_python = (3, 8)
+if not sys.version_info >= min_python:
+	print(f"\nERROR: This script requires at least Python {min_python[0]}.{min_python[1]} to run")
+	raise SystemExit(-1)
 
 pre_build_validation()
 
@@ -139,15 +157,15 @@ def ignore_filter(folderPath, folderContents):
 
 	return ignored_children #ignore_patterns_func(folderPath, folderContents)
 
-try_remove_tree(bootstrap_copy_folder)
-try_remove_tree(output_folder)
-try_remove_tree(staging_folder)
-
 # Make sure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
 
+clear_folder_if_exists(bootstrap_copy_folder)
+clear_folder_if_exists(output_folder)
+clear_folder_if_exists(staging_folder)
+
 # copy bootstrap folder to a temp folder
-shutil.copytree('bootstrap', bootstrap_copy_folder)
+shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
 
 # Note: previously the script created output folder in advance and then used dirs_exist_ok=True to
 # sidestep a problem in Python 3.8 where copying from the current folder
@@ -155,7 +173,7 @@ shutil.copytree('bootstrap', bootstrap_copy_folder)
 # ignore folders *before* creating the output folder), leading to endless recursive copying behavior.
 # We now use a temp folder not in the cwd which avoids this behavior and should work on any Python 3.X version
 # copy all files in the root github directory, except those in ignore_patterns
-shutil.copytree('.', staging_folder, ignore=ignore_filter)
+shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
 
 # Save the build information in the staging folder. Will later be read by installer.
 with open(os.path.join(staging_folder, 'build_info.txt'), 'w', encoding='utf-8') as build_info_file:
