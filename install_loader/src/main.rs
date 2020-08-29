@@ -1,5 +1,6 @@
 #![warn(clippy::all)]
 
+use crate::program_instance_lock::ProgramInstanceLock;
 use clap::{App, Arg, ArgMatches};
 use std::error::Error;
 use std::path::PathBuf;
@@ -8,6 +9,7 @@ mod archive_extractor;
 mod config;
 mod panic_handler;
 mod process_runner;
+mod program_instance_lock;
 mod python_launcher;
 mod support; // This module is copied from the imgui-rs examples
 mod ui;
@@ -86,6 +88,18 @@ For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
 
 	// _maybe_job must be kept in scope for the remainder of the program!
 	let (_maybe_job, register_job_result) = windows_utilities::new_job_kill_on_job_close();
+
+	// _program_lock must be created after _maybe_job so that its drop() is called first
+	let _program_lock = match ProgramInstanceLock::try_lock("07th-mod-installer-running.lock") {
+		Ok(lock) => lock,
+		Err(e) => {
+			let current_dir_string = std::env::current_dir()
+				.map_or("Can't determine CWD".into(), |path| format!("{:?}", path));
+
+			panic_handler::pause(&format!("Failed to create lock file: {:?}\n\nPlease check the installer not already running, and folder [{}] is writeable", e, current_dir_string));
+			return Err(e.into());
+		}
+	};
 
 	if register_job_result.is_ok() {
 		// Hide the console for windows users to make the installer less scary

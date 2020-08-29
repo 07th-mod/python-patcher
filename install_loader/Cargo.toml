@@ -13,6 +13,7 @@ backtrace = "*"
 clap = "2.33.1"
 open = "1"
 os_info = { version = "2.0.6", default-features = false }
+fs2 = "0.4.3"
 
 # imgui dependencies
 clipboard = "0.5"
