@@ -22,9 +22,18 @@ jobs:
   windows_build:
     name: Windows Build
     runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
     steps:
       # Download the repository
       - uses: actions/checkout@v2
+
+      # Setup python (Windows VM is Python 3.7 by default, we need at least Python 3.8)
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
       # Restore cached cargo files to speed up future Rust builds
       # This follows the example at https://github.com/actions/cache
