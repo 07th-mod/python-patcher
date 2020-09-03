@@ -32,7 +32,8 @@ class VersionManager:
 				Could possibly return True if user has been messing/copying their game folder around
 		"""
 		if not os.path.exists(self.localVersionFilePath) or not os.path.exists(gameInstallTimeProbePath):
-			print("userDidPartialReinstall: localVersionFilePath or gameInstallTimeProbePath was missing - assuming no partial reinstall")
+			if self.verbosePrinting:
+				print("userDidPartialReinstall: localVersionFilePath or gameInstallTimeProbePath was missing - assuming no partial reinstall")
 			return False
 
 		# If the game was installed AFTER when the mod was applied, user has probably partially re-installed the game
@@ -41,8 +42,9 @@ class VersionManager:
 		# For the version file, the "modified" date is when the game mod was last applied
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
-	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None):
-		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo]) -> None
+	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None, verbosePrinting=True):
+		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo], bool) -> None
+		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
@@ -64,8 +66,9 @@ class VersionManager:
 				self.remoteVersionInfo = None
 				print("VersionManager: Error while retrieving remote version information {}".format(error))
 
-		logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
-		logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
+		if verbosePrinting:
+			logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
+			logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
 
 		# If can't retrieve version info, mark everything as needing update
 		if self.localVersionInfo is None:
@@ -80,15 +83,17 @@ class VersionManager:
 			# Mark files which need update
 			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
 
-			print("\nInstaller Update Information:")
-			for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
-				print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
+			if verbosePrinting:
+				print("\nInstaller Update Information:")
+				for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
+					print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
 
 		# Check how many updates are required
 		updatesRequiredList = self.updatesRequiredDict.values()
 		self.totalNumUpdates = len(updatesRequiredList)
 		self.numUpdatesRequired = sum([needsUpdate for (needsUpdate, _) in updatesRequiredList])
-		print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
+		if verbosePrinting:
+			print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
 
 	def fullUpdateRequired(self):
 		return self.numUpdatesRequired == self.totalNumUpdates
