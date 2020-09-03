@@ -448,7 +448,8 @@ def getDownloadPreview(fullInstallConfig):
 	fileVersionManager = fileVersionManagement.VersionManager(
 		subMod=fullInstallConfig.subModConfig,
 		modFileList=modFileList,
-		localVersionFolder=fullInstallConfig.installPath)
+		localVersionFolder=fullInstallConfig.installPath,
+		verbosePrinting=False)
 
 	# Check for partial re-install (see https://github.com/07th-mod/python-patcher/issues/93)
 	if fullInstallConfig.subModConfig.family == 'higurashi':
@@ -477,7 +478,7 @@ def getDownloadPreview(fullInstallConfig):
 			scriptNeedsUpdate = True
 
 	# Generate rows for the mod option files
-	parser = installConfiguration.ModOptionParser(fullInstallConfig)
+	parser = installConfiguration.ModOptionParser(fullInstallConfig, verbosePrinting=False)
 	for option in parser.downloadAndExtractOptionsByPriority:
 		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(option.url)
 		downloadItemsPreview.append((option.name, downloadSize, True, 'Mod options are always downloaded'))
@@ -749,10 +750,13 @@ class InstallerGUI:
 
 				subMod = self.idToSubMod[id]
 
+
 				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
-				logger.printNoTerminal("\nUser selected options for install:")
-				for modOption in subMod.modOptions:
-					logger.printNoTerminal(modOption)
+
+				if not validateOnly:
+					logger.printNoTerminal("\nUser selected options for install:")
+					for modOption in subMod.modOptions:
+						logger.printNoTerminal(modOption)
 
 				installPath = requestData.get('installPath', None)
 				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly, installSteamGrid)
