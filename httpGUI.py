@@ -431,8 +431,8 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
 			modOptions[checkBoxID].value = True
 
-def getDownloadPreview(fullInstallConfig):
-	#type: (installConfiguration.FullInstallConfiguration) -> Any
+def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
+	#type: (installConfiguration.FullInstallConfiguration, bool) -> Any
 	####### Preview which files are going to be downloaded #######
 
 	# Higurashi installer needs datadirectory set to determine unity version
@@ -444,7 +444,8 @@ def getDownloadPreview(fullInstallConfig):
 			dataDirectory = os.path.join(fullInstallConfig.installPath, fullInstallConfig.subModConfig.dataName)
 
 	modFileList = fullInstallConfig.buildFileListSorted(
-		datadir=dataDirectory)  # type: List[installConfiguration.ModFile]
+		datadir=dataDirectory,
+		verbosePrinting=verbosePrinting)  # type: List[installConfiguration.ModFile]
 	fileVersionManager = fileVersionManagement.VersionManager(
 		subMod=fullInstallConfig.subModConfig,
 		modFileList=modFileList,
@@ -786,7 +787,7 @@ class InstallerGUI:
 					if deleteVersionInformation:
 						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
 
-					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected, scriptNeedsUpdate = getDownloadPreview(fullInstallConfiguration)
+					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected, scriptNeedsUpdate = getDownloadPreview(fullInstallConfiguration, verbosePrinting=not allowCache)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(
 						installPath = fullInstallConfiguration.installPath,
 						recommendedFreeSpaceBytes = totalDownloadSize * common.Globals.DOWNLOAD_TO_EXTRACTION_SCALING

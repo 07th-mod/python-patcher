@@ -10,8 +10,8 @@ except:
 	pass # Just needed for pycharm comments
 
 
-def getUnityVersion(datadir):
-	# type: (str) -> str
+def getUnityVersion(datadir, verbosePrinting=True):
+	# type: (str, bool) -> str
 	"""
 	Given the datadir of a Higurashi game (like 'HigurashiEp0X_Data'), returns the unity version of the game
 	Raises an exeption if:
@@ -25,7 +25,8 @@ def getUnityVersion(datadir):
 
 	with open(assetsbundlePath, "rb") as assetsBundle:
 		unityVersion = assetsBundle.read(28)[20:].decode("utf-8").rstrip("\0")
-		print("Unity Version: Read [{}] from [{}]".format(unityVersion, assetsbundlePath))
+		if verbosePrinting:
+			print("Unity Version: Read [{}] from [{}]".format(unityVersion, assetsbundlePath))
 		if int(unityVersion.split('.')[0]) < 5:
 			raise OldUnityException(unityVersion)
 		return unityVersion
@@ -43,15 +44,15 @@ class FullInstallConfiguration:
 		self.installSteamGrid = False
 
 	#applies the fileOverrides to the files to
-	def buildFileListSorted(self, datadir=""):
-		# type: (str) -> List[ModFile]
+	def buildFileListSorted(self, datadir="", verbosePrinting=True):
+		# type: (str, bool) -> List[ModFile]
 		# convert the files list into a dict
 		filesDict = {}
 		for file in self.subModConfig.files:
 			filesDict[file.name] = file
 
 		if datadir:
-			unityVersion = getUnityVersion(datadir)
+			unityVersion = getUnityVersion(datadir, verbosePrinting)
 		else:
 			unityVersion = None
 			print("Unity Version: [{}/Not a Unity game]".format(unityVersion))

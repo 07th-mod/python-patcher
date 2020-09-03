@@ -32,7 +32,8 @@ class VersionManager:
 				Could possibly return True if user has been messing/copying their game folder around
 		"""
 		if not os.path.exists(self.localVersionFilePath) or not os.path.exists(gameInstallTimeProbePath):
-			print("userDidPartialReinstall: localVersionFilePath or gameInstallTimeProbePath was missing - assuming no partial reinstall")
+			if self.verbosePrinting:
+				print("userDidPartialReinstall: localVersionFilePath or gameInstallTimeProbePath was missing - assuming no partial reinstall")
 			return False
 
 		# If the game was installed AFTER when the mod was applied, user has probably partially re-installed the game
@@ -43,6 +44,7 @@ class VersionManager:
 
 	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None, verbosePrinting=True):
 		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo], bool) -> None
+		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
@@ -90,7 +92,8 @@ class VersionManager:
 		updatesRequiredList = self.updatesRequiredDict.values()
 		self.totalNumUpdates = len(updatesRequiredList)
 		self.numUpdatesRequired = sum([needsUpdate for (needsUpdate, _) in updatesRequiredList])
-		print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
+		if verbosePrinting:
+			print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
 
 	def fullUpdateRequired(self):
 		return self.numUpdatesRequired == self.totalNumUpdates
