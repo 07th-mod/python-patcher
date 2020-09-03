@@ -102,6 +102,7 @@ function startInstall(subModToInstall, installPath, deleteVersionInformation) {
       installPath,
       deleteVersionInformation: deleteVersionInformation === true,
       installSteamGrid: app.installSteamGrid,
+      allowCache: false,
     },
     (responseData) => {
       console.log(responseData);
@@ -221,7 +222,7 @@ Continue install anyway?`)) {
       renderMarkdown(markdownText) {
         return DOMPurify.sanitize(marked(markdownText));
       },
-      validateInstallPath(deleteVersionInformation) {
+      validateInstallPath(deleteVersionInformation, allowCache) {
         // Just validate the install - don't actually start the installation
         const args = {
           subMod: app.selectedSubMod,
@@ -229,6 +230,7 @@ Continue install anyway?`)) {
           validateOnly: true,
           deleteVersionInformation: deleteVersionInformation === true,
           installSteamGrid: app.installSteamGrid,
+          allowCache: allowCache === true,
         };
 
         doPost('startInstall', args,
@@ -249,14 +251,14 @@ Continue install anyway?`)) {
             }
           });
       },
-      updateAndValidateInstallSettings(newPath) {
+      updateAndValidateInstallSettings(newPath, allowCache) {
         if (newPath !== null) {
           app.validationInProgress = true;
           app.showConfirmation = true;
           if (app.installPathFocussed) {
-            app.debouncedValidateInstallPath();
+            app.debouncedValidateInstallPath(false, allowCache);
           } else {
-            app.validateInstallPath();
+            app.validateInstallPath(false, allowCache);
           }
         }
       },
@@ -398,7 +400,8 @@ Continue install anyway?`)) {
 
   // When any properties of the selected submod and child properites change,
   // need to update install settings / refresh download preview
-  app.$watch('selectedSubMod', () => { app.updateAndValidateInstallSettings(app.selectedInstallPath); }, { deep: true });
+  // Allow caching as it's just a preview
+  app.$watch('selectedSubMod', () => { app.updateAndValidateInstallSettings(app.selectedInstallPath, true); }, { deep: true });
 
 };
 

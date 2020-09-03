@@ -42,7 +42,7 @@ except ImportError:
 		pass
 
 try:
-	from typing import List, Optional, Dict
+	from typing import List, Optional, Dict, Tuple
 except ImportError:
 	pass # Just needed for pycharm comments
 
@@ -530,6 +530,9 @@ class InstallerGUI:
 		self.installRunningLock = threading.RLock()
 		self.installRunningLock.acquire()
 
+		# This caches the self.try_start_install(...) function, only used for install previews
+		self.cachedFullInstallConfigs = {}  # type: Dict[str, Tuple[bool, installConfiguration.FullInstallConfiguration]]
+
 	def shutdown(self):
 		self.installRunningLock.release()
 
@@ -567,6 +570,7 @@ class InstallerGUI:
 		import uminekoNScripterInstaller
 
 		fullInstallConfigs = None
+
 		if os.path.isdir(installPath):
 			fullInstallConfigs, _ = gameScanner.scanForFullInstallConfigs([subMod], possiblePaths=[installPath])
 
@@ -747,6 +751,7 @@ class InstallerGUI:
 				validateOnly = requestData.get('validateOnly', False)
 				deleteVersionInformation = requestData.get('deleteVersionInformation', False)
 				installSteamGrid = requestData.get('installSteamGrid', False)
+				allowCache = requestData.get('allowCache', False)
 
 				subMod = self.idToSubMod[id]
 
@@ -759,7 +764,23 @@ class InstallerGUI:
 						logger.printNoTerminal(modOption)
 
 				installPath = requestData.get('installPath', None)
-				installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly, installSteamGrid)
+
+				# Try to use the cached value, if allowed
+				if allowCache and validateOnly:
+					cached_result = self.cachedFullInstallConfigs.get("{}-{}".format(subMod.id, installPath), None)
+				else:
+					cached_result = None
+
+				# If no cached result or caching not allowed, load from scratch
+				if cached_result:
+					installValid, fullInstallConfiguration = cached_result
+				else:
+					installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly, installSteamGrid)
+
+				# Overwrite or store the value in cache if the install would be valid
+				if installValid:
+					self.cachedFullInstallConfigs["{}-{}".format(subMod.id, installPath)] = (installValid, fullInstallConfiguration)
+
 				retval = { 'installStarted': installValid }
 				if installValid:
 					if deleteVersionInformation:
