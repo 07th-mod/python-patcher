@@ -827,7 +827,6 @@ class DownloaderAndExtractor:
 		if not self.suppressDownloadStatus:
 			commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
-			print("Querying URL: [{}]".format(file.url))
 			self.addItemManually(file.url, self.defaultExtractionDir)
 
 		self.downloadAndExtractionListsBuilt = True
@@ -941,6 +940,7 @@ class DownloaderAndExtractor:
 		:param url: The URL or metalink to download
 		:param extractionDir: The folder where the file(s) will be extracted
 		"""
+		print("Querying URL: [{}]".format(url))
 		extractables = DownloaderAndExtractor.getExtractableItem(url=url, extractionDir=extractionDir)
 		self.downloadList.append(url)
 		self.extractablesForEachDownload.append(extractables)

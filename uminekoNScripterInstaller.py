@@ -48,7 +48,7 @@ def main(conf):
 		localVersionFolder=conf.installPath)
 
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
-
+	conf.subModConfig.printEnabledOptions()
 	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 

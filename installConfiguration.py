@@ -160,7 +160,7 @@ class DownloadAndExtractOption:
 
 
 class ModOptionParser:
-	def __init__(self, fullInstallConfiguration, verbosePrinting=True):
+	def __init__(self, fullInstallConfiguration):
 		self.config = fullInstallConfiguration # type: FullInstallConfiguration
 		self.downloadAndExtractOptionsByPriority = [] # type: List[DownloadAndExtractOption]
 		self.keepDownloads = False
@@ -180,11 +180,6 @@ class ModOptionParser:
 					)
 				elif modOption.type == 'keepDownloads':
 					self.keepDownloads = True
-
-		if verbosePrinting:
-			print('MOD OPTIONS:\n')
-			for modOption in self.config.subModConfig.modOptions:
-				print('  - {}'.format(modOption))
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -263,6 +258,19 @@ class SubModConfig:
 
 		return uniqueModNames
 
+	def printEnabledOptions(self):
+		print('\nEnabled Mod Options:')
+
+		numberEnabled = 0
+		for modOption in self.modOptions:
+			if modOption.value:
+				print('  - {}: {}'.format(modOption.group, modOption.name))
+				numberEnabled += 1
+
+		if numberEnabled == 0:
+			print(' - No options were enabled.')
+
+		print()
 
 class OldUnityException(Exception):
 	def __init__(self, version):

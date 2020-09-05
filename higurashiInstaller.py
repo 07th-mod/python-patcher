@@ -78,6 +78,7 @@ class Installer:
 			localVersionFolder=self.directory)
 
 		modFileList = self.fileVersionManager.getFilesRequiringUpdate()
+		self.info.subModConfig.printEnabledOptions()
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
 		                                                            extractionDir=self.extractDir)

@@ -479,7 +479,7 @@ def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
 			scriptNeedsUpdate = True
 
 	# Generate rows for the mod option files
-	parser = installConfiguration.ModOptionParser(fullInstallConfig, verbosePrinting=False)
+	parser = installConfiguration.ModOptionParser(fullInstallConfig)
 	for option in parser.downloadAndExtractOptionsByPriority:
 		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(option.url)
 		downloadItemsPreview.append((option.name, downloadSize, True, 'Mod options are always downloaded'))

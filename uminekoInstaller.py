@@ -114,6 +114,7 @@ def mainUmineko(conf):
 
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
 	print("Perform Full Install: {}".format(fileVersionManager.fullUpdateRequired()))
+	conf.subModConfig.printEnabledOptions()
 	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
