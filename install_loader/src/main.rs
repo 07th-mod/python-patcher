@@ -50,20 +50,7 @@ fn fix_cwd() -> Result<PathBuf, Box<dyn Error>> {
 fn main() -> Result<(), Box<dyn Error>> {
 	panic_handler::set_hook(String::from("07th-mod_crash.log"));
 
-	// Change current directory to .exe path, if current .exe path is known
-	let old_cwd = std::env::current_dir();
-	match fix_cwd() {
-		Ok(new_cwd) => println!(
-			"Successfully changed path from {:?} to {:?}",
-			old_cwd, new_cwd
-		),
-		Err(e) => println!(
-			"Couldn't fix exe path - cwd remains as [{:?}]. Error: [{}]",
-			std::env::current_dir(),
-			e
-		),
-	}
-
+	//////////////////////////// Begin file chooser code ///////////////////////////////////////////
 	let open_about_msg = r#"Shows an open dialog and:
 - if user selected a path, writes the chosen path to stdout, returns 0
 - if user cancelled, writes nothing to stdout, returns 0
@@ -84,6 +71,21 @@ For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
 
 	if let Some(matches) = matches.subcommand_matches("open") {
 		return handle_open_command(matches);
+	}
+
+	//////////////////////////// Begin normal installer code ///////////////////////////////////////
+	// Change current directory to .exe path, if current .exe path is known
+	let old_cwd = std::env::current_dir();
+	match fix_cwd() {
+		Ok(new_cwd) => println!(
+			"Successfully changed path from {:?} to {:?}",
+			old_cwd, new_cwd
+		),
+		Err(e) => println!(
+			"Couldn't fix exe path - cwd remains as [{:?}]. Error: [{}]",
+			std::env::current_dir(),
+			e
+		),
 	}
 
 	// _maybe_job must be kept in scope for the remainder of the program!
