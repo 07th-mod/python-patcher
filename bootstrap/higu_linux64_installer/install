@@ -1,4 +1,4 @@
 #!/bin/sh
 cd "$(dirname "$0")"
 cd install_data
-python ./main.py || python3 ./main.py || python2 ./main.py
+python3 ./main.py || python ./main.py || python2 ./main.py
