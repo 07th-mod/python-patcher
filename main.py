@@ -145,7 +145,7 @@ def installerCommonStartupTasks():
 		# Write some dummy data to a temp file
 		test_data = "test"
 		temp_file_handle, temp_file_path = tempfile.mkstemp(dir='.')
-		with open(temp_file_handle, 'w') as temp_file:
+		with os.fdopen(temp_file_handle, 'w') as temp_file:
 			temp_file.write(test_data)
 
 		# Wait for the file to appear on the filesystem (in most cases this happens immediately)
@@ -167,9 +167,14 @@ def installerCommonStartupTasks():
 		errors.append("ERROR: Installer folder is not writeable [{}]. Please run the installer from a user writeable folder instead. Full error:\n{}".format(os.getcwd(), e))
 
 	if errors:
-		print('- ')
+		print('\n--------------------------------------------------------------')
+		print('The following problems were found during startup:')
+		print('- ', end='')
 		print('\n- '.join(errors))
-		raise SystemExit(-1)
+		print('--------------------------------------------------------------')
+		print('Please try to fix these errors before continuing, then restart the installer.')
+		input('If you think the error was a false positive, press ENTER to continue anyway')
+		input("If you're absolutely sure you want to continue, press ENTER again")
 
 if __name__ == "__main__":
 	installerCommonStartupTasks()
