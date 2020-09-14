@@ -143,7 +143,9 @@ class Globals:
 
 	@staticmethod
 	def scanForCURL():
-		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl"], ["-I", "https://07th-mod.com/"])
+		# On Windows 10, default to system CURL (which uses Windows's certificates)
+		# If not available, use the curl bundled with the installer, which uses included cert file 'curl-ca-bundle.crt'
+		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl", "curl_bundled"], ["-I", "https://07th-mod.com/"])
 
 	@staticmethod
 	def scanForAria():
