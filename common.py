@@ -357,7 +357,7 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 						break
 			except Exception as e:
 				#reduce cpu usage if some exception is continously thrown
-				print("Error in [runProcessOutputToTempFile()]: {}".format(traceback.format_exc(e)))
+				print("Error in [runProcessOutputToTempFile()]: {}".format(traceback.format_exc()))
 				time.sleep(.1)
 
 	# Monitor stderr on one thread, and monitor stdout on main thread
