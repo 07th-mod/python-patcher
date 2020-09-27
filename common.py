@@ -1037,9 +1037,19 @@ class DownloaderAndExtractor:
 				lengthString = httpResponse.getheader('Content-Length')
 				remoteLastModified = httpResponse.getheader("Last-Modified")
 			except AttributeError:
-				contentDisposition = httpResponse.info().getheader("Content-Disposition").decode("utf-8")  # python 2
-				lengthString = httpResponse.info().getheader('Content-Length').decode("utf-8")
-				remoteLastModified = httpResponse.info().getheader("Last-Modified").decode("utf-8")
+				# Python 2 handling: AttributeError causes below to be executed instead
+				contentDisposition = httpResponse.info().getheader("Content-Disposition")
+				if contentDisposition is not None:
+					contentDisposition = contentDisposition.decode("utf-8")
+
+				lengthString = httpResponse.info().getheader('Content-Length')
+				if lengthString is not None:
+					lengthString = lengthString.decode("utf-8")
+
+				remoteLastModified = httpResponse.info().getheader("Last-Modified")
+				if remoteLastModified is not None:
+					remoteLastModified = remoteLastModified.decode("utf-8")
+
 			responseURL = httpResponse.url
 
 			return contentDisposition, remoteLastModified, responseURL, lengthString
