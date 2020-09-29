@@ -42,6 +42,7 @@ class FullInstallConfiguration:
 		self.useIPV6 = False
 		self.unityVersion = None
 		self.installSteamGrid = False
+		self.partialManualInstall = False
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir="", verbosePrinting=True):

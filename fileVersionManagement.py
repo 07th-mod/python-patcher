@@ -114,12 +114,16 @@ class VersionManager:
 		self.localVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	# When install finishes, copy the remoteVersionInfo
-	def saveVersionInstallFinished(self):
+	def saveVersionInstallFinished(self, forcedSaveFolder=None):
 		if self.remoteVersionInfo is None:
 			print("VersionManager: ERROR: Not saving remote version info as it couldn't be retrieved from server")
 			return
 
-		self.remoteVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
+		versionSavePath = self.localVersionFilePath
+		if forcedSaveFolder is not None:
+			versionSavePath = os.path.join(forcedSaveFolder, VersionManager.localVersionFileName)
+
+		self.remoteVersionInfo.serialize(versionSavePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	@staticmethod
 	def tryDeleteLocalVersionFile(localVersionFolder):

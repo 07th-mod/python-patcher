@@ -278,6 +278,8 @@ def makeDirsExistOK(directoryToMake):
 
 	raise Exception("Couldn't create directory {}".format(directoryToMake))
 
+def tryShowInFileBrowser(path):
+	trySystemOpen(path, True)
 
 def trySystemOpen(path, normalizePath=False):
 	"""
