@@ -918,7 +918,7 @@ class InstallerGUI:
 
 			def showInFileBrowser(requestData):
 				if os.path.exists(requestData):
-					common.trySystemOpen(requestData, normalizePath=True)
+					common.tryShowInFileBrowser(requestData)
 				return {}
 
 			def shutdown(_requestData):
