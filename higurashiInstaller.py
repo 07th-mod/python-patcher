@@ -14,6 +14,10 @@ import installConfiguration
 import logger
 import steamGridExtractor
 
+try:
+	from typing import Optional
+except:
+	pass
 
 def on_rm_error(func, path, exc_info):
 	# path contains the path of the file that couldn't be removed
@@ -35,8 +39,14 @@ def forceRmTree(path):
 	shutil.rmtree(path, onerror=on_rm_error)
 
 class Installer:
-	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory):
-		# type: (installConfiguration.FullInstallConfiguration, bool) -> None
+	def getDataDirectory(self, installPath):
+		if common.Globals.IS_MAC:
+			return path.join(installPath, "Contents/Resources/Data")
+		else:
+			return path.join(installPath, self.info.subModConfig.dataName)
+
+	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, forcedExtractDirectory=None):
+		# type: (installConfiguration.FullInstallConfiguration, bool, Optional[str]) -> None
 
 		"""
 		Installer Init
@@ -44,13 +54,10 @@ class Installer:
 		:param str directory: The directory of the game
 		:param dict info: The info dictionary from server JSON file for the requested target
 		"""
+		self.forcedExtractDirectory = forcedExtractDirectory
 		self.info = fullInstallConfiguration
 		self.directory = fullInstallConfiguration.installPath
-
-		if common.Globals.IS_MAC:
-			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
-		else:
-			self.dataDirectory = path.join(self.directory, self.info.subModConfig.dataName)
+		self.dataDirectory = self.getDataDirectory(self.directory)
 
 		logger.getGlobalLogger().trySetSecondaryLoggingPath(
 			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
@@ -71,6 +78,8 @@ class Installer:
 
 		self.downloadDir = self.info.subModConfig.modName + " Downloads"
 		self.extractDir = self.directory if extractDirectlyToGameDirectory else (self.info.subModConfig.modName + " Extraction")
+		if forcedExtractDirectory is not None:
+			self.extractDir = forcedExtractDirectory
 
 		self.fileVersionManager = fileVersionManagement.VersionManager(
 			subMod=self.info.subModConfig,
@@ -175,6 +184,10 @@ class Installer:
 		return False
 
 	def applyLanguageSpecificSharedAssets(self):
+		folderToApply = self.dataDirectory
+		if self.forcedExtractDirectory is not None:
+			folderToApply = self.getDataDirectory(self.forcedExtractDirectory)
+
 		# Don't need to apply any special UI if no language patch
 		if not self._languagePatchIsEnabled():
 			return
@@ -187,11 +200,11 @@ class Installer:
 		versionString = self.info.unityVersion
 		osString = common.Globals.OS_STRING
 
-		for altUIFilename in os.listdir(self.dataDirectory):
-			if versionString in altUIFilename.lower() and osString in altUIFilename.lower():
+		for altUIFilename in os.listdir(folderToApply):
+			if os.path.isfile(altUIFilename) and versionString in altUIFilename.lower() and osString in altUIFilename.lower():
 				print("Language Patch UI: Attempting to use {} UI File".format(altUIFilename))
-				altUIPath = os.path.join(self.dataDirectory, altUIFilename)
-				uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
+				altUIPath = os.path.join(folderToApply, altUIFilename)
+				uiPath = path.join(folderToApply, "sharedassets0.assets")
 				shutil.copy(altUIPath, uiPath)
 				return
 
@@ -261,8 +274,8 @@ class Installer:
 	def saveFileVersionInfoStarted(self):
 		self.fileVersionManager.saveVersionInstallStarted()
 
-	def saveFileVersionInfoFinished(self):
-		self.fileVersionManager.saveVersionInstallFinished()
+	def saveFileVersionInfoFinished(self, forcedSaveFolder=None):
+		self.fileVersionManager.saveVersionInstallFinished(forcedSaveFolder)
 
 def main(fullInstallConfiguration):
 	# type: (installConfiguration.FullInstallConfiguration) -> None
@@ -271,8 +284,18 @@ def main(fullInstallConfiguration):
 	if isVoiceOnly:
 		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
 
-	# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
-	if common.Globals.IS_WINDOWS:
+	if fullInstallConfiguration.partialManualInstall:
+		extractDir = fullInstallConfiguration.subModConfig.modName + " Extracted"
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, forcedExtractDirectory=extractDir)
+		installer.download()
+		installer.extractFiles()
+		if common.Globals.IS_WINDOWS and fullInstallConfiguration.installSteamGrid:
+			steamGridExtractor.extractSteamGrid(installer.downloadDir)
+		installer.applyLanguageSpecificSharedAssets()
+		installer.saveFileVersionInfoFinished(forcedSaveFolder=extractDir)
+		common.tryShowInFileBrowser(extractDir)
+	elif common.Globals.IS_WINDOWS:
+		# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
 		print("Downloading...")
 		installer.download()
@@ -304,5 +327,6 @@ def main(fullInstallConfiguration):
 		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
+
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")
