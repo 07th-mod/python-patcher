@@ -118,9 +118,9 @@ def mainUmineko(conf):
 	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
 
-	parser = installConfiguration.ModOptionParser(conf)
+	optionParser = installConfiguration.ModOptionParser(conf)
 
-	for opt in parser.downloadAndExtractOptionsByPriority:
+	for opt in optionParser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(
 			url=opt.url,
 			extractionDir=os.path.join(conf.installPath, opt.relativeExtractionPath),
@@ -217,11 +217,11 @@ pause
 """)
 
 	# For now, don't copy save data
-	if conf.installSteamGrid:
+	if optionParser.installSteamGrid:
 		steamGridExtractor.extractSteamGrid(downloadTempDir)
 	fileVersionManager.saveVersionInstallFinished()
 
-	if not parser.keepDownloads:
+	if not optionParser.keepDownloads:
 		print("Removing temporary downloads:")
 		deleteExtractablesFromFolder(downloadTempDir, downloaderAndExtractor.extractList)
 
