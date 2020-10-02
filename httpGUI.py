@@ -564,8 +564,8 @@ class InstallerGUI:
 		return self.threadHandle and self.threadHandle.is_alive()
 
 	# TODO: this function should return an error message describing why the install couldn't be started
-	def try_start_install(self, subMod, installPath, validateOnly, installSteamGrid=False):
-		#type: (installConfiguration.SubModConfig, str, bool, bool) -> (bool, installConfiguration.FullInstallConfiguration)
+	def try_start_install(self, subMod, installPath, validateOnly):
+		#type: (installConfiguration.SubModConfig, str, bool) -> (bool, installConfiguration.FullInstallConfiguration)
 		import higurashiInstaller
 		import uminekoInstaller
 		import uminekoNScripterInstaller
@@ -593,8 +593,6 @@ class InstallerGUI:
 				raise Exception("Can't start install - No game found for mod [{}] at [{}]".format(subMod.modName, installPath))
 
 		fullInstallSettings = fullInstallConfigs[0]
-
-		fullInstallSettings.installSteamGrid = installSteamGrid
 
 		installerFunction = {
 			"higurashi": higurashiInstaller.main,
@@ -751,7 +749,6 @@ class InstallerGUI:
 				id = webSubModHandle['id']
 				validateOnly = requestData.get('validateOnly', False)
 				deleteVersionInformation = requestData.get('deleteVersionInformation', False)
-				installSteamGrid = requestData.get('installSteamGrid', False)
 				allowCache = requestData.get('allowCache', False)
 
 				subMod = self.idToSubMod[id]
@@ -776,7 +773,7 @@ class InstallerGUI:
 				if cached_result:
 					installValid, fullInstallConfiguration = cached_result
 				else:
-					installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly, installSteamGrid)
+					installValid, fullInstallConfiguration = self.try_start_install(subMod, installPath, validateOnly)
 
 				# Overwrite or store the value in cache if the install would be valid
 				if installValid:

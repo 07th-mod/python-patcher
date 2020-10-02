@@ -94,9 +94,9 @@ class Installer:
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		parser = installConfiguration.ModOptionParser(self.info)
+		self.optionParser = installConfiguration.ModOptionParser(self.info)
 
-		for opt in parser.downloadAndExtractOptionsByPriority:
+		for opt in self.optionParser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
 				url=opt.url,
 				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
@@ -289,7 +289,7 @@ def main(fullInstallConfiguration):
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, forcedExtractDirectory=extractDir)
 		installer.download()
 		installer.extractFiles()
-		if common.Globals.IS_WINDOWS and fullInstallConfiguration.installSteamGrid:
+		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished(forcedSaveFolder=extractDir)
@@ -306,7 +306,7 @@ def main(fullInstallConfiguration):
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
-		if fullInstallConfiguration.installSteamGrid:
+		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished()
