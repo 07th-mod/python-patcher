@@ -41,7 +41,6 @@ class FullInstallConfiguration:
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 		self.unityVersion = None
-		self.partialManualInstall = False
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir="", verbosePrinting=True):
@@ -165,6 +164,7 @@ class ModOptionParser:
 		self.downloadAndExtractOptionsByPriority = [] # type: List[DownloadAndExtractOption]
 		self.keepDownloads = False
 		self.installSteamGrid = False
+		self.partialManualInstall = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -183,6 +183,8 @@ class ModOptionParser:
 					self.keepDownloads = True
 				elif modOption.type == 'installSteamGrid':
 					self.installSteamGrid = True
+				elif modOption.type == 'partialManualInstall':
+					self.partialManualInstall = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -268,6 +270,19 @@ This option updates the header and icon art in the Steam app to match the mod's 
 			                                 type="installSteamGrid",
 			                                 isRadio=False,
 			                                 data=None))
+
+		self.modOptions.append(ModOption(name="Partial Manual Install",
+		                                 description="""Users who get a 'Permission Denied' error during extraction can use this option as a workaround.
+
+This makes the installer download and extract the mod files to a temporary folder (shown at the end of the install)
+
+It is then your responsibility to copy the mod files to the game directory.
+
+You are also responsible for deleting the archive downloads when using this method (located in the 07th-mod_installer folder).""",
+		                                 group="Experimental Options",
+		                                 type="partialManualInstall",
+		                                 isRadio=False,
+		                                 data=None))
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
