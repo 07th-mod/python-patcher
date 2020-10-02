@@ -17,6 +17,7 @@ import gameScanner
 import commandLineParser
 import logger
 import installConfiguration
+import collections
 
 try:
 	import urlparse
@@ -384,7 +385,7 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 	httpd.serve_forever()
 
 def modOptionsToWebFormat(modOptions):
-	# type: (List[gameScanner.ModOption]) -> List[Dict]
+	# type: (List[installConfiguration.ModOption]) -> List[Dict]
 	"""
 	Returns a list of dicts of the following format, to be used in the web interface:
 	[{
@@ -403,7 +404,16 @@ def modOptionsToWebFormat(modOptions):
 
 	httpFormattedOptions = []
 
-	for groupName, groupOptions in common.group_by(modOptions, keyFunc=lambda x: x.group).items():
+	# Group mod options by name, while preserving order
+	modOptionsGroupedByGroupName = collections.OrderedDict()
+	for modOption in modOptions:
+		if modOption.group in modOptionsGroupedByGroupName:
+			modOptionsGroupedByGroupName[modOption.group].append(modOption)
+		else:
+			modOptionsGroupedByGroupName[modOption.group] = [modOption]
+
+	# Convert the grouped options to a format the web-based frontend can use
+	for groupName, groupOptions in modOptionsGroupedByGroupName.items():
 		radioOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if o.isRadio]
 		checkBoxOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if not o.isRadio]
 		httpFormattedOptions.append({
