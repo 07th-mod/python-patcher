@@ -45,8 +45,8 @@ class Installer:
 		else:
 			return path.join(installPath, self.info.subModConfig.dataName)
 
-	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, forcedExtractDirectory=None):
-		# type: (installConfiguration.FullInstallConfiguration, bool, Optional[str]) -> None
+	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, modOptionParser, forcedExtractDirectory=None):
+		# type: (installConfiguration.FullInstallConfiguration, bool, installConfiguration.ModOptionParser Optional[str]) -> None
 
 		"""
 		Installer Init
@@ -94,7 +94,7 @@ class Installer:
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		self.optionParser = installConfiguration.ModOptionParser(self.info)
+		self.optionParser = modOptionParser
 
 		for opt in self.optionParser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
@@ -287,9 +287,11 @@ def main(fullInstallConfiguration):
 	if isVoiceOnly:
 		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
 
-	if fullInstallConfiguration.partialManualInstall:
-		extractDir = fullInstallConfiguration.subModConfig.modName + " Extracted"
-		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, forcedExtractDirectory=extractDir)
+	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
+
+	if modOptionParser.partialManualInstall:
+		extractDir = fullInstallConfiguration.subModConfig.modName + " " + fullInstallConfiguration.subModConfig.subModName + " Extracted"
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, forcedExtractDirectory=extractDir)
 		installer.download()
 		installer.extractFiles()
 		if installer.optionParser.installSteamGrid:
@@ -299,7 +301,7 @@ def main(fullInstallConfiguration):
 		common.tryShowInFileBrowser(extractDir)
 	elif common.Globals.IS_WINDOWS:
 		# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
-		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True)
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True, modOptionParser=modOptionParser)
 		print("Downloading...")
 		installer.download()
 		installer.saveFileVersionInfoStarted()
@@ -315,7 +317,7 @@ def main(fullInstallConfiguration):
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
-		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False)
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser)
 		print("Downloading...")
 		installer.download()
 		installer.saveFileVersionInfoStarted()
