@@ -101,7 +101,6 @@ function startInstall(subModToInstall, installPath, deleteVersionInformation) {
       subMod: subModToInstall,
       installPath,
       deleteVersionInformation: deleteVersionInformation === true,
-      installSteamGrid: app.installSteamGrid,
       allowCache: false,
     },
     (responseData) => {
@@ -169,8 +168,6 @@ window.onload = function onWindowLoaded() {
       fullUpdateRequired: true,
       // URL of the mod changelog for this game (github releases page). If no URL available, is null.
       changelogURL: null,
-      // User set option passed to installer which controls whether steam icon and header art will be updated.
-      installSteamGrid: false,
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
     },
@@ -229,7 +226,6 @@ Continue install anyway?`)) {
           installPath: app.selectedInstallPath,
           validateOnly: true,
           deleteVersionInformation: deleteVersionInformation === true,
-          installSteamGrid: app.installSteamGrid,
           allowCache: allowCache === true,
         };
 
@@ -282,9 +278,6 @@ Continue install anyway?`)) {
       },
       showInFileBrowser(path) {
         doPost('showInFileBrowser', path, (responseData) => {});
-      },
-      canInstallSteamGrid() {
-        return app.metaInfo.operatingSystem === 'windows' && !app.selectedSubMod.descriptionID.toLowerCase().includes('voiceonly');
       },
       abortInstall() {
         app.installFinished = true;

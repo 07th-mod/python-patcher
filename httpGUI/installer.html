@@ -469,25 +469,6 @@
 															</div>
 														</div>
 													</div>
-													<!-- NOTE: this is not implemented properly - need proper system for implementing options common to all mods -->
-													<h5 v-if="canInstallSteamGrid()" class="uppercase"> Common Options </h5>
-													<label v-if="canInstallSteamGrid()" class="form-check mod-option-group" v-bind:class="{'mod-option-group-active': installSteamGrid}" for="installSteamGrid">
-														<input type="checkbox" id="installSteamGrid" v-model="installSteamGrid">
-														<label for="installSteamGrid"> Update Steamgrid Icons</label>
-														<p>This option updates the header and icon art in the Steam app to match the mod's art style. All Higurashi and Umineko games will have their icons updated, not just the game being patched.</p>
-														<table class="umineko-image-table-content umineko-image-table-horizontal">
-														<tbody>
-															<tr>
-																<td>Original</td>
-																<td><img src="img/steamgrid/header-original.jpg"></td>
-															</tr>
-															<tr>
-																<td>Updated</td>
-																<td><img src="img/steamgrid/header-updated.jpg"></td>
-															</tr>
-														</tbody>
-														</table>
-													</label>
 												</div>
 												<transition name="fade">
 													<div v-if="installPathValid">
@@ -499,7 +480,6 @@
 															Patch Type: {{ selectedSubMod.subModName }} <br>
 															Install Path: {{ validatedInstallPath === null ? "Not Selected" : validatedInstallPath }}" <br><br>
 															<strong>Options</strong><br>
-															Install Steam Grid: {{ installSteamGrid }}
 															<div v-if="selectedSubMod.modOptionGroups.length == 0">
 																There are no game specific options for this mod.
 															</div>
