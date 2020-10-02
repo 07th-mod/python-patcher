@@ -41,7 +41,6 @@ class FullInstallConfiguration:
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 		self.unityVersion = None
-		self.installSteamGrid = False
 		self.partialManualInstall = False
 
 	#applies the fileOverrides to the files to
@@ -165,6 +164,7 @@ class ModOptionParser:
 		self.config = fullInstallConfiguration # type: FullInstallConfiguration
 		self.downloadAndExtractOptionsByPriority = [] # type: List[DownloadAndExtractOption]
 		self.keepDownloads = False
+		self.installSteamGrid = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -181,6 +181,8 @@ class ModOptionParser:
 					)
 				elif modOption.type == 'keepDownloads':
 					self.keepDownloads = True
+				elif modOption.type == 'installSteamGrid':
+					self.installSteamGrid = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -241,6 +243,31 @@ class SubModConfig:
 			if applicableSubMods is None or self.subModName in applicableSubMods:
 				jsonAddModOptionsFromList(jsonModOptionGroup.get('radio', []), isRadio=True)
 				jsonAddModOptionsFromList(jsonModOptionGroup.get('checkBox', []), isRadio=False)
+
+		# Mod options which don't come from the installData.json file are added here
+		installSteamGridDescription = """
+This option updates the header and icon art in the Steam app to match the mod's art style. All Higurashi and Umineko games will have their icons updated, not just the game being patched.
+
+<table class="umineko-image-table-content umineko-image-table-horizontal">
+<tbody>
+	<tr>
+	<td>Original</td>
+		<td><img src="img/steamgrid/header-original.jpg"></td>
+	</tr>
+	<tr>
+		<td>Updated</td>
+		<td><img src="img/steamgrid/header-updated.jpg"></td>
+	</tr>
+</tbody>
+</table>
+"""
+		if common.Globals.IS_WINDOWS and 'voiceonly' not in self.descriptionID.lower():
+			self.modOptions.append(ModOption(name="Update Steamgrid Icons",
+			                                 description=installSteamGridDescription,
+			                                 group="Common Options",
+			                                 type="installSteamGrid",
+			                                 isRadio=False,
+			                                 data=None))
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
