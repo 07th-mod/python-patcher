@@ -271,7 +271,9 @@ This option updates the header and icon art in the Steam app to match the mod's 
 			                                 isRadio=False,
 			                                 data=None))
 
-		self.modOptions.append(ModOption(name="Partial Manual Install",
+		# Only show 'partial manual install' options for Higurashi for now (Umineko partial install is not implemented)
+		if self.family == 'higurashi':
+			self.modOptions.append(ModOption(name="Partial Manual Install",
 		                                 description="""Users who get a 'Permission Denied' error during extraction can use this option as a workaround.
 
 This makes the installer download and extract the mod files to a temporary folder (shown at the end of the install)
