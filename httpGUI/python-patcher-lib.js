@@ -119,6 +119,15 @@ function startInstall(subModToInstall, installPath, deleteVersionInformation) {
 // - Main Vue instance, called 'app', is initialized
 // - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
+  // Forces all links which have been sanitized to open in new window (in this case, markdown links)
+  // See https://github.com/cure53/DOMPurify/issues/317#issuecomment-698800327
+  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+    if ('target' in node) {
+      node.setAttribute('target', '_blank');
+      node.setAttribute('rel', 'noopener');
+    }
+  });
+
   app = new Vue({
     el: '#app',
     data: {
