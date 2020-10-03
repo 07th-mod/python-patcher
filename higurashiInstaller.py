@@ -296,6 +296,7 @@ def main(fullInstallConfiguration):
 		installer.applyLanguageSpecificSharedAssets()
 		installer.saveFileVersionInfoFinished(forcedSaveFolder=extractDir)
 		common.tryShowInFileBrowser(extractDir)
+		common.tryShowInFileBrowser(fullInstallConfiguration.installPath)
 	elif common.Globals.IS_WINDOWS:
 		# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True, modOptionParser=modOptionParser)
