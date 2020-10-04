@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
+import locale
 import os
 import sys
 
@@ -122,6 +123,7 @@ def installerCommonStartupTasks():
 	print("> Install Started On {}".format(datetime.datetime.now()))
 	common.Globals.getBuildInfo()
 	print("Python {}".format(sys.version))
+	print("Locale - Default: {} | Preferred: {} | Filesystem: {}".format(sys.getdefaultencoding(), locale.getpreferredencoding(), sys.getfilesystemencoding()))
 	print("Installer Build Information: {}".format(common.Globals.BUILD_INFO))
 	print("Installer is being run from: [{}]".format(os.getcwd()))
 

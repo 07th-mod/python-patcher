@@ -320,10 +320,10 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 	# to fix this properly, you would need to make a custom class which takes in raw bytes using stdout.read(10)
 	# and then periodically convert newline delimited sections of the text to utf-8 (or whatever encoding), and catch bad encoding errors
 	# See comments on https://stackoverflow.com/a/15374326/848627 and answer https://stackoverflow.com/a/48880977/848627
-	# drojf: Removed universal_newlines, and then set bufsize=1 (which actually means to be line-buffered!), to fix
-	# issues with non-windows locales breaking this part of the installer
+	# drojf: Removed universal_newlines, to fix issues with non-windows locales breaking this part of the installer
 	# see https://stackoverflow.com/questions/38181494/what-is-the-difference-between-using-universal-newlines-true-with-bufsize-1-an?rq=1
-	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1)
+	# The default bufsize works fine on Windows (seems to be line buffered, or maybe the flush() works as expected on Windows)
+	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 	def readUntilEOF(proc, fileLikeObject):
 		stringBuffer = []
@@ -331,7 +331,10 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 			try:
 				fileLikeObject.flush()
 				while True:
-					character = fileLikeObject.read(1)
+					if Globals.IS_PYTHON_2:
+						character = fileLikeObject.read(1)
+					else:
+						character = fileLikeObject.read(1).decode(encoding='utf-8', errors='replace')
 
 					if character:
 						stringBuffer.append(character)
