@@ -509,7 +509,13 @@ def sevenZipTest(archive_path):
 	:param archive_path: The path to the archive to test
 	:return: The 7-zip return code as an int (0 is Success),
 	"""
-	arguments = [Globals.SEVEN_ZIP_EXECUTABLE, "t", archive_path]
+	arguments = [Globals.SEVEN_ZIP_EXECUTABLE,
+	             "t",
+	             archive_path,
+	             "-bso1",  # redirect standard Output messages to stdout
+	             "-bsp1",  # redirect Progress update messages to stdout
+	             "-bse2",  # redirect Error messages to stderr
+	             ]
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
 def tryGetRemoteNews(newsName):
