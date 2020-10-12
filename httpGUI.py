@@ -416,13 +416,25 @@ def modOptionsToWebFormat(modOptions):
 	for groupName, groupOptions in modOptionsGroupedByGroupName.items():
 		radioOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if o.isRadio]
 		checkBoxOptions = [convertOptionToHTTPFormat(o) for o in groupOptions if not o.isRadio]
+		# Get the ids of all the checkboxes which are selected
+		selectedCheckBoxes = [o.id for o in groupOptions if not o.isRadio and o.value]
+
+		# Get the ids of all the radios which have been selected (which should only ever be one or zero),
+		# then take the first one
+		# The ID is of the form "BGM Options-Old BGM" - see definition of ModOption
+		selectedRadio = [o.id for o in groupOptions if o.isRadio and o.value]
+		if selectedRadio:
+			selectedRadio = selectedRadio[0]
+		else:
+			selectedRadio = None
+
 		httpFormattedOptions.append({
 			'name': groupName,
 			'radio': radioOptions,
 			'checkBox': checkBoxOptions,
 			# these two variables are provided to be filled in by the webpage.
-			'selectedCheckBoxes': [],
-			'selectedRadio': None if not radioOptions else radioOptions[0]['id'], #note: the ID is of the form "BGM Options-Old BGM" - see definition of ModOption
+			'selectedCheckBoxes': selectedCheckBoxes,
+			'selectedRadio': selectedRadio,
 		})
 
 	return httpFormattedOptions
