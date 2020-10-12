@@ -439,7 +439,9 @@ def modOptionsToWebFormat(modOptions):
 
 	return httpFormattedOptions
 
-def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
+def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions, currentSubModFamily, allSubModConfigs):
+	#type: (List[installConfiguration.ModOption], List[Dict], str, List[installConfiguration.SubModConfig]) -> None
+
 	modOptions = dict((modOption.id, modOption) for modOption in modOptionsToUpdate)
 	# Clear all mod options to "off" before enabling the ones which the user set.
 	for modOption in modOptions.values():
@@ -452,6 +454,13 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions):
 
 		for checkBoxID in modOptionGroup['selectedCheckBoxes']:
 			modOptions[checkBoxID].value = True
+
+	# Copy the value of any global options in this submod to all other submods (copy to those with same id)
+	for subModConfig in allSubModConfigs:
+		for modOptionToUpdate in subModConfig.modOptions:
+			if (modOptionToUpdate.isGlobal or currentSubModFamily == subModConfig.family) and modOptionToUpdate.id in modOptions:
+				modOptionToUpdate.value = modOptions[modOptionToUpdate.id].value
+
 
 def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
 	#type: (installConfiguration.FullInstallConfiguration, bool) -> Any
@@ -776,7 +785,7 @@ class InstallerGUI:
 				subMod = self.idToSubMod[id]
 
 
-				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups)
+				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups, subMod.family, self.allSubModConfigs)
 
 				if not validateOnly:
 					logger.printNoTerminal("\nUser selected options for install:")
