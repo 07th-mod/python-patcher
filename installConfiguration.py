@@ -125,7 +125,7 @@ class ModFileOverride:
 
 
 class ModOption:
-	def __init__(self, name, description, group, type, isRadio, data):
+	def __init__(self, name, description, group, type, isRadio, data, isGlobal=False):
 		self.id = group + ': ' + name # type: str # unique ID for each mod option, for example "SE Options-Old OST"
 		self.name = name # type: str
 		self.description = description # type: str
@@ -144,7 +144,12 @@ class ModOption:
 		check what kinds of values it contains for a given type of mod option."""
 		self.value = False # type: bool
 		"""This represents whether the user has enabled or disabled this mod option"""
-
+		self.isGlobal = isGlobal # type: bool
+		"""Options which should be remembered/mirrored across different game families should be set as globalOptions
+		For example, a 'download only' or 'french patch' option should be remembered across Umineko and Higurashi
+		Options are considered 'the same' if they have the same id
+		Note that options within the same family are automatically remembered/mirrored, regardless of this 'isGlobal' value
+		"""
 	def __repr__(self):
 		return "Option ID: [{}] Value: [{}]".format(self.id, self.value)
 
@@ -238,7 +243,8 @@ class SubModConfig:
 				                                 group=jsonModOptionGroup['name'],
 				                                 type=jsonModOptionGroup['type'],
 				                                 isRadio=isRadio,
-				                                 data=jsonModOption.get('data', None)))
+				                                 data=jsonModOption.get('data', None),
+				                                 isGlobal=jsonModOption.get('isGlobal', False)))
 
 		for jsonModOptionGroup in mod.get('modOptionGroups', []):
 			applicableSubMods = jsonModOptionGroup.get('submods')
@@ -269,7 +275,8 @@ This option updates the header and icon art in the Steam app to match the mod's 
 			                                 group="Common Options",
 			                                 type="installSteamGrid",
 			                                 isRadio=False,
-			                                 data=None))
+			                                 data=None,
+			                                 isGlobal=True))
 
 		# Only show 'partial manual install' options for Higurashi for now (Umineko partial install is not implemented)
 		if self.family == 'higurashi':
@@ -284,7 +291,8 @@ You are also need to manually delete the temporary installer files (see end of v
 		                                 group="Experimental Options",
 		                                 type="partialManualInstall",
 		                                 isRadio=False,
-		                                 data=None))
+		                                 data=None,
+		                                 isGlobal=True))
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)
