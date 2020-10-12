@@ -444,7 +444,7 @@
 													</ul>
 												</div>
 												<!-- Install options, displayed as radio buttons and checkboxes -->
-												<div v-if="selectedSubMod.modOptionGroups.length > 0">
+												<div v-if="selectedSubMod.modOptionGroups.length > 0 && installPathValid">
 													<h4 class="uppercase mt40">Choose Mod Options</h4>
 													<hr>
 													<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
@@ -544,7 +544,6 @@
 														<br><br>
 														<h3 style="color: red">
 															You must choose an install path before starting the install.
-															Please scroll back up and choose an install path.
 														</h3>
 													</div>
 												</transition>
