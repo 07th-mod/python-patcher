@@ -99,10 +99,13 @@ class Installer:
 		"""
 		Backs up the `sharedassets0.assets` file
 		"""
-		uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
-		backupPath = path.join(self.dataDirectory, "sharedassets0.assets.backup")
-		if path.exists(uiPath) and not path.exists(backupPath):
-			os.rename(uiPath, backupPath)
+		try:
+			uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
+			backupPath = path.join(self.dataDirectory, "sharedassets0.assets.backup")
+			if path.exists(uiPath) and not path.exists(backupPath):
+				shutil.copy(uiPath, backupPath)
+		except Exception as e:
+			print('Warning: Failed to backup sharedassets0.assets file: {}'.format(e))
 
 	def cleanOld(self):
 		"""
