@@ -39,6 +39,7 @@ function statusUpdate() {
             app.subTaskPercentage = 100;
             document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
             app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
+            window.scrollTo(0, 0);
           }
         }
         if (status.overallTaskDescription !== undefined) {
