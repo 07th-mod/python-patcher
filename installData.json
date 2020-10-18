@@ -59,10 +59,15 @@
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
-					"checkBox": [
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/onikakushi/issues)\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/onikakushi/releases/download/v1.4.2/Onikakushi.Patch.FR.refs.tags.v1.4.2.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/onikakushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/onikakushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/onikakushi-ita/releases/download/1.0.0/onikakushi-ita.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
