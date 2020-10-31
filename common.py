@@ -573,6 +573,7 @@ def getJSON(jsonURI, isURL):
 	:return: 
 	"""
 	tmpdir = None
+	file = None
 	try:
 		if isURL:
 			jsonString = downloadFile(jsonURI, is_text=True)
@@ -584,6 +585,9 @@ def getJSON(jsonURI, isURL):
 		return None, error
 	except Exception as anyError:
 		return None, anyError
+	finally:
+		if file is not None:
+			file.close()
 
 	return info, None
 
