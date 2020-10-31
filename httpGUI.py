@@ -5,6 +5,7 @@ import itertools
 import os
 import json
 import re
+import sys
 import zipfile
 import subprocess
 
@@ -359,9 +360,19 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 			except ConnectionAbortedError:
 				print("Info: Browser aborted a connection - probably not a problem")
 
+	# Prefer to use ThreadingHTTPServer, as some web browsers will deadlock if the server can only
+	# handle one connection at a time:
+	# > This class is identical to HTTPServer but uses threads to handle requests by using the ThreadingMixIn.
+	# > This is useful to handle web browsers pre-opening sockets, on which HTTPServer would wait indefinitely.
+	if sys.version_info >= (3, 7):
+		import http
+		httpServerType = http.server.ThreadingHTTPServer
+	else:
+		httpServerType = HTTPServer
+
 	# The default HTTPServer allows multiple servers on the same address without error
 	# we would prefer for an error to be raised, so you know if you had multiple copies of the installer open at once
-	class HTTPServerNoReuse(HTTPServer):
+	class HTTPServerNoReuse(httpServerType):
 		allow_reuse_address = 0
 
 	# This program is only intended to be used on a loopback (non-public facing) interface.
