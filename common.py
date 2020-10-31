@@ -576,10 +576,10 @@ def getJSON(jsonURI, isURL):
 	try:
 		if isURL:
 			jsonString = downloadFile(jsonURI, is_text=True)
-			info = json.loads(jsonString, encoding='utf-8')
+			info = json.loads(jsonString)
 		else:
 			file = io.open(jsonURI, "r", encoding='utf-8')
-			info = json.load(file, encoding='utf-8')
+			info = json.load(file)
 	except HTTPError as error:
 		return None, error
 	except Exception as anyError:
