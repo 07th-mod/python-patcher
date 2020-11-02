@@ -323,59 +323,58 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 	# drojf: Removed universal_newlines, to fix issues with non-windows locales breaking this part of the installer
 	# see https://stackoverflow.com/questions/38181494/what-is-the-difference-between-using-universal-newlines-true-with-bufsize-1-an?rq=1
 	# The default bufsize works fine on Windows (seems to be line buffered, or maybe the flush() works as expected on Windows)
-	proc = subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	with subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
+		def readUntilEOF(proc, fileLikeObject):
+			stringBuffer = []
+			while proc.poll() is None:
+				try:
+					fileLikeObject.flush()
+					while True:
+						if Globals.IS_PYTHON_2:
+							character = fileLikeObject.read(1)
+						else:
+							character = fileLikeObject.read(1).decode(encoding='utf-8', errors='replace')
 
-	def readUntilEOF(proc, fileLikeObject):
-		stringBuffer = []
-		while proc.poll() is None:
-			try:
-				fileLikeObject.flush()
-				while True:
-					if Globals.IS_PYTHON_2:
-						character = fileLikeObject.read(1)
-					else:
-						character = fileLikeObject.read(1).decode(encoding='utf-8', errors='replace')
+						if character:
+							stringBuffer.append(character)
 
-					if character:
-						stringBuffer.append(character)
+							writeOutBuffer = False
 
-						writeOutBuffer = False
+							# Write out buffer if newline detected
+							if character == '\n':
+								writeOutBuffer = True
 
-						# Write out buffer if newline detected
-						if character == '\n':
-							writeOutBuffer = True
+							# Insert newline after ']' characters
+							if ariaMode and character == ']':
+								stringBuffer.append('\n')
+								writeOutBuffer = True
 
-						# Insert newline after ']' characters
-						if ariaMode and character == ']':
-							stringBuffer.append('\n')
-							writeOutBuffer = True
+							# Insert newline after % characters
+							if sevenZipMode and character == '%':
+								stringBuffer.append('\n')
+								writeOutBuffer = True
 
-						# Insert newline after % characters
-						if sevenZipMode and character == '%':
-							stringBuffer.append('\n')
-							writeOutBuffer = True
+							if writeOutBuffer:
+								line = ''.join(stringBuffer)
+								print(line, end='')
+								if lineMonitor:
+									lineMonitor.process(line)
+								stringBuffer = []
+						else:
+							break
+				except Exception as e:
+					#reduce cpu usage if some exception is continously thrown
+					print("Error in [runProcessOutputToTempFile()]: {}".format(traceback.format_exc()))
+					time.sleep(.1)
 
-						if writeOutBuffer:
-							line = ''.join(stringBuffer)
-							print(line, end='')
-							if lineMonitor:
-								lineMonitor.process(line)
-							stringBuffer = []
-					else:
-						break
-			except Exception as e:
-				#reduce cpu usage if some exception is continously thrown
-				print("Error in [runProcessOutputToTempFile()]: {}".format(traceback.format_exc()))
-				time.sleep(.1)
+		# Monitor stderr on one thread, and monitor stdout on main thread
+		t = threading.Thread(target=readUntilEOF, args=(proc, proc.stderr))
+		t.start()
 
-	# Monitor stderr on one thread, and monitor stdout on main thread
-	t = threading.Thread(target=readUntilEOF, args=(proc, proc.stderr))
-	t.start()
+		readUntilEOF(proc, proc.stdout)
 
-	readUntilEOF(proc, proc.stdout)
-
-	print("--------------- EXECUTION FINISHED ---------------\n")
-	return proc.returncode
+		print("--------------- EXECUTION FINISHED ---------------\n")
+		return proc.returncode
 
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIPV6=False, outputFile=None):
