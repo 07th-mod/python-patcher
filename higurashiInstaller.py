@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import json
+import re
 import traceback
 
 import commandLineParser
@@ -186,6 +187,33 @@ class Installer:
 
 		return False
 
+	def _applyLanguageSpecificSharedAssets(self, folderToApply):
+		"""Helper function which applies language specific assets.
+		Returns False if there was an error during the proccess.
+		If no asset file was found to apply, this is not considered an error
+		(it's assumed the existing sharedassets0.assets is the correct one)"""
+		# If don't know own unity version, don't attempt to apply any UI
+		if self.info.unityVersion is None:
+			print("ERROR: can't apply UI file as don't know own unity version!")
+			return False
+
+		# Use the sharedassets file with matching os/unityversion if provided by the language patch
+		versionString = self.info.unityVersion
+		osString = common.Globals.OS_STRING
+
+		for altUIFilename in os.listdir(folderToApply):
+			altUIPath = os.path.join(folderToApply, altUIFilename)
+			_, ext = os.path.splitext(altUIFilename)
+			if ext.lower() == '.assets' or ext.lower() == '.languagespecificassets':
+				if os.path.isfile(altUIPath) and versionString in altUIFilename.lower() and osString in altUIFilename.lower():
+					uiPath = path.join(folderToApply, "sharedassets0.assets")
+					print("Language Patch UI: Will copy UI File {} -> {}".format(altUIPath, uiPath))
+					shutil.copy(altUIPath, uiPath)
+					return True
+
+		print("Language Patch UI: No UI/sharedassets0 found for ({},{}) - using default sharedassets0.assets".format(osString, versionString))
+		return True
+
 	def applyLanguageSpecificSharedAssets(self):
 		folderToApply = self.dataDirectory
 		if self.forcedExtractDirectory is not None:
@@ -195,24 +223,20 @@ class Installer:
 		if not self._languagePatchIsEnabled():
 			return
 
-		# If don't know own unity version, don't attempt to apply any UI
-		if self.info.unityVersion is None:
+		# Don't clean up if sharedassets application failed - user may want to apply UI manually
+		if not self._applyLanguageSpecificSharedAssets(folderToApply):
 			return
 
-		# Use the sharedassets file with matching os/unityversion if provided by the language patch
-		versionString = self.info.unityVersion
-		osString = common.Globals.OS_STRING
-
+		# Clean up unused asset files
 		for altUIFilename in os.listdir(folderToApply):
-			if os.path.isfile(altUIFilename) and versionString in altUIFilename.lower() and osString in altUIFilename.lower():
-				print("Language Patch UI: Attempting to use {} UI File".format(altUIFilename))
-				altUIPath = os.path.join(folderToApply, altUIFilename)
-				uiPath = path.join(folderToApply, "sharedassets0.assets")
-				shutil.copy(altUIPath, uiPath)
-				return
-
-		print("Language Patch UI: No UI/sharedassets0 found for ({},{}) - using default sharedassets0.assets".format(osString, versionString))
-
+			root, ext = os.path.splitext(altUIFilename)
+			altUIPath = os.path.join(folderToApply, altUIFilename)
+			try:
+				if os.path.isfile(altUIPath) and ext.lower() == '.languagespecificassets' and re.match("^(((LinuxMac)|(Windows))-)+(((GOG)|(Steam)|(MG))-)+[\d\w.]+$", root):
+					print("Removing unused UI file {}".format(altUIPath))
+					os.remove(altUIPath)
+			except Exception as e:
+				print("Failed to remove unused language specific asset [{}] due to {}".format(altUIPath, e))
 
 	def _moveDirectoryIntoPlace(self, fromDir, toDir):
 		# type: (str, str) -> None
