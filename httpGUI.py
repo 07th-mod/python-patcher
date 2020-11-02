@@ -926,7 +926,7 @@ class InstallerGUI:
 					if subMod.family == 'higurashi':
 						result = re.findall(r'\d\d', subMod.dataName)
 						if result:
-							saveFolderName = os.path.expandvars('%appdata%\Mangagamer\higurashi' + result[0])
+							saveFolderName = os.path.expandvars(r'%appdata%\Mangagamer\higurashi' + result[0])
 						else:
 							return {'error': 'Sorry, cant figure out higurashi episode number :('}
 					elif subMod.family == 'umineko':

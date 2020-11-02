@@ -232,7 +232,7 @@ class Installer:
 			root, ext = os.path.splitext(altUIFilename)
 			altUIPath = os.path.join(folderToApply, altUIFilename)
 			try:
-				if os.path.isfile(altUIPath) and ext.lower() == '.languagespecificassets' and re.match("^(((LinuxMac)|(Windows))-)+(((GOG)|(Steam)|(MG))-)+[\d\w.]+$", root):
+				if os.path.isfile(altUIPath) and ext.lower() == '.languagespecificassets' and re.match(r"^(((LinuxMac)|(Windows))-)+(((GOG)|(Steam)|(MG))-)+[\d\w.]+$", root):
 					print("Removing unused UI file {}".format(altUIPath))
 					os.remove(altUIPath)
 			except Exception as e:
