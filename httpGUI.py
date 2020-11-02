@@ -369,6 +369,7 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 		httpServerType = http.server.ThreadingHTTPServer
 	else:
 		httpServerType = HTTPServer
+		print('WARNING: Python version < 3.7 found - you may need to refresh the web GUI if it does not load, on Chrome and other browsers!')
 
 	# The default HTTPServer allows multiple servers on the same address without error
 	# we would prefer for an error to be raised, so you know if you had multiple copies of the installer open at once

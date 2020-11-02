@@ -5,6 +5,10 @@
 
 ### Known Issues
 
+- **You may need to refresh the webpage (web GUI) if it does not load or seems to hang**.
+    - This will happen for MacOS users / Python 2 / Python 3.6 and below using the Chrome web browser (Firefox seems to be OK)
+    - This shouldn't happen on Windows builds / Python 3.7 and up as we've applied a fix
+
 <details>
   <summary><b>Linux: Higurashi with GNOME Desktop/Ubuntu Crashes - CLICK TO EXPAND</b></summary>
 
