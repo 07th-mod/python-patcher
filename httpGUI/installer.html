@@ -389,6 +389,14 @@
 													</table><br>
 													A more detailed sprite comparison, with more characters, may be found <a href="https://07th-mod.com/wiki/Umineko/img/umineko-sprite-comparison.png">here</a>.
 												</div>
+												<!-- Changelog info -->
+												<br>
+												<div v-if="changelogURL === null">
+													📝 Changlog URL Missing! Tell the developers to fix it!
+												</div>
+												<div v-else>
+													<a v-bind:href="changelogURL" target="_blank">📝 Click here to view the {{ selectedMod }} Changelog</a>
+												</div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div>
 													<h4 v-if="!installPathValid && !validationInProgress" class="uppercase mt40" style="color: red">Choose an install path ❌</h4>
