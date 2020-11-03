@@ -131,6 +131,15 @@ class Logger(object):
 		except Exception as e:
 			print("Couldn't create secondary log at: [{}] Error: {}".format(newLogFilePath, e))
 
+	def close_all_logs(self):
+		if self.logFile is not None:
+			self.logFile.close()
+			self.logFile = None
+		if self.secondaryLogFile is not None:
+			self.secondaryLogFile.close()
+			self.secondaryLogFile = None
+
+
 def getGlobalLogger():
 	# type: () -> Logger
 	return Logger.globalLogger

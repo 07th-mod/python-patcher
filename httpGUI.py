@@ -571,7 +571,7 @@ class InstallerGUI:
 		self.lastInstallPath = "" #type: str
 		self.lastSubModID = 0 #type: int
 
-		self.installRunningLock = threading.RLock()
+		self.installRunningLock = threading.Lock()
 		self.installRunningLock.acquire()
 
 		# This caches the self.try_start_install(...) function, only used for install previews

@@ -243,3 +243,5 @@ if __name__ == "__main__":
 	# concurrently with the Web GUI. The Web GUI shows a loading screen until init is complete.
 	threading.Thread(target=doInstallerInit).start()
 	installerGUI.server_test()
+
+	logger.Logger.globalLogger.close_all_logs()
