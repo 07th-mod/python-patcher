@@ -386,9 +386,9 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::WaitingUserPickInstallType => {
 				ui.text_red(im_str!("Please click 'Run Installer'"));
-				ui.text_red(im_str!(
-					"If you have problems, enable 'Run in Safe-Mode' for the text-based installer"
-				));
+				ui.text_yellow(im_str!("If you have problems:"));
+				ui.text_yellow(im_str!(" - try refreshing the webpage"));
+				ui.text_yellow(im_str!(" - enable 'Run in Safe-Mode' for the text-based installer"));
 
 				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
 				ui.same_line_with_spacing(0., 20.);
@@ -404,12 +404,10 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
-					ui.text_yellow(im_str!(
-						"Please wait - Installer will launch in your web browser"
-					));
-					ui.text_red(im_str!(
-						"If the web browser fails to load, restart this launcher, then enable the 'Run in Safe-Mode' option"
-					));
+					ui.text(im_str!("Please wait - Installer will launch in your web browser"));
+					ui.text_yellow(im_str!("If you have problems:"));
+					ui.text_yellow(im_str!(" - try refreshing the webpage"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Run in Safe-Mode' option"));
 				} else {
 					ui.text_yellow(im_str!(
 						"Console Installer Started - Please use the console window that just opened."
