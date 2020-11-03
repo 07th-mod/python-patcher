@@ -193,14 +193,14 @@ impl InstallerGUI {
 		}
 	}
 
-	pub fn display_ui(&mut self, ui: &Ui) {
+	pub fn display_ui(&mut self, ui: &Ui, window: &glium::glutin::Window) {
 		ui.new_line();
 
 		// Update the installer based on the extraction status
 		self.extraction_update();
 
 		// Handle when user attempts to close the program
-		self.exit_handler(ui);
+		self.exit_handler(ui, window);
 
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
@@ -243,7 +243,7 @@ impl InstallerGUI {
 	// This modal prevents users accidentally terminating the install before it has finished
 	// If python is extracting or installation has started, show a popup for user to confirm exit
 	// In any other case, just let the user exit immediately
-	fn exit_handler(&mut self, ui: &Ui) {
+	fn exit_handler(&mut self, ui: &Ui, window: &glium::glutin::Window) {
 		let confirm_exit_modal_name = im_str!("Confirm Exit");
 		if self.ui_state.close_requested {
 			self.ui_state.close_requested = false;
@@ -257,12 +257,21 @@ impl InstallerGUI {
 				| InstallerProgression::WaitingUserPickInstallType
 				| InstallerProgression::InstallFinished => self.quit(),
 				InstallerProgression::InstallStarted(_)
-				| InstallerProgression::InstallFailed(_) => ui.open_popup(confirm_exit_modal_name),
+				| InstallerProgression::InstallFailed(_) =>
+					{
+						// Show the window if it is hidden/minimized so user can see the exit confirmation popup
+						// For some reason on this version of winit show() doesn't work, so
+						// I'm using this workaround instead:
+						window.set_maximized(true);
+						window.set_maximized(false);
+
+						ui.open_popup(confirm_exit_modal_name);
+					},
 			}
 		}
 
 		// Exit confirmation modal triggered by the above
-		ui.popup_modal(confirm_exit_modal_name).build(|| {
+		ui.popup_modal(confirm_exit_modal_name).always_auto_resize(true).build(|| {
 			ui.text("Closing this window will terminate the installer!");
 			if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
 				ui.close_current_popup();
@@ -530,7 +539,7 @@ Please download the installer to your Downloads or other known location, then ru
 }
 
 impl ApplicationGUI for InstallerGUI {
-	fn ui_loop(&mut self, ui: &mut Ui) -> bool {
+	fn ui_loop(&mut self, ui: &mut Ui, window: &glium::glutin::Window) -> bool {
 		// Prevent high cpu/gpu usage due to unlimited framerate when window minimized on Windows
 		// as well as generally reducing usage if the user isn't using the program
 		if self.should_save_power() {
@@ -550,7 +559,7 @@ impl ApplicationGUI for InstallerGUI {
 			.size(self.ui_state.window_size, Condition::Always)
 			.no_decoration() //remove title bar etc. so it acts like the "Main" window of the program
 			.build(ui, || {
-				self.display_ui(ui);
+				self.display_ui(ui, window);
 			});
 
 		unround_style.pop(&ui);

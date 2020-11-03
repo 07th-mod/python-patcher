@@ -8,7 +8,7 @@ use std::time::Instant;
 mod clipboard;
 
 pub trait ApplicationGUI {
-	fn ui_loop(&mut self, ui: &mut Ui) -> bool;
+	fn ui_loop(&mut self, ui: &mut Ui, window: &glium::glutin::Window) -> bool;
 	fn handle_event(&mut self, event: Event);
 }
 
@@ -124,7 +124,7 @@ where
 			last_frame = io.update_delta_time(last_frame);
 			let mut ui = imgui.frame();
 
-			run = application_gui.ui_loop(&mut ui);
+			run = application_gui.ui_loop(&mut ui, &window);
 
 			let mut target = display.draw();
 			target.clear_color_srgb(1.0, 1.0, 1.0, 1.0);
