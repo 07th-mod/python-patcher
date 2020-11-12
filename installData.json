@@ -80,6 +80,21 @@
 							"data": {"url": "https://07th-mod.com/nipah/Onikakushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (2020-11-12)", "description": "Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL (2020-04-19)", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/Assembly-CSharp.dll", "relativeExtractionPath": "HigurashiEp01_Data/Managed", "priority": 50}
+						}
+					]
 				}
 			]
 		},
