@@ -16,6 +16,12 @@
     </head>
     <body>
 		<div id="app" class="main-container" v-cloak>
+		<div id="modal-container" >
+			<modal v-bind:visible="modalVisible" v-on:close="modalVisible = false">
+				<p>Some text in the Modal..asdfasdfasfd</p>
+			</modal>
+		</div>
+
 		<div class="nav-container">
 		    <nav>
 		        <div class="nav-bar">
