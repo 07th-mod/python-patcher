@@ -106,6 +106,7 @@ window.onload = function onWindowLoaded() {
       donationMonthsRemaining: 'XXX%',
       metaInfo: {
         buildInfo: '', // Installer Build Version and Date
+        installerIsLatest: [null, ''], // 2- Tuple of whether installer is latest, and description of version information
         lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
         operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
         installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
@@ -126,7 +127,11 @@ window.onload = function onWindowLoaded() {
           img: 'img/umineko/sprite_potato.png',
           dataFilter: 'Question Arcs',
         });
-      }
+      },
+      clearModal() {
+        doPost('clearLatestInstallerWarning', [], () => {});
+        this.modalVisible = false;
+      },
     },
     computed: {
 
@@ -152,6 +157,10 @@ window.onload = function onWindowLoaded() {
         });
 
         app.metaInfo = responseData.metaInfo;
+        if (app.metaInfo.installerIsLatest[0] === false) {
+          app.modalVisible = true;
+        }
+
         app.globalNews = DOMPurify.sanitize(marked(app.metaInfo.news));
 
         app.uniqueSubMods = Object.values(modNameToSubModHandleMap);

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import glob
+import json
 import os
 import re
 import shutil
@@ -176,9 +177,11 @@ shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
 shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
 
 # Save the build information in the staging folder. Will later be read by installer.
-with open(os.path.join(staging_folder, 'build_info.txt'), 'w', encoding='utf-8') as build_info_file:
-	build_info_file.write(f'Build Date: {datetime.datetime.now()}\n')
-	build_info_file.write(f'Git Tag (Version): {GIT_TAG}\n')
+with open(os.path.join(staging_folder, 'build_info.json'), 'w', encoding='utf-8') as build_info_file:
+	json.dump({
+		"build_date": f"{datetime.datetime.now()}",
+		"git_tag": f"GIT_TAG",
+	}, build_info_file, indent="\t", sort_keys=True)
 
 # now, copy the staged files into each os's bootstrap folder's install_data directory
 for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):

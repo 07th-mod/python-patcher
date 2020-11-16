@@ -256,10 +256,13 @@ The snackbar - position it at the bottom and in the middle of the screen */
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  position: absolute;
+  top: 50%;
+  left: 50%; /* 'top:50%; left:50%;' set top left corner of the box to the middle of screen */
+  transform: translate(-50%, -50%) !important; /* This offsets the box so it's midpoint is at center of screen, rather than the top left corner*/
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 600px; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */

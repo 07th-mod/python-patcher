@@ -741,6 +741,7 @@ class InstallerGUI:
 						'logFilePath': os.path.abspath(common.Globals.LOG_FILE_PATH),
 						'metaInfo': {
 							'buildInfo': common.Globals.BUILD_INFO, # Installer Build Version and Date
+							'installerIsLatest': common.Globals.INSTALLER_IS_LATEST, # 2- Tuple of whether installer is latest, and description of version information
 							'lockFileExists': common.lockFileExists(), # This indicates if a install is already running in a different instance, or a previous install was killed while running
 							'operatingSystem': common.Globals.OS_STRING, # The operating system - either 'windows', 'linux', or 'mac'
 							'installAlreadyInProgress': self.installAlreadyInProgress(), # This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
@@ -965,6 +966,10 @@ class InstallerGUI:
 				self.shutdown()
 				return {}
 
+			def clearLatestInstallerWarning(_requestData):
+				common.Globals.INSTALLER_IS_LATEST = (None, "")
+				return {}
+
 			requestTypeToRequestHandlers = {
 				'setModName' : setModName,
 				'subModHandles' : getSubModHandlesRequestHandler,
@@ -976,6 +981,7 @@ class InstallerGUI:
 				'getInitStatus': getInitStatus,
 				'showInFileBrowser': showInFileBrowser,
 				'shutdown': shutdown,
+				'clearLatestInstallerWarning': clearLatestInstallerWarning,
 			}
 
 			requestHandler = requestTypeToRequestHandlers.get(requestType, None)

@@ -152,6 +152,7 @@ window.onload = function onWindowLoaded() {
       // metaInfo: meta info about the installer environment, etc. Contains:
       metaInfo: {
         buildInfo: '', // Installer Build Version and Date
+        installerIsLatest: [null, ''], // 2- Tuple of whether installer is latest, and description of version information
         lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
         operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
         installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.

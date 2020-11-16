@@ -17,8 +17,13 @@
     <body>
 		<div id="app" class="main-container" v-cloak>
 		<div id="modal-container" >
-			<modal v-bind:visible="modalVisible" v-on:close="modalVisible = false">
-				<p>Some text in the Modal..asdfasdfasfd</p>
+			<modal v-bind:visible="modalVisible" v-on:close="clearModal()">
+				<h3>New Installer Available</h3>
+				<p>{{metaInfo.installerIsLatest[1]}}</p>
+				<p>You should update the installer to get bug-fixes and new features.</p>
+				<p>Please go to <strong><a href="https://github.com/07th-mod/python-patcher/releases" target="_blank">the download page</a></strong>, then download and install the new installer.
+					<strong>Remember to close this old installer so it doesn't interfere!</strong></p>
+				<p>If you wish to continue using the old installer, <a v-on:click="clearModal()">click here</a></p>
 			</modal>
 		</div>
 

@@ -141,6 +141,14 @@ class Globals:
 
 	NATIVE_LAUNCHER_PATH = None
 
+	GIT_TAG = None
+	"""The git tag associated with this installer release. Can be None if installer run directly from source"""
+	BUILD_DATE = None
+	"""The date this installer was built. Can be None if installer run directly from source"""
+	INSTALLER_IS_LATEST = (None, "")
+	"""True if installer is latest released version, False if installer is not latest, None if can't determine if is latest
+	The second part of the tuple is set to a descriptive message explaining the version status"""
+
 	@staticmethod
 	def scanForCURL():
 		# On Windows 10, default to system CURL (which uses Windows's certificates)
@@ -235,10 +243,28 @@ You can try manually running [{}] once so the installer can use the file.""".for
 	@staticmethod
 	def getBuildInfo():
 		try:
-			with open('build_info.txt', 'r') as build_info_file:
-				Globals.BUILD_INFO = build_info_file.read()
-		except:
-			Globals.BUILD_INFO = 'No build_info.txt file found - probably a dev release.'
+			with open('build_info.json', 'r') as build_info_file:
+				buildInfo = json.load(build_info_file)
+				Globals.BUILD_DATE = buildInfo['build_date']
+				Globals.GIT_TAG = buildInfo['git_tag']
+				Globals.BUILD_INFO = "Git Tag: {}\nBuild Date:{}".format(Globals.GIT_TAG, Globals.BUILD_DATE)
+
+		except Exception as e:
+			Globals.BUILD_INFO = None
+			print("Failed to retrieve build info: {}".format(e))
+
+	@staticmethod
+	def loadInstallerLatestStatus():
+		latestVersion = getLatestInstallerVersion()
+		currentVersion = Globals.GIT_TAG
+
+		if currentVersion is None or latestVersion is None:
+			Globals.INSTALLER_IS_LATEST = (None, "One or more versions couldn't be determined. Latest: {} Current: {}".format(latestVersion, currentVersion, ))
+		elif latestVersion == currentVersion:
+			Globals.INSTALLER_IS_LATEST = (True, "Installer is latest version: {}".format(currentVersion))
+		else:
+			Globals.INSTALLER_IS_LATEST = (False, "A new version of installer is available: {} (current is {})".format(latestVersion, currentVersion))
+
 
 	@staticmethod
 	def scanCertLocation():
@@ -1320,3 +1346,22 @@ def removeFileWithCheck(path, isEmptyFolder=False, failOk=False):
 		time.sleep(1)
 
 	raise Exception("Failed to remove file {}".format(path))
+
+
+def getLatestInstallerVersion():
+	""" Fetches latest installer version from Github, like "v1.1.68" """
+	try:
+		releases, error = getJSON('https://api.github.com/repos/07th-mod/python-patcher/releases?per_page=1', isURL=True)
+		if error is not None:
+			raise error
+
+		if len(releases) == 0:
+			print("getLatestInstallerVersion(): No releases found so can't check version")
+			return None
+
+		latest_release = releases[0]
+		latest_release_tag = latest_release['tag_name']
+		return latest_release_tag
+	except Exception as e:
+		print("getLatestInstallerVersion(): Failed to fetch latest release info: {}".format(e))
+		return None
