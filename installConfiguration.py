@@ -1,14 +1,22 @@
 from __future__ import unicode_literals
 
 import os
-
+import hashlib
 import common
 
 try:
-	from typing import List, Optional, Dict, Set
+	from typing import List, Optional, Dict, Set, Tuple
 except:
 	pass # Just needed for pycharm comments
 
+
+def getSHA256(path):
+	"""Gets the SHA256 Hex digest of a file at path as a string,
+	e.g. '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'"""
+	with open(path, "rb") as file:
+		m = hashlib.sha256()
+		m.update(file.read())
+		return m.hexdigest()
 
 def getUnityVersion(datadir, verbosePrinting=True):
 	# type: (str, bool) -> str
@@ -30,6 +38,26 @@ def getUnityVersion(datadir, verbosePrinting=True):
 		if int(unityVersion.split('.')[0]) < 5:
 			raise OldUnityException(unityVersion)
 		return unityVersion
+
+def checkChecksumListMatches(installPath, checksumList):
+	#type: (str, List[(str, str)]) -> bool
+	"""Returns true if any checksum in the checksum list matches"""
+	for relativePath, checksum in checksumList:
+		path = os.path.join(installPath, relativePath)
+		if not os.path.exists(path):
+			print("checkChecksumListMatches(): File at {} does not exist, skipping this file".format(path))
+			continue
+
+		actualChecksum = getSHA256(path)
+
+		if actualChecksum.lower() == checksum.lower():
+			print("checkChecksumListMatches(): File at {} has matching checksum {}".format(path, actualChecksum))
+			return True
+		else:
+			print("checkChecksumListMatches(): File at {} has wrong checksum {} (expected {})".format(path, actualChecksum, checksum))
+			continue
+
+	return False
 
 class FullInstallConfiguration:
 	# contains all the install information required to install the game to a given path
@@ -67,6 +95,12 @@ class FullInstallConfiguration:
 
 			if fileOverride.unity is not None and fileOverride.unity != unityVersion:
 				continue
+
+			# If the file has some checksum requirements, check whether the files exist/match the required checksums
+			# If datadir is defined, use the datadir (Higurashi), otherwise use the install path (other games)
+			if fileOverride.targetChecksums is not None:
+				if not checkChecksumListMatches(datadir if datadir else self.installPath, fileOverride.targetChecksums):
+					continue
 
 			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
@@ -111,8 +145,8 @@ class ModFile:
 
 
 class ModFileOverride:
-	def __init__(self, name, id, os, steam, unity, url):
-		# type: (str, str, List[str], Optional[bool], Optional[str], str) -> None
+	def __init__(self, name, id, os, steam, unity, url, targetChecksums):
+		# type: (str, str, List[str], Optional[bool], Optional[str], str, List[Tuple[str, str]]) -> None
 		self.name = name # type: str
 		self.id = id
 		"""A unique identifier among all files and modfiles for this submod. Set manually as 'movie-unix' for example"""
@@ -122,6 +156,10 @@ class ModFileOverride:
 		"""This can be 'None' if the override applies to both mac and steam"""
 		self.unity = unity #type: Optional[str]
 		self.url = url # type: str
+		self.targetChecksums = targetChecksums # type: List[Tuple[str, str]]
+		"""This field can be None for no checksum checking.
+		This field consists of a list of tuples. Each tuple is a pair of (PATH, CHECKSUM).
+		If a file exists at PATH and matches CHECKSUM then this override will be accepted"""
 
 
 class ModOption:
@@ -230,7 +268,8 @@ class SubModConfig:
 				steam=subModFileOverride.get('steam'),
 				unity=subModFileOverride.get('unity'),
 				url=subModFileOverride['url'],
-				id=subModFileOverride['id']
+				id=subModFileOverride['id'],
+				targetChecksums=subModFileOverride.get('targetChecksums')
 			))
 
 		# If no mod options are specified in the JSON, the 'self.modOptions' field defaults to the empty list ([])
@@ -351,6 +390,11 @@ class FailedFileOverrideException(Exception):
 			if len(out) > 1:
 				out += ", "
 			out += "unity: " + candidate.unity
+		if candidate.targetChecksums is not None:
+			if len(out) > 1:
+				out += ", "
+			out += "checksums: " + str(candidate.targetChecksums)
+
 		return out + ")"
 
 	def __str__(self):
@@ -361,6 +405,7 @@ class FailedFileOverrideException(Exception):
 		if hasUnity:
 			out += ", unity: {}".format(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
+		out += "\nPlease check your game is up-to-date. If it is fully up-to-date, please send the game log to the developers on our discord server."
 		return out
 
 
