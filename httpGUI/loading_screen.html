@@ -41,6 +41,9 @@
 						<h2 style="color: red;">Installer init failed :(</h2>
 						<p>Please read the error message below, and try to fix the issue.</p>
 						<p>When you are ready, restart the installer by first closing all windows including the launcher, then start the installer again.</p>
+						<p>If you can't fix the issue yourself, download the install log and send it to our Discord server.</p>
+						<button type="button" class="btn" v-on:click="getLogsZip()">Download Install Logs</button>
+						<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
 						<h3>Error Message</h3>
 						<pre>{{ errorMessage }}</pre>
 					</div>

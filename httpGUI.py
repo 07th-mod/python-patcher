@@ -874,17 +874,23 @@ class InstallerGUI:
 			def troubleshoot(requestData):
 				action = requestData['action']
 
-				id = requestData['subMod']['id']
-				subMod = self.idToSubMod[id]
+				subMod = None
+				if 'subMod' in requestData:
+					id = requestData['subMod']['id']
+					subMod = self.idToSubMod[id]
 
 				def _getInstallPath():
 					return requestData.get('installPath', None)
 
 				if action == 'getLogsZip':
-					installPath = _getInstallPath()
 					higurashi_log_file_name = 'output_log.txt'
-					gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
-					gameLogExists = os.path.exists(gameLogPath)
+					gameLogExists = False
+					gameLogPath = None
+					if subMod is not None:
+						installPath = _getInstallPath()
+						gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
+						gameLogExists = os.path.exists(gameLogPath)
+
 					# It's possible for zlib not to be available causing ZIP_DEFLATED to fail, so try both methods
 					for compressionType in [zipfile.ZIP_DEFLATED, zipfile.ZIP_STORED]:
 						try:
@@ -893,7 +899,7 @@ class InstallerGUI:
 									path = os.path.join(common.Globals.LOG_FOLDER, filename)
 									myzip.write(path, os.path.basename(path))
 
-								if gameLogExists:
+								if gameLogPath is not None:
 									myzip.write(gameLogPath, higurashi_log_file_name)
 							break
 						except Exception as e:

@@ -13,6 +13,9 @@ window.onload = function onWindowLoaded() {
       pollCount: 0, // count of how many times the server has been polled for init status
     },
     methods: {
+      getLogsZip() {
+        doPost('troubleshoot', { action: 'getLogsZip' }, (responseData) => { window.location.href = responseData.filePath; });
+      },
     },
   });
 
