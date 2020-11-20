@@ -84,6 +84,14 @@ public struct FileOverrideDefinition: Codable {
 	public var steam: Bool?
 	/// The url for this file override
 	public var url: String
+	/// Any files which are required to have the given checksum to use this override
+	/// - Consists of a list of tuples, each tuple representing one test to perform
+	/// - If any checksum tests pass, the override is considered applicable
+	/// - Each tuple consists of (PATH, CHECKSUM), where the file at PATH is checked to have checksum CHECKSUM
+	/// - The PATH argument relative to the data directory for games with a data directory like higurashi, otherwise
+	/// it's relative to the install directory
+	/// - If null, no files are checked
+	public var targetChecksums: [[String]]?
 }
 
 public enum OS: String, Codable, CaseIterable {
