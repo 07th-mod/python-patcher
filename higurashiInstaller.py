@@ -108,14 +108,27 @@ class Installer:
 	def backupUI(self):
 		"""
 		Backs up the `sharedassets0.assets` file
+		Try to do this in a transactional way so you can't get a half-copied .backup file.
+		This is important since the .backup file is needed to determine which ui file to use on future updates
+
+		The file is not moved directly in case the installer is halted before the new UI file can be placed, resulting
+		in an install completely missing a sharedassets0.assets UI file.
 		"""
 		try:
 			uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
-			backupPath = path.join(self.dataDirectory, "sharedassets0.assets.backup")
+
+			# partialManualInstall is not really supported on MacOS, so just assume output folder is HigurashiEpX_Data
+			if self.forcedExtractDirectory is not None:
+				backupPath = path.join(self.forcedExtractDirectory, self.info.subModConfig.dataName, "sharedassets0.assets.backup")
+			else:
+				backupPath = path.join(self.dataDirectory, "sharedassets0.assets.backup")
+
 			if path.exists(uiPath) and not path.exists(backupPath):
-				shutil.copy(uiPath, backupPath)
+				shutil.copy(uiPath, backupPath + '.temp')
+				os.rename(backupPath + '.temp', backupPath)
 		except Exception as e:
-			print('Warning: Failed to backup sharedassets0.assets file: {}'.format(e))
+			print('Error: Failed to backup sharedassets0.assets file: {} (need backup for future installs!)'.format(e))
+			raise e
 
 	def cleanOld(self):
 		"""
@@ -313,6 +326,7 @@ def main(fullInstallConfiguration):
 
 	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
 
+	# The Partial Manual Install option is mainly for Windows, so please don't assume it works properly on Linux/MacOS
 	if modOptionParser.partialManualInstall:
 		extractDir = fullInstallConfiguration.subModConfig.modName + " " + fullInstallConfiguration.subModConfig.subModName + " Extracted"
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, forcedExtractDirectory=extractDir)
