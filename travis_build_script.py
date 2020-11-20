@@ -32,7 +32,8 @@ IS_WINDOWS = sys.platform == "win32"
 EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-embed-win32.zip"
 
 # Required Environment Variables
-GIT_TAG = os.environ.get("GITHUB_REF")    # Github Tag / Version info
+GIT_REF = os.environ.get("GITHUB_REF")    # Github Tag / Version info
+GIT_TAG = GIT_REF.split('/')[-1]
 
 def call(args, **kwargs):
 	print("running: {}".format(args))
@@ -180,7 +181,7 @@ shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
 with open(os.path.join(staging_folder, 'build_info.json'), 'w', encoding='utf-8') as build_info_file:
 	json.dump({
 		"build_date": f"{datetime.datetime.now()}",
-		"git_tag": f"GIT_TAG",
+		"git_tag": f"{GIT_TAG}",
 	}, build_info_file, indent="\t", sort_keys=True)
 
 # now, copy the staged files into each os's bootstrap folder's install_data directory
