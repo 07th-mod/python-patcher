@@ -70,7 +70,7 @@ def zip(input_path, output_filename):
 
 def tar_gz(input_path, output_filename: str):
 	try_remove_tree(output_filename)
-	tempFileName = re.sub("\.gz", "", output_filename, re.IGNORECASE)
+	tempFileName = re.sub("\\.gz", "", output_filename, re.IGNORECASE)
 	call(["7z", "a", tempFileName, input_path])
 	call(["7z", "a", output_filename, tempFileName])
 	os.remove(tempFileName)

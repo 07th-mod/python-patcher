@@ -18,7 +18,7 @@ except ImportError:
 	pass # Just needed for pycharm comments
 
 def findPossibleGamePathsWindows():
-	"""
+	r"""
 	Blindly retrieve all game folders in the `Steam\steamappps\common` folder (no filtering is performed)
 	TODO: scan other locations than just the steamapps folder
 	:return: a list of absolute paths, which are the folders in the `Steam\steamappps\common` folder
