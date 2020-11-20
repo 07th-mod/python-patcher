@@ -1365,3 +1365,14 @@ def getLatestInstallerVersion():
 	except Exception as e:
 		print("getLatestInstallerVersion(): Failed to fetch latest release info: {}".format(e))
 		return None
+
+
+def ensureUnicodeOrStr(text):
+	"""Converts 'text' to unicode or str type if it is bytes, leaves it alone otherwise
+	Note that 'str' is treated as bytes on Python 2, that is:
+	Python 2: 'bytes' or 'str' -> unicode string
+	Python 3: 'bytes' -> 'str'"""
+	if isinstance(text, bytes):
+		return text.decode('utf-8')
+	else:
+		return text

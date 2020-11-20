@@ -58,7 +58,7 @@ def _TKAskPath(subMod):
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
 	if common.Globals.IS_MAC:
-		return subprocess.check_output(["osascript", "-e",  "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"Please choose a game to install to\")"]).strip().decode("utf-8")
+		return common.ensureUnicodeOrStr(subprocess.check_output(["osascript", "-e",  "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"Please choose a game to install to\")"]).strip())
 	root = Tk()
 
 	# this creates the default option, which allows you to select all identifiers and any extras specified here.
@@ -148,7 +148,7 @@ def _makeJSONResponse(responseType, responseDataJson):
 
 def _decodeJSONRequest(jsonString):
 	# type: (str) -> (str, object)
-	json_compatible_dict = json.loads(jsonString)
+	json_compatible_dict = json.loads(common.ensureUnicodeOrStr(jsonString))
 	return (json_compatible_dict['requestType'], json_compatible_dict['requestData'])
 
 def _getSevenZipSubTaskDescription(message):

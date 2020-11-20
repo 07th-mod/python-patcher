@@ -298,7 +298,7 @@ class Installer:
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")
 			infoPlistJSON = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", infoPlist])
-			parsed = json.loads(infoPlistJSON)
+			parsed = json.loads(common.ensureUnicodeOrStr(infoPlistJSON))
 
 			configCFBundleName = self.info.subModConfig.CFBundleName
 			if configCFBundleName and parsed["CFBundleName"] != configCFBundleName:

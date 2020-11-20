@@ -153,7 +153,7 @@ def getPossibleIdentifiersFromFolder(folderPath):
 			info = subprocess.check_output(
 				["plutil", "-convert", "json", "-o", "-", infoPlist]
 			)
-			parsed = json.loads(info)
+			parsed = json.loads(common.ensureUnicodeOrStr(info))
 			name = parsed["CFBundleExecutable"] + "_Data" # type: str
 			# GoG Umineko installs will be formatted like this but we *don't* want to use it
 			if name.startswith("Higurashi"):
