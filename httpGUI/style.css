@@ -257,7 +257,7 @@ The snackbar - position it at the bottom and in the middle of the screen */
 .modal-content {
   background-color: #fefefe;
   position: absolute;
-  top: 30%;
+  top: 5%;
   left: 10%;
   padding: 20px;
   border: 1px solid #888;

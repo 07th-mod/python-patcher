@@ -998,7 +998,7 @@ class InstallerGUI:
 				traceback.print_exc()
 				return _makeJSONResponse('error', {
 					'errorReason':
-"""ERROR: {}
+"""{}
 
 ----- Detailed Exception Information -----
 Exception while handling [{}] request:

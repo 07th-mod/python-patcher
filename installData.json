@@ -618,7 +618,15 @@
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
+							["sharedassets0.assets.backup", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"],
+							["sharedassets0.assets", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"]
+						]},
+						{"name": "ui",    "id": "ui-linux-gog-mg", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/rikachama/ui/Matsuribayashi-UI_2017.2.5_unix_gog_mg.7z", "targetChecksums": [
+							["sharedassets0.assets.backup", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"],
+							["sharedassets0.assets", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"]
+						]},
 						{"name": "ui",    "id": "ui-windows-old", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-linux-old", "os": ["linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
 						{"name": "system", "id": "system-gog-linux", "os": ["linux"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System_unix.7z"},

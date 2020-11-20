@@ -401,11 +401,11 @@ class FailedFileOverrideException(Exception):
 		if not self.candidates:
 			return "Your current OS is not supported by the file {} in this mod".format(self.name)
 		hasUnity = any(x.unity is not None for x in self.candidates)
-		out = "Failed to find a {} file to use, your game has the properties (steam: {}".format(self.name, self.steam)
+		out = "Please check your game is up-to-date. If it is fully up-to-date, please send the game log to the developers on our discord server."
+		out += "\n\nFailed to find a {} file to use, your game has the properties (steam: {}".format(self.name, self.steam)
 		if hasUnity:
 			out += ", unity: {}".format(self.unity)
 		out += ") but the available versions had the requirements " + ", ".join(self.describe(candidate) for candidate in self.candidates)
-		out += "\nPlease check your game is up-to-date. If it is fully up-to-date, please send the game log to the developers on our discord server."
 		return out
 
 
