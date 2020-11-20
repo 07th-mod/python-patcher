@@ -17,6 +17,18 @@
 		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
 		The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
 		<div id="app" class="main-container" v-cloak>
+		<div id="modal-container" >
+			<modal v-bind:visible="installErrorDescription" v-on:close="installErrorDescription = ''">
+				<h3>The install can't continue - please read</h3>
+				<p>Please read the below error message, it might tell you how to fix this problem.<br>
+				If you're not sure what to do, please send the error message and install log to the developers at their Discord server</p>
+				<hr>
+				<span style="white-space: pre-line; font-family: monospace;">{{installErrorDescription}}</span>
+				<button type="button" class="btn" v-on:click="clearModal()">OK</button></a>
+				<button type="button" class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</button>
+				<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
+			</modal>
+		</div>
 		<div class="nav-container">
 		    <nav>
 		        <div class="nav-bar">

@@ -257,25 +257,24 @@ The snackbar - position it at the bottom and in the middle of the screen */
 .modal-content {
   background-color: #fefefe;
   position: absolute;
-  top: 50%;
-  left: 50%; /* 'top:50%; left:50%;' set top left corner of the box to the middle of screen */
-  transform: translate(-50%, -50%) !important; /* This offsets the box so it's midpoint is at center of screen, rather than the top left corner*/
+  top: 30%;
+  left: 10%;
   padding: 20px;
   border: 1px solid #888;
-  width: 600px; /* Could be more or less, depending on screen size */
+  width: 80%;
 }
 
 /* The Close Button */
-.close {
-  color: #aaa;
+.modal-close-button {
+  color: #47b475;
   float: right;
-  font-size: 28px;
+  font-size: 50px;
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
+.modal-close-button:hover,
+.modal-close-button:focus {
+  color: #e5c92c;
   text-decoration: none;
   cursor: pointer;
 }

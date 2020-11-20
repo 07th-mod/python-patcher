@@ -10,6 +10,15 @@ function setPOSTNotificationErrorCallback(callback) {
   POSTNotificationErrorCallback = callback;
 }
 
+let InstallerErrorCallback = function defaultInstallerErrorCallback(message) {
+  alert(message);
+};
+
+function setInstallerErrorCallback(callback) {
+  InstallerErrorCallback = callback;
+}
+
+
 // Note: { requestType, requestData } = { requestType : requestType, requestData : requestData }
 function makeJSONRequest(requestType, requestData) {
   return JSON.stringify({ requestType, requestData });
@@ -51,7 +60,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
         const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
         if (responseType === 'error') {
           console.log(`Error: ${responseDataObject.errorReason}`);
-          alert(responseDataObject.errorReason);
+          InstallerErrorCallback(responseDataObject.errorReason);
         } else if (responseType === 'unknownRequest' || responseType !== requestType) {
           console.log(`ERROR: sent ${requestType} but got ${responseType}. requestData: ${responseDataObject}`);
         } else {

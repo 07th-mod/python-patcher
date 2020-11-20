@@ -181,6 +181,7 @@ window.onload = function onWindowLoaded() {
       changelogURL: null,
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
+      installErrorDescription: "",
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -353,6 +354,10 @@ Continue install anyway?`)) {
     terminal: document.getElementById('terminal'),
     autoscrollCheckbox: document.getElementById('autoscrollCheckbox'),
   };
+
+  setInstallerErrorCallback(function (errorMessage) {
+    app.installErrorDescription = errorMessage;
+  })
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {

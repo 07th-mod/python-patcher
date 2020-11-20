@@ -85,3 +85,19 @@ Vue.component('snack-bar', {
   <div id="snackbar" v-show="toastVisible">{{ toastCount }}x {{ toastMessage }}</div>
   </transition>`,
 });
+
+
+Vue.component('modal', {
+  data() {
+    return {
+    };
+  },
+  props: ['visible'],
+  template: `
+  <div id="myModal" class="modal" v-if=visible>
+    <div class="modal-content">
+      <span class="modal-close-button" v-on:click="$emit('close')">&times;</span>
+      <slot></slot>
+    </div>
+  </div>`,
+});

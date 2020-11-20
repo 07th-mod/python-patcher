@@ -10,21 +10,6 @@ let app = null;
 // - the subModHandles are retrieved from the python server to populate the app.subModList property
 window.onload = function onWindowLoaded() {
 
-  Vue.component('modal', {
-    data() {
-      return {
-      };
-    },
-    props: ['visible'],
-    template: `
-    <div id="myModal" class="modal" v-if=visible>
-      <div class="modal-content">
-        <span class="close" v-on:click="$emit('close')">&times;</span>
-        <slot></slot>
-      </div>
-    </div>`,
-  });
-
   // Forces all links which have been sanitized to open in new window (in this case, markdown links)
   // See https://github.com/cure53/DOMPurify/issues/317#issuecomment-698800327
   DOMPurify.addHook('afterSanitizeAttributes', (node) => {
