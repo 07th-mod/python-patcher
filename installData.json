@@ -87,12 +87,12 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (2020-11-12)", "description": "Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll.7z", "relativeExtractionPath": ".", "priority": 50}
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
-							"name": "Restore stock DLL (2020-04-19)", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/Assembly-CSharp.dll", "relativeExtractionPath": "HigurashiEp01_Data/Managed", "priority": 50}
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
 						}
 					]
 				}
@@ -179,6 +179,21 @@
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
 							"data": {"url": "https://07th-mod.com/nipah/Watanagashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
 						}
 					]
 				}
@@ -270,6 +285,21 @@
 							"data": {"url": "https://07th-mod.com/nipah/Tatarigoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
+						}
+					]
 				}
 			]
 		},
@@ -357,6 +387,21 @@
 							"data": {"url": "https://07th-mod.com/nipah/Himatsubushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
+						}
+					]
 				}
 			]
 		},
@@ -434,6 +479,21 @@
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
 							"data": {"url": "https://07th-mod.com/nipah/Meakashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
 						}
 					]
 				}
@@ -516,6 +576,21 @@
 							"data": {"url": "https://07th-mod.com/nipah/Tsumihoroboshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
+						}
+					]
 				}
 			]
 		},
@@ -591,6 +666,21 @@
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
 							"data": {"url": "https://07th-mod.com/nipah/Minagoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
 						}
 					]
 				}
@@ -681,6 +771,21 @@
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. [More details here](https://github.com/orian34/matsuribayashi/releases). **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/matsuribayashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/matsuribayashi/releases/download/1.0.0/Matsuribayashi.Patch.FR.v1.0.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
 						}
 					]
 				}
