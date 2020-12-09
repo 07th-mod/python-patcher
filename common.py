@@ -109,6 +109,10 @@ class Globals:
 	elif IS_MAC:
 		OS_STRING = "mac"
 
+	# This variable force installation of mod assets from another operating system
+	# Should be either "windows", "linux", or "mac" as per above OS_STRING values
+	FORCE_ASSET_OS_STRING = None
+
 	ARIA_EXECUTABLE = None
 	SEVEN_ZIP_EXECUTABLE = None
 	CURL_EXECUTABLE = None # Not required, but if available will be used to download filenames on systems with old SSL versions

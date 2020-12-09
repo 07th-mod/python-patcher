@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 
+import argparse
 import locale
 import os
 import sys
@@ -106,13 +107,34 @@ def installerCommonStartupTasks():
 	logger.setGlobalLogger(sys.stdout)
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
+	parser = argparse.ArgumentParser()
+	parser.add_argument("launcher_path", nargs='?', default=None)
+	parser.add_argument(
+		"-ao",
+		"--asset-os",
+		action="store",
+		dest="force_asset_os_string",
+		metavar="ASSET_OS",
+		default=None,
+		choices=['windows', 'linux', 'mac'],
+		help=(
+			'Force the installer to install assets from another operating system'
+			'Mainly used on Linux to install Windows assets for use under Wine'
+		),
+	)
+	args = parser.parse_args()
+
 	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
-	if len(sys.argv) > 1:
+	if args.launcher_path is not None:
 		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
 		print("Launcher is located at [{}]".format(common.Globals.NATIVE_LAUNCHER_PATH))
 	else:
 		if common.Globals.IS_WINDOWS:
 			print("WARNING: Launcher path not given to Python script. Will try to use PowerShell file chooser instead of native one.")
+
+	common.Globals.FORCE_ASSET_OS_STRING = args.force_asset_os_string
+	if common.Globals.FORCE_ASSET_OS_STRING is not None:
+		print("Warning: Force asset argument passed - will install {} assets despite os being {}".format(common.Globals.FORCE_ASSET_OS_STRING, common.Globals.OS_STRING))
 
 	# Enable developer mode if we detect the program is run from the git repository
 	# Comment out this line to simulate a 'normal' installation - files will be fetched from the web.

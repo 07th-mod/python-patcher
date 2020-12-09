@@ -72,8 +72,12 @@ class FullInstallConfiguration:
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir="", verbosePrinting=True):
-		# type: (str, bool) -> List[ModFile]
+		# type: (Optional[str], Optional[bool]) -> List[ModFile]
 		# convert the files list into a dict
+		osString = common.Globals.OS_STRING
+		if common.Globals.FORCE_ASSET_OS_STRING is not None:
+			osString = common.Globals.FORCE_ASSET_OS_STRING
+
 		filesDict = {}
 		for file in self.subModConfig.files:
 			filesDict[file.name] = file
@@ -86,7 +90,7 @@ class FullInstallConfiguration:
 
 		for fileOverride in self.subModConfig.fileOverrides:
 			# skip overrides where OS doesn't match
-			if common.Globals.OS_STRING not in fileOverride.os:
+			if osString not in fileOverride.os:
 				continue
 
 			# skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
@@ -110,7 +114,7 @@ class FullInstallConfiguration:
 		for key, value in filesDict.items():
 			if value.url is not None:
 				continue
-			candidates = [x for x in self.subModConfig.fileOverrides if x.name == key and common.Globals.OS_STRING in x.os]
+			candidates = [x for x in self.subModConfig.fileOverrides if x.name == key and osString in x.os]
 			raise FailedFileOverrideException(key, candidates, unity=unityVersion, steam=self.isSteam)
 
 		# Save the unity version for future use
