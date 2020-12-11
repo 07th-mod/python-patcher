@@ -141,7 +141,7 @@
 				<section class="section-small-padding" v-show="installStarted">
 						<div class="container">
 							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>
-								To stop the installation, <a v-on:click="abortInstall()">click here</a>. Download progress will be kept (resuming downloads is supported).
+								To quit the installation, click <button type="button" class="btn" v-on:click="abortInstall()" style="margin-bottom: 0">Quit Installer</button></a>. Download progress will be kept (resuming downloads is supported).
 							</strong></div>
 							<h3> Overall Progress: {{ overallPercentage }}% </h3>
 							<h5 style="font-family: monospace"> {{ overallTaskDescription }} </h5>
