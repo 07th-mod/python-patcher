@@ -87,7 +87,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -188,7 +188,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -292,7 +292,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -394,7 +394,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -488,7 +488,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -583,7 +583,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -675,7 +675,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
@@ -780,7 +780,7 @@
 					"radio": [
 						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
-							"name": "Install Experimental DLL + OG assets (WARNING)", "description": "WARNING: may break your game. Only recommended for people testing the DLL. Adds improved mod menu (Press F10 key to open at any time) with more options and instructions. Attempts to add 4:3 original/ryukishi mode.",
+							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
 						{
