@@ -821,6 +821,23 @@
 						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
 					]
 				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Experimental DLL", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
+						{
+							"name": "Install Experimental DLL", "description": "**NOTE: The game will freeze on a white screen for a couple minutes on first launch after installing this DLL, while scripts are compiling.**\n\n- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-console.7z", "relativeExtractionPath": ".", "priority": 50}
+						},
+						{
+							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
+							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-console.7z", "relativeExtractionPath": ".", "priority": 50}
+						}
+					]
+				}
 			]
 		},
 		{
