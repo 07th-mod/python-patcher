@@ -7,7 +7,11 @@ name: Test and Deploy
 on:
   - push
   - pull_request
-  - workflow_dispatch
+  - workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for release'
+        required: true
 
 # Uncomment to run this workflow only when a tag is pushed
 # Can set custom wildcards instead of '*', like 'v*' for tags starting with v
@@ -70,7 +74,7 @@ jobs:
 
       # Run virus scan (only on tagged builds)
       - name: Run VirusTotal Scan
-        if: startsWith(github.ref, 'refs/tags/') # only scan tagged commits
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' # only scan when releasing
         env:
           VT_API_KEY: ${{ secrets.VT_API_KEY }}
         run: |
@@ -133,18 +137,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # The next two steps allow to manually publish a release via the GitHub web UI,
+      # The next step allows to manually publish a release via the GitHub web UI,
       # without having to clone the repo and push a new tag.
-
-      # Calculate the next version number based on the last tag available,
-      # incrementing patch version
-      - name: Calculate version number
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          vprefix=$(git tag | sort -V | tail -n1 | cut -d. -f1-2) #v1.1.70 => v1.1
-          v=$(git tag | sort -V | tail -n1 | cut -d. -f3) #v1.1.70 => 70
-          let v++
-          echo "NEW_VERSION=$vprefix.$v" >> $GITHUB_ENV
 
       - name: Release (manual)
         uses: softprops/action-gh-release@v1
@@ -156,6 +150,6 @@ jobs:
             travis_installer_output/07th-Mod.Installer.Windows.exe
           body_path: github_actions_changelog_template.txt
           draft: true
-          tag_name: ${{ env.NEW_VERSION }}
+          tag_name: ${{ github.event.inputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
