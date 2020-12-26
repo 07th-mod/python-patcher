@@ -7,6 +7,7 @@ name: Test and Deploy
 on:
   - push
   - pull_request
+  - workflow_dispatch
 
 # Uncomment to run this workflow only when a tag is pushed
 # Can set custom wildcards instead of '*', like 'v*' for tags starting with v
@@ -117,9 +118,9 @@ jobs:
           name: windows-loader-exe
           path: travis_installer_output
 
-      # Publish a release
+      # Publish a release (tagged commits)
       # For more info on options see: https://github.com/softprops/action-gh-release
-      - name: Release
+      - name: Release (tag)
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/') # only publish tagged commits
         with:
@@ -129,5 +130,32 @@ jobs:
             travis_installer_output/07th-Mod.Installer.Windows.exe
           body_path: github_actions_changelog_template.txt
           draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # The next two steps allow to manually publish a release via the GitHub web UI,
+      # without having to clone the repo and push a new tag.
+
+      # Calculate the next version number based on the last tag available,
+      # incrementing patch version
+      - name: Calculate version number
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          vprefix=$(git tag | sort -V | tail -n1 | cut -d. -f1-2) #v1.1.70 => v1.1
+          v=$(git tag | sort -V | tail -n1 | cut -d. -f3) #v1.1.70 => 70
+          let v++
+          echo "NEW_VERSION=$vprefix.$v" >> $GITHUB_ENV
+
+      - name: Release (manual)
+        uses: softprops/action-gh-release@v1
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          files: |
+            travis_installer_output/07th-Mod.Installer.mac.zip
+            travis_installer_output/07th-Mod.Installer.linux.tar.gz
+            travis_installer_output/07th-Mod.Installer.Windows.exe
+          body_path: github_actions_changelog_template.txt
+          draft: true
+          tag_name: ${{ env.NEW_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
