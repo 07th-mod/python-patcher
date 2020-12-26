@@ -5,8 +5,8 @@ name: Test and Deploy
 
 # Run this workflow on every push or pull request
 on:
-  - push
-  - pull_request
+  - push:
+  - pull_request:
   - workflow_dispatch:
     inputs:
       tag_name:
