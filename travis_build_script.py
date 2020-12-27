@@ -34,6 +34,7 @@ EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-
 # Required Environment Variables
 GIT_REF = os.environ.get("GITHUB_REF")    # Github Tag / Version info
 GIT_TAG = GIT_REF.split('/')[-1]
+print(f"--- Git Ref: {GIT_REF} Git Tag: {GIT_TAG} ---")
 
 def call(args, **kwargs):
 	print("running: {}".format(args))
