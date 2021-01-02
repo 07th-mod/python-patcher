@@ -85,11 +85,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -186,11 +186,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -290,11 +290,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -392,11 +392,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -486,11 +486,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -581,11 +581,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -673,11 +673,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -778,11 +778,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -827,11 +827,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL", "description": "**NOTE: The game will freeze on a white screen for a couple minutes on first launch after installing this DLL, while scripts are compiling.**\n\n- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-console.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-console.7z", "relativeExtractionPath": ".", "priority": 50}
