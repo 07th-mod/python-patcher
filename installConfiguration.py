@@ -167,7 +167,7 @@ class ModFileOverride:
 
 
 class ModOption:
-	def __init__(self, name, description, group, type, isRadio, data, isGlobal=False):
+	def __init__(self, name, description, group, type, isRadio, data, isGlobal=False, value=False):
 		self.id = group + ': ' + name # type: str # unique ID for each mod option, for example "SE Options-Old OST"
 		self.name = name # type: str
 		self.description = description # type: str
@@ -184,7 +184,7 @@ class ModOption:
 		"""This contains any data required to execute this mod option. It is deliberately an untyped dict to
 		accommodate various kinds of fields/data required by various kinds of options. You must refer to the JSON to
 		check what kinds of values it contains for a given type of mod option."""
-		self.value = False # type: bool
+		self.value = value # type: bool
 		"""This represents whether the user has enabled or disabled this mod option"""
 		self.isGlobal = isGlobal # type: bool
 		"""Options which should be remembered/mirrored across different game families should be set as globalOptions
@@ -280,14 +280,15 @@ class SubModConfig:
 		self.modOptions = [] # type: List[ModOption]
 
 		def jsonAddModOptionsFromList(jsonModOptionList, isRadio):
-			for jsonModOption in jsonModOptionList:
+			for i, jsonModOption in enumerate(jsonModOptionList):
 				self.modOptions.append(ModOption(name=jsonModOption['name'],
 				                                 description=jsonModOption['description'],
 				                                 group=jsonModOptionGroup['name'],
 				                                 type=jsonModOptionGroup['type'],
 				                                 isRadio=isRadio,
 				                                 data=jsonModOption.get('data', None),
-				                                 isGlobal=jsonModOption.get('isGlobal', False)))
+				                                 isGlobal=jsonModOption.get('isGlobal', False),
+				                                 value=True if isRadio and i == 0 else False))
 
 		for jsonModOptionGroup in mod.get('modOptionGroups', []):
 			applicableSubMods = jsonModOptionGroup.get('submods')
