@@ -17,7 +17,9 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
@@ -36,26 +38,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -85,11 +67,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -114,7 +96,9 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -133,26 +117,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -186,11 +150,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -215,7 +179,9 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
 						{"name": "ui",      "url": null,                                                            "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -237,26 +203,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -290,11 +236,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -320,7 +266,9 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -339,26 +287,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -392,11 +320,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -421,7 +349,9 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Meakashi-BGM.7z",              "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -442,26 +372,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -486,11 +396,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -516,7 +426,9 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Tsumihoroboshi-BGM.7z",        "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
@@ -537,26 +449,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -581,11 +473,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -610,7 +502,9 @@
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5}
+						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Minagoroshi-BGM.7z",        "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
@@ -629,26 +523,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -673,11 +547,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -703,7 +577,9 @@
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10},
+						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Matsuribayashi-BGM.7z",        "priority": 20},
+						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
@@ -735,26 +611,6 @@
 			],
 			"modOptionGroups": [
 				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
-						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
-						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
 					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
 					"submods": ["voice-only"],
 					"checkBox": [
@@ -778,11 +634,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
@@ -827,11 +683,11 @@
 					"name" : "Experimental DLL", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Install Experimental DLL", "description": "**NOTE: The game will freeze on a white screen for a couple minutes on first launch after installing this DLL, while scripts are compiling.**\n\n- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-console.7z", "relativeExtractionPath": ".", "priority": 50}
 						},
+						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
 						{
 							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
 							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-console.7z", "relativeExtractionPath": ".", "priority": 50}
