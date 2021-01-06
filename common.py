@@ -95,7 +95,7 @@ class Globals:
 	GITHUB_MASTER_BASE_URL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
-	JSON_VERSION = 10
+	JSON_VERSION = 11
 
 	# Define constants used throughout the script. Use function calls to enforce variables as const
 	IS_WINDOWS = platform.system() == "Windows"
@@ -878,7 +878,11 @@ class DownloaderAndExtractor:
 		if not self.suppressDownloadStatus:
 			commandLineParser.printSeventhModStatusUpdate(1, "Querying URLs to be Downloaded")
 		for i, file in enumerate(self.modFileList):
-			self.addItemManually(file.url, self.defaultExtractionDir)
+			extractionDir = self.defaultExtractionDir
+			if file.relativeExtractionPath is not None:
+				extractionDir = os.path.join(self.defaultExtractionDir, file.relativeExtractionPath)
+
+			self.addItemManually(file.url, extractionDir)
 
 		self.downloadAndExtractionListsBuilt = True
 

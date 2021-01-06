@@ -108,7 +108,7 @@ class FullInstallConfiguration:
 
 			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
-			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id)
+			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id, relativeExtractionPath=fileOverride.relativeExtractionPath)
 
 		# Look for override-required files that weren't overridden
 		for key, value in filesDict.items():
@@ -130,8 +130,8 @@ class FullInstallConfiguration:
 
 class ModFile:
 	modFileCounter = 0
-	def __init__(self, name, url, priority, id=None):
-		# type: (str, Optional[str], int, str) -> None
+	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None):
+		# type: (str, Optional[str], int, str, Optional[str]) -> None
 		self.name = name
 		self.url = url
 
@@ -142,6 +142,9 @@ class ModFile:
 		# Therefore, the 'later extracted' files are higher priority, that is archives with priority 3 will overwrite priority 0,1,2 archives
 		self.priority = priority #consider renaming this "extractionOrder"?
 
+		# A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
+		self.relativeExtractionPath = relativeExtractionPath # type: str
+
 		# This variable is used to provide ordering which roughly matches the ordering in the JSON file
 		# to ensure files are downloaded and extracted in a deterministic manner
 		self.nativeOrder = ModFile.modFileCounter
@@ -149,8 +152,8 @@ class ModFile:
 
 
 class ModFileOverride:
-	def __init__(self, name, id, os, steam, unity, url, targetChecksums):
-		# type: (str, str, List[str], Optional[bool], Optional[str], str, List[Tuple[str, str]]) -> None
+	def __init__(self, name, id, os, steam, unity, url, targetChecksums, relativeExtractionPath=None):
+		# type: (str, str, List[str], Optional[bool], Optional[str], str, List[Tuple[str, str]], Optional[str]) -> None
 		self.name = name # type: str
 		self.id = id
 		"""A unique identifier among all files and modfiles for this submod. Set manually as 'movie-unix' for example"""
@@ -164,7 +167,9 @@ class ModFileOverride:
 		"""This field can be None for no checksum checking.
 		This field consists of a list of tuples. Each tuple is a pair of (PATH, CHECKSUM).
 		If a file exists at PATH and matches CHECKSUM then this override will be accepted"""
-
+		self.relativeExtractionPath = relativeExtractionPath  # type: str
+		"""A path relative to the *top-level game directory*
+		(should contain HigurashiEp##_data for a higurashi game's data folder)"""
 
 class ModOption:
 	def __init__(self, name, description, group, type, isRadio, data, isGlobal=False, value=False):
@@ -262,7 +267,7 @@ class SubModConfig:
 
 		self.files = [] # type: List[ModFile]
 		for subModFile in subMod['files']:
-			self.files.append(ModFile(name=subModFile['name'], url = subModFile.get('url'), priority=subModFile['priority']))
+			self.files.append(ModFile(name=subModFile['name'], url = subModFile.get('url'), priority=subModFile['priority'], relativeExtractionPath=subModFile.get('relativeExtractionPath')))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]
 		for subModFileOverride in subMod['fileOverrides']:
@@ -273,7 +278,8 @@ class SubModConfig:
 				unity=subModFileOverride.get('unity'),
 				url=subModFileOverride['url'],
 				id=subModFileOverride['id'],
-				targetChecksums=subModFileOverride.get('targetChecksums')
+				targetChecksums=subModFileOverride.get('targetChecksums'),
+				relativeExtractionPath=subModFileOverride.get('relativeExtractionPath')
 			))
 
 		# If no mod options are specified in the JSON, the 'self.modOptions' field defaults to the empty list ([])

@@ -65,6 +65,8 @@ public struct FileDefinition: Codable {
 	public var url: String?
 	/// The priority of this file.  Higher priority files are installed later so they will overwrite lower priority files
 	public var priority: Int
+	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
+	public var relativeExtractionPath: String?
 }
 
 public struct FileOverrideDefinition: Codable {
@@ -92,6 +94,8 @@ public struct FileOverrideDefinition: Codable {
 	/// it's relative to the install directory
 	/// - If null, no files are checked
 	public var targetChecksums: [[String]]?
+	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
+	public var relativeExtractionPath: String?
 }
 
 public enum OS: String, Codable, CaseIterable {
@@ -131,7 +135,7 @@ public struct ModOptionFileDefinition: Codable {
 	/// The url for the mod option
 	public var url: String
 	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
-	public var relativeExtractionPath: String
+	public var relativeExtractionPath: String?
 	/// The priority of this file (same system as above priorities)
 	public var priority: Int
 }
