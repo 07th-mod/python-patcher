@@ -737,6 +737,13 @@ def prettyPrintFileSize(fileSizeBytesWithSign):
 	else:
 		return "0 KB"
 
+class DownloadAndVerifyError(Exception):
+	def __init__(self, errorReason):
+		# type: (str) -> None
+		self.errorReason = errorReason  # type: str
+
+	def __str__(self):
+		return self.errorReason
 
 class DownloaderAndExtractor:
 	"""
@@ -908,7 +915,9 @@ class DownloaderAndExtractor:
 					commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}] (Attempt: {}/{})"
 					                                          .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS))
 				if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
-					raise Exception("ERROR - could not download [{}]. Installation Stopped".format(url))
+					print("ERROR - failed to download [{}]. Trying again in 3 seconds...".format(url))
+					time.sleep(3)
+					continue
 
 				# If all extractables were valid, then we are finished with this download item
 				# and can move on to the next one
@@ -916,7 +925,7 @@ class DownloaderAndExtractor:
 					break
 			else:
 				# Too many attempts
-				raise Exception("ERROR - Failed to download [{}] after {} times. Check aria2/7z in log for details. Installation Stopped".format(url, attempt + 1))
+				raise DownloadAndVerifyError("ERROR - Failed to download [{}] after {} attempts. Check aria2/7z in log for details. Installation Stopped".format(url, attempt + 1))
 
 	def extractablesHasInvalidArchives(self, extractables):
 		# type:(List[DownloaderAndExtractor.ExtractableItem]) -> Optional[bool]

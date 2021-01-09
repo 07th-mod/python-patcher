@@ -662,8 +662,13 @@ class InstallerGUI:
 				if isinstance(e, common.SevenZipException):
 					textToShowUser = 'SevenZip Extraction Failed - See Details'
 
-				print('{}\n{}\n\n----- Details -----\n{}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
+				if isinstance(e, common.DownloadAndVerifyError):
+					textToShowUser = 'Download and Verify stage Failed - See Details'
+
+				exc_type, value, traceback = sys.exc_info()
+				print('{}\n{}\n\n----- Details -----\n{}: {}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
 				                                             textToShowUser,
+				                                             exc_type.__name__,
 				                                             e))
 
 				raise
