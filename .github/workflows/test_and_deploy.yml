@@ -111,16 +111,16 @@ jobs:
       - name: Validate JSON
         run: bash travis_validate_json.sh
 
-      # Run Python Deploy Script
-      - name: Run Deploy Script
-        run: python travis_build_script.py
-
       # Download windows .exe artifact
       - name: Download Windows .exe artifact
         uses: actions/download-artifact@v1
         with:
           name: windows-loader-exe
           path: travis_installer_output
+
+      # Run Python Deploy Script
+      - name: Run Deploy Script
+        run: python travis_build_script.py
 
       # Publish a release (tagged commits)
       # For more info on options see: https://github.com/softprops/action-gh-release
@@ -132,7 +132,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.mac.zip
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
-          body_path: github_actions_changelog_template.txt
+          body_path: github_actions_changelog_template_generated.md
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -148,7 +148,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.mac.zip
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
-          body_path: github_actions_changelog_template.txt
+          body_path: github_actions_changelog_template_generated.md
           draft: true
           tag_name: ${{ github.event.inputs.tag_name }}
         env:

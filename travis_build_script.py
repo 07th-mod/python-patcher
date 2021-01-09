@@ -10,6 +10,7 @@ import sys
 import datetime
 import platform
 import tempfile
+import hashlib
 
 from io import BytesIO
 from zipfile import ZipFile
@@ -141,7 +142,8 @@ ignore_paths = [
 	'Umineko Tsubasa Downloads',
 	'Umineko Hane Downloads',
 	'INSTALLER_LOGS',
-	'github_actions_changelog_template.txt',
+	'github_actions_changelog_template.md',
+	'github_actions_changelog_template_generated.md',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
@@ -164,7 +166,14 @@ def ignore_filter(folderPath, folderContents):
 os.makedirs(output_folder, exist_ok=True)
 
 clear_folder_if_exists(bootstrap_copy_folder)
-clear_folder_if_exists(output_folder)
+
+# Clear outputs if they are to be generated in this run of the script
+if BUILD_LINUX_MAC:
+	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
+	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
+else:
+	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'))
+
 clear_folder_if_exists(staging_folder)
 
 # copy bootstrap folder to a temp folder
@@ -244,6 +253,23 @@ if not BUILD_LINUX_MAC:
 if BUILD_LINUX_MAC:
 	os.rename(f'./{bootstrap_copy_folder}/higu_mac_installer/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Mac/')
 	zip(f'./{bootstrap_copy_folder}/07th-Mod_Installer_Mac/*', os.path.join(output_folder, '07th-Mod.Installer.mac.zip'))
+
+	# Get SHA256 of windows .exe
+	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'), 'rb') as file:
+		windows_exe_sha256 = hashlib.sha256(file.read()).hexdigest()
+
+	# Append VirusTotal result to changelog template
+	with open('github_actions_changelog_template.md', 'r') as changelog_template:
+		with open('github_actions_changelog_template_generated.md', 'w') as generated_changelog_template:
+			generated_changelog_template.write(changelog_template.read())
+			generated_changelog_template.write(f"""\n\n### Virus Scan Results
+
+Your antivirus software or Windows may incorrectly give an antivirus warning (a false positive). If you're worried, you can check the below link for a VirusTotal Scan of the Windows .exe.
+
+Typically we never get more than a couple false positives across the suite of about 67 different types of antivirus software.
+
+`07th-Mod.Installer.Windows.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_sha256}/detection
+""")
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
