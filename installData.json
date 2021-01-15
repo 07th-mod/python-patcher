@@ -17,9 +17,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
@@ -38,6 +36,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -96,9 +114,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -117,6 +133,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -179,9 +215,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
 						{"name": "ui",      "url": null,                                                            "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -203,6 +237,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -266,9 +320,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z",       "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -287,6 +339,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Additional Downloads", "type": "downloadAndExtract",
 					"checkBox": [
@@ -349,9 +421,7 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Meakashi-BGM.7z",              "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -372,6 +442,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -426,9 +516,7 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Tsumihoroboshi-BGM.7z",        "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
@@ -449,6 +537,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -502,9 +610,7 @@
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Minagoroshi-BGM.7z",        "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
+						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
@@ -523,6 +629,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -577,9 +703,7 @@
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10},
-						{"name": "bgm-revert",    "url":"https://07th-mod.com/rikachama/audio/Matsuribayashi-BGM.7z",        "priority": 20},
-						{"name": "se-revert",     "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z",        "priority": 20}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
@@ -610,6 +734,26 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
+						{
+							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "SE Options", "type": "downloadAndExtract",
+					"radio": [
+						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
+						{
+							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
 					"submods": ["voice-only"],
