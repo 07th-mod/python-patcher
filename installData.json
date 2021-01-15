@@ -448,7 +448,7 @@
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Meakashi-BGM.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -543,7 +543,7 @@
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Tsumihoroboshi-BGM.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -635,7 +635,7 @@
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Minagoroshi-BGM.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
@@ -740,7 +740,7 @@
 						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
 							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+							"data": {"url": "https://07th-mod.com/rikachama/audio/Matsuribayashi-BGM.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						}
 					]
 				},
