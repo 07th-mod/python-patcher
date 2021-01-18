@@ -304,7 +304,8 @@ class SubModConfig:
 
 		# Mod options which don't come from the installData.json file are added here
 		installSteamGridDescription = """
-This option updates the header and icon art in the Steam app to match the mod's art style. All Higurashi and Umineko games will have their icons updated, not just the game being patched.
+<p>This option updates the header and icon art in the Steam app to match the mod's art style. All Higurashi and Umineko games will have their icons updated, not just the game being patched.</p>
+<strong>NOTE: A computer restart may be required to see the updated art!</strong>
 
 <table class="umineko-image-table-content umineko-image-table-horizontal">
 <tbody>
