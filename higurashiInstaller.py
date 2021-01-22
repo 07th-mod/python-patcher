@@ -59,6 +59,7 @@ class Installer:
 		self.info = fullInstallConfiguration
 		self.directory = fullInstallConfiguration.installPath
 		self.dataDirectory = self.getDataDirectory(self.directory)
+		self.clearScripts = False  # If true, will clear CompiledUpdateScripts before extraction stage
 
 		logger.getGlobalLogger().trySetSecondaryLoggingPath(
 			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
@@ -88,6 +89,11 @@ class Installer:
 			localVersionFolder=self.directory)
 
 		modFileList = self.fileVersionManager.getFilesRequiringUpdate()
+
+		for modFile in modFileList:
+			if modFile.name == 'script':
+				self.clearScripts = True
+
 		self.info.subModConfig.printEnabledOptions()
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
@@ -102,6 +108,8 @@ class Installer:
 				url=opt.url,
 				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
 			)
+			if opt.group == 'Alternate Languages':
+				self.clearScripts = True
 
 		self.downloaderAndExtractor.printPreview()
 
@@ -139,12 +147,14 @@ class Installer:
 		oldCGAlt = path.join(self.assetsDir, "CGAlt")
 		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
 
-		try:
-			for mg in glob.glob(compiledScriptsPattern):
-				forceRemove(mg)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
-			traceback.print_exc()
+		if self.clearScripts:
+			print("Attempting to clear old compiled scripts")
+			try:
+				for mg in glob.glob(compiledScriptsPattern):
+					forceRemove(mg)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
+				traceback.print_exc()
 
 		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
 		if self.fileVersionManager.fullUpdateRequired():
