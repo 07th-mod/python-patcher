@@ -16,7 +16,7 @@
     <body>
 		<!-- Only elements inside this <div id="app"> will be monitored by Vue.
 		The "v-cloak" tells Vue to disable showing this element until it has finished loading. -->
-		<div id="app" class="main-container" v-cloak>
+		<div id="app" class="main-container" v-cloak v-if="selectedSubMod != null">
 		<div id="modal-container" >
 			<modal v-bind:visible="installErrorDescription" v-on:close="installErrorDescription = ''">
 				<h3>Please read the below message</h3>
