@@ -17,7 +17,8 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
@@ -88,21 +89,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Onikakushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep1.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -122,7 +108,8 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -197,21 +184,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Watanagashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep2.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -231,7 +203,8 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
 						{"name": "ui",      "url": null,                                                            "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -309,21 +282,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Tatarigoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep3.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -344,7 +302,8 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -419,21 +378,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Himatsubushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep4.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -453,7 +397,8 @@
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5}
+						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -521,21 +466,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Meakashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep5.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -556,7 +486,8 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
@@ -624,21 +555,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Tsumihoroboshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep6.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -658,7 +574,8 @@
 						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5}
+						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 10}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
@@ -724,21 +641,6 @@
 							"data": {"url": "https://07th-mod.com/nipah/Minagoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep7.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -759,7 +661,8 @@
 						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z", "priority": 0},
 						{"name": "ui",      "url": null, "priority": 0},
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10}
+						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/matsuribayashi-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
@@ -837,21 +740,6 @@
 							"data": {"url": "https://github.com/orian34/matsuribayashi/releases/download/1.0.0/Matsuribayashi.Patch.FR.v1.0.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
-				},
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL & Improved Original/Ryukishi Graphics Option", "description": "- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Adds option for original/ryukishi backgrounds (4:3) and sprites.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-ep8.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
 				}
 			]
 		},
@@ -875,7 +763,8 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/ConsoleArcs-Voices.7z",           "priority": 0},
 						{"name": "ui",      "url":null,                                                                  "priority": 0},
 						{"name": "system",  "url":null,                                                                  "priority": 0},
-						{"name": "script",    "url":"https://07th-mod.com/latest.php?repository=higurashi-console-arcs", "priority": 5}
+						{"name": "script",    "url":"https://07th-mod.com/latest.php?repository=higurashi-console-arcs", "priority": 5},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/console-og-dll-asset-update.7z", "priority": 15}
 					],
 					"fileOverrides" : [
 						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},
@@ -886,23 +775,7 @@
 					]
 				}
 			],
-			"modOptionGroups": [
-				{
-					"name" : "Experimental DLL", "type": "downloadAndExtract",
-					"submods": ["full"],
-					"radio": [
-						{
-							"name": "Install Experimental DLL", "description": "**NOTE: The game will freeze on a white screen for a couple minutes on first launch after installing this DLL, while scripts are compiling.**\n\n- Adds improved mod menu (Press F10 key to open at any time) with more options and instructions.\n- Please let us know if this DLL works for you or if you have any problems on our [Discord Server](https://discord.gg/pf5VhF9).",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/latest/download/experimental-drojf-dll-console.7z", "relativeExtractionPath": ".", "priority": 50}
-						},
-						{"name": "No Change", "description": "Don't apply the experimental DLL", "data":null},
-						{
-							"name": "Restore stock DLL", "description": "Restores DLL back to the default one (as of 2020-04-19). Use this if you have problems with the experimental DLL",
-							"data": {"url": "https://github.com/drojf/higurashi-assembly/releases/download/oni-stock-2020-04-19/dll-stock-console.7z", "relativeExtractionPath": ".", "priority": 50}
-						}
-					]
-				}
-			]
+			"modOptionGroups": []
 		},
 		{
 			"family": "umineko",
