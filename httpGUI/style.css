@@ -278,3 +278,29 @@ The snackbar - position it at the bottom and in the middle of the screen */
   text-decoration: none;
   cursor: pointer;
 }
+
+.loader {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  margin-left: 20px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-small {
+  width: 10px;
+  height: 10px;
+}
+
+.loader-big {
+  width: 200px;
+  height: 200px;
+}

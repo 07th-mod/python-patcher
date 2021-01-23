@@ -146,6 +146,7 @@ window.onload = function onWindowLoaded() {
       validatedInstallPath: null,
       installPathValid: false,
       validationInProgress: false,
+      pathAutoDetectionInProgress: false,
       installPathFocussed: false,
       logFilePath: null, // When window loaded, this script queries the installer as to the log file path
       showPathSelectionButtons: true, // Set to true to show UI for path selection
@@ -326,7 +327,9 @@ Continue install anyway?`)) {
       selectedSubMod: function onSelectedSubModChanged(newSelectedSubMod, oldSelectedSubMod) {
         if (app.installStarted) { return; }
         if (newSelectedSubMod !== null) {
+          app.pathAutoDetectionInProgress = true;
           doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
+            app.pathAutoDetectionInProgress = false;
             this.partiallyUninstalledPaths = responseData.partiallyUninstalledPaths;
             this.fullInstallConfigs = responseData.fullInstallConfigHandles;
             // If there is only one detected install path, select it
