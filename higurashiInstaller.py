@@ -60,6 +60,7 @@ class Installer:
 		self.directory = fullInstallConfiguration.installPath
 		self.dataDirectory = self.getDataDirectory(self.directory)
 		self.clearScripts = False  # If true, will clear CompiledUpdateScripts before extraction stage
+		self.languagePatchIsEnabled = False  # True if at least one language patch will be installed
 
 		logger.getGlobalLogger().trySetSecondaryLoggingPath(
 			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
@@ -110,6 +111,7 @@ class Installer:
 			)
 			if opt.group == 'Alternate Languages':
 				self.clearScripts = True
+				self.languagePatchIsEnabled = True
 
 		self.downloaderAndExtractor.printPreview()
 
@@ -138,6 +140,17 @@ class Installer:
 			print('Error: Failed to backup sharedassets0.assets file: {} (need backup for future installs!)'.format(e))
 			raise e
 
+	def clearCompiledScripts(self):
+		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
+
+		print("Attempting to clear compiled scripts")
+		try:
+			for mg in glob.glob(compiledScriptsPattern):
+				forceRemove(mg)
+		except Exception:
+			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
+			traceback.print_exc()
+
 	def cleanOld(self):
 		"""
 		Removes folders that shouldn't persist through the install
@@ -145,16 +158,9 @@ class Installer:
 		"""
 		oldCG = path.join(self.assetsDir, "CG")
 		oldCGAlt = path.join(self.assetsDir, "CGAlt")
-		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
 
 		if self.clearScripts:
-			print("Attempting to clear old compiled scripts")
-			try:
-				for mg in glob.glob(compiledScriptsPattern):
-					forceRemove(mg)
-			except Exception:
-				print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
-				traceback.print_exc()
+			self.clearCompiledScripts()
 
 		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
 		if self.fileVersionManager.fullUpdateRequired():
@@ -202,14 +208,6 @@ class Installer:
 				toPath = os.path.join(self.directory, "Contents/Resources/PlayerIcon.icns")
 			)
 
-	def _languagePatchIsEnabled(self):
-		"""If any options with 'Language Patch' in the name, assume language patch was applied"""
-		for option in self.info.subModConfig.modOptions:
-			if option.value and 'Language Patch' in option.name:
-				return True
-
-		return False
-
 	def _applyLanguageSpecificSharedAssets(self, folderToApply):
 		"""Helper function which applies language specific assets.
 		Returns False if there was an error during the proccess.
@@ -237,14 +235,18 @@ class Installer:
 		print("Language Patch UI: No UI/sharedassets0 found for ({},{}) - using default sharedassets0.assets".format(osString, versionString))
 		return True
 
-	def applyLanguageSpecificSharedAssets(self):
+	def applyLanguagePatchFixesIfNecessary(self):
 		folderToApply = self.dataDirectory
 		if self.forcedExtractDirectory is not None:
 			folderToApply = self.getDataDirectory(self.forcedExtractDirectory)
 
 		# Don't need to apply any special UI if no language patch
-		if not self._languagePatchIsEnabled():
+		if not self.languagePatchIsEnabled:
 			return
+
+		# For now, assume language patches don't provide CompiledUpdateScripts folder, so clear any existing compiled
+		# scripts which may come with the main patch
+		self.clearCompiledScripts()
 
 		# Don't clean up if sharedassets application failed - user may want to apply UI manually
 		if not self._applyLanguageSpecificSharedAssets(folderToApply):
@@ -344,7 +346,7 @@ def main(fullInstallConfiguration):
 		installer.extractFiles()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
-		installer.applyLanguageSpecificSharedAssets()
+		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished(forcedSaveFolder=extractDir)
 		common.tryShowInFileBrowser(extractDir)
 		common.tryShowInFileBrowser(fullInstallConfiguration.installPath)
@@ -362,7 +364,7 @@ def main(fullInstallConfiguration):
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
-		installer.applyLanguageSpecificSharedAssets()
+		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=False)
 	else:
@@ -378,7 +380,7 @@ def main(fullInstallConfiguration):
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
-		installer.applyLanguageSpecificSharedAssets()
+		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
 
