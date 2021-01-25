@@ -183,6 +183,7 @@ window.onload = function onWindowLoaded() {
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
       installErrorDescription: "",
+      installDataLoaded: false,
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -408,6 +409,7 @@ Continue install anyway?`)) {
       });
       setInstallStartedAndBeginPolling();
     }
+    app.installDataLoaded = true;
   });
 
   // When any properties of the selected submod and child properites change,
