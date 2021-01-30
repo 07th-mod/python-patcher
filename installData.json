@@ -795,13 +795,13 @@
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 2},
 						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
-						{"name": "exe", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-windows-steam-question.zip", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 0},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
 					"fileOverrides" : [
 						{"name": "os-specific-update",  "id": "os-specific-update-unix", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4"},
-						{"name": "exe", "os":["linux"], "id": "exe-linux", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-linux-steam-question.zip"},
-						{"name": "exe", "os":["mac"],   "id": "exe-mac",   "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-osx-steam-question.zip"}
+						{"name": "exe", "os":["linux"], "id": "exe-linux", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4"},
+						{"name": "exe", "os":["mac"],   "id": "exe-mac",   "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip"}
 					]
 				},
 				{
@@ -810,12 +810,12 @@
 					"files":[
 						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3},
-						{"name": "exe", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-windows-steam-question.zip", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 0},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-linux-steam-question.zip"},
-						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-osx-steam-question.zip"}
+						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/Beato-voice/Umineko1to4"},
+						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip"}
 					]
 				}
 			],
@@ -863,26 +863,6 @@
 					"checkBox": [
 						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
 					]
-				},
-				{
-					"name" : "Install old .exes", "type": "downloadAndExtract",
-					"submods" : ["full"],
-					"checkBox": [
-						{
-							"name": "Install old .exe", "description": "This installs the old exes which were used before 2021. Install this if you're having trouble with the game starting, resolution or your save seems missing after updating.\n\nPlease let us know if you use this option on our [discord server](https://discord.gg/pf5VhF9) so we can fix the problem.",
-							"data": {"url": "https://07th-mod.com/Beato/pre_2021_exe/all-exe-umineko-question-full.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "Install old .exes", "type": "downloadAndExtract",
-					"submods" : ["voice-only"],
-					"checkBox": [
-						{
-							"name": "Install old .exe", "description": "This installs the old exes which were used before 2021. Install this if you're having trouble with the game starting, resolution or your save seems missing after updating.\n\nPlease let us know if you use this option on our [discord server](https://discord.gg/pf5VhF9) so we can fix the problem.",
-							"data": {"url": "https://07th-mod.com/Beato/pre_2021_exe/all-exe-umineko-question-voice.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
-					]
 				}
 			]
 		},
@@ -901,13 +881,13 @@
 						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3},
-						{"name": "exe", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-windows-steam-answer.zip", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-linux-steam-answer.zip"},
-						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-osx-steam-answer.zip"}
+						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/Bern/Umineko5to8"},
+						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				},
 				{
@@ -918,13 +898,13 @@
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
-						{"name": "exe", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-windows-steam-answer.zip", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 0},
 						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-linux-steam-answer.zip"},
-						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-osx-steam-answer.zip"}
+						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/Bern/Umineko5to8"},
+						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip"}
 					]
 				},
 				{
@@ -934,12 +914,12 @@
 						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
 						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3},
-						{"name": "exe", "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-windows-steam-answer.zip", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 0},
 						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
 					],
 					"fileOverrides" : [
-						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-linux-steam-answer.zip"},
-						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/higurashi_dlls/umineko_exe/umineko-osx-steam-answer.zip"}
+						{"name": "exe", "id": "exe-linux", "os":["linux"], "url":"https://07th-mod.com/Bern-voice/Umineko5to8"},
+						{"name": "exe", "id": "exe-mac",   "os":["mac"],   "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip"}
 					]
 				}
 			],
@@ -974,27 +954,8 @@
 					"checkBox": [
 						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
 					]
-				},
-				{
-					"name" : "Install old .exes", "type": "downloadAndExtract",
-					"submods" : ["novel-mode", "adv-mode"],
-					"checkBox": [
-						{
-							"name": "Install old .exe", "description": "This installs the old exes which were used before 2021. Install this if you're having trouble with the game starting, resolution or your save seems missing after updating.\n\nPlease let us know if you use this option on our [discord server](https://discord.gg/pf5VhF9) so we can fix the problem.",
-							"data": {"url": "https://07th-mod.com/Beato/pre_2021_exe/all-exe-umineko-answer-full.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "Install old .exes", "type": "downloadAndExtract",
-					"submods" : ["voice-only"],
-					"checkBox": [
-						{
-							"name": "Install old .exe", "description": "This installs the old exes which were used before 2021. Install this if you're having trouble with the game starting, resolution or your save seems missing after updating.\n\nPlease let us know if you use this option on our [discord server](https://discord.gg/pf5VhF9) so we can fix the problem.",
-							"data": {"url": "https://07th-mod.com/Beato/pre_2021_exe/all-exe-umineko-answer-voice.zip", "relativeExtractionPath": ".", "priority": 10}
-						}
-					]
 				}
+
 			]
 		},
 		{
