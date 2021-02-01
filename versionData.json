@@ -264,7 +264,17 @@
 	{
 		"id" : "Umineko Hane/full",
 		"files":[
-			{"id": "mod",                    "version": "1.0.0"}
+			{"id": "script",   "version": "1.0.0"},
+			{"id": "graphics", "version": "1.0.0"},
+			{"id": "voices",   "version": "1.0.0"},
+			{"id": "exe",      "version": "1.0.0"}
+		]
+	},
+	{
+		"id" : "Umineko Hane/voice-only",
+		"files":[
+			{"id": "script", "version": "1.0.0"},
+			{"id": "voices", "version": "1.0.0"}
 		]
 	},
 	{

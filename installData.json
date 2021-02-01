@@ -1027,13 +1027,25 @@
 			"target": "Umineko",
 			"CFBundleName": "This Field is Not Used",
 			"dataname": "",
-			"identifiers" : ["うみねこのなく頃に羽.exe", "snow.dll"],
+			"identifiers" : ["pscript.dat"],
 			"submods": [
 				{
 					"name" : "full",
-					"descriptionID": "uminekoHaneOnscripterFull",
+					"descriptionID": "uminekoHaneFull",
 					"files":[
-						{"name": "mod", "url":"https://07th-mod.com/Bern/Hane/umineko-hane-ons.zip", "priority": 0}
+						{"name": "graphics", "url":"https://07th-mod.com/Lambdadelta/Hane/Graphics.7z", "priority": 0},
+						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/master/0.u", "priority": 0},
+						{"name": "exe", "url": "https://07th-mod.com/Lambdadelta/Hane/UminekoHane.exe", "priority": 0}
+					],
+					"fileOverrides" : []
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "uminekoHaneVoiceOnly",
+					"files": [
+						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/voice-only/0.utf", "priority": 0}
 					],
 					"fileOverrides" : []
 				}
