@@ -186,9 +186,10 @@ def _loggerMessageToStatusDict(message):
 	# Searches for "#7f0d78 27MiB/910MiB(3%)" and also "ETA:3m27s" separately
 	status = commandLineParser.tryGetAriaStatusUpdate(message)
 	if status:
+		progressType = "Verifying" if 'checksum' in message.lower() else "Downloading"
 		return {
 			"subTaskPercentage": status.percentCompleted,
-			"subTaskDescription": "Downloading - [{}]) CN: {} DL: {} ETA: {}".format(status.amountCompletedString, status.numConnections, status.speed, status.ETAString),
+			"subTaskDescription": "{} - [{}]) CN: {} DL: {} ETA: {}".format(progressType, status.amountCompletedString, status.numConnections, status.speed, status.ETAString),
 		}
 
 	sevenZipMessageAndPercent = {}
