@@ -1036,7 +1036,7 @@
 						{"name": "graphics", "url":"https://07th-mod.com/Lambdadelta/Hane/Graphics.7z", "priority": 0},
 						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
 						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/master/0.u", "priority": 0},
-						{"name": "exe", "url": "https://07th-mod.com/Lambdadelta/Hane/UminekoHane.exe", "priority": 0}
+						{"name": "exe", "url": "https://07th-mod.com/Lambdadelta/Hane/exe.7z", "priority": 0}
 					],
 					"fileOverrides" : []
 				},
