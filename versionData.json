@@ -264,7 +264,7 @@
 	{
 		"id" : "Umineko Hane/full",
 		"files":[
-			{"id": "script",   "version": "1.0.1"},
+			{"id": "script",   "version": "1.0.2"},
 			{"id": "graphics", "version": "1.0.1"},
 			{"id": "voices",   "version": "1.0.0"},
 			{"id": "exe",      "version": "1.1.0"}
