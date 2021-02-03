@@ -40,13 +40,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_bgm_april.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -54,13 +53,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_se_april.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -131,13 +129,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_bgm_april.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -145,13 +142,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_se_april.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -229,13 +225,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_bgm_april.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -243,13 +238,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_se_april.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -325,13 +319,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldBGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_bgm_april.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -339,13 +332,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/Higurashi-OldSE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_question_se_april.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -422,13 +414,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM-v2.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_bgm_april.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -436,13 +427,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_se_april.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -511,13 +501,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM-v2.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_bgm_april.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -525,13 +514,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_se_april.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -597,13 +585,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM-v2.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_bgm_april.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -611,13 +598,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_se_april.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -696,13 +682,12 @@
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"},
 						{
-							"name": "BGM Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM-v2.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update BGM. Use this if you previously applied the BGM fix, but want to go back to the april update BGM.",
+							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_bgm_april.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						}
 					]
@@ -710,13 +695,12 @@
 				{
 					"name" : "SE Options", "type": "downloadAndExtract",
 					"radio": [
-						{"name": "No SE Changes", "description": "Keep the currently installed Sound Effects", "data":null},
 						{
-							"name": "SE Fix", "description": "Attempts to fix some of the problems with the April BGM/SE Update - [See the wiki for more details](http://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update). The method used was:\n - If the BGM/SE was replaced with an entirely different one, we have reverted it\n - If the BGM/SE was replaced with a similar one, we use the new version",
+							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
 							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						},
 						{
-							"name": "Restore April Update", "description": "Re-applies the april update SE. Use this if you previously applied the SE fix, but want to go back to the april update SE.",
+							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
 							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_se_april.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 						}
 					]
