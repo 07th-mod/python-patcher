@@ -18,6 +18,14 @@ Please note that pycharm will attempt to index files in the project folder - thi
 the installer from pycharm, as the installer may try to move a file Pycharm is currently reading, causing it to
 fail (I have only seen this happen once).
 
+### Known issues with python dev environment
+
+If the installer is stopped using the "Quit Installer" button while a download is in progress, aria2c will keep
+downloading in the background (at least on Windows). Normally when running the installer on Windows, the launcher
+will terminate the aria2c process using a Windows Job Object, but when running through an IDE this won't happen.
+
+Force closing the script via the IDE does seem to kill the aria2c process, however.
+
 ## JSON Mod Definition
 
 The patcher reads the file [installData.json](installData.json) to figure out what mods are available.  The spec for this file is defined as a `Codable` Swift struct in [JSONValidator.swift](JSONValidator/Sources/JSONValidator/JSONValidator.swift)
