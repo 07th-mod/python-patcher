@@ -602,6 +602,11 @@
 			</transition>
 			<br><br><br><br>
 			<section class="section-small-padding bg-secondary">
+				<div class="container">
+				<h3><a v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)"> 📖 Click here to download the Install Logs</a></h3>
+				</div>
+			</section>
+			<section class="section-small-padding bg-secondary">
 			<div class="container">
 				<h3>
 				<div v-if="changelogURL === null">

@@ -881,7 +881,7 @@ class InstallerGUI:
 				action = requestData['action']
 
 				subMod = None
-				if 'subMod' in requestData:
+				if requestData.get('subMod', None) is not None:
 					id = requestData['subMod']['id']
 					subMod = self.idToSubMod[id]
 
@@ -892,7 +892,7 @@ class InstallerGUI:
 					higurashi_log_file_name = 'output_log.txt'
 					gameLogExists = False
 					gameLogPath = None
-					if subMod is not None:
+					if subMod is not None and _getInstallPath() is not None:
 						installPath = _getInstallPath()
 						gameLogPath = os.path.join(installPath, subMod.dataName, higurashi_log_file_name)
 						gameLogExists = os.path.exists(gameLogPath)

@@ -220,7 +220,7 @@ Continue install anyway?`)) {
           app.selectedInstallPath = pathToInstall;
         }
       },
-      // If argument 'installPath' is null, then a file chooser will let user choose game path
+      // If either argument is null, will just get the installer logs and not the game logs
       getLogsZip(subModToInstall, installPath) {
         doPost('troubleshoot', { action: 'getLogsZip', subMod: subModToInstall, installPath }, (responseData) => {
           console.log(responseData);
