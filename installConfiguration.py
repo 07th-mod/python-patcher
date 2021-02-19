@@ -251,6 +251,7 @@ class SubModConfig:
 
 	#object initialized in factory func
 	def __init__(self, mod, subMod):
+		# type: (dict, dict) -> None
 		# Generate a unique ID for each subModConfig. This variable is not present in the JSON file.
 		self.id = SubModConfig.subModUniqueIDCounter
 		SubModConfig.subModUniqueIDCounter += 1
@@ -266,6 +267,8 @@ class SubModConfig:
 		self.descriptionID = subMod['descriptionID'] # type: str
 		"""This variable sets which description to display on the web GUI
 		The actual description text is stored on the webpage, not in the JSON or python side."""
+		self.autodetect = mod.get('autodetect', True)
+		"""When True, installer will attempt to autodetect game path. Defaults to True if not set."""
 
 		self.files = [] # type: List[ModFile]
 		for subModFile in subMod['files']:
