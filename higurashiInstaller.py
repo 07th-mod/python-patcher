@@ -39,6 +39,60 @@ def forceRemoveDir(path):
 def forceRmTree(path):
 	shutil.rmtree(path, onerror=on_rm_error)
 
+
+def languageSpecificUIFileValid(filename):
+	# type: (str) -> bool
+	valid = True
+
+	# Check that the UI filename contains at least one operating system
+	detectedOS = []
+	for osName in ['windows', 'linux', 'mac']:
+		if osName in filename.lower():
+			detectedOS.append(osName)
+	if not detectedOS:
+		print("LanguageSpecificAsset: Error - '{}' is missing an OS name (should be windows, linux, or mac)".format(filename))
+		valid = False
+
+	# Check the UI filename contains a Unity Version
+	detectedUnityVersion = None
+	match = re.search(r'(\d\.\d\.\d\w\d)|(\d\d\d\d\.\d.\d)', filename, re.IGNORECASE)
+	if match:
+		detectedUnityVersion = match.groups()[0]
+	if detectedUnityVersion is None:
+		print("LanguageSpecificAsset: Error - '{}' is missing unity version (like 5.5.3p3 or 2017.2.5)".format(filename))
+		valid = False
+
+	print(
+		"LanguageSpecificAsset: Detected '{}-{}' from file '{}'".format(detectedOS, detectedUnityVersion, filename))
+
+	return valid
+
+def validateLanguageSpecificUIFiles(folder):
+	"""
+	This function validates language specific ui files (*.assets and *.languagespecificassets in the given folder).
+	Please note the behavior is different for .assets and .languagespecificassets extension:
+		- .assets will not raise an exception, and will just print errors to console. This is in case there is some
+		  unknown .assets file in the game folder which would be treated as invalid, causing the install to fail
+		- .languagespecificassets will raise an exception on error (after all files are checked)
+	"""
+	invalidUIFileList = []
+	for altUIFilename in os.listdir(folder):
+		if altUIFilename in ['globalgamemanagers.assets', 'resources.assets', 'sharedassets0.assets']:
+			continue
+
+		_, ext = os.path.splitext(altUIFilename)
+		if ext.lower() == '.assets':
+			languageSpecificUIFileValid(altUIFilename)
+		elif ext.lower() == '.languagespecificassets':
+			if not languageSpecificUIFileValid(altUIFilename):
+				invalidUIFileList.append(altUIFilename)
+
+	if invalidUIFileList:
+		raise Exception('Please send the developers on our Discord server https://discord.gg/pf5VhF9 '
+		                'this error so we can fix it:\n\n'
+		                '"Invalid Language Specific Asset files found: {}"'.format(invalidUIFileList))
+
+
 class Installer:
 	def getDataDirectory(self, installPath):
 		if common.Globals.IS_MAC:
@@ -221,6 +275,8 @@ class Installer:
 		# Use the sharedassets file with matching os/unityversion if provided by the language patch
 		versionString = self.info.unityVersion
 		osString = common.Globals.OS_STRING
+
+		validateLanguageSpecificUIFiles(folderToApply)
 
 		for altUIFilename in os.listdir(folderToApply):
 			altUIPath = os.path.join(folderToApply, altUIFilename)
