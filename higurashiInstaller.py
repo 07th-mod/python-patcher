@@ -50,16 +50,16 @@ def languageSpecificUIFileValid(filename):
 		if osName in filename.lower():
 			detectedOS.append(osName)
 	if not detectedOS:
-		print("LanguageSpecificAsset: Error - '{}' is missing an OS name (should be windows, linux, or mac)".format(filename))
+		print("LanguageSpecificAsset:   > Error - '{}' is missing an OS name (should be windows, linux, or mac)".format(filename))
 		valid = False
 
 	# Check the UI filename contains a Unity Version
 	detectedUnityVersion = None
-	match = re.search(r'(\d\.\d\.\d\w\d)|(\d\d\d\d\.\d.\d)', filename, re.IGNORECASE)
+	match = re.search(r'((\d\.\d\.\d\w\d)|(\d\d\d\d\.\d\.\d))', filename, re.IGNORECASE)
 	if match:
 		detectedUnityVersion = match.groups()[0]
 	if detectedUnityVersion is None:
-		print("LanguageSpecificAsset: Error - '{}' is missing unity version (like 5.5.3p3 or 2017.2.5)".format(filename))
+		print("LanguageSpecificAsset:   > Error - '{}' is missing unity version (like 5.5.3p3 or 2017.2.5)".format(filename))
 		valid = False
 
 	print(
@@ -67,7 +67,8 @@ def languageSpecificUIFileValid(filename):
 
 	return valid
 
-def validateLanguageSpecificUIFiles(folder):
+def listInvalidUIFiles(folder):
+	#type: (str) -> [str]
 	"""
 	This function validates language specific ui files (*.assets and *.languagespecificassets in the given folder).
 	Please note the behavior is different for .assets and .languagespecificassets extension:
@@ -87,11 +88,7 @@ def validateLanguageSpecificUIFiles(folder):
 			if not languageSpecificUIFileValid(altUIFilename):
 				invalidUIFileList.append(altUIFilename)
 
-	if invalidUIFileList:
-		raise Exception('Please send the developers on our Discord server https://discord.gg/pf5VhF9 '
-		                'this error so we can fix it:\n\n'
-		                '"Invalid Language Specific Asset files found: {}"'.format(invalidUIFileList))
-
+	return invalidUIFileList
 
 class Installer:
 	def getDataDirectory(self, installPath):
@@ -276,8 +273,6 @@ class Installer:
 		versionString = self.info.unityVersion
 		osString = common.Globals.OS_STRING
 
-		validateLanguageSpecificUIFiles(folderToApply)
-
 		for altUIFilename in os.listdir(folderToApply):
 			altUIPath = os.path.join(folderToApply, altUIFilename)
 			_, ext = os.path.splitext(altUIFilename)
@@ -304,20 +299,28 @@ class Installer:
 		# scripts which may come with the main patch
 		self.clearCompiledScripts()
 
-		# Don't clean up if sharedassets application failed - user may want to apply UI manually
-		if not self._applyLanguageSpecificSharedAssets(folderToApply):
-			return
+		invalidUIFileList = listInvalidUIFiles(folderToApply)
 
-		# Clean up unused asset files
-		for altUIFilename in os.listdir(folderToApply):
-			root, ext = os.path.splitext(altUIFilename)
-			altUIPath = os.path.join(folderToApply, altUIFilename)
-			try:
-				if os.path.isfile(altUIPath) and ext.lower() == '.languagespecificassets' and re.match(r"^(((LinuxMac)|(Windows))-)+(((GOG)|(Steam)|(MG))-)+[\d\w.]+$", root):
-					print("Removing unused UI file {}".format(altUIPath))
-					os.remove(altUIPath)
-			except Exception as e:
-				print("Failed to remove unused language specific asset [{}] due to {}".format(altUIPath, e))
+		assetsApplied = self._applyLanguageSpecificSharedAssets(folderToApply)
+
+		# Don't clean up if sharedassets application failed - user may want to apply UI manually
+		# However if invalid ui files were found, remove them, as this may cause problems later
+		if invalidUIFileList or assetsApplied:
+			# Clean up unused asset files
+			for altUIFilename in os.listdir(folderToApply):
+				root, ext = os.path.splitext(altUIFilename)
+				altUIPath = os.path.join(folderToApply, altUIFilename)
+				try:
+					if os.path.isfile(altUIPath) and ext.lower() == '.languagespecificassets':
+						print("Removing unused UI file {}".format(altUIPath))
+						os.remove(altUIPath)
+				except Exception as e:
+					print("Failed to remove unused language specific asset [{}] due to {}".format(altUIPath, e))
+
+		if invalidUIFileList:
+			raise Exception('Please send the developers on our Discord server https://discord.gg/pf5VhF9 '
+			                'this error so we can fix it:\n\n'
+			                '"Invalid Language Specific Asset files found: {}"'.format(invalidUIFileList))
 
 	def _moveDirectoryIntoPlace(self, fromDir, toDir):
 		# type: (str, str) -> None
