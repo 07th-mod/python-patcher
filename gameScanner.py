@@ -226,9 +226,12 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 	from collections import defaultdict
 	subModConfigDictionary = defaultdict(list) #type: defaultdict[List[installConfiguration.SubModConfig]]
 	for subMod in subModConfigList:
-		if subMod.autodetect:
-			for identifier in subMod.identifiers:
-				subModConfigDictionary[identifier].append(subMod)
+		# If autodetection is disabled, and autodetection requested, do not scan for this submod
+		if not subMod.autodetect and possiblePaths is None:
+			continue
+
+		for identifier in subMod.identifiers:
+			subModConfigDictionary[identifier].append(subMod)
 
 	# If there are no identifiers to be matched, give up immediately as we'll never find a match
 	if not subModConfigDictionary:
