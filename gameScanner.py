@@ -224,15 +224,10 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 	# but it is easier to work with in the installer if we work with subMods
 
 	from collections import defaultdict
-	subModConfigDictionary = defaultdict(list) #type: defaultdict[List[installConfiguration.SubModConfig]]
+	subModConfigDictionary = defaultdict(list) #type: defaultdict[List[SubModConfig]]
 	for subMod in subModConfigList:
-		if subMod.autodetect:
-			for identifier in subMod.identifiers:
-				subModConfigDictionary[identifier].append(subMod)
-
-	# If there are no identifiers to be matched, give up immediately as we'll never find a match
-	if not subModConfigDictionary:
-		return [], []
+		for identifier in subMod.identifiers:
+			subModConfigDictionary[identifier].append(subMod)
 
 	if scanExtraPaths:
 		extraPaths = []

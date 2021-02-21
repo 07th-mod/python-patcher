@@ -39,8 +39,6 @@ public struct ModDefinition: Codable {
 	public var CFBundleName: String?
 	/// If this exists and the user is on macOS, the installer will overwrite the CFBundleIdentifier of the target application with the name given here.  This will change the save directory used on Higurashi games.
 	public var CFBundleIdentifier: String?
-	/// When True, installer will attempt to autodetect game path. Defaults to True if not set.
-	public var autodetect: Bool?
 }
 
 public enum ModFamily: String, Codable {

@@ -1002,7 +1002,6 @@
 			"CFBundleName": "This Field is Not Used",
 			"dataname": "",
 			"identifiers" : ["うみねこのなく頃に翼.exe", "snow.dll"],
-			"autodetect" : false,
 			"submods": [
 				{
 					"name" : "full",
@@ -1021,7 +1020,6 @@
 			"CFBundleName": "This Field is Not Used",
 			"dataname": "",
 			"identifiers" : ["pscript.dat"],
-			"autodetect" : false,
 			"submods": [
 				{
 					"name" : "full",
@@ -1052,7 +1050,6 @@
 			"CFBundleName": "This Field is Not Used",
 			"dataname": "",
 			"identifiers" : ["うみねこのなく頃に咲.exe", "snow.dll"],
-			"autodetect" : false,
 			"submods": [
 				{
 					"name" : "full",
