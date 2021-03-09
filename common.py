@@ -235,7 +235,16 @@ You can try manually running [{}] once so the installer can use the file.""".for
 					for urlToCheck in cacheDownloadSizes.getAllURLsFromModList(modList):
 						if urlToCheck not in Globals.URL_FILE_SIZE_LOOKUP_TABLE:
 							print("DEVELOPER: cachedDownloadSizes.json is missing url {} - regenerating list".format(urlToCheck))
-							cacheDownloadSizes.generateCachedDownloadSizes()
+							try:
+								cacheDownloadSizes.generateCachedDownloadSizes()
+							except:
+								msg = "Failed to regenerate cachedDownloadSizes.json. Please check installer log for 'Could not query URL' to determine which URL in installData.json failed to load, and for other errors."
+								print("DEVELOPER: " + msg)
+								try:
+									from tkinter import messagebox
+									messagebox.showerror("Cached Download Regeneration Failure", msg)
+								except:
+									pass
 							break
 				else:
 					print("DEVELOPER: skipping cachedDownloadSizes.json regeneration as you are running Python 2. Please use Python 3 to regenerate the download size cache.")
