@@ -1077,7 +1077,7 @@ class DownloaderAndExtractor:
 			# On old SSL if we have curl use that instead
 			with open(os.devnull, 'w') as os_devnull:
 				# Get the header, the -X GET is required because the github download links return a 403 if you try to send a HEAD request
-				headers = subprocess.check_output([Globals.CURL_EXECUTABLE, "-ILX", "GET", queryUrl],
+				headers = subprocess.check_output([Globals.CURL_EXECUTABLE, "-fILX", "GET", queryUrl],
 				                                  stderr=os_devnull).decode("utf-8")
 			# If there's redirects curl may print multiple headers with multiple content dispositions.  We want the last one
 			contentDisposition = re.findall("Content-Disposition: (.+)", headers, re.IGNORECASE)
@@ -1123,6 +1123,7 @@ class DownloaderAndExtractor:
 				contentDisposition, remoteLastModified, responseURL, lengthString = queryUsingURLOpen(url)
 			except:
 				Globals.URLOPEN_IS_BROKEN = True
+				print("Could not query URL {} using URLOpen! Falling back to CURL".format(url))
 				traceback.print_exc()
 				contentDisposition, remoteLastModified, responseURL, lengthString = queryUsingCURL(url)
 
