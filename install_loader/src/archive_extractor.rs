@@ -22,14 +22,12 @@ pub enum ExtractionStatus {
 
 pub struct ArchiveExtractor {
 	receiver: ExtractionStatusInternal,
-	force_extraction: bool,
 }
 
 impl ArchiveExtractor {
-	pub fn new(force_extraction: bool) -> ArchiveExtractor {
+	pub fn new() -> ArchiveExtractor {
 		ArchiveExtractor {
 			receiver: ExtractionStatusInternal::NotStarted,
-			force_extraction,
 		}
 	}
 
@@ -37,7 +35,7 @@ impl ArchiveExtractor {
 		match self.receiver {
 			ExtractionStatusInternal::NotStarted => {
 				let (sender, receiver) = mpsc::channel::<Result<usize, String>>();
-				extract_archive_new_thread(sub_folder_path, sender, self.force_extraction);
+				extract_archive_new_thread(sub_folder_path, sender);
 				self.receiver = ExtractionStatusInternal::Started(receiver);
 			}
 			_ => {}
@@ -69,93 +67,60 @@ impl ArchiveExtractor {
 	}
 }
 
-fn extraction_required<P: AsRef<Path>>(saved_git_tag_path: P) -> bool {
-	// Developer builds always extract
-	if version::is_developer_build() {
-		return true;
-	}
-
-	// try to load the last extracted installer's git tag
-	let saved_git_tag = match fs::read_to_string(saved_git_tag_path) {
-		Ok(val) => val,
-		Err(_e) => return true,
-	};
-
-	println!(
-		"[07th-Mod Installer Loader] Saved: {} -> New: {}",
-		saved_git_tag,
-		version::travis_tag()
-	);
-
-	return version::travis_tag().trim() != saved_git_tag.trim();
-}
-
 fn extract_archive_new_thread(
 	sub_folder_path: &Path,
 	progress_update: Sender<Result<usize, String>>,
-	force_extraction: bool,
 ) {
 	let mut path_copy = PathBuf::new();
 	path_copy.push(sub_folder_path);
 	thread::spawn(move || {
 		println!("Spawning extraction thread");
-		extract_archive(path_copy.as_path(), progress_update, force_extraction);
+		extract_archive(path_copy.as_path(), progress_update);
 	});
 }
 
-fn extract_archive(
-	sub_folder_path: &Path,
-	progress_update: Sender<Result<usize, String>>,
-	force_extraction: bool,
-) {
+fn extract_archive(sub_folder_path: &Path, progress_update: Sender<Result<usize, String>>) {
 	let saved_git_tag_path = sub_folder_path.join("installer_loader_extraction_lock.txt");
 
-	if force_extraction || extraction_required(&saved_git_tag_path) {
-		// During compilation, include the installer archive in .tar.xz format
-		//NOTE: The below file must be placed adjacent to this source file!
-		//The archive should not contain any subfolders - one will be created automatically
-		let archive_bytes = include_bytes!("install_data.tar.xz");
+	// During compilation, include the installer archive in .tar.xz format
+	//NOTE: The below file must be placed adjacent to this source file!
+	//The archive should not contain any subfolders - one will be created automatically
+	let archive_bytes = include_bytes!("install_data.tar.xz");
 
-		let cwd = std::env::current_dir()
-			.map(|path| path.display().to_string())
-			.unwrap_or(String::from("(Can't get cwd)"));
+	let cwd = std::env::current_dir()
+		.map(|path| path.display().to_string())
+		.unwrap_or(String::from("(Can't get cwd)"));
 
-		println!(
-			"07th-Mod Installer Loader: Please wait. Extracting to [{}\\{}]",
-			cwd,
-			sub_folder_path.display()
-		);
+	println!(
+		"07th-Mod Installer Loader: Please wait. Extracting to [{}\\{}]",
+		cwd,
+		sub_folder_path.display()
+	);
 
-		// Pipe from the XzDecoder (.xz handler) to the Archive (.tar handler), then extract all files.
-		let mut progress_counter = ProgressCounter::new(archive_bytes.len(), 1_000_000);
-		let intermediate_reader =
-			ProgressReader::new(&archive_bytes[..], |progress_bytes: usize| {
-				if let Some(percentage) = progress_counter.update(progress_bytes) {
-					progress_update
-						.send(Ok(percentage))
-						.expect("Failed to send progress update - aborting extraction");
-				}
-			});
+	// Pipe from the XzDecoder (.xz handler) to the Archive (.tar handler), then extract all files.
+	let mut progress_counter = ProgressCounter::new(archive_bytes.len(), 1_000_000);
+	let intermediate_reader = ProgressReader::new(&archive_bytes[..], |progress_bytes: usize| {
+		if let Some(percentage) = progress_counter.update(progress_bytes) {
+			progress_update
+				.send(Ok(percentage))
+				.expect("Failed to send progress update - aborting extraction");
+		}
+	});
 
-		let xz_reader = XzDecoder::new(intermediate_reader);
+	let xz_reader = XzDecoder::new(intermediate_reader);
 
-		if let Err(_e) = Archive::new(xz_reader).unpack(sub_folder_path) {
-			let error_message = format!("Can't extract files. Make sure all installers are closed, you have enough disk space, and try again.\n\
+	if let Err(_e) = Archive::new(xz_reader).unpack(sub_folder_path) {
+		let error_message = format!("Can't extract files. Make sure all installers are closed, you have enough disk space, and try again.\n\
 Also check permissions to write to the folder (try moving installer to a different folder)\n\
 [{}\\{}]\n\
 You can also try 'Run as Administrator', but the installer may not work correctly.", cwd, sub_folder_path.display());
-			progress_update
-				.send(Err(error_message))
-				.expect("Failed to send error progress update");
-		} else {
-			// Extraction was successful. Write extraction lock with installer version,
-			// so we don't need to extract again unless installer's version changes
-			write_extraction_lock(&saved_git_tag_path);
-		}
-	} else {
 		progress_update
-			.send(Ok(100))
-			.expect("Failed to send progress update - aborting extraction");
+			.send(Err(error_message))
+			.expect("Failed to send error progress update");
+	} else {
+		// Extraction was successful. Write extraction lock with installer version,
+		// so we don't need to extract again unless installer's version changes
+		write_extraction_lock(&saved_git_tag_path);
 	}
 }
 

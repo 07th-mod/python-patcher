@@ -161,7 +161,7 @@ Please make sure it's installed.
 	};
 
 	let config = InstallerConfig::new();
-	let mut extractor = archive_extractor::ArchiveExtractor::new(false);
+	let mut extractor = archive_extractor::ArchiveExtractor::new();
 	extractor.start_extraction(config.sub_folder);
 
 	loop {

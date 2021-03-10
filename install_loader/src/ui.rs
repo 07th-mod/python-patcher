@@ -109,9 +109,9 @@ pub struct ExtractingPythonState {
 }
 
 impl ExtractingPythonState {
-	pub fn new(force_extraction: bool) -> ExtractingPythonState {
+	pub fn new() -> ExtractingPythonState {
 		ExtractingPythonState {
-			extractor: ArchiveExtractor::new(force_extraction),
+			extractor: ArchiveExtractor::new(),
 			progress_percentage: 0,
 		}
 	}
@@ -257,30 +257,31 @@ impl InstallerGUI {
 				| InstallerProgression::WaitingUserPickInstallType
 				| InstallerProgression::InstallFinished => self.quit(),
 				InstallerProgression::InstallStarted(_)
-				| InstallerProgression::InstallFailed(_) =>
-					{
-						// Show the window if it is hidden/minimized so user can see the exit confirmation popup
-						// For some reason on this version of winit show() doesn't work, so
-						// I'm using this workaround instead:
-						window.set_maximized(true);
-						window.set_maximized(false);
+				| InstallerProgression::InstallFailed(_) => {
+					// Show the window if it is hidden/minimized so user can see the exit confirmation popup
+					// For some reason on this version of winit show() doesn't work, so
+					// I'm using this workaround instead:
+					window.set_maximized(true);
+					window.set_maximized(false);
 
-						ui.open_popup(confirm_exit_modal_name);
-					},
+					ui.open_popup(confirm_exit_modal_name);
+				}
 			}
 		}
 
 		// Exit confirmation modal triggered by the above
-		ui.popup_modal(confirm_exit_modal_name).always_auto_resize(true).build(|| {
-			ui.text("Closing this window will terminate the installer!");
-			if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
-				ui.close_current_popup();
-				self.quit();
-			}
-			if ui.button(im_str!("Cancel"), [0.0, 0.0]) {
-				ui.close_current_popup();
-			}
-		});
+		ui.popup_modal(confirm_exit_modal_name)
+			.always_auto_resize(true)
+			.build(|| {
+				ui.text("Closing this window will terminate the installer!");
+				if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
+					ui.close_current_popup();
+					self.quit();
+				}
+				if ui.button(im_str!("Cancel"), [0.0, 0.0]) {
+					ui.close_current_popup();
+				}
+			});
 	}
 
 	/// Note: Should add a 'return' after every state change.
@@ -303,14 +304,14 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 
 				self.state.progression =
-					InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+					InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 				return;
 			}
 			InstallerProgression::PreExtractionChecksFailed(reason) => {
 				ui.text_yellow(reason);
 				if ui.simple_button(im_str!("Try to continue install anyway")) {
 					self.state.progression =
-						InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+						InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					return;
 				}
 			}
@@ -388,7 +389,9 @@ Please download the installer to your Downloads or other known location, then ru
 				ui.text_red(im_str!("Please click 'Run Installer'"));
 				ui.text_yellow(im_str!("If you have problems:"));
 				ui.text_yellow(im_str!(" - try refreshing the webpage"));
-				ui.text_yellow(im_str!(" - enable 'Run in Safe-Mode' for the text-based installer"));
+				ui.text_yellow(im_str!(
+					" - enable 'Run in Safe-Mode' for the text-based installer"
+				));
 
 				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
 				ui.same_line_with_spacing(0., 20.);
@@ -404,7 +407,9 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
-					ui.text(im_str!("Please wait - Installer will launch in your web browser"));
+					ui.text(im_str!(
+						"Please wait - Installer will launch in your web browser"
+					));
 					ui.text_yellow(im_str!("If you have problems:"));
 					ui.text_yellow(im_str!(" - try refreshing the webpage"));
 					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Run in Safe-Mode' option"));
@@ -465,9 +470,8 @@ Please download the installer to your Downloads or other known location, then ru
 				| InstallerProgression::InstallFailed(_) => {
 					ui.same_line(0.);
 					if ui.simple_button(im_str!("Force Re-Extraction")) {
-						self.state.progression = InstallerProgression::ExtractingPython(
-							ExtractingPythonState::new(true),
-						);
+						self.state.progression =
+							InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					}
 				}
 				_ => {}
