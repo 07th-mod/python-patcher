@@ -1,14 +1,15 @@
 extern crate open;
 extern crate winapi;
 
+use path_clean::PathClean;
 use regex::Regex;
 use std::error::Error;
 use std::ffi::OsStr;
 use std::fmt::Debug;
-use std::path::Path;
-use std::process;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::ptr;
+use std::{env, process};
 
 // https://stackoverflow.com/questions/29763647/how-to-make-a-program-that-does-not-display-the-console-window
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633548%28v=vs.85%29.aspx
@@ -68,6 +69,30 @@ where
 	Ok(Regex::new(r"^\\\\\?\\")?
 		.replace(canonical_path, "")
 		.to_string())
+}
+
+pub fn absolute_path_str(path: impl AsRef<Path>, default: &str) -> String {
+	if let Ok(path) = absolute_path(path) {
+		path.to_str()
+			.map(|s| s.to_string())
+			.unwrap_or(default.to_string())
+	} else {
+		default.to_string()
+	}
+}
+
+// From https://stackoverflow.com/a/54817755/848627
+pub fn absolute_path(path: impl AsRef<Path>) -> Result<PathBuf, Box<dyn Error>> {
+	let path = path.as_ref();
+
+	let absolute_path = if path.is_absolute() {
+		path.to_path_buf()
+	} else {
+		env::current_dir()?.join(path)
+	}
+	.clean();
+
+	Ok(absolute_path)
 }
 
 /// This function checks for the 32-bit version of the Visual C++ Redist.

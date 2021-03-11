@@ -24,5 +24,5 @@ pub fn launch_python_script(
 		}
 	}
 
-	ProcessRunner::new(&config.python_path, config.sub_folder, &args)
+	ProcessRunner::new(&config.python_path, &config.sub_folder, &args)
 }

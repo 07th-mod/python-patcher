@@ -1,14 +1,16 @@
 use glium::glutin::{Event, WindowEvent};
 use imgui::*;
+use tempfile::TempDir;
 
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
 use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
 use crate::python_launcher;
 use crate::support;
-use crate::support::ApplicationGUI;
+use crate::support::{ApplicationGUI, ExitInfo};
 use crate::version;
 use crate::windows_utilities;
+use std::path::PathBuf;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -182,6 +184,7 @@ struct InstallerGUI {
 	state: InstallerState,
 	// Configuration information which doesn't change during the course of the install is put here
 	config: InstallerConfig,
+	retry_using_temp_dir: bool,
 }
 
 impl InstallerGUI {
@@ -190,6 +193,7 @@ impl InstallerGUI {
 			ui_state: UIState::new(window_size),
 			state: InstallerState::new(),
 			config: constants,
+			retry_using_temp_dir: false,
 		}
 	}
 
@@ -219,7 +223,7 @@ impl InstallerGUI {
 			match extraction_state.extractor.poll_status() {
 				ExtractionStatus::NotStarted => extraction_state
 					.extractor
-					.start_extraction(self.config.sub_folder),
+					.start_extraction(&self.config.sub_folder),
 				ExtractionStatus::Started(Some(progress)) => {
 					extraction_state.progress_percentage = progress;
 				}
@@ -387,16 +391,11 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::WaitingUserPickInstallType => {
 				ui.text_red(im_str!("Please click 'Run Installer'"));
-				ui.text_yellow(im_str!("If you have problems:"));
-				ui.text_yellow(im_str!(" - try refreshing the webpage"));
-				ui.text_yellow(im_str!(
-					" - enable 'Run in Safe-Mode' for the text-based installer"
-				));
 
 				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
 				ui.same_line_with_spacing(0., 20.);
 				ui.checkbox(
-					im_str!("Run in Safe-Mode"),
+					im_str!("Text-Mode Installer"),
 					&mut self.ui_state.safe_mode_enabled,
 				);
 				if install_button_clicked {
@@ -404,6 +403,26 @@ Please download the installer to your Downloads or other known location, then ru
 						println!("Failed to start install! {:?}", e)
 					}
 				}
+
+				ui.new_line();
+
+				ui.text_yellow(im_str!("If you have problems:"));
+				ui.text_yellow(im_str!(" - try refreshing the webpage"));
+				ui.text_yellow(im_str!(" - try 'Restart using temporary folder'"));
+				ui.text_yellow(im_str!(" - try enabling 'Text-Mode Installer'"));
+
+				if self.config.is_retry {
+					ui.text_wrapped(im_str!("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted."));
+				} else if ui.simple_button(im_str!("Restart using temporary folder")) {
+					self.retry_using_temp_dir = true;
+					self.quit()
+				}
+
+				if ui.simple_button(im_str!("Open Extraction Folder:")) {
+					let _ = windows_utilities::system_open(self.config.sub_folder.clone());
+				}
+				ui.same_line_with_spacing(0., 20.);
+				ui.text_wrapped(&self.config.sub_folder_display);
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
@@ -412,7 +431,8 @@ Please download the installer to your Downloads or other known location, then ru
 					));
 					ui.text_yellow(im_str!("If you have problems:"));
 					ui.text_yellow(im_str!(" - try refreshing the webpage"));
-					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Run in Safe-Mode' option"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then try 'Restart using temporary folder'"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Text-Mode Installer' option"));
 				} else {
 					ui.text_yellow(im_str!(
 						"Console Installer Started - Please use the console window that just opened."
@@ -583,18 +603,35 @@ impl ApplicationGUI for InstallerGUI {
 			_ => {}
 		}
 	}
+
+	fn exit_info(&self) -> ExitInfo {
+		ExitInfo {
+			retry_using_tempdir: self.retry_using_temp_dir,
+		}
+	}
 }
 
-pub fn ui_loop() {
+pub fn ui_loop_single(root: &PathBuf, is_retry: bool) -> ExitInfo {
 	let window_size = [1000., 500.];
 	let system = support::init(
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
-			InstallerConfig::new(),
+			InstallerConfig::new(root, is_retry),
 		),
 		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
 		window_size,
 	);
 
-	system.main_loop();
+	system.main_loop()
+}
+
+pub fn ui_loop() {
+	let exit_info = ui_loop_single(&PathBuf::from("07th-mod_installer"), false);
+
+	if exit_info.retry_using_tempdir {
+		// Temp dir should delete itself once it goes out of scope
+		if let Ok(temp_dir) = TempDir::new() {
+			ui_loop_single(&PathBuf::from(temp_dir.path()), true);
+		}
+	}
 }

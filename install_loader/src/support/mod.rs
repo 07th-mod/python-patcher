@@ -7,9 +7,14 @@ use std::time::Instant;
 
 mod clipboard;
 
+pub struct ExitInfo {
+	pub retry_using_tempdir: bool,
+}
+
 pub trait ApplicationGUI {
 	fn ui_loop(&mut self, ui: &mut Ui, window: &glium::glutin::Window) -> bool;
 	fn handle_event(&mut self, event: Event);
+	fn exit_info(&self) -> ExitInfo;
 }
 
 pub struct System<G: ApplicationGUI> {
@@ -76,7 +81,6 @@ pub fn init<G: ApplicationGUI>(
 		},
 	]);
 
-
 	imgui.io_mut().font_global_scale = (1.0 / hidpi_factor) as f32;
 
 	let renderer = Renderer::init(&mut imgui, &display).expect("Failed to initialize renderer");
@@ -96,7 +100,7 @@ impl<G> System<G>
 where
 	G: ApplicationGUI,
 {
-	pub fn main_loop(self) {
+	pub fn main_loop(self) -> ExitInfo {
 		let System {
 			mut events_loop,
 			display,
@@ -135,5 +139,7 @@ where
 				.expect("Rendering failed");
 			target.finish().expect("Failed to swap buffers");
 		}
+
+		return application_gui.exit_info();
 	}
 }
