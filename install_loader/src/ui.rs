@@ -625,13 +625,34 @@ pub fn ui_loop_single(root: &PathBuf, is_retry: bool) -> ExitInfo {
 	system.main_loop()
 }
 
+pub fn retry_using_tempdir_check(exit_info: ExitInfo) -> Result<(), Box<dyn std::error::Error>> {
+	if !exit_info.retry_using_tempdir {
+		return Ok(());
+	}
+
+	// Temp dir should delete itself once it goes out of scope
+	let temp_dir = TempDir::new()?;
+
+	ui_loop_single(&PathBuf::from(temp_dir.path()), true);
+
+	// Give some time for any file handles to close
+	std::thread::sleep(std::time::Duration::from_secs(3));
+
+	let path_as_str =
+		windows_utilities::absolute_path_str(temp_dir.path(), "Couldn't display tempdir");
+
+	if let Err(e) = temp_dir.close() {
+		return Err(e.into());
+	}
+
+	println!("Temp dir {} cleaned up successfully", path_as_str);
+	return Ok(());
+}
+
 pub fn ui_loop() {
 	let exit_info = ui_loop_single(&PathBuf::from("07th-mod_installer"), false);
 
-	if exit_info.retry_using_tempdir {
-		// Temp dir should delete itself once it goes out of scope
-		if let Ok(temp_dir) = TempDir::new() {
-			ui_loop_single(&PathBuf::from(temp_dir.path()), true);
-		}
+	if let Err(e) = retry_using_tempdir_check(exit_info) {
+		println!("Error retrying with tempdir: {}", e);
 	}
 }

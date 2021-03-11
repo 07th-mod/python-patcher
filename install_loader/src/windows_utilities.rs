@@ -1,6 +1,7 @@
 extern crate open;
 extern crate winapi;
 
+use self::winapi::um::winnt::HANDLE;
 use path_clean::PathClean;
 use regex::Regex;
 use std::error::Error;
@@ -140,13 +141,29 @@ pub fn installer_is_in_temp_folder() -> Result<bool, Box<dyn Error>> {
 	Ok(std::env::current_exe()?.starts_with(app_data.as_str()))
 }
 
-fn try_set_kill_on_job_close(job: &mut win32job::Job) -> Result<(), Box<dyn Error>> {
+fn try_set_kill_on_job_close(
+	job: &mut win32job::Job,
+	handle: Option<HANDLE>,
+) -> Result<(), Box<dyn Error>> {
 	let mut info = job.query_extended_limit_info()?;
 	info.limit_kill_on_job_close();
 	job.set_extended_limit_info(&mut info)?;
-	job.assign_current_process()?;
+	if let Some(handle) = handle {
+		job.assign_process(handle)?;
+	} else {
+		job.assign_current_process()?;
+	}
 
 	Ok(())
+}
+
+// Creates a new job object, with the process with the given handle attached to it.
+// When the job goes out of scope, the process and child processes will be closed too
+// Unlike new_job_kill_on_job_close(), the current process (this program) is unaffected
+pub fn new_job_kill_on_job_close_id(
+	handle: HANDLE,
+) -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
+	new_job_kill_on_job_close_inner(Some(handle))
 }
 
 // Note: The program will be terminated once the returned Job object goes out of scope!
@@ -158,6 +175,12 @@ fn try_set_kill_on_job_close(job: &mut win32job::Job) -> Result<(), Box<dyn Erro
 // Also see: https://stackoverflow.com/questions/23434842/python-how-to-kill-child-processes-when-parent-dies/23587108
 // On Windows 7, creating the job  seems to fail - see workaround at end of main()
 pub fn new_job_kill_on_job_close() -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
+	new_job_kill_on_job_close_inner(None)
+}
+
+pub fn new_job_kill_on_job_close_inner(
+	handle: Option<HANDLE>,
+) -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
 	// first, try to create a job object
 	let mut job = match win32job::Job::create() {
 		Ok(job) => job,
@@ -166,7 +189,7 @@ pub fn new_job_kill_on_job_close() -> (Option<win32job::Job>, Result<(), Box<dyn
 
 	// if the job creation was successful, try to set it such that all processes are
 	// killed when the job object goes out of scope (including *this* process!).
-	match try_set_kill_on_job_close(&mut job) {
+	match try_set_kill_on_job_close(&mut job, handle) {
 		Ok(_) => (Some(job), Ok(())),
 		Err(e) => (Some(job), Err(e.into())),
 	}
