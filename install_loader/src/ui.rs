@@ -128,6 +128,7 @@ pub enum InstallerProgression {
 	InstallStarted(InstallStartedState),
 	InstallFinished,
 	InstallFailed(InstallFailedState),
+	TempDirCleanupFailed(PathBuf),
 }
 
 pub struct InstallerState {
@@ -135,14 +136,6 @@ pub struct InstallerState {
 	pub progression: InstallerProgression,
 	// If there is any installer state which doesn't depend on your current progression through the
 	// installer, it should be put here.
-}
-
-impl InstallerState {
-	pub fn new() -> InstallerState {
-		InstallerState {
-			progression: InstallerProgression::PreExtractionChecks,
-		}
-	}
 }
 
 struct UIState {
@@ -188,10 +181,16 @@ struct InstallerGUI {
 }
 
 impl InstallerGUI {
-	pub fn new(window_size: [f32; 2], constants: InstallerConfig) -> InstallerGUI {
+	pub fn new(
+		window_size: [f32; 2],
+		constants: InstallerConfig,
+		initial_progression: InstallerProgression,
+	) -> InstallerGUI {
 		InstallerGUI {
 			ui_state: UIState::new(window_size),
-			state: InstallerState::new(),
+			state: InstallerState {
+				progression: initial_progression,
+			},
 			config: constants,
 			retry_using_temp_dir: false,
 		}
@@ -259,7 +258,8 @@ impl InstallerGUI {
 				| InstallerProgression::ExtractingPython(_)
 				| InstallerProgression::UserNeedsCPPRedistributable
 				| InstallerProgression::WaitingUserPickInstallType
-				| InstallerProgression::InstallFinished => self.quit(),
+				| InstallerProgression::InstallFinished
+				| InstallerProgression::TempDirCleanupFailed(_) => self.quit(),
 				InstallerProgression::InstallStarted(_)
 				| InstallerProgression::InstallFailed(_) => {
 					// Show the window if it is hidden/minimized so user can see the exit confirmation popup
@@ -470,6 +470,14 @@ Please download the installer to your Downloads or other known location, then ru
 					install_failed_state.console_window_displayed = true;
 				}
 			}
+			InstallerProgression::TempDirCleanupFailed(last_temp_dir) => {
+				ui.text_yellow(im_str!("Warning: Failed to delete extraction folder."));
+				ui.text_yellow(im_str!("Please delete this folder manually to save disk space, or by running disk cleanup."));
+
+				if ui.simple_button(im_str!("Open Extraction Folder")) {
+					let _ = windows_utilities::system_open(last_temp_dir.clone());
+				}
+			}
 		};
 	}
 
@@ -611,12 +619,17 @@ impl ApplicationGUI for InstallerGUI {
 	}
 }
 
-pub fn ui_loop_single(root: &PathBuf, is_retry: bool) -> ExitInfo {
+pub fn ui_loop_single(
+	root: &PathBuf,
+	initial_progression: InstallerProgression,
+	is_retry: bool,
+) -> ExitInfo {
 	let window_size = [1000., 500.];
 	let system = support::init(
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
 			InstallerConfig::new(root, is_retry),
+			initial_progression,
 		),
 		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
 		window_size,
@@ -633,24 +646,39 @@ pub fn retry_using_tempdir_check(exit_info: ExitInfo) -> Result<(), Box<dyn std:
 	// Temp dir should delete itself once it goes out of scope
 	let temp_dir = TempDir::new()?;
 
-	ui_loop_single(&PathBuf::from(temp_dir.path()), true);
+	ui_loop_single(
+		&PathBuf::from(temp_dir.path()),
+		InstallerProgression::PreExtractionChecks,
+		true,
+	);
 
 	// Give some time for any file handles to close
-	std::thread::sleep(std::time::Duration::from_secs(3));
+	std::thread::sleep(std::time::Duration::from_secs(2));
 
-	let path_as_str =
-		windows_utilities::absolute_path_str(temp_dir.path(), "Couldn't display tempdir");
+	let temp_dir_path = PathBuf::from(temp_dir.path());
 
 	if let Err(e) = temp_dir.close() {
+		let _ = ui_loop_single(
+			&PathBuf::from("07th-mod_installer"),
+			InstallerProgression::TempDirCleanupFailed(temp_dir_path),
+			false,
+		);
 		return Err(e.into());
 	}
 
-	println!("Temp dir {} cleaned up successfully", path_as_str);
+	println!(
+		"Temp dir {} cleaned up successfully",
+		windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir")
+	);
 	return Ok(());
 }
 
 pub fn ui_loop() {
-	let exit_info = ui_loop_single(&PathBuf::from("07th-mod_installer"), false);
+	let exit_info = ui_loop_single(
+		&PathBuf::from("07th-mod_installer"),
+		InstallerProgression::PreExtractionChecks,
+		false,
+	);
 
 	if let Err(e) = retry_using_tempdir_check(exit_info) {
 		println!("Error retrying with tempdir: {}", e);
