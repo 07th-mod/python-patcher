@@ -208,6 +208,9 @@ impl InstallerGUI {
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
 
+		// Tools and information related to where the python part of the installer is extracted
+		self.display_extraction_info(ui);
+
 		ui.new_line();
 
 		// Show the advanced tools section
@@ -411,18 +414,12 @@ Please download the installer to your Downloads or other known location, then ru
 				ui.text_yellow(im_str!(" - try 'Restart using temporary folder'"));
 				ui.text_yellow(im_str!(" - try enabling 'Text-Mode Installer'"));
 
-				if self.config.is_retry {
-					ui.text_wrapped(im_str!("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted."));
-				} else if ui.simple_button(im_str!("Restart using temporary folder")) {
+				if !self.config.is_retry
+					&& ui.simple_button(im_str!("Restart using temporary folder"))
+				{
 					self.retry_using_temp_dir = true;
 					self.quit()
 				}
-
-				if ui.simple_button(im_str!("Open Extraction Folder:")) {
-					let _ = windows_utilities::system_open(self.config.sub_folder.clone());
-				}
-				ui.same_line_with_spacing(0., 20.);
-				ui.text_wrapped(&self.config.sub_folder_display);
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
@@ -525,6 +522,26 @@ Please download the installer to your Downloads or other known location, then ru
 			);
 			ui.same_line(0.);
 		}
+	}
+
+	fn display_extraction_info(&mut self, ui: &Ui) {
+		match self.state.progression {
+			InstallerProgression::PreExtractionChecks
+			| InstallerProgression::PreExtractionChecksFailed(_)
+			| InstallerProgression::ExtractingPython(_)
+			| InstallerProgression::TempDirCleanupFailed(_) => return,
+			_ => {}
+		}
+
+		if self.config.is_retry {
+			ui.text_wrapped(im_str!("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted."));
+		}
+
+		if ui.simple_button(im_str!("Open Extraction Folder:")) {
+			let _ = windows_utilities::system_open(self.config.sub_folder.clone());
+		}
+		ui.same_line_with_spacing(0., 20.);
+		ui.text_wrapped(&self.config.sub_folder_display);
 	}
 
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
