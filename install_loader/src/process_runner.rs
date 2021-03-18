@@ -1,11 +1,15 @@
+use crate::windows_utilities;
 use std::error::Error;
 use std::ffi::OsStr;
+use std::os::windows::io::AsRawHandle;
 use std::path::Path;
 use std::process::{Child, Command};
+use win32job::Job;
 
 //spawn a thread to monitor the stdout and stderr
 pub struct ProcessRunner {
 	child: Child,
+	job: Option<Job>,
 }
 
 impl ProcessRunner {
@@ -28,13 +32,21 @@ impl ProcessRunner {
 			.args(arguments)
 			.spawn()?;
 
-		Ok(ProcessRunner { child })
+		let (job, register_job_result) =
+			windows_utilities::new_job_kill_on_job_close_id(child.as_raw_handle());
+
+		if let Err(e) = register_job_result {
+			println!("Failed to create job object: {}", e);
+		}
+
+		Ok(ProcessRunner { child, job })
 	}
 
 	// Kill the process and wait for it to terminate
 	pub fn kill_wait(&mut self) -> Result<(), Box<dyn Error>> {
 		self.child.kill()?;
 		self.child.wait()?;
+		self.job = None;
 		Ok(())
 	}
 

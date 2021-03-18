@@ -12,6 +12,7 @@ use crate::config::InstallerConfig;
 use crate::python_launcher;
 use crate::version;
 use crate::windows_utilities;
+use std::path::PathBuf;
 
 /// This function blocks until the user to presses enter in the console
 pub fn pause(msg: &str) -> Option<String> {
@@ -160,9 +161,9 @@ Please make sure it's installed.
 		}
 	};
 
-	let config = InstallerConfig::new();
-	let mut extractor = archive_extractor::ArchiveExtractor::new(false);
-	extractor.start_extraction(config.sub_folder);
+	let config = InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false);
+	let mut extractor = archive_extractor::ArchiveExtractor::new();
+	extractor.start_extraction(&config.sub_folder);
 
 	loop {
 		match extractor.poll_status() {

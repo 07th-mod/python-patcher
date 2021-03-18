@@ -1,14 +1,16 @@
 use glium::glutin::{Event, WindowEvent};
 use imgui::*;
+use tempfile::TempDir;
 
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
 use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
 use crate::python_launcher;
 use crate::support;
-use crate::support::ApplicationGUI;
+use crate::support::{ApplicationGUI, ExitInfo};
 use crate::version;
 use crate::windows_utilities;
+use std::path::PathBuf;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -109,9 +111,9 @@ pub struct ExtractingPythonState {
 }
 
 impl ExtractingPythonState {
-	pub fn new(force_extraction: bool) -> ExtractingPythonState {
+	pub fn new() -> ExtractingPythonState {
 		ExtractingPythonState {
-			extractor: ArchiveExtractor::new(force_extraction),
+			extractor: ArchiveExtractor::new(),
 			progress_percentage: 0,
 		}
 	}
@@ -126,6 +128,7 @@ pub enum InstallerProgression {
 	InstallStarted(InstallStartedState),
 	InstallFinished,
 	InstallFailed(InstallFailedState),
+	TempDirCleanupFailed(PathBuf),
 }
 
 pub struct InstallerState {
@@ -133,14 +136,6 @@ pub struct InstallerState {
 	pub progression: InstallerProgression,
 	// If there is any installer state which doesn't depend on your current progression through the
 	// installer, it should be put here.
-}
-
-impl InstallerState {
-	pub fn new() -> InstallerState {
-		InstallerState {
-			progression: InstallerProgression::PreExtractionChecks,
-		}
-	}
 }
 
 struct UIState {
@@ -182,14 +177,22 @@ struct InstallerGUI {
 	state: InstallerState,
 	// Configuration information which doesn't change during the course of the install is put here
 	config: InstallerConfig,
+	retry_using_temp_dir: bool,
 }
 
 impl InstallerGUI {
-	pub fn new(window_size: [f32; 2], constants: InstallerConfig) -> InstallerGUI {
+	pub fn new(
+		window_size: [f32; 2],
+		constants: InstallerConfig,
+		initial_progression: InstallerProgression,
+	) -> InstallerGUI {
 		InstallerGUI {
 			ui_state: UIState::new(window_size),
-			state: InstallerState::new(),
+			state: InstallerState {
+				progression: initial_progression,
+			},
 			config: constants,
+			retry_using_temp_dir: false,
 		}
 	}
 
@@ -205,6 +208,9 @@ impl InstallerGUI {
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
 
+		// Tools and information related to where the python part of the installer is extracted
+		self.display_extraction_info(ui);
+
 		ui.new_line();
 
 		// Show the advanced tools section
@@ -219,7 +225,7 @@ impl InstallerGUI {
 			match extraction_state.extractor.poll_status() {
 				ExtractionStatus::NotStarted => extraction_state
 					.extractor
-					.start_extraction(self.config.sub_folder),
+					.start_extraction(&self.config.sub_folder),
 				ExtractionStatus::Started(Some(progress)) => {
 					extraction_state.progress_percentage = progress;
 				}
@@ -255,32 +261,34 @@ impl InstallerGUI {
 				| InstallerProgression::ExtractingPython(_)
 				| InstallerProgression::UserNeedsCPPRedistributable
 				| InstallerProgression::WaitingUserPickInstallType
-				| InstallerProgression::InstallFinished => self.quit(),
+				| InstallerProgression::InstallFinished
+				| InstallerProgression::TempDirCleanupFailed(_) => self.quit(),
 				InstallerProgression::InstallStarted(_)
-				| InstallerProgression::InstallFailed(_) =>
-					{
-						// Show the window if it is hidden/minimized so user can see the exit confirmation popup
-						// For some reason on this version of winit show() doesn't work, so
-						// I'm using this workaround instead:
-						window.set_maximized(true);
-						window.set_maximized(false);
+				| InstallerProgression::InstallFailed(_) => {
+					// Show the window if it is hidden/minimized so user can see the exit confirmation popup
+					// For some reason on this version of winit show() doesn't work, so
+					// I'm using this workaround instead:
+					window.set_maximized(true);
+					window.set_maximized(false);
 
-						ui.open_popup(confirm_exit_modal_name);
-					},
+					ui.open_popup(confirm_exit_modal_name);
+				}
 			}
 		}
 
 		// Exit confirmation modal triggered by the above
-		ui.popup_modal(confirm_exit_modal_name).always_auto_resize(true).build(|| {
-			ui.text("Closing this window will terminate the installer!");
-			if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
-				ui.close_current_popup();
-				self.quit();
-			}
-			if ui.button(im_str!("Cancel"), [0.0, 0.0]) {
-				ui.close_current_popup();
-			}
-		});
+		ui.popup_modal(confirm_exit_modal_name)
+			.always_auto_resize(true)
+			.build(|| {
+				ui.text("Closing this window will terminate the installer!");
+				if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
+					ui.close_current_popup();
+					self.quit();
+				}
+				if ui.button(im_str!("Cancel"), [0.0, 0.0]) {
+					ui.close_current_popup();
+				}
+			});
 	}
 
 	/// Note: Should add a 'return' after every state change.
@@ -303,14 +311,14 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 
 				self.state.progression =
-					InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+					InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 				return;
 			}
 			InstallerProgression::PreExtractionChecksFailed(reason) => {
 				ui.text_yellow(reason);
 				if ui.simple_button(im_str!("Try to continue install anyway")) {
 					self.state.progression =
-						InstallerProgression::ExtractingPython(ExtractingPythonState::new(false));
+						InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					return;
 				}
 			}
@@ -386,14 +394,11 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::WaitingUserPickInstallType => {
 				ui.text_red(im_str!("Please click 'Run Installer'"));
-				ui.text_yellow(im_str!("If you have problems:"));
-				ui.text_yellow(im_str!(" - try refreshing the webpage"));
-				ui.text_yellow(im_str!(" - enable 'Run in Safe-Mode' for the text-based installer"));
 
 				let install_button_clicked = ui.simple_button(im_str!("Run Installer"));
 				ui.same_line_with_spacing(0., 20.);
 				ui.checkbox(
-					im_str!("Run in Safe-Mode"),
+					im_str!("Text-Mode Installer"),
 					&mut self.ui_state.safe_mode_enabled,
 				);
 				if install_button_clicked {
@@ -401,13 +406,30 @@ Please download the installer to your Downloads or other known location, then ru
 						println!("Failed to start install! {:?}", e)
 					}
 				}
+
+				ui.new_line();
+
+				ui.text_yellow(im_str!("If you have problems:"));
+				ui.text_yellow(im_str!(" - try refreshing the webpage"));
+				ui.text_yellow(im_str!(" - try 'Restart using temporary folder'"));
+				ui.text_yellow(im_str!(" - try enabling 'Text-Mode Installer'"));
+
+				if !self.config.is_retry
+					&& ui.simple_button(im_str!("Restart using temporary folder"))
+				{
+					self.retry_using_temp_dir = true;
+					self.quit()
+				}
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.is_graphical {
-					ui.text(im_str!("Please wait - Installer will launch in your web browser"));
+					ui.text(im_str!(
+						"Please wait - Installer will launch in your web browser"
+					));
 					ui.text_yellow(im_str!("If you have problems:"));
 					ui.text_yellow(im_str!(" - try refreshing the webpage"));
-					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Run in Safe-Mode' option"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then try 'Restart using temporary folder'"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Text-Mode Installer' option"));
 				} else {
 					ui.text_yellow(im_str!(
 						"Console Installer Started - Please use the console window that just opened."
@@ -445,6 +467,14 @@ Please download the installer to your Downloads or other known location, then ru
 					install_failed_state.console_window_displayed = true;
 				}
 			}
+			InstallerProgression::TempDirCleanupFailed(last_temp_dir) => {
+				ui.text_yellow(im_str!("Warning: Failed to delete extraction folder."));
+				ui.text_yellow(im_str!("Please delete this folder manually to save disk space, or by running disk cleanup."));
+
+				if ui.simple_button(im_str!("Open Extraction Folder")) {
+					let _ = windows_utilities::system_open(last_temp_dir.clone());
+				}
+			}
 		};
 	}
 
@@ -465,9 +495,8 @@ Please download the installer to your Downloads or other known location, then ru
 				| InstallerProgression::InstallFailed(_) => {
 					ui.same_line(0.);
 					if ui.simple_button(im_str!("Force Re-Extraction")) {
-						self.state.progression = InstallerProgression::ExtractingPython(
-							ExtractingPythonState::new(true),
-						);
+						self.state.progression =
+							InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					}
 				}
 				_ => {}
@@ -493,6 +522,26 @@ Please download the installer to your Downloads or other known location, then ru
 			);
 			ui.same_line(0.);
 		}
+	}
+
+	fn display_extraction_info(&mut self, ui: &Ui) {
+		match self.state.progression {
+			InstallerProgression::PreExtractionChecks
+			| InstallerProgression::PreExtractionChecksFailed(_)
+			| InstallerProgression::ExtractingPython(_)
+			| InstallerProgression::TempDirCleanupFailed(_) => return,
+			_ => {}
+		}
+
+		if self.config.is_retry {
+			ui.text_wrapped(im_str!("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted."));
+		}
+
+		if ui.simple_button(im_str!("Open Extraction Folder:")) {
+			let _ = windows_utilities::system_open(self.config.sub_folder.clone());
+		}
+		ui.same_line_with_spacing(0., 20.);
+		ui.text_wrapped(&self.config.sub_folder_display);
 	}
 
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
@@ -579,18 +628,76 @@ impl ApplicationGUI for InstallerGUI {
 			_ => {}
 		}
 	}
+
+	fn exit_info(&self) -> ExitInfo {
+		ExitInfo {
+			retry_using_tempdir: self.retry_using_temp_dir,
+		}
+	}
 }
 
-pub fn ui_loop() {
+pub fn ui_loop_single(
+	root: &PathBuf,
+	initial_progression: InstallerProgression,
+	is_retry: bool,
+) -> ExitInfo {
 	let window_size = [1000., 500.];
 	let system = support::init(
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
-			InstallerConfig::new(),
+			InstallerConfig::new(root, is_retry),
+			initial_progression,
 		),
 		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
 		window_size,
 	);
 
-	system.main_loop();
+	system.main_loop()
+}
+
+pub fn retry_using_tempdir_check(exit_info: ExitInfo) -> Result<(), Box<dyn std::error::Error>> {
+	if !exit_info.retry_using_tempdir {
+		return Ok(());
+	}
+
+	// Temp dir should delete itself once it goes out of scope
+	let temp_dir = TempDir::new()?;
+
+	ui_loop_single(
+		&PathBuf::from(temp_dir.path()),
+		InstallerProgression::PreExtractionChecks,
+		true,
+	);
+
+	// Give some time for any file handles to close
+	std::thread::sleep(std::time::Duration::from_secs(2));
+
+	let temp_dir_path = PathBuf::from(temp_dir.path());
+
+	if let Err(e) = temp_dir.close() {
+		let _ = ui_loop_single(
+			&PathBuf::from("07th-mod_installer"),
+			InstallerProgression::TempDirCleanupFailed(temp_dir_path),
+			false,
+		);
+		return Err(e.into());
+	}
+
+	println!(
+		"Temp dir {} cleaned up successfully",
+		windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir")
+	);
+	return Ok(());
+}
+
+pub fn ui_loop() {
+	let exit_info = ui_loop_single(
+		&PathBuf::from("07th-mod_installer"),
+		InstallerProgression::PreExtractionChecks,
+		false,
+	);
+
+	if let Err(e) = retry_using_tempdir_check(exit_info) {
+		println!("Error retrying with tempdir: {}", e);
+	}
 }

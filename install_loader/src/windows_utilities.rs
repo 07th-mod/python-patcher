@@ -1,14 +1,16 @@
 extern crate open;
 extern crate winapi;
 
+use self::winapi::um::winnt::HANDLE;
+use path_clean::PathClean;
 use regex::Regex;
 use std::error::Error;
 use std::ffi::OsStr;
 use std::fmt::Debug;
-use std::path::Path;
-use std::process;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::ptr;
+use std::{env, process};
 
 // https://stackoverflow.com/questions/29763647/how-to-make-a-program-that-does-not-display-the-console-window
 // https://msdn.microsoft.com/en-us/library/windows/desktop/ms633548%28v=vs.85%29.aspx
@@ -70,6 +72,30 @@ where
 		.to_string())
 }
 
+pub fn absolute_path_str(path: impl AsRef<Path>, default: &str) -> String {
+	if let Ok(path) = absolute_path(path) {
+		path.to_str()
+			.map(|s| s.to_string())
+			.unwrap_or(default.to_string())
+	} else {
+		default.to_string()
+	}
+}
+
+// From https://stackoverflow.com/a/54817755/848627
+pub fn absolute_path(path: impl AsRef<Path>) -> Result<PathBuf, Box<dyn Error>> {
+	let path = path.as_ref();
+
+	let absolute_path = if path.is_absolute() {
+		path.to_path_buf()
+	} else {
+		env::current_dir()?.join(path)
+	}
+	.clean();
+
+	Ok(absolute_path)
+}
+
 /// This function checks for the 32-bit version of the Visual C++ Redist.
 /// On 32 bit systems it checks the "System32" folder, and on 64-bit systems, it checks the "SysWOW64" folder.
 /// See here for details: https://www.quora.com/What-is-the-difference-between-system32-and-SysWow64
@@ -115,13 +141,29 @@ pub fn installer_is_in_temp_folder() -> Result<bool, Box<dyn Error>> {
 	Ok(std::env::current_exe()?.starts_with(app_data.as_str()))
 }
 
-fn try_set_kill_on_job_close(job: &mut win32job::Job) -> Result<(), Box<dyn Error>> {
+fn try_set_kill_on_job_close(
+	job: &mut win32job::Job,
+	handle: Option<HANDLE>,
+) -> Result<(), Box<dyn Error>> {
 	let mut info = job.query_extended_limit_info()?;
 	info.limit_kill_on_job_close();
 	job.set_extended_limit_info(&mut info)?;
-	job.assign_current_process()?;
+	if let Some(handle) = handle {
+		job.assign_process(handle)?;
+	} else {
+		job.assign_current_process()?;
+	}
 
 	Ok(())
+}
+
+// Creates a new job object, with the process with the given handle attached to it.
+// When the job goes out of scope, the process and child processes will be closed too
+// Unlike new_job_kill_on_job_close(), the current process (this program) is unaffected
+pub fn new_job_kill_on_job_close_id(
+	handle: HANDLE,
+) -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
+	new_job_kill_on_job_close_inner(Some(handle))
 }
 
 // Note: The program will be terminated once the returned Job object goes out of scope!
@@ -133,6 +175,12 @@ fn try_set_kill_on_job_close(job: &mut win32job::Job) -> Result<(), Box<dyn Erro
 // Also see: https://stackoverflow.com/questions/23434842/python-how-to-kill-child-processes-when-parent-dies/23587108
 // On Windows 7, creating the job  seems to fail - see workaround at end of main()
 pub fn new_job_kill_on_job_close() -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
+	new_job_kill_on_job_close_inner(None)
+}
+
+pub fn new_job_kill_on_job_close_inner(
+	handle: Option<HANDLE>,
+) -> (Option<win32job::Job>, Result<(), Box<dyn Error>>) {
 	// first, try to create a job object
 	let mut job = match win32job::Job::create() {
 		Ok(job) => job,
@@ -141,7 +189,7 @@ pub fn new_job_kill_on_job_close() -> (Option<win32job::Job>, Result<(), Box<dyn
 
 	// if the job creation was successful, try to set it such that all processes are
 	// killed when the job object goes out of scope (including *this* process!).
-	match try_set_kill_on_job_close(&mut job) {
+	match try_set_kill_on_job_close(&mut job, handle) {
 		Ok(_) => (Some(job), Ok(())),
 		Err(e) => (Some(job), Err(e.into())),
 	}
