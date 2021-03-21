@@ -395,7 +395,9 @@
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 5}
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 5},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority":  5},
+						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 5}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -416,32 +418,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
-						{
-							"name": "Original BGM", "description": "Enable the original music from the japanese version of the game. This option was previously known as 'BGM fix' and is now installed by default.",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldBGM-v2.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						},
-						{
-							"name": "New BGM", "description": "Enable the new BGM introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_bgm_april.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
-				{
-					"name" : "SE Options", "type": "downloadAndExtract",
-					"radio": [
-						{
-							"name": "Original SE", "description": "Enable the original sound effects from the japanese version of the game. This option was previously known as 'SE fix' and is now installed by default.",
-							"data": { "url": "https://07th-mod.com/rikachama/audio/HigurashiKai-OldSE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						},
-						{
-							"name": "New SE", "description": "Enable the new SE introduced by MangaGamer in the April 2019 update. [Learn more about the April update](https://07th-mod.com/wiki/Higurashi/FAQ/#what-was-the-april-update).",
-							"data": {"url": "https://07th-mod.com/rikachama/audio/mg_answer_se_april.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
