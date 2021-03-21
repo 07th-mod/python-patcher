@@ -380,7 +380,16 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 	# This program is only intended to be used on a loopback (non-public facing) interface.
 	# Do not modify the INTERFACE_IP variable.
 	# Using Port '0' lets the OS choose an unused port
-	httpd = HTTPServerNoReuse(("127.0.0.1", 0), CustomHandler)
+	error = Exception("Developer: Please define at last one port in the port list")
+	for port in [8000, 8080, 8081, 8082, 8083, 8084, 8085, 8086, 8087, 8088, 8089, 8090, 0]:
+		try:
+			httpd = HTTPServerNoReuse(("127.0.0.1", port), CustomHandler)
+			break
+		except Exception as e:
+			error = e
+			print("Couldn't open server on port {}: {}\n".format(port, e))
+	else:
+		raise error
 
 	# Spawn a thread to cause a shutdown of the server if lock is released
 	def shutdownThread():
