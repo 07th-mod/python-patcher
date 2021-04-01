@@ -98,7 +98,7 @@ class Installer:
 			return path.join(installPath, self.info.subModConfig.dataName)
 
 	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, modOptionParser, forcedExtractDirectory=None):
-		# type: (installConfiguration.FullInstallConfiguration, bool, installConfiguration.ModOptionParser Optional[str]) -> None
+		# type: (installConfiguration.FullInstallConfiguration, bool, installConfiguration.ModOptionParser, Optional[str]) -> None
 
 		"""
 		Installer Init
