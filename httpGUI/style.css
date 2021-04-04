@@ -68,7 +68,7 @@ they have zero height. This forces the height to some valid value*/
 .installer-bullets {
     list-style: inside;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
