@@ -85,7 +85,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 5},
 						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
+						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10},
+						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -104,15 +105,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "Additional Downloads", "type": "downloadAndExtract",
-					"checkBox": [
-						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
-							"data": {"url": "https://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 20}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -159,7 +151,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 5},
 						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
+						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10},
+						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -181,15 +174,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "Additional Downloads", "type": "downloadAndExtract",
-					"checkBox": [
-						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
-							"data": {"url": "https://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 20}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -232,7 +216,8 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 5},
 						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
+						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10},
+						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -251,15 +236,6 @@
 				}
 			],
 			"modOptionGroups": [
-				{
-					"name" : "Additional Downloads", "type": "downloadAndExtract",
-					"checkBox": [
-						{
-							"name": "OST Remake", "description": "Handmade remakes of several music tracks from the original release (pre-2019) - [Click here to listen to audio samples](https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1)",
-							"data": {"url": "https://07th-mod.com/misc/Higurashi.OST.Remake.zip", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 20}
-						}
-					]
-				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
