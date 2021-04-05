@@ -41,9 +41,18 @@ function decodeJSONResponse(jsonString) {
 //
 // - onSuccessCallback (function(object)): A fn executed when a response is received
 //      from the server. The fn should take the returned object as its only argument
-function doPost(requestType, requestData, onSuccessCallback) {
+function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCallback) {
   const http = new XMLHttpRequest();
   const url = 'installer_data'; // in python, is stored in 'self.path' on the handler class
+
+  function errorHandler(msg) {
+    const message = `[${requestType}] POST Error - "${msg}" - You must have the install loader window/console open - it is required for the installation.`;
+    console.log(message);
+    POSTNotificationErrorCallback(message);
+    if (typeof onErrorCallback !== 'undefined') {
+      onErrorCallback(msg);
+    }
+  }
 
   // in python, is retrieved by calling 'self.rfile.read(content_length)',
   // where content_length is in the header (see python code)
@@ -52,9 +61,7 @@ function doPost(requestType, requestData, onSuccessCallback) {
   // Send the proper header information along with the request
   http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-  // Call a function when the state changes.
-  // TODO: add timeout here to notify user if server has crashed or stopped working
-  http.onreadystatechange = function onReadyStateChange() {
+  http.onload = () => {
     if (http.readyState === 4) {
       if (http.status === 200) {
         const [responseType, responseDataObject] = decodeJSONResponse(http.responseText);
@@ -67,18 +74,26 @@ function doPost(requestType, requestData, onSuccessCallback) {
           onSuccessCallback(responseDataObject);
         }
       } else {
-        const errorCodeString = http.status === 0 ? '' : `[${http.status}]`;
-        const message = `POST Error ${errorCodeString} on [${requestType}] - Please check the install loader window/console is open - it is required for the installation.`;
-        console.log(message);
-        POSTNotificationErrorCallback(message);
+        errorHandler(`Unexpected HTTP Status [${http.status}]`);
       }
     }
   };
 
-  // Use a timeout of 8 seconds. After this POSTNotificationErrorCallback() will be called
-  if (requestType !== 'showFileChooser') {
-    http.timeout = 8000;
-  }
+  http.onabort = () => {
+    errorHandler('POST Aborted');
+  };
+
+  http.onerror = function () {
+    errorHandler('POST Error');
+  };
+
+  http.ontimeout = function (e) {
+    errorHandler(`POST Timeout (${http.timeout / 1000}s)`);
+  };
+
+  // Use a timeout of 8 seconds by default.
+  // After this errorHandler()/POSTNotificationErrorCallback() will be called
+  http.timeout = timeout !== 'undefined' ? timeout : 8000;
 
   http.send(makeJSONRequest(requestType, requestData));
 }

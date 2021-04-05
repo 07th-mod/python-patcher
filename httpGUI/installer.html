@@ -439,6 +439,7 @@
 												<div v-if="pathAutoDetectionInProgress">
 													<br>
 													<h3><span>Please wait, path autodetection in progress</span><span class="loader"></span></h3>
+													<h4>Detection may take up to {{ TIMEOUT_AUTO_DETECT_PATHS }} seconds.</h4>
 												</div>
 												<!-- Section allowing you to start install or choose game path to install -->
 												<div v-bind:class="{ 'greyed-out-disabled': pathAutoDetectionInProgress }">

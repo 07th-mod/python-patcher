@@ -184,6 +184,7 @@ window.onload = function onWindowLoaded() {
       partiallyUninstalledPaths: [],
       installErrorDescription: "",
       installDataLoaded: false,
+      TIMEOUT_AUTO_DETECT_PATHS: 15,
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -215,7 +216,8 @@ Continue install anyway?`)) {
             } else {
               app.selectedInstallPath = responseData.path;
             }
-          });
+          },
+          Infinity);
         } else {
           app.selectedInstallPath = pathToInstall;
         }
@@ -338,6 +340,11 @@ Continue install anyway?`)) {
               this.selectedInstallPath = this.fullInstallConfigs[0].path;
               this.showPathSelectionButtons = false;
             }
+          },
+          app.TIMEOUT_AUTO_DETECT_PATHS * 1000,
+          (errorMessage) => {
+            app.pathAutoDetectionInProgress = false;
+            alert(`Couldn't autodetect game path due to an error - please select game path manually.\n\nError: ${errorMessage}`);
           });
         } else {
           this.fullInstallConfigs = [];
