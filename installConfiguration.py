@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import os
 import hashlib
 import common
+from datetime import datetime
 
 try:
 	from typing import List, Optional, Dict, Set, Tuple
@@ -130,8 +131,8 @@ class FullInstallConfiguration:
 
 class ModFile:
 	modFileCounter = 0
-	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None):
-		# type: (str, Optional[str], int, str, Optional[str]) -> None
+	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None, skipIfModNewerThan=None):
+		# type: (str, Optional[str], int, str, Optional[str], Optional[str]) -> None
 		self.name = name
 		self.url = url
 
@@ -144,6 +145,13 @@ class ModFile:
 
 		# A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
 		self.relativeExtractionPath = relativeExtractionPath # type: str
+
+		# Do not apply this file if the last mod installation was newer than this date
+		# Once Python 2 support is removed, we should use datetime.fromisoformat() instead of datetime.strptime()
+		if skipIfModNewerThan is None:
+			self.skipIfModNewerThan = None
+		else:
+			self.skipIfModNewerThan = datetime.strptime(skipIfModNewerThan, '%Y-%m-%d')
 
 		# This variable is used to provide ordering which roughly matches the ordering in the JSON file
 		# to ensure files are downloaded and extracted in a deterministic manner
@@ -272,7 +280,13 @@ class SubModConfig:
 
 		self.files = [] # type: List[ModFile]
 		for subModFile in subMod['files']:
-			self.files.append(ModFile(name=subModFile['name'], url = subModFile.get('url'), priority=subModFile['priority'], relativeExtractionPath=subModFile.get('relativeExtractionPath')))
+			self.files.append(ModFile(
+				name=subModFile['name'],
+				url=subModFile.get('url'),
+				priority=subModFile['priority'],
+				relativeExtractionPath=subModFile.get('relativeExtractionPath'),
+				skipIfModNewerThan=subModFile.get('skipIfModNewerThan')
+			))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]
 		for subModFileOverride in subMod['fileOverrides']:

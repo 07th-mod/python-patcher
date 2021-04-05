@@ -69,6 +69,8 @@ public struct FileDefinition: Codable {
 	public var priority: Int
 	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
 	public var relativeExtractionPath: String?
+	/// Do not apply this file if the last mod installation was newer than this date, or mod not installed at all
+	public var skipIfModNewerThan: String?
 }
 
 public struct FileOverrideDefinition: Codable {

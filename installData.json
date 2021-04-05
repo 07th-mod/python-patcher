@@ -19,7 +19,7 @@
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=onikakushi",          "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
@@ -84,7 +84,7 @@
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=watanagashi",         "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10},
 						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
 					],
@@ -150,7 +150,7 @@
 						{"name": "ui",      "url": null,                                                            "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tatarigoroshi",       "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10},
 						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
 					],
@@ -215,7 +215,7 @@
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=himatsubushi",        "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10},
 						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
 					],
@@ -276,7 +276,7 @@
 						{"name": "ui",      "url":null,                                                             "priority": 0},
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=meakashi",            "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
@@ -339,7 +339,7 @@
 						{"name": "script",  "url":"https://07th-mod.com/latest.php?repository=tsumihoroboshi",      "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z", "priority": 5},
 						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides" : [
@@ -401,7 +401,7 @@
 						{"name": "ui",      "url": null, "priority": 0},
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=minagoroshi", "priority": 5},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides": [
@@ -462,7 +462,7 @@
 						{"name": "script",  "url": "https://07th-mod.com/latest.php?repository=matsuribayashi", "priority": 5},
 						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/matsuribayashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority":  10},
+						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
 						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
 					],
 					"fileOverrides": [

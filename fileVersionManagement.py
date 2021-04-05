@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 import io
 import json
 import os
+from datetime import datetime
 
 import logger
 
 try:
-	from typing import List, Dict, Optional, Set
+	from typing import List, Dict, Optional, Set, Tuple
 except:
 	pass
 
@@ -88,6 +89,21 @@ class VersionManager:
 				for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
 					print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
 
+		# If file has 'skipIfModNewerThan' property, disable it if the mod install is older than the given date
+		for file in self.unfilteredModFileList:
+			if file.skipIfModNewerThan is not None and self.updatesRequiredDict[file.id][0]:
+				installIsNewer, reason = installNewerThanDate(self.localVersionFilePath, file.skipIfModNewerThan)
+				if installIsNewer:
+					msg = "Not installing {} because: ({})".format(file.id, reason)
+					self.updatesRequiredDict[file.id] = (False, msg)
+					print(msg)
+				else:
+					msg = "{} - Will install because: ({})".format(self.updatesRequiredDict[file.id][1], reason)
+					self.updatesRequiredDict[file.id] = (self.updatesRequiredDict[file.id][0], msg)
+					print(msg)
+
+
+
 		# Check how many updates are required
 		updatesRequiredList = self.updatesRequiredDict.values()
 		self.totalNumUpdates = len(updatesRequiredList)
@@ -131,6 +147,23 @@ class VersionManager:
 		if os.path.exists(localVersionFilePathToDelete):
 			os.remove(localVersionFilePathToDelete)
 
+
+def installNewerThanDate(versionDataJsonPath, date):
+	# type: (str, datetime) -> Tuple[bool, str]
+	if not os.path.exists(versionDataJsonPath):
+		now = datetime.now()
+		if now > date:
+			return True, "Unmodded install AND current time [{}] is NEWER than cutoff date [{}]".format(now, date)
+		else:
+			return False, "Unmodded install AND current time [{}] is OLDER than cutoff date [{}]".format(now, date)
+
+	installDateModified = datetime.fromtimestamp(os.path.getmtime(versionDataJsonPath))
+
+	if installDateModified > date:
+		return True, "Modded install AND mod updated/installed on [{}] is NEWER than cutoff date [{}]".format(installDateModified, date)
+	else:
+		return False, "Modded install AND mod updated/installed on [{}] is OLDER than cutoff date [{}]".format(installDateModified, date)
+
 def getLocalVersion(localVersionFilePath):
 	localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
 	return None if localVersionObject is None else SubModVersionInfo(localVersionObject)
@@ -166,7 +199,7 @@ def getRemoteVersion(remoteTargetID):
 
 # given a mod
 def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
-	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> ()
+	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> Dict[str, Tuple[bool, str]]
 	"""
 
 	:param modFileList:
@@ -175,17 +208,17 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	:return: the returned value will contain one entry for each item in the modFileList
 	"""
 
-	# Do a sanity check that all the mod files have unique IDs. If they don't, just assume all files need to be updated
+	# Do a sanity check that all the mod files have unique IDs
 	sanityCheckSet = set()
 	for file in modFileList:
 		if file.id in sanityCheckSet:
-			print("ERROR: duplicate file ID {} detected - just updating everything", file.id)
-			return
+			raise Exception("ERROR: duplicate file ID {} detected".format(file.id))
 		sanityCheckSet.add(file.id)
 
 	updatesRequiredDict = SubModVersionInfo.getFilesNeedingInstall(localVersionInfo, remoteVersionInfo)
 
-	updateDict = {}
+	# This is a dictionary mapping the ID to a tuple of (shouldUpdate: bool, updateReason: str)
+	updateDict = {} #type: Dict[str, Tuple[bool, str]]
 
 	# Get the list of files which either have no version status or require an update
 	# needUpdate can be three values:
