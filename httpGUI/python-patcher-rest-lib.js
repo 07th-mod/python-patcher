@@ -45,12 +45,14 @@ function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCal
   const http = new XMLHttpRequest();
   const url = 'installer_data'; // in python, is stored in 'self.path' on the handler class
 
-  function errorHandler(msg) {
+  function errorHandler(msg, reason) {
     const message = `[${requestType}] POST Error - "${msg}" - You must have the install loader window/console open - it is required for the installation.`;
     console.log(message);
-    POSTNotificationErrorCallback(message);
+    if (reason !== 'abort') {
+      POSTNotificationErrorCallback(message);
+    }
     if (typeof onErrorCallback !== 'undefined') {
-      onErrorCallback(msg);
+      onErrorCallback(msg, reason);
     }
   }
 
@@ -74,21 +76,21 @@ function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCal
           onSuccessCallback(responseDataObject);
         }
       } else {
-        errorHandler(`Unexpected HTTP Status [${http.status}]`);
+        errorHandler(`Unexpected HTTP Status [${http.status}]`, 'status');
       }
     }
   };
 
-  http.onabort = () => {
-    errorHandler('POST Aborted');
+  http.onabort = function () {
+    errorHandler('POST Aborted', 'abort');
   };
 
   http.onerror = function () {
-    errorHandler('POST Error');
+    errorHandler('POST Error', 'error');
   };
 
   http.ontimeout = function (e) {
-    errorHandler(`POST Timeout (${http.timeout / 1000}s)`);
+    errorHandler(`POST Timeout (${http.timeout / 1000}s)`, 'timeout');
   };
 
   // Use a timeout of 8 seconds by default.
@@ -96,6 +98,8 @@ function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCal
   http.timeout = timeout !== 'undefined' ? timeout : 8000;
 
   http.send(makeJSONRequest(requestType, requestData));
+
+  return http
 }
 
 // TODO: should always navigate to the same install page, as it is shared amongst all games

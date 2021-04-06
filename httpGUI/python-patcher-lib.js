@@ -185,6 +185,7 @@ window.onload = function onWindowLoaded() {
       installErrorDescription: "",
       installDataLoaded: false,
       TIMEOUT_AUTO_DETECT_PATHS: 15,
+      gamePathsXHR: null //The last gamePaths XMLHttpRequest, or null if none exists
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -299,6 +300,12 @@ Continue install anyway?`)) {
         app.installFinished = true;
         window.location = 'shutdown.html';
       },
+      abortGamePaths() {
+        // Abort game path autodetection if one is in progress
+        if (app.gamePathsXHR !== null) {
+          app.gamePathsXHR.abort();
+        }
+      },
     },
     computed: {
       modHandles() {
@@ -331,7 +338,8 @@ Continue install anyway?`)) {
         if (app.installStarted) { return; }
         if (newSelectedSubMod !== null) {
           app.pathAutoDetectionInProgress = true;
-          doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
+          app.gamePathsXHR = doPost('gamePaths', { id: newSelectedSubMod.id }, (responseData) => {
+            app.gamePathsXHR = null;
             app.pathAutoDetectionInProgress = false;
             this.partiallyUninstalledPaths = responseData.partiallyUninstalledPaths;
             this.fullInstallConfigs = responseData.fullInstallConfigHandles;
@@ -342,9 +350,12 @@ Continue install anyway?`)) {
             }
           },
           app.TIMEOUT_AUTO_DETECT_PATHS * 1000,
-          (errorMessage) => {
+          (errorMessage, reason) => {
+            app.gamePathsXHR = null;
             app.pathAutoDetectionInProgress = false;
-            alert(`Couldn't autodetect game path due to an error - please select game path manually.\n\nError: ${errorMessage}`);
+            if (reason !== 'abort') {
+              alert(`Couldn't autodetect game path due to an error - please select game path manually.\n\nError: ${errorMessage}`);
+            }
           });
         } else {
           this.fullInstallConfigs = [];
