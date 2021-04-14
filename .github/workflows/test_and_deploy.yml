@@ -83,10 +83,11 @@ jobs:
 
       # Upload Artifact
       - name: Upload Windows Build
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: windows-loader-exe
-          path: travis_installer_output/07th-Mod.Installer.Windows.exe
+          path: travis_installer_output/*.exe
+          if-no-files-found: error
 
   # Linux/Mac Build
   linux_mac_build:
@@ -112,8 +113,8 @@ jobs:
         run: bash travis_validate_json.sh
 
       # Download windows .exe artifact
-      - name: Download Windows .exe artifact
-        uses: actions/download-artifact@v1
+      - name: Download all Windows .exe artifacts
+        uses: actions/download-artifact@v2
         with:
           name: windows-loader-exe
           path: travis_installer_output
@@ -132,6 +133,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.mac.zip
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
+            travis_installer_output/07th-Mod.Installer.Windows.NoAdmin.exe
           body_path: github_actions_changelog_template_generated.md
           draft: true
         env:
@@ -148,6 +150,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.mac.zip
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
+            travis_installer_output/07th-Mod.Installer.Windows.NoAdmin.exe
           body_path: github_actions_changelog_template_generated.md
           draft: true
           tag_name: ${{ github.event.inputs.tag_name }}

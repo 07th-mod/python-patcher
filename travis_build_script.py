@@ -173,6 +173,7 @@ if BUILD_LINUX_MAC:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 else:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'))
+	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'))
 
 clear_folder_if_exists(staging_folder)
 
@@ -242,12 +243,19 @@ if not BUILD_LINUX_MAC:
 	# https://stackoverflow.com/questions/31140051/windows-force-uac-elevation-for-files-if-their-names-contain-update
 	# If using msvc linker, embed a manifest/change msvc linker options, as per
 	# https://www.reddit.com/r/rust/comments/8tooi0/hey_rustaceans_got_an_easy_question_ask_here/e1lk7tw?utm_source=share&utm_medium=web2x
-	loader_exe_name = '07th-Mod.Installer.Windows.exe'
-	call(['cargo', 'rustc', '--release', '--', '-C', 'link-arg=/MANIFEST:embed'], cwd=loader_src_folder)
+	def build_rust_loader(loader_exe_name, require_administrator):
+		args = ['cargo', 'rustc', '--release', '--', '-C', 'link-arg=/MANIFEST:embed']
+		if require_administrator:
+			args += ['-C', 'link-arg=/MANIFESTUAC:level=\'highestAvailable\'']
 
-	# Copy the exe to the final output folder
-	final_exe_path = os.path.join(output_folder, loader_exe_name)
-	shutil.copy('install_loader/target/release/seventh_mod_loader.exe', final_exe_path)
+		call(args, cwd=loader_src_folder)
+
+		# Copy the exe to the final output folder
+		final_exe_path = os.path.join(output_folder, loader_exe_name)
+		shutil.copy('install_loader/target/release/seventh_mod_loader.exe', final_exe_path)
+
+	build_rust_loader('07th-Mod.Installer.Windows.exe', True)
+	build_rust_loader('07th-Mod.Installer.Windows.NoAdmin.exe', False)
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:
