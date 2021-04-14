@@ -16,6 +16,9 @@ use std::path::PathBuf;
 
 /// This function blocks until the user to presses enter in the console
 pub fn pause(msg: &str) -> Option<String> {
+	// Show the console in case it is hidden
+	windows_utilities::show_console_window();
+
 	// We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
 	let mut stderr = io::stderr();
 	let _ = write!(stderr, "\n\n{}", msg);
