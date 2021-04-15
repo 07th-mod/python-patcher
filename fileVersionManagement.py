@@ -95,11 +95,11 @@ class VersionManager:
 				installIsNewer, reason = installNewerThanDate(self.localVersionFilePath, file.skipIfModNewerThan)
 				if installIsNewer:
 					msg = "Not installing {} because: ({})".format(file.id, reason)
-					self.updatesRequiredDict[file.id] = (False, msg)
+					self.updatesRequiredDict[file.id] = (False, "Not installing because you already have these files")
 					print(msg)
 				else:
 					msg = "{} - Will install because: ({})".format(self.updatesRequiredDict[file.id][1], reason)
-					self.updatesRequiredDict[file.id] = (self.updatesRequiredDict[file.id][0], msg)
+					self.updatesRequiredDict[file.id] = (self.updatesRequiredDict[file.id][0], "You are missing these files (judging from your last mod install date)")
 					print(msg)
 
 
