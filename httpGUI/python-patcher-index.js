@@ -74,11 +74,11 @@ window.onload = function onWindowLoaded() {
           dataFilter: 'Answer Arcs',
         },
         'Minagoroshi Ch.7': {
-          img: 'img/games/header7.jpg',
+          img: 'img/games/header7.png',
           dataFilter: 'Answer Arcs',
         },
         'Matsuribayashi Ch.8': {
-          img: 'img/games/header8.jpg',
+          img: 'img/games/header8.png',
           dataFilter: 'Answer Arcs',
         },
       },
