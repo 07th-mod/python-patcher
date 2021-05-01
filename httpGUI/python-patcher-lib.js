@@ -19,6 +19,11 @@ function AddAndGetTextNode(elementID) {
   return textNode;
 }
 
+// Adds a red dot to the favicon icon to indicate a notification
+function SetFaviconNotify() {
+  document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
+}
+
 // -------------------------------- Installer Functions --------------------------------
 // Step 5.
 // Retreives the latest status from the python server and updates the DOM with the status
@@ -37,7 +42,7 @@ function statusUpdate() {
             app.installFinished = true;
             app.subTaskDescription = 'Install Finished!';
             app.subTaskPercentage = 100;
-            document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
+            SetFaviconNotify();
             app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
             window.scrollTo(0, 0);
           }
@@ -183,6 +188,7 @@ window.onload = function onWindowLoaded() {
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
       installErrorDescription: "",
+      detailedExceptionInformation: "",
       installDataLoaded: false,
       TIMEOUT_AUTO_DETECT_PATHS: 15,
       gamePathsXHR: null //The last gamePaths XMLHttpRequest, or null if none exists
@@ -377,9 +383,11 @@ Continue install anyway?`)) {
     autoscrollCheckbox: document.getElementById('autoscrollCheckbox'),
   };
 
-  setInstallerErrorCallback(function (errorMessage) {
+  setInstallerErrorCallback((errorMessage, detailedExceptionInformation) => {
     app.installErrorDescription = errorMessage;
-  })
+    app.detailedExceptionInformation = detailedExceptionInformation;
+    SetFaviconNotify();
+  });
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {

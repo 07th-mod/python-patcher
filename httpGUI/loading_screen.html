@@ -16,7 +16,37 @@
     </head>
     <body>
 		<div id="app" class="main-container" v-cloak>
-		<div class="main-container">
+			<div id="modal-container" >
+				<modal v-bind:visible="installErrorDescription" v-on:close="installErrorDescription = ''">
+					<h2 style="color: red;">Installer init failed, please read the below message</h2>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<strong>Error Message</strong>
+								&nbsp;
+								<a data-toggle="collapse" href="#collapse1">(Show Details)</a>
+							</h4>
+						</div>
+						<div class="panel-body">
+							<p>{{installErrorDescription}}</p>
+							<p>
+								When you are ready, restart the installer by first closing all windows including the launcher, then start the installer again.<br><br>
+								Please try to fix the issue, then restart the installer. We can also help you, but you need to download the install log and send it to our Discord server using the buttons below.
+							</p>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+							<div class="panel-body">
+								<hr>
+								<span style="white-space: pre-line; font-family: monospace;">{{detailedExceptionInformation}}</span>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="btn" v-on:click="installErrorDescription = ''">OK</button></a>
+					<button type="button" class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</button>
+					<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
+				</modal>
+			</div>
+			<div class="main-container">
 			<div class="row">
 				<div class="col-md-1"></div>
 				<div class="col-md-10">
@@ -26,9 +56,9 @@
 					<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
 					<label for="autoscrollCheckbox">Enable Auto Scroll</label>
 					<div v-if='!initCompleted'>
-						<p v-if='errorMessage === null'>Status: Waiting for init to complete ({{ pollCount }})
+						<p v-if='installErrorDescription === ""'>Status: Waiting for init to complete ({{ pollCount }})
 						<p v-else>Status: Init Failed
-						<div v-if='timeoutError && errorMessage === null'>
+						<div v-if='timeoutError && installErrorDescription === ""'>
 							<p><b>Warning:</b> {{ initTimeoutSeconds }} seconds and loading is still not complete.
 								You should wait a little while longer, but you may want to restart the installer (close everything, then start again) or restart your computer and try again.
 								<a href="https://07th-mod.com/wiki/Installer/support/">Contact the 07th-mod team</a> if this happens repeatedly.
@@ -37,23 +67,17 @@
 						</div>
 					</div>
 					<div v-else><p>Status: Init completed, launching main page. <a href=".">Click here if redirect doesn't happen automatically.</a></p></div>
-					<div v-if='errorMessage !== null'>
-						<h2 style="color: red;">Installer init failed :(</h2>
-						<p>Please read the error message below, and try to fix the issue.</p>
-						<p>When you are ready, restart the installer by first closing all windows including the launcher, then start the installer again.</p>
-						<p>If you can't fix the issue yourself, download the install log and send it to our Discord server.</p>
-						<button type="button" class="btn" v-on:click="getLogsZip()">Download Install Logs</button>
-						<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
-						<h3>Error Message</h3>
-						<pre>{{ errorMessage }}</pre>
-					</div>
 				</div>
 				<div class="col-md-1"></div>
 			</div>
 		</div>
 		</div>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/jquery.min.js"></script>
 		<script src="js/vue.js"></script>
+		<script src="js/bootstrap.min.js"></script>
 		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-vue-common.js"></script>
 		<script src="python-patcher-loading-screen.js"></script>
 		<script>
 			// Warn the user if they are on Internet Explorer - we don't support it!

@@ -20,8 +20,25 @@
 		<div id="modal-container" >
 			<modal v-bind:visible="installErrorDescription" v-on:close="installErrorDescription = ''">
 				<h3>Please read the below message</h3>
-				<span style="white-space: pre-line; font-family: monospace;">{{installErrorDescription}}</span>
-				<br>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<strong>Error Message</strong>
+							&nbsp;
+							<a data-toggle="collapse" href="#collapse1">(Show Details)</a>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<p>{{installErrorDescription}}</p>
+						<p>Please try to fix the issue, then restart the installer. We can also help you, but you need to download the install log and send it to our Discord server using the buttons below.</p>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse">
+						<div class="panel-body">
+							<hr>
+							<span style="white-space: pre-line; font-family: monospace;">{{detailedExceptionInformation}}</span>
+						</div>
+					</div>
+				</div>
 				<button type="button" class="btn" v-on:click="installErrorDescription = ''">OK</button></a>
 				<button type="button" class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</button>
 				<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
