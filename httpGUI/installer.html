@@ -29,7 +29,7 @@
 						</h4>
 					</div>
 					<div class="panel-body">
-						<p>{{installErrorDescription}}</p>
+						<p><pre>{{installErrorDescription}}</pre></p>
 						<p>Please try to fix the issue, then restart the installer. We can also help you, but you need to download the install log and send it to our Discord server using the buttons below.</p>
 					</div>
 					<div id="collapse1" class="panel-collapse collapse">
@@ -177,8 +177,8 @@
 							</div>
 
 							<h3>Terminal:</h3>
-
-							<div id="terminal"><p>Terminal Output</p></div>
+							<p>Terminal Output (<strong>NOTE: this may not capture all installer output! Please download the full install log for debugging</strong>)</p>
+							<div id="terminal"></div>
 							<input type="checkbox" id="autoscrollCheckbox" name="autoscrollCheckbox" checked>
 							<label for="autoscrollCheckbox">Enable Auto Scroll</label>
 							<div class="tabbed-content button-tabs vertical">

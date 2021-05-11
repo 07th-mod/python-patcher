@@ -35,6 +35,15 @@ function statusUpdate() {
     { },
     (responseData) => {
       responseData.forEach((status) => {
+        // Poll 3 times after install finished to get any remaining data before stopping
+        if (app.installFinished) {
+          if (app.finishedPollCount < 3) {
+            app.finishedPollCount += 1;
+          } else {
+            window.clearInterval(statusUpdateTimerHandle);
+          }
+        }
+
         if (status.overallPercentage !== undefined) {
           app.overallPercentage = status.overallPercentage;
           if (status.overallPercentage === 100) {
@@ -69,14 +78,6 @@ function statusUpdate() {
           numberOfBlankLinesInARow = lineIsBlank ? numberOfBlankLinesInARow + 1 : 0;
           if (!lineIsBlank || numberOfBlankLinesInARow < 3) {
             addToTerminal(el.terminal, status.msg, el.autoscrollCheckbox, 5000);
-          }
-          // If status.msg is defined, status.error will also be defined
-          if (status.error) {
-            app.installFailed = true;
-            app.installFinished = true;
-            window.clearInterval(statusUpdateTimerHandle);
-            setTimeout(() => { alert(status.msg); }, 100);
-            app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
           }
         }
       });
@@ -143,6 +144,7 @@ window.onload = function onWindowLoaded() {
       installStarted: false,
       installFinished: false,
       installFailed: false,
+      finishedPollCount: 0,
       overallPercentage: 0,
       subTaskPercentage: 0,
       overallTaskDescription: 'Overall Task Description',
@@ -312,6 +314,18 @@ Continue install anyway?`)) {
           app.gamePathsXHR.abort();
         }
       },
+      showErrorModal(errorMessage, detailedExceptionInformation) {
+        app.installErrorDescription = errorMessage;
+        app.detailedExceptionInformation = detailedExceptionInformation;
+        SetFaviconNotify();
+
+        if (app.installStarted) {
+          app.installFailed = true;
+          app.installFinished = true;
+        }
+
+        app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
+      },
     },
     computed: {
       modHandles() {
@@ -383,11 +397,7 @@ Continue install anyway?`)) {
     autoscrollCheckbox: document.getElementById('autoscrollCheckbox'),
   };
 
-  setInstallerErrorCallback((errorMessage, detailedExceptionInformation) => {
-    app.installErrorDescription = errorMessage;
-    app.detailedExceptionInformation = detailedExceptionInformation;
-    SetFaviconNotify();
-  });
+  setInstallerErrorCallback(app.showErrorModal);
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {

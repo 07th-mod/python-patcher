@@ -217,8 +217,7 @@ def _loggerMessageToStatusDict(message):
 		displayedMessage = "{}{}{}".format(ignoreMessage, message, ignoreMessage)
 
 	# if the message is not a aria or 7zip message, just show it in the gui log window
-	return {"msg": displayedMessage,
-	        "error": True if message.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX) else False}
+	return {"msg": displayedMessage}
 
 def start_server(working_directory, post_handlers, installRunningLock, serverStartedCallback=lambda _: None):
 	# type: (str, dict, threading.RLock, function) -> None
@@ -573,6 +572,7 @@ class InstallerGUI:
 
 		self.messageBuffer = []
 		self.threadHandle = None # type: Optional[threading.Thread]
+		self.threadException = None # type: Optional[Exception]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 		self.remoteNews = ""
@@ -666,22 +666,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				textToShowUser = 'Unexpected Error - See Details'
-
-				if 'WinError 5' in str(e):
-					textToShowUser = common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
-
-				if isinstance(e, common.SevenZipException):
-					textToShowUser = 'SevenZip Extraction Failed - See Details'
-
-				if isinstance(e, common.DownloadAndVerifyError):
-					textToShowUser = 'Download and Verify stage Failed - See Details'
-
-				exc_type, value, traceback = sys.exc_info()
-				print('{}\n{}\n\n----- Details -----\n{}: {}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
-				                                             textToShowUser,
-				                                             exc_type.__name__,
-				                                             e))
+				self.threadException = e
 
 				raise
 			common.tryDeleteLockFile()
@@ -696,6 +681,7 @@ class InstallerGUI:
 		# if the program was force closed.
 		common.tryCreateLockFile()
 
+		self.threadException = None
 		self.threadHandle = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
@@ -872,6 +858,12 @@ class InstallerGUI:
 			#               type of status returned.
 			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
 			def statusUpdate(requestData):
+				# If there was an exception on the installer thread, re-raise it on this main thread to display it.
+				if self.threadException:
+					e = self.threadException
+					self.threadException = None
+					raise e
+
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
 
 			# This causes a TKInter window to open allowing the user to choose a game path.
@@ -1008,8 +1000,21 @@ class InstallerGUI:
 				return _makeJSONResponse('unknownRequest', unknownRequestHandler(requestData))
 
 			def getExceptionAsJSON(exception, traceback):
+				errorReason = ''
+
+				if 'WinError 5' in str(exception):
+					errorReason += common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
+
+				if isinstance(exception, common.SevenZipException):
+					errorReason += 'SevenZip Extraction Failed - See Details'
+
+				if isinstance(exception, common.DownloadAndVerifyError):
+					errorReason += 'Download and Verify stage Failed - See Details'
+
+				errorReason += "\n{}".format(exception)
+
 				return _makeJSONResponse('error', {
-					'errorReason': "{}".format(exception),
+					'errorReason': errorReason,
 					'detailedExceptionInformation': "Exception while handling [{}] request:\n{}".format(requestType, traceback)
 				})
 
