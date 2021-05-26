@@ -119,7 +119,9 @@ window.onload = function onWindowLoaded() {
       },
     },
     computed: {
-
+      versionInfoAvailable() {
+        return this.metaInfo.installerIsLatest[0] !== null;
+      },
     },
     watch: {
 
@@ -142,7 +144,7 @@ window.onload = function onWindowLoaded() {
         });
 
         app.metaInfo = responseData.metaInfo;
-        if (app.metaInfo.installerIsLatest[0] === false) {
+        if (app.metaInfo.installerIsLatest[0] !== true) {
           app.modalVisible = true;
         }
 

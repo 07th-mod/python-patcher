@@ -976,7 +976,7 @@ class InstallerGUI:
 				return {}
 
 			def clearLatestInstallerWarning(_requestData):
-				common.Globals.INSTALLER_IS_LATEST = (None, "")
+				common.Globals.INSTALLER_IS_LATEST = (True, "")
 				return {}
 
 			requestTypeToRequestHandlers = {

@@ -262,18 +262,24 @@ You can try manually running [{}] once so the installer can use the file.""".for
 		except Exception as e:
 			Globals.BUILD_INFO = None
 			print("Failed to retrieve build info: {}".format(e))
+			traceback.print_exc()
 
 	@staticmethod
 	def loadInstallerLatestStatus():
-		latestVersion = getLatestInstallerVersion()
-		currentVersion = Globals.GIT_TAG
+		try:
+			latestVersion = getLatestInstallerVersion()
+			currentVersion = Globals.GIT_TAG
 
-		if currentVersion is None or latestVersion is None:
-			Globals.INSTALLER_IS_LATEST = (None, "WARNING: Version status unknown. Current: {} Latest: {}".format(currentVersion, latestVersion))
-		elif latestVersion == currentVersion:
-			Globals.INSTALLER_IS_LATEST = (True, "Installer is latest version: {}".format(currentVersion))
-		else:
-			Globals.INSTALLER_IS_LATEST = (False, "WARNING: This installer [{}] is outdated. Latest installer is [{}]".format(currentVersion, latestVersion))
+			if currentVersion is None or latestVersion is None:
+				Globals.INSTALLER_IS_LATEST = (None, "WARNING: Version status unknown. Current: {} Latest: {}".format(currentVersion, latestVersion))
+			elif latestVersion == currentVersion:
+				Globals.INSTALLER_IS_LATEST = (True, "Installer is latest version: {}".format(currentVersion))
+			else:
+				Globals.INSTALLER_IS_LATEST = (False, "WARNING: This installer [{}] is outdated. Latest installer is [{}]".format(currentVersion, latestVersion))
+		except Exception as e:
+			Globals.INSTALLER_IS_LATEST = (None, "WARNING: Version status unknown")
+			print("Failed to determine whether installer was latest version: {}".format(e))
+			traceback.print_exc()
 
 		print("> {}".format(Globals.INSTALLER_IS_LATEST[1]))
 
