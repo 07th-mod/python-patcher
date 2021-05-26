@@ -305,7 +305,7 @@ Continue install anyway?`)) {
         doPost('showInFileBrowser', path, (responseData) => {});
       },
       abortInstall() {
-        app.installFinished = true;
+        window.onbeforeunload = () => { };
         window.location = 'shutdown.html';
       },
       abortGamePaths() {
