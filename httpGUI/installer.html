@@ -471,6 +471,7 @@
 																		v-model="selectedInstallPath" placeholder="You can paste a path here if the below options don't work"
 																		@focus="installPathFocussed = true" @blur="installPathFocussed = false">
 															<div v-if="installPathFocussed" style="color: red"><strong>Use manual entry as a last resort (if the file-chooser below doesn't work)</strong></div>
+															<div style="min-height: 5.5em"> <!-- Fix options jumping around if "if" and "else" divs are different sizes -->
 															<div v-if="validationInProgress">
 																<div v-if="selectedInstallPath !== null" style="color: goldenrod"><strong>Validating...<span class="loader loader-small"></span></strong></div>
 																<div v-if="selectedInstallPath == null"><strong>Please use the buttons below to select a path.</strong></div>
@@ -479,6 +480,7 @@
 																<div v-if="installPathValid" style="color: green"><strong>Detected game at: {{ validatedInstallPath }} ✓</strong></div>
 																<div v-else-if="selectedInstallPath == null && fullInstallConfigs" style="color: #e5692c"><strong>Please select an autodetected path below, or enter one manually ⚠️</strong></div>
 																<div v-else style="color: red"><strong>Couldn't detect game at the above path! ❌</strong></div>
+															</div>
 															</div>
 															<!-- Autodetected path buttons -->
 															<ul class="installButtons">
