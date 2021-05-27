@@ -263,10 +263,9 @@ if __name__ == "__main__":
 			# Indicate init is complete. This causes the browser to advance from loading_screen.html to index.html
 			installerGUI.setSubModconfigs(t_getSubModConfig.result)
 		except Exception as e:
-			errorString = "{}\n\n------ Developer Exception Information ------\n{}".format(e, traceback.format_exc())
 			print(traceback.format_exc())
 			# Indicate init failed. This causes the browser to show an error message.
-			installerGUI.setInitError(errorString)
+			installerGUI.setInitError(e, traceback.format_exc())
 
 	# The installer initialization (scan for executables, check network, retrieve mod list) is launched
 	# concurrently with the Web GUI. The Web GUI shows a loading screen until init is complete.

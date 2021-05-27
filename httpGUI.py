@@ -217,8 +217,7 @@ def _loggerMessageToStatusDict(message):
 		displayedMessage = "{}{}{}".format(ignoreMessage, message, ignoreMessage)
 
 	# if the message is not a aria or 7zip message, just show it in the gui log window
-	return {"msg": displayedMessage,
-	        "error": True if message.startswith(common.Globals().INSTALLER_MESSAGE_ERROR_PREFIX) else False}
+	return {"msg": displayedMessage}
 
 def start_server(working_directory, post_handlers, installRunningLock, serverStartedCallback=lambda _: None):
 	# type: (str, dict, threading.RLock, function) -> None
@@ -568,10 +567,12 @@ class InstallerGUI:
 		self.allSubModConfigs = None # type: List[installConfiguration.SubModConfig]
 		self.idToSubMod = None # type: Dict[int, installConfiguration.SubModConfig]
 		self.initCompleted = False # type: bool # true if config loaded/init finished, false otherwise
-		self.initErrorMessage = None # type: Optional[str] # None if no error, str containing an error message if an error occured during init
+		self.initException = None # type: Optional[Exception] # None if no error, else is the exception that occured during init
+		self.initTraceback = '' #type: str
 
 		self.messageBuffer = []
 		self.threadHandle = None # type: Optional[threading.Thread]
+		self.threadException = None # type: Optional[Exception]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
 		self.remoteNews = ""
@@ -605,13 +606,14 @@ class InstallerGUI:
 		self.idToSubMod = {subMod.id: subMod for subMod in self.allSubModConfigs} # type: Dict[int, installConfiguration.SubModConfig]
 		self.initCompleted = True
 
-	def setInitError(self, errorMessage):
-		#type: (str) -> None
+	def setInitError(self, error, errorTraceback):
+		#type: (Exception, str) -> None
 		"""
 		Use to indicate an error occured during initialization.
 		The error message will cleared the next time the browser checks retrieves the init status
 		"""
-		self.initErrorMessage = errorMessage
+		self.initException = error
+		self.initTraceback = errorTraceback
 
 	def installAlreadyInProgress(self):
 		return self.threadHandle and self.threadHandle.is_alive()
@@ -664,22 +666,7 @@ class InstallerGUI:
 			try:
 				installerFunction(args)
 			except Exception as e:
-				textToShowUser = 'Unexpected Error - See Details'
-
-				if 'WinError 5' in str(e):
-					textToShowUser = common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
-
-				if isinstance(e, common.SevenZipException):
-					textToShowUser = 'SevenZip Extraction Failed - See Details'
-
-				if isinstance(e, common.DownloadAndVerifyError):
-					textToShowUser = 'Download and Verify stage Failed - See Details'
-
-				exc_type, value, traceback = sys.exc_info()
-				print('{}\n{}\n\n----- Details -----\n{}: {}'.format(common.Globals.INSTALLER_MESSAGE_ERROR_PREFIX,
-				                                             textToShowUser,
-				                                             exc_type.__name__,
-				                                             e))
+				self.threadException = e
 
 				raise
 			common.tryDeleteLockFile()
@@ -694,6 +681,7 @@ class InstallerGUI:
 		# if the program was force closed.
 		common.tryCreateLockFile()
 
+		self.threadException = None
 		self.threadHandle = threading.Thread(target=errorPrintingInstaller, args=(fullInstallSettings,))
 		self.threadHandle.setDaemon(True)  # Use setter for compatability with Python 2
 		self.threadHandle.start()
@@ -870,6 +858,12 @@ class InstallerGUI:
 			#               type of status returned.
 			#               Please check the _loggerMessageToStatusDict() function for a full list of fields.
 			def statusUpdate(requestData):
+				# If there was an exception on the installer thread, re-raise it on this main thread to display it.
+				if self.threadException:
+					e = self.threadException
+					self.threadException = None
+					raise e
+
 				return [_loggerMessageToStatusDict(x) for x in logger.getGlobalLogger().threadSafeReadAll()]
 
 			# This causes a TKInter window to open allowing the user to choose a game path.
@@ -969,13 +963,7 @@ class InstallerGUI:
 					return {}
 
 			def getInitStatus(requestData):
-				initError = None
-				if self.initErrorMessage is not None:
-					initError = self.initErrorMessage
-					self.initErrorMessage = None
-
 				return { 'initCompleted': self.initCompleted,
-				         'initErrorMessage': initError,
 				         'consoleLines': logger.getGlobalLogger().threadSafeReadAll()}
 
 			def showInFileBrowser(requestData):
@@ -988,7 +976,7 @@ class InstallerGUI:
 				return {}
 
 			def clearLatestInstallerWarning(_requestData):
-				common.Globals.INSTALLER_IS_LATEST = (None, "")
+				common.Globals.INSTALLER_IS_LATEST = (True, "")
 				return {}
 
 			requestTypeToRequestHandlers = {
@@ -1011,20 +999,36 @@ class InstallerGUI:
 			if not requestHandler:
 				return _makeJSONResponse('unknownRequest', unknownRequestHandler(requestData))
 
+			def getExceptionAsJSON(exception, traceback):
+				errorReason = ''
+
+				if 'WinError 5' in str(exception):
+					errorReason += common.Globals.PERMISSON_DENIED_ERROR_MESSAGE
+
+				if isinstance(exception, common.SevenZipException):
+					errorReason += 'SevenZip Extraction Failed - See Details'
+
+				if isinstance(exception, common.DownloadAndVerifyError):
+					errorReason += 'Download and Verify stage Failed - See Details'
+
+				errorReason += "\n{}".format(exception)
+
+				return _makeJSONResponse('error', {
+					'errorReason': errorReason,
+					'detailedExceptionInformation': "Exception while handling [{}] request:\n{}".format(requestType, traceback)
+				})
+
 			# Try and execute the request. If an exception is thrown, display the reason to the user on the web GUI
 			try:
 				responseDataJson = requestHandler(requestData)
 			except Exception as exception:
 				print('Exception Thrown handling request {}: {}'.format(requestType, exception))
 				traceback.print_exc()
-				return _makeJSONResponse('error', {
-					'errorReason':
-"""{}
+				return getExceptionAsJSON(exception, traceback.format_exc())
 
------ Detailed Exception Information -----
-Exception while handling [{}] request:
-{}""".format(exception, requestType, traceback.format_exc())
-				})
+			if self.initException is not None:
+				tempException = self.initException
+				return getExceptionAsJSON(tempException, self.initTraceback)
 
 			return _makeJSONResponse(responseType=requestType, responseDataJson=responseDataJson)
 

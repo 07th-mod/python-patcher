@@ -18,9 +18,17 @@
 		<div id="app" class="main-container" v-cloak>
 		<div id="modal-container" >
 			<modal v-bind:visible="modalVisible" v-on:close="clearModal()">
-				<h3>New Installer Available</h3>
-				<p>{{metaInfo.installerIsLatest[1]}}</p>
-				<p>You should update the installer to get bug-fixes and new features.</p>
+				<div v-if="versionInfoAvailable">
+					<h3>New Installer Available</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>You should update the installer to get bug-fixes and new features.</p>
+				</div>
+				<div v-else>
+					<h3>Error while checking if installer is latest</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>If you're sure you have the latest version, click "Use Old Installer", and ignore this message.</p>
+					<p>Otherwise please go to the installer download page and make sure you have the latest version.</p>
+				</div>
 				<a href="https://github.com/07th-mod/python-patcher/releases" target="_blank"><button type="button" class="btn">Go to installer download page</button></a>
 				<button type="button" class="btn" style="border: grey;" v-on:click="clearModal()">Use old installer (not recommended)</button>
 			</modal>

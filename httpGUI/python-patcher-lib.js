@@ -19,6 +19,11 @@ function AddAndGetTextNode(elementID) {
   return textNode;
 }
 
+// Adds a red dot to the favicon icon to indicate a notification
+function SetFaviconNotify() {
+  document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
+}
+
 // -------------------------------- Installer Functions --------------------------------
 // Step 5.
 // Retreives the latest status from the python server and updates the DOM with the status
@@ -30,6 +35,15 @@ function statusUpdate() {
     { },
     (responseData) => {
       responseData.forEach((status) => {
+        // Poll 3 times after install finished to get any remaining data before stopping
+        if (app.installFinished) {
+          if (app.finishedPollCount < 3) {
+            app.finishedPollCount += 1;
+          } else {
+            window.clearInterval(statusUpdateTimerHandle);
+          }
+        }
+
         if (status.overallPercentage !== undefined) {
           app.overallPercentage = status.overallPercentage;
           if (status.overallPercentage === 100) {
@@ -37,7 +51,7 @@ function statusUpdate() {
             app.installFinished = true;
             app.subTaskDescription = 'Install Finished!';
             app.subTaskPercentage = 100;
-            document.getElementById('favicon').setAttribute('href', 'favicon-notify.png');
+            SetFaviconNotify();
             app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
             window.scrollTo(0, 0);
           }
@@ -64,14 +78,6 @@ function statusUpdate() {
           numberOfBlankLinesInARow = lineIsBlank ? numberOfBlankLinesInARow + 1 : 0;
           if (!lineIsBlank || numberOfBlankLinesInARow < 3) {
             addToTerminal(el.terminal, status.msg, el.autoscrollCheckbox, 5000);
-          }
-          // If status.msg is defined, status.error will also be defined
-          if (status.error) {
-            app.installFailed = true;
-            app.installFinished = true;
-            window.clearInterval(statusUpdateTimerHandle);
-            setTimeout(() => { alert(status.msg); }, 100);
-            app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
           }
         }
       });
@@ -138,6 +144,7 @@ window.onload = function onWindowLoaded() {
       installStarted: false,
       installFinished: false,
       installFailed: false,
+      finishedPollCount: 0,
       overallPercentage: 0,
       subTaskPercentage: 0,
       overallTaskDescription: 'Overall Task Description',
@@ -183,6 +190,7 @@ window.onload = function onWindowLoaded() {
       // Game installs which have been partially uninstalled via Steam, but where some mod files still exist on disk
       partiallyUninstalledPaths: [],
       installErrorDescription: "",
+      detailedExceptionInformation: "",
       installDataLoaded: false,
       TIMEOUT_AUTO_DETECT_PATHS: 15,
       gamePathsXHR: null //The last gamePaths XMLHttpRequest, or null if none exists
@@ -297,7 +305,7 @@ Continue install anyway?`)) {
         doPost('showInFileBrowser', path, (responseData) => {});
       },
       abortInstall() {
-        app.installFinished = true;
+        window.onbeforeunload = () => { };
         window.location = 'shutdown.html';
       },
       abortGamePaths() {
@@ -305,6 +313,18 @@ Continue install anyway?`)) {
         if (app.gamePathsXHR !== null) {
           app.gamePathsXHR.abort();
         }
+      },
+      showErrorModal(errorMessage, detailedExceptionInformation) {
+        app.installErrorDescription = errorMessage;
+        app.detailedExceptionInformation = detailedExceptionInformation;
+        SetFaviconNotify();
+
+        if (app.installStarted) {
+          app.installFailed = true;
+          app.installFinished = true;
+        }
+
+        app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
       },
     },
     computed: {
@@ -377,9 +397,7 @@ Continue install anyway?`)) {
     autoscrollCheckbox: document.getElementById('autoscrollCheckbox'),
   };
 
-  setInstallerErrorCallback(function (errorMessage) {
-    app.installErrorDescription = errorMessage;
-  })
+  setInstallerErrorCallback(app.showErrorModal);
 
   // populate the app.subModList with subMods from the python server
   doPost('subModHandles', [], (responseData) => {
