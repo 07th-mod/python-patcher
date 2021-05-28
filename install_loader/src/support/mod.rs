@@ -121,9 +121,9 @@ impl System {
 				let mut ui = imgui.frame();
 
 				if let Some(app) = &mut application {
-					let mut nextFrameUpdates = app.run_ui(&mut ui);
+					let next_frame_commands = app.run_ui(&mut ui);
 
-					if !nextFrameUpdates.run {
+					if !next_frame_commands.run {
 						// Forcibly drop the application to make it clean up anything it still owns
 						application = None;
 
@@ -135,12 +135,12 @@ impl System {
 						}
 					}
 
-					if nextFrameUpdates.force_show_window {
+					if next_frame_commands.force_show_window {
 						window.set_minimized(false);
 						window.set_visible(true);
 					}
 
-					if nextFrameUpdates.retry_using_tempdir {
+					if next_frame_commands.retry_using_tempdir {
 						match builder.build_retry() {
 							Ok(app) => application = Some(app),
 							Err(e) => {
@@ -163,7 +163,7 @@ impl System {
 			event => {
 				match &event {
 					Event::WindowEvent {
-						window_id: id,
+						window_id: _id,
 						event: window_event,
 					} => {
 						if let Some(app) = &mut application {
@@ -183,14 +183,14 @@ impl System {
 // Note: there is some application specific logic in the below traits, and also
 // in the above main_loop() function. Ideally it shouldn't be in there, but it's easier to do it
 // this way for now.
-pub struct NextFrameUpdates {
+pub struct NextFrameCommands {
 	pub run: bool,
 	pub force_show_window: bool,
 	pub retry_using_tempdir: bool,
 }
 
 pub trait ApplicationGUI {
-	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameUpdates;
+	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameCommands;
 	fn handle_event(&mut self, event: &WindowEvent);
 }
 

@@ -7,7 +7,7 @@ use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
 use crate::python_launcher;
 use crate::support;
-use crate::support::{AppBuilder, ApplicationGUI, NextFrameUpdates};
+use crate::support::{AppBuilder, ApplicationGUI, NextFrameCommands};
 use crate::version;
 use crate::windows_utilities;
 use std::path::PathBuf;
@@ -592,7 +592,7 @@ Please download the installer to your Downloads or other known location, then ru
 }
 
 impl ApplicationGUI for InstallerGUI {
-	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameUpdates {
+	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameCommands {
 		// Prevent high cpu/gpu usage due to unlimited framerate when window minimized on Windows
 		// as well as generally reducing usage if the user isn't using the program
 		if self.should_save_power() {
@@ -607,7 +607,7 @@ impl ApplicationGUI for InstallerGUI {
 		}
 
 		// Main window containing the installer
-		let mut window_builder = Window::new(im_str!("07th-Mod Installer Launcher"))
+		Window::new(im_str!("07th-Mod Installer Launcher"))
 			.position([0.0, 0.0], Condition::Always)
 			.size(self.ui_state.window_size, Condition::Always)
 			.no_decoration() //remove title bar etc. so it acts like the "Main" window of the program
@@ -620,7 +620,7 @@ impl ApplicationGUI for InstallerGUI {
 		let force_show_window = self.ui_state.focus_requested;
 		self.ui_state.focus_requested = false;
 
-		NextFrameUpdates {
+		NextFrameCommands {
 			run: self.ui_state.run,
 			force_show_window,
 			retry_using_tempdir: self.retry_using_temp_dir,
@@ -638,16 +638,12 @@ impl ApplicationGUI for InstallerGUI {
 }
 
 struct InstallerBuilder {
-	retry: bool,
 	temp_dir: Option<TempDir>,
 }
 
 impl InstallerBuilder {
 	fn new() -> InstallerBuilder {
-		InstallerBuilder {
-			retry: false,
-			temp_dir: None,
-		}
+		InstallerBuilder { temp_dir: None }
 	}
 }
 
@@ -707,7 +703,10 @@ impl AppBuilder<InstallerGUI> for InstallerBuilder {
 				windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir");
 
 			if let Err(e) = temp_dir.close() {
-				println!("Failed to clean up Temp dir {}", printable_tempdir);
+				println!(
+					"Failed to clean up Temp dir {} due to {}",
+					printable_tempdir, e
+				);
 				return Some(temp_dir_path);
 			}
 

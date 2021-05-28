@@ -7,6 +7,7 @@ pub fn travis_tag() -> &'static str {
 	github_ref.rsplit('/').next().unwrap_or(github_ref)
 }
 
+#[allow(dead_code)]
 pub fn is_developer_build() -> bool {
 	get_github_ref().is_none()
 }
