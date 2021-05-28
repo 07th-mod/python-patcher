@@ -445,21 +445,22 @@ Please download the installer to your Downloads or other known location, then ru
 				if let Some(exit_status) =
 					graphical_install.python_monitor.try_wait().unwrap_or(None)
 				{
-					self.state.progression = if exit_status.success() {
-						InstallerProgression::InstallFinished
+					if exit_status.success() {
+						self.quit();
 					} else {
-						InstallerProgression::InstallFailed(InstallFailedState::new(String::from(
-							"Python Installer Failed - See Console Window",
-						)))
+						self.state.progression =
+							InstallerProgression::InstallFailed(InstallFailedState::new(
+								String::from("Python Installer Failed - See Console Window"),
+							))
 					};
 					return;
 				}
 			}
 			InstallerProgression::InstallFinished => {
 				ui.text_yellow(im_str!(
-					"The install is finished. You can now close this window."
+					"The install is finished. Cleaning up...please wait"
 				));
-				self.quit();
+				self.ui_state.run = false;
 			}
 			InstallerProgression::InstallFailed(install_failed_state) => {
 				ui.text_red(im_str!("The installation failed!"));
@@ -568,8 +569,6 @@ Please download the installer to your Downloads or other known location, then ru
 
 	// Close the UI and the installer thread
 	fn quit(&mut self) {
-		self.ui_state.run = false;
-
 		// Attempt to kill the python process, if the installer has already been started.
 		// Even if killing fails, attempt to wait on the process.
 		// This will make it obvious if something went wrong as the UI will (probably) hang,

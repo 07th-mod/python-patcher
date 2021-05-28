@@ -101,6 +101,7 @@ impl System {
 		} = self;
 		let mut last_frame = Instant::now();
 		let mut application = Some(builder.build());
+		let mut terminate_next_frame = false;
 
 		event_loop.run(move |event, _, control_flow| match event {
 			Event::NewEvents(_) => {
@@ -123,7 +124,7 @@ impl System {
 				if let Some(app) = &mut application {
 					let next_frame_commands = app.run_ui(&mut ui);
 
-					if !next_frame_commands.run {
+					if terminate_next_frame {
 						// Forcibly drop the application to make it clean up anything it still owns
 						application = None;
 
@@ -133,6 +134,10 @@ impl System {
 						} else {
 							*control_flow = ControlFlow::Exit;
 						}
+					}
+
+					if !next_frame_commands.run {
+						terminate_next_frame = true;
 					}
 
 					if next_frame_commands.force_show_window {
