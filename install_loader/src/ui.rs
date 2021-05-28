@@ -7,7 +7,7 @@ use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
 use crate::python_launcher;
 use crate::support;
-use crate::support::{ApplicationGUI, ExitInfo, NextFrameUpdates};
+use crate::support::{AppBuilder, ApplicationGUI, NextFrameUpdates};
 use crate::version;
 use crate::windows_utilities;
 use std::path::PathBuf;
@@ -425,7 +425,6 @@ Please download the installer to your Downloads or other known location, then ru
 					&& ui.simple_button(im_str!("Restart using temporary folder"))
 				{
 					self.retry_using_temp_dir = true;
-					self.quit()
 				}
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
@@ -624,6 +623,7 @@ impl ApplicationGUI for InstallerGUI {
 		NextFrameUpdates {
 			run: self.ui_state.run,
 			force_show_window,
+			retry_using_tempdir: self.retry_using_temp_dir,
 		}
 	}
 
@@ -635,80 +635,91 @@ impl ApplicationGUI for InstallerGUI {
 			_ => {}
 		}
 	}
+}
 
-	fn exit_info(&self) -> ExitInfo {
-		ExitInfo {
-			retry_using_tempdir: self.retry_using_temp_dir,
+struct InstallerBuilder {
+	retry: bool,
+	temp_dir: Option<TempDir>,
+}
+
+impl InstallerBuilder {
+	fn new() -> InstallerBuilder {
+		InstallerBuilder {
+			retry: false,
+			temp_dir: None,
 		}
 	}
 }
 
-pub fn ui_loop_single(
-	root: &PathBuf,
-	initial_progression: InstallerProgression,
-	is_retry: bool,
-) -> ExitInfo {
-	let window_size = [1000., 500.];
-	let mut state = InstallerGUI::new(
-		[window_size[0] as f32, window_size[1] as f32],
-		InstallerConfig::new(root, is_retry),
-		initial_progression,
-	);
-
-	let system = support::init(
-		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
-		window_size,
-	);
-	system.main_loop(state);
-
-	ExitInfo {
-		retry_using_tempdir: false,
-	}
-}
-
-pub fn retry_using_tempdir_check(exit_info: ExitInfo) -> Result<(), Box<dyn std::error::Error>> {
-	if !exit_info.retry_using_tempdir {
-		return Ok(());
+impl AppBuilder<InstallerGUI> for InstallerBuilder {
+	fn window_size(&self) -> [f64; 2] {
+		[1000., 500.]
 	}
 
-	// Temp dir should delete itself once it goes out of scope
-	let temp_dir = TempDir::new()?;
-
-	ui_loop_single(
-		&PathBuf::from(temp_dir.path()),
-		InstallerProgression::PreExtractionChecks,
-		true,
-	);
-
-	// Give some time for any file handles to close
-	std::thread::sleep(std::time::Duration::from_secs(2));
-
-	let temp_dir_path = PathBuf::from(temp_dir.path());
-
-	if let Err(e) = temp_dir.close() {
-		let _ = ui_loop_single(
-			&PathBuf::from("07th-mod_installer"),
-			InstallerProgression::TempDirCleanupFailed(temp_dir_path),
-			false,
-		);
-		return Err(e.into());
+	fn window_name(&self) -> String {
+		format!("07th-Mod Installer Launcher [{}]", version::travis_tag())
 	}
 
-	println!(
-		"Temp dir {} cleaned up successfully",
-		windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir")
-	);
-	return Ok(());
+	fn build(&self) -> InstallerGUI {
+		let window_size = self.window_size();
+		// if self.retry {
+		InstallerGUI::new(
+			[window_size[0] as f32, window_size[1] as f32],
+			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
+			InstallerProgression::PreExtractionChecks,
+		)
+	}
+
+	fn build_cleanup_error(&self, failed_cleanup_path: PathBuf) -> InstallerGUI {
+		let window_size = self.window_size();
+		// if self.retry {
+		InstallerGUI::new(
+			[window_size[0] as f32, window_size[1] as f32],
+			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
+			InstallerProgression::TempDirCleanupFailed(failed_cleanup_path),
+		)
+	}
+
+	fn build_retry(&mut self) -> Result<InstallerGUI, Box<dyn std::error::Error>> {
+		// Note: Temp dir will attempt to delete itself once it goes out of scope, so make
+		// sure to keep it in scope until you are finished with it
+		let temp_dir = TempDir::new()?;
+
+		let window_size = self.window_size();
+		let retval = Ok(InstallerGUI::new(
+			[window_size[0] as f32, window_size[1] as f32],
+			InstallerConfig::new(&PathBuf::from(temp_dir.path()), false),
+			InstallerProgression::PreExtractionChecks,
+		));
+
+		self.temp_dir = Some(temp_dir);
+
+		retval
+	}
+
+	fn cleanup(&mut self) -> Option<PathBuf> {
+		if let Some(temp_dir) = self.temp_dir.take() {
+			// Give some time for any file handles to close
+			std::thread::sleep(std::time::Duration::from_secs(2));
+
+			let temp_dir_path = PathBuf::from(temp_dir.path());
+			let printable_tempdir =
+				windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir");
+
+			if let Err(e) = temp_dir.close() {
+				println!("Failed to clean up Temp dir {}", printable_tempdir);
+				return Some(temp_dir_path);
+			}
+
+			println!("Temp dir {} cleaned up successfully", printable_tempdir);
+		}
+
+		None
+	}
 }
 
 pub fn ui_loop() {
-	let exit_info = ui_loop_single(
-		&PathBuf::from("07th-mod_installer"),
-		InstallerProgression::PreExtractionChecks,
-		false,
-	);
-
-	if let Err(e) = retry_using_tempdir_check(exit_info) {
-		println!("Error retrying with tempdir: {}", e);
-	}
+	let builder = InstallerBuilder::new();
+	let system = support::init(&builder.window_name(), builder.window_size());
+	system.main_loop(builder);
 }

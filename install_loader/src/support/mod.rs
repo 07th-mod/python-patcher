@@ -6,7 +6,7 @@ use glium::{Display, Surface};
 use imgui::{Context, FontConfig, FontGlyphRanges, FontSource, Ui};
 use imgui_glium_renderer::Renderer;
 use imgui_winit_support::{HiDpiMode, WinitPlatform};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::time::Instant;
 
 mod clipboard;
@@ -87,7 +87,10 @@ pub fn init(title: &str, window_size: [f64; 2]) -> System {
 }
 
 impl System {
-	pub fn main_loop<A: ApplicationGUI + 'static>(self, mut application: A) {
+	pub fn main_loop<T: 'static + ApplicationGUI, A: 'static + AppBuilder<T>>(
+		self,
+		mut builder: A,
+	) {
 		let System {
 			event_loop,
 			display,
@@ -97,6 +100,7 @@ impl System {
 			..
 		} = self;
 		let mut last_frame = Instant::now();
+		let mut application = Some(builder.build());
 
 		event_loop.run(move |event, _, control_flow| match event {
 			Event::NewEvents(_) => {
@@ -112,24 +116,42 @@ impl System {
 				gl_window.window().request_redraw();
 			}
 			Event::RedrawRequested(_) => {
+				let gl_window = display.gl_window();
+				let window = gl_window.window();
 				let mut ui = imgui.frame();
 
-				let mut nextFrameUpdates = application.run_ui(&mut ui);
+				if let Some(app) = &mut application {
+					let mut nextFrameUpdates = app.run_ui(&mut ui);
 
-				if !nextFrameUpdates.run {
-					*control_flow = ControlFlow::Exit;
+					if !nextFrameUpdates.run {
+						// Forcibly drop the application to make it clean up anything it still owns
+						application = None;
+
+						// call builder's on_exit() to clean up any resources on the builder
+						if let Some(failed_cleanup_path) = builder.cleanup() {
+							application = Some(builder.build_cleanup_error(failed_cleanup_path));
+						} else {
+							*control_flow = ControlFlow::Exit;
+						}
+					}
+
+					if nextFrameUpdates.force_show_window {
+						window.set_minimized(false);
+						window.set_visible(true);
+					}
+
+					if nextFrameUpdates.retry_using_tempdir {
+						match builder.build_retry() {
+							Ok(app) => application = Some(app),
+							Err(e) => {
+								println!("Error retrying with tempdir: {}", e);
+							}
+						}
+					}
 				}
-
-				let gl_window = display.gl_window();
 
 				let mut target = display.draw();
 				target.clear_color_srgb(1.0, 1.0, 1.0, 1.0);
-				let window = gl_window.window();
-
-				if nextFrameUpdates.force_show_window {
-					window.set_minimized(false);
-					window.set_visible(true);
-				}
 
 				platform.prepare_render(&ui, window);
 				let draw_data = ui.render();
@@ -144,7 +166,9 @@ impl System {
 						window_id: id,
 						event: window_event,
 					} => {
-						application.handle_event(window_event);
+						if let Some(app) = &mut application {
+							app.handle_event(window_event);
+						}
 					}
 					_ => {}
 				}
@@ -156,17 +180,25 @@ impl System {
 	}
 }
 
-pub struct ExitInfo {
-	pub retry_using_tempdir: bool,
-}
-
+// Note: there is some application specific logic in the below traits, and also
+// in the above main_loop() function. Ideally it shouldn't be in there, but it's easier to do it
+// this way for now.
 pub struct NextFrameUpdates {
 	pub run: bool,
 	pub force_show_window: bool,
+	pub retry_using_tempdir: bool,
 }
 
 pub trait ApplicationGUI {
 	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameUpdates;
 	fn handle_event(&mut self, event: &WindowEvent);
-	fn exit_info(&self) -> ExitInfo;
+}
+
+pub trait AppBuilder<T> {
+	fn window_size(&self) -> [f64; 2];
+	fn window_name(&self) -> String;
+	fn build(&self) -> T;
+	fn build_cleanup_error(&self, failed_cleanup_path: PathBuf) -> T;
+	fn build_retry(&mut self) -> Result<T, Box<dyn std::error::Error>>;
+	fn cleanup(&mut self) -> Option<PathBuf>;
 }
