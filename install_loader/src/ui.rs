@@ -1,4 +1,4 @@
-use glium::glutin::{Event, WindowEvent};
+use glium::glutin::event::WindowEvent;
 use imgui::*;
 use tempfile::TempDir;
 
@@ -7,7 +7,7 @@ use crate::config::InstallerConfig;
 use crate::process_runner::ProcessRunner;
 use crate::python_launcher;
 use crate::support;
-use crate::support::{ApplicationGUI, ExitInfo};
+use crate::support::{AppBuilder, ApplicationGUI, NextFrameCommands};
 use crate::version;
 use crate::windows_utilities;
 use std::path::PathBuf;
@@ -151,6 +151,9 @@ struct UIState {
 	program_is_focused: bool,
 	// True if the user ticked the Safe-Mode checkbox
 	safe_mode_enabled: bool,
+	// Set True to force app focus next frame
+	focus_requested: bool,
+	exit_modal_requested: bool,
 }
 
 impl UIState {
@@ -166,6 +169,8 @@ impl UIState {
 			)),
 			program_is_focused: true,
 			safe_mode_enabled: false,
+			focus_requested: true,
+			exit_modal_requested: false,
 		}
 	}
 }
@@ -196,14 +201,14 @@ impl InstallerGUI {
 		}
 	}
 
-	pub fn display_ui(&mut self, ui: &Ui, window: &glium::glutin::Window) {
+	pub fn display_ui(&mut self, ui: &Ui) {
 		ui.new_line();
 
 		// Update the installer based on the extraction status
 		self.extraction_update();
 
 		// Handle when user attempts to close the program
-		self.exit_handler(ui, window);
+		self.exit_handler(ui);
 
 		// Main installer flow allowing user to progress through the installer
 		self.display_main_installer_flow(ui);
@@ -249,7 +254,7 @@ impl InstallerGUI {
 	// This modal prevents users accidentally terminating the install before it has finished
 	// If python is extracting or installation has started, show a popup for user to confirm exit
 	// In any other case, just let the user exit immediately
-	fn exit_handler(&mut self, ui: &Ui, window: &glium::glutin::Window) {
+	fn exit_handler(&mut self, ui: &Ui) {
 		let confirm_exit_modal_name = im_str!("Confirm Exit");
 		if self.ui_state.close_requested {
 			self.ui_state.close_requested = false;
@@ -265,15 +270,17 @@ impl InstallerGUI {
 				| InstallerProgression::TempDirCleanupFailed(_) => self.quit(),
 				InstallerProgression::InstallStarted(_)
 				| InstallerProgression::InstallFailed(_) => {
-					// Show the window if it is hidden/minimized so user can see the exit confirmation popup
-					// For some reason on this version of winit show() doesn't work, so
-					// I'm using this workaround instead:
-					window.set_maximized(true);
-					window.set_maximized(false);
-
-					ui.open_popup(confirm_exit_modal_name);
+					self.ui_state.focus_requested = true;
+					self.ui_state.exit_modal_requested = true;
 				}
 			}
+		}
+
+		// Work around popup modal being wrong size if popup occurs when window is not visible
+		// by waiting until window visible is complete before opening the modal
+		if !self.ui_state.focus_requested && self.ui_state.exit_modal_requested {
+			self.ui_state.exit_modal_requested = false;
+			ui.open_popup(confirm_exit_modal_name);
 		}
 
 		// Exit confirmation modal triggered by the above
@@ -418,7 +425,6 @@ Please download the installer to your Downloads or other known location, then ru
 					&& ui.simple_button(im_str!("Restart using temporary folder"))
 				{
 					self.retry_using_temp_dir = true;
-					self.quit()
 				}
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
@@ -481,7 +487,7 @@ Please download the installer to your Downloads or other known location, then ru
 	// Advanced tools used if something went wrong. Hidden by default unless you expand the header
 	fn display_advanced_tools(&mut self, ui: &Ui) {
 		// Advanced Tools Section
-		if ui.collapsing_header(im_str!("Advanced Tools")).build() {
+		if CollapsingHeader::new(im_str!("Advanced Tools")).build(&ui) {
 			// Button which shows the python installer logs folder.
 			// NOTE: the output of this launcher is currently not logged.
 			if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
@@ -586,7 +592,7 @@ Please download the installer to your Downloads or other known location, then ru
 }
 
 impl ApplicationGUI for InstallerGUI {
-	fn ui_loop(&mut self, ui: &mut Ui, window: &glium::glutin::Window) -> bool {
+	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameCommands {
 		// Prevent high cpu/gpu usage due to unlimited framerate when window minimized on Windows
 		// as well as generally reducing usage if the user isn't using the program
 		if self.should_save_power() {
@@ -606,98 +612,113 @@ impl ApplicationGUI for InstallerGUI {
 			.size(self.ui_state.window_size, Condition::Always)
 			.no_decoration() //remove title bar etc. so it acts like the "Main" window of the program
 			.build(ui, || {
-				self.display_ui(ui, window);
+				self.display_ui(ui);
 			});
 
 		unround_style.pop(&ui);
 
-		return self.ui_state.run;
-	}
+		let force_show_window = self.ui_state.focus_requested;
+		self.ui_state.focus_requested = false;
 
-	fn handle_event(&mut self, event: Event) {
-		match &event {
-			Event::WindowEvent {
-				window_id: _,
-				event,
-			} => match event {
-				WindowEvent::Focused(focused) => self.ui_state.program_is_focused = *focused,
-				WindowEvent::CursorMoved { .. } => self.ui_state.mouse_activity_timer.refresh(),
-				WindowEvent::CloseRequested => self.ui_state.close_requested = true,
-				_ => {}
-			},
-			_ => {}
-		}
-	}
-
-	fn exit_info(&self) -> ExitInfo {
-		ExitInfo {
+		NextFrameCommands {
+			run: self.ui_state.run,
+			force_show_window,
 			retry_using_tempdir: self.retry_using_temp_dir,
 		}
 	}
+
+	fn handle_event(&mut self, event: &WindowEvent) {
+		match event {
+			WindowEvent::Focused(focused) => self.ui_state.program_is_focused = *focused,
+			WindowEvent::CursorMoved { .. } => self.ui_state.mouse_activity_timer.refresh(),
+			WindowEvent::CloseRequested => self.ui_state.close_requested = true,
+			_ => {}
+		}
+	}
 }
 
-pub fn ui_loop_single(
-	root: &PathBuf,
-	initial_progression: InstallerProgression,
-	is_retry: bool,
-) -> ExitInfo {
-	let window_size = [1000., 500.];
-	let system = support::init(
+struct InstallerBuilder {
+	temp_dir: Option<TempDir>,
+}
+
+impl InstallerBuilder {
+	fn new() -> InstallerBuilder {
+		InstallerBuilder { temp_dir: None }
+	}
+}
+
+impl AppBuilder<InstallerGUI> for InstallerBuilder {
+	fn window_size(&self) -> [f64; 2] {
+		[1000., 500.]
+	}
+
+	fn window_name(&self) -> String {
+		format!("07th-Mod Installer Launcher [{}]", version::travis_tag())
+	}
+
+	fn build(&self) -> InstallerGUI {
+		let window_size = self.window_size();
+		// if self.retry {
 		InstallerGUI::new(
 			[window_size[0] as f32, window_size[1] as f32],
-			InstallerConfig::new(root, is_retry),
-			initial_progression,
-		),
-		&format!("07th-Mod Installer Launcher [{}]", version::travis_tag()),
-		window_size,
-	);
-
-	system.main_loop()
-}
-
-pub fn retry_using_tempdir_check(exit_info: ExitInfo) -> Result<(), Box<dyn std::error::Error>> {
-	if !exit_info.retry_using_tempdir {
-		return Ok(());
+			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
+			InstallerProgression::PreExtractionChecks,
+		)
 	}
 
-	// Temp dir should delete itself once it goes out of scope
-	let temp_dir = TempDir::new()?;
-
-	ui_loop_single(
-		&PathBuf::from(temp_dir.path()),
-		InstallerProgression::PreExtractionChecks,
-		true,
-	);
-
-	// Give some time for any file handles to close
-	std::thread::sleep(std::time::Duration::from_secs(2));
-
-	let temp_dir_path = PathBuf::from(temp_dir.path());
-
-	if let Err(e) = temp_dir.close() {
-		let _ = ui_loop_single(
-			&PathBuf::from("07th-mod_installer"),
-			InstallerProgression::TempDirCleanupFailed(temp_dir_path),
-			false,
-		);
-		return Err(e.into());
+	fn build_cleanup_error(&self, failed_cleanup_path: PathBuf) -> InstallerGUI {
+		let window_size = self.window_size();
+		// if self.retry {
+		InstallerGUI::new(
+			[window_size[0] as f32, window_size[1] as f32],
+			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
+			InstallerProgression::TempDirCleanupFailed(failed_cleanup_path),
+		)
 	}
 
-	println!(
-		"Temp dir {} cleaned up successfully",
-		windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir")
-	);
-	return Ok(());
+	fn build_retry(&mut self) -> Result<InstallerGUI, Box<dyn std::error::Error>> {
+		// Note: Temp dir will attempt to delete itself once it goes out of scope, so make
+		// sure to keep it in scope until you are finished with it
+		let temp_dir = TempDir::new()?;
+
+		let window_size = self.window_size();
+		let retval = Ok(InstallerGUI::new(
+			[window_size[0] as f32, window_size[1] as f32],
+			InstallerConfig::new(&PathBuf::from(temp_dir.path()), false),
+			InstallerProgression::PreExtractionChecks,
+		));
+
+		self.temp_dir = Some(temp_dir);
+
+		retval
+	}
+
+	fn cleanup(&mut self) -> Option<PathBuf> {
+		if let Some(temp_dir) = self.temp_dir.take() {
+			// Give some time for any file handles to close
+			std::thread::sleep(std::time::Duration::from_secs(2));
+
+			let temp_dir_path = PathBuf::from(temp_dir.path());
+			let printable_tempdir =
+				windows_utilities::absolute_path_str(&temp_dir_path, "Couldn't display tempdir");
+
+			if let Err(e) = temp_dir.close() {
+				println!(
+					"Failed to clean up Temp dir {} due to {}",
+					printable_tempdir, e
+				);
+				return Some(temp_dir_path);
+			}
+
+			println!("Temp dir {} cleaned up successfully", printable_tempdir);
+		}
+
+		None
+	}
 }
 
 pub fn ui_loop() {
-	let exit_info = ui_loop_single(
-		&PathBuf::from("07th-mod_installer"),
-		InstallerProgression::PreExtractionChecks,
-		false,
-	);
-
-	if let Err(e) = retry_using_tempdir_check(exit_info) {
-		println!("Error retrying with tempdir: {}", e);
-	}
+	let builder = InstallerBuilder::new();
+	let system = support::init(&builder.window_name(), builder.window_size());
+	system.main_loop(builder);
 }
