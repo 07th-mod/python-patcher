@@ -266,6 +266,9 @@ if BUILD_LINUX_MAC:
 	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'), 'rb') as file:
 		windows_exe_sha256 = hashlib.sha256(file.read()).hexdigest()
 
+	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'), 'rb') as file:
+		windows_exe_noadmin_sha256 = hashlib.sha256(file.read()).hexdigest()
+
 	# Append VirusTotal result to changelog template
 	with open('github_actions_changelog_template.md', 'r') as changelog_template:
 		with open('github_actions_changelog_template_generated.md', 'w') as generated_changelog_template:
@@ -277,6 +280,8 @@ Your antivirus software or Windows may incorrectly give an antivirus warning (a 
 Typically we never get more than a couple false positives across the suite of about 67 different types of antivirus software.
 
 `07th-Mod.Installer.Windows.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_sha256}/detection
+
+`07th-Mod.Installer.Windows.NoAdmin.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_noadmin_sha256}/detection
 """)
 
 try_remove_tree(staging_folder)

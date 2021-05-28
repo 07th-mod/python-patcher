@@ -42,12 +42,14 @@ def do_scan(api_key, file_path):
 
 def scan():
 	output_folder = 'travis_installer_output'
-	loader_exe_name = '07th-Mod.Installer.Windows.exe'
-	final_exe_path = os.path.join(output_folder, loader_exe_name)
+	loader_exe_names = ['07th-Mod.Installer.Windows.exe', '07th-Mod.Installer.Windows.NoAdmin.exe']
 
-	# Scan the .exe with virustotal
-	print("Beginning VirusTotal Scan...")
-	do_scan(VT_API_KEY, final_exe_path)
+	for exe_name in loader_exe_names:
+		final_exe_path = os.path.join(output_folder, exe_name)
+
+		# Scan the .exe with virustotal
+		print(f"Beginning VirusTotal Scan of {exe_name}...")
+		do_scan(VT_API_KEY, final_exe_path)
 
 if __name__ == '__main__':
 	scan()
