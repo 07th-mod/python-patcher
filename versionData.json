@@ -213,7 +213,7 @@
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
 			{"id": "graphics",                  "version": "1.0.0"},
-			{"id": "script",                    "version": "1.0.30"},
+			{"id": "script",                    "version": "1.0.31"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.4.2"},
 			{"id": "os-specific-update",        "version": "1.0.0"},
@@ -228,7 +228,7 @@
 		"id" : "Umineko Question (Ch. 1-4)/voice-only",
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.1"},
+			{"id": "script",                    "version": "1.1.2"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
@@ -240,7 +240,7 @@
 		"files":[
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.12"},
+			{"id": "script",                    "version": "1.1.13"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.3.4"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
@@ -253,7 +253,7 @@
 		"files":[
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.12"},
+			{"id": "script",                    "version": "1.1.13"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.3.4"},
@@ -266,7 +266,7 @@
 		"id" : "Umineko Answer (Ch. 5-8)/voice-only",
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.1"},
+			{"id": "script",                    "version": "1.1.2"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
