@@ -34,6 +34,10 @@ EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-
 
 # Required Environment Variables
 GIT_REF = os.environ.get("GITHUB_REF")    # Github Tag / Version info
+if GIT_REF is None:
+	print('WARNING: GITHUB_REF environment variable not set! Will use current time instead for Github Ref.')
+	GIT_REF = str(datetime.datetime.now())
+
 GIT_TAG = GIT_REF.split('/')[-1]
 print(f"--- Git Ref: {GIT_REF} Git Tag: {GIT_TAG} ---")
 
@@ -174,6 +178,7 @@ if BUILD_LINUX_MAC:
 else:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'))
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'))
+	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.SafeMode.exe'))
 
 clear_folder_if_exists(staging_folder)
 
@@ -256,6 +261,9 @@ if not BUILD_LINUX_MAC:
 
 	build_rust_loader('07th-Mod.Installer.Windows.exe', True)
 	build_rust_loader('07th-Mod.Installer.Windows.NoAdmin.exe', False)
+	os.environ['NO_LAUNCHER_GUI'] = 'enabled'
+	build_rust_loader('07th-Mod.Installer.Windows.SafeMode.exe', True)
+	del os.environ['NO_LAUNCHER_GUI']
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:

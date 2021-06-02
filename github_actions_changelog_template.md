@@ -6,8 +6,8 @@
 ### Known Issues
 
 - **You may need to refresh the webpage (web GUI) if it does not load or seems to hang**.
-    - This will happen for MacOS users / Python 2 / Python 3.6 and below using the Chrome web browser (Firefox seems to be OK)
-    - This shouldn't happen on Windows builds / Python 3.7 and up as we've applied a fix
+  - This will happen for MacOS users / Python 2 / Python 3.6 and below using the Chrome web browser (Firefox seems to be OK)
+  - This shouldn't happen on Windows builds / Python 3.7 and up as we've applied a fix
 
 <details>
   <summary><b>Linux: Higurashi with GNOME Desktop/Ubuntu Crashes - CLICK TO EXPAND</b></summary>
@@ -26,5 +26,12 @@ Please make sure you can launch the base game before applying any mods (please d
 
 - If you are having installer trouble, or the game does not run properly, follow the [**Support Checklist**](https://07th-mod.com/wiki/support-checklist/) to solve your problem
 
+### Explanation of Windows Versions of the Installer
+
+1. `07th-Mod.Installer.Windows.exe` - Try this first. Runs the installer in administrator mode.
+2. `07th-Mod.Installer.Windows.NoAdmin.exe` - Use this if you don't want to run the installer in administrator mode.
+3. `07th-Mod.Installer.Windows.SafeMode.exe` - If the installer does not start up at all, or you have other problems, try this version of the installer. It uses a text-based interface for the launcher.
+
 ### Important Changes
+
 - put your changes here

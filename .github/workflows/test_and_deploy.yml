@@ -134,6 +134,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
             travis_installer_output/07th-Mod.Installer.Windows.NoAdmin.exe
+            travis_installer_output/07th-Mod.Installer.Windows.SafeMode.exe
           body_path: github_actions_changelog_template_generated.md
           draft: true
         env:
@@ -151,6 +152,7 @@ jobs:
             travis_installer_output/07th-Mod.Installer.linux.tar.gz
             travis_installer_output/07th-Mod.Installer.Windows.exe
             travis_installer_output/07th-Mod.Installer.Windows.NoAdmin.exe
+            travis_installer_output/07th-Mod.Installer.Windows.SafeMode.exe
           body_path: github_actions_changelog_template_generated.md
           draft: true
           tag_name: ${{ github.event.inputs.tag_name }}

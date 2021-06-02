@@ -50,6 +50,7 @@ fn fix_cwd() -> Result<PathBuf, Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+	let no_launcher_gui = option_env!("NO_LAUNCHER_GUI").is_some();
 	panic_handler::set_hook(String::from("07th-mod_crash.log"));
 
 	//////////////////////////// Begin file chooser code ///////////////////////////////////////////
@@ -94,7 +95,9 @@ For example, open "text and pdf" "*.txt;*.pdf" "main c file" "main.c""#;
 	let (_maybe_job, register_job_result) = windows_utilities::new_job_kill_on_job_close();
 
 	// Hide the console to make the installer less scary
-	windows_utilities::hide_console_window();
+	if !no_launcher_gui {
+		windows_utilities::hide_console_window();
+	}
 
 	// _program_lock must be created after _maybe_job so that its drop() is called first
 	let _program_lock = match ProgramInstanceLock::try_lock("07th-mod-installer-running.lock") {
@@ -130,7 +133,10 @@ Please check the installer not already running, and folder [{}] is writeable"#,
 		}
 	};
 
-	if register_job_result.is_ok() {
+	if no_launcher_gui {
+		return panic_handler::fallback_installer();
+	}
+	else if register_job_result.is_ok() {
 		// This function blocks forever until the user quits the graphical installer
 		ui::ui_loop();
 	} else {
