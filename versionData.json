@@ -130,7 +130,7 @@
 			{"id": "ui-windows-downgrade", "version": "1.1.0"},
 			{"id": "system-mangagamer-windows", "version": "1.1.0"},
 			{"id": "system", "version": "1.1.0"},
-			{"id": "og-dll-asset-update", "version": "1.0.0"},
+			{"id": "og-dll-asset-update", "version": "1.0.1"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.0"}
 		]
