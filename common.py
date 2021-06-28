@@ -1044,23 +1044,34 @@ class DownloaderAndExtractor:
 		:param extractionDir: Where to extract or move the downloaded file to after download is finished
 		:return:
 		"""
-		if DownloaderAndExtractor.__urlIsMetalink(url):
-			metalinkFilenames = getMetalinkFilenames(url)
-			print("Metalink contains: ", metalinkFilenames)
-			return [DownloaderAndExtractor.ExtractableItem(
-				filename=filename,
-				length=length,
-				destinationPath=extractionDir,
-				fromMetaLink=True,
-				remoteLastModified=None) for filename, length in metalinkFilenames]
-		else:
-			filename, length, remoteLastModified = DownloaderAndExtractor.__getFilenameFromURL(url)
-			return [DownloaderAndExtractor.ExtractableItem(
-				filename=filename,
-				length=length,
-				destinationPath=extractionDir,
-				fromMetaLink=False,
-				remoteLastModified=remoteLastModified)]
+		MAX_QUERY_ATTEMPTS = 5
+		for attempt_no in range(1, MAX_QUERY_ATTEMPTS + 1):
+			commandLineParser.printSeventhModStatusUpdate(1, "Inspecting URL '{}' (attempt {}/{})".format(url, attempt_no, MAX_QUERY_ATTEMPTS))
+
+			try:
+				if DownloaderAndExtractor.__urlIsMetalink(url):
+					metalinkFilenames = getMetalinkFilenames(url)
+					print("Metalink contains: ", metalinkFilenames)
+					return [DownloaderAndExtractor.ExtractableItem(
+						filename=filename,
+						length=length,
+						destinationPath=extractionDir,
+						fromMetaLink=True,
+						remoteLastModified=None) for filename, length in metalinkFilenames]
+				else:
+					filename, length, remoteLastModified = DownloaderAndExtractor.__getFilenameFromURL(url)
+					return [DownloaderAndExtractor.ExtractableItem(
+						filename=filename,
+						length=length,
+						destinationPath=extractionDir,
+						fromMetaLink=False,
+						remoteLastModified=remoteLastModified)]
+			except Exception as e:
+				traceback.print_exc()
+				if attempt_no >= MAX_QUERY_ATTEMPTS:
+					raise e
+
+			time.sleep(5)
 
 	@staticmethod
 	def __urlIsMetalink(url):
