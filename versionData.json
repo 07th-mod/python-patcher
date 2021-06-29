@@ -199,7 +199,7 @@
 			{"id": "se",                  "version": "1.0.0"},
 			{"id": "movie",               "version": "1.2.0"},
 			{"id": "voices",              "version": "1.4.0"},
-			{"id": "script",              "version": "9.0.0"},
+			{"id": "script",              "version": "9.1.0"},
 			{"id": "system-windows",      "version": "1.0.0"},
 			{"id": "system-unix",         "version": "1.0.0"},
 			{"id": "movie-unix",          "version": "1.2.0"},
