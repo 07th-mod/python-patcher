@@ -541,7 +541,8 @@
 					],
 					"fileOverrides" : [
 						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},
-						{"name": "system", "id": "system-unix",    "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_unix.7z"},
+						{"name": "system", "id": "system-linux",   "os": ["linux"],        "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_linux.7z"},
+						{"name": "system", "id": "system-mac",     "os": ["mac"],          "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_mac.7z"},
 						{"name": "movie",  "id": "movie-unix",     "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z"},
 						{"name": "ui",     "id": "ui-windows",     "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
 						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
