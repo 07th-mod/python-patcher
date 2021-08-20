@@ -30,7 +30,7 @@ print(f"Building Linux Mac: {BUILD_LINUX_MAC}")
 
 IS_WINDOWS = sys.platform == "win32"
 
-EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.7.7/python-3.7.7-embed-win32.zip"
+EMBEDDED_PYTHON_ZIP_URL = "https://www.python.org/ftp/python/3.8.10/python-3.8.10-embed-win32.zip"
 
 # Required Environment Variables
 GIT_REF = os.environ.get("GITHUB_REF")    # Github Tag / Version info
