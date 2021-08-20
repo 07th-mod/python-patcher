@@ -243,21 +243,41 @@ class Installer:
 		Moves files from the directory they were extracted to
 		to the game data folder
 		"""
+		# On MacOS, the datadirectory has a different path than in the archive file:
+		#
+		# datadirectory in archive file : "Higurashi_Ep0X"
+		# datadirectory on Linux/Windows: "Higurashi_Ep0X"
+		#         datadirectory on Macos: "Contents/Resources/Data"
+		#
+		# To account for this, we rename the "Higurashi_Ep0X" folder to "Contents/Resources/Data" below
+		# (self.dataDirectory should equal "Contents/Resources/Data" on MacOS)
 		self._moveDirectoryIntoPlace(
 			fromDir = os.path.join(self.extractDir, self.info.subModConfig.dataName),
-			toDir = self.dataDirectory
+			toDir = self.dataDirectory,
+			log = True,
 		)
+
 		if common.Globals.IS_WINDOWS:
 			exePath = self.info.subModConfig.dataName[:-5] + ".exe"
 			self._moveFileIntoPlace(
 				fromPath = os.path.join(self.extractDir, exePath),
 				toPath = os.path.join(self.directory, exePath),
+				log=True,
 			)
 		elif common.Globals.IS_MAC:
 			self._moveFileIntoPlace(
 				fromPath = os.path.join(self.extractDir, "Contents/Resources/PlayerIcon.icns"),
-				toPath = os.path.join(self.directory, "Contents/Resources/PlayerIcon.icns")
+				toPath = os.path.join(self.directory, "Contents/Resources/PlayerIcon.icns"),
+				log = True,
 			)
+
+		# If any files still remain, just move them directly into the game directory,
+		# keeping the same folder structure as inside the archive
+		self._moveDirectoryIntoPlace(
+			fromDir = self.extractDir,
+			toDir = self.directory,
+			log = True,
+		)
 
 	def _applyLanguageSpecificSharedAssets(self, folderToApply):
 		"""Helper function which applies language specific assets.
@@ -322,11 +342,14 @@ class Installer:
 			                'this error so we can fix it:\n\n'
 			                '"Invalid Language Specific Asset files found: {}"'.format(invalidUIFileList))
 
-	def _moveDirectoryIntoPlace(self, fromDir, toDir):
-		# type: (str, str) -> None
+	def _moveDirectoryIntoPlace(self, fromDir, toDir, log=False):
+		# type: (str, str, Optional[bool]) -> None
 		"""
 		Recursive function that does the actual moving for `moveFilesIntoPlace`
 		"""
+		if log:
+			print("_moveDirectoryIntoPlace: '{}' -> '{}'".format(fromDir, toDir))
+
 		for file in os.listdir(fromDir):
 			src = path.join(fromDir, file)
 			target = path.join(toDir, file)
@@ -340,11 +363,14 @@ class Installer:
 				shutil.move(src, target)
 		forceRemoveDir(fromDir)
 
-	def _moveFileIntoPlace(self, fromPath, toPath):
-		# type: (str, str) -> None
+	def _moveFileIntoPlace(self, fromPath, toPath, log=False):
+		# type: (str, str, Optional[bool]) -> None
 		"""
 		Moves a single file from `fromPath` to `toPath`
 		"""
+		if log:
+			print("_moveFileIntoPlace: '{}' -> '{}'".format(fromPath, toPath))
+
 		if path.exists(fromPath):
 			if path.exists(toPath):
 				forceRemove(toPath)
