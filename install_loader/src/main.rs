@@ -134,28 +134,17 @@ Please check the installer not already running, and folder [{}] is writeable"#,
 	};
 
 	if no_launcher_gui {
-		return panic_handler::fallback_installer();
-	}
-	else if register_job_result.is_ok() {
+		return panic_handler::fallback_installer_pause();
+	} else if register_job_result.is_ok() {
 		// This function blocks forever until the user quits the graphical installer
 		ui::ui_loop();
 	} else {
-		windows_utilities::show_console_window();
-
 		// If job object not registered properly, use fallback/console installer
 		// This ensures that everything is cleaned up properly as windows will automatically
 		// clean up child processes when the console window is closed.
 		println!("Warning: Failed to register job object! You're probably using Windows 7!");
 		println!("Don't worry - you can use the terminal based installer below");
-		if let Err(error) = panic_handler::fallback_installer() {
-			println!("Fallback Installer has failed with: {:?}", error);
-			println!(
-				"Please help us by reporting the error and submitting the crash log
- - on our Discord server: https://discord.gg/pf5VhF9
- - or, as a Github issue: https://github.com/07th-mod/python-patcher/issues"
-			);
-			panic_handler::pause("Press ENTER to quit the installer");
-		}
+		return panic_handler::fallback_installer_pause();
 	}
 
 	Ok(())

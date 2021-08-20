@@ -94,7 +94,25 @@ Please help us by reporting the error and submitting the crash log
 	expl
 }
 
-pub fn fallback_installer() -> Result<(), Box<dyn Error>> {
+pub fn fallback_installer_pause() -> Result<(), Box<dyn Error>> {
+	windows_utilities::show_console_window();
+
+	if let Err(error) = fallback_installer() {
+		println!("Fallback Installer has failed with: {:?}", error);
+		println!(
+			"
+Please help us by taking a screenshot of the error and uploading it:
+- on our Discord server: https://discord.gg/pf5VhF9
+- or, as a Github issue: https://github.com/07th-mod/python-patcher/issues"
+		);
+		pause("Press ENTER to quit the installer");
+		return Err(error);
+	}
+
+	Ok(())
+}
+
+fn fallback_installer() -> Result<(), Box<dyn Error>> {
 	eprintln!("\n------------- NOTE: 'Fallback Mode' is available ----------");
 
 	// Check if the installer is being run from a temporary folder
@@ -187,7 +205,31 @@ Please make sure it's installed.
 
 	println!("Extraction Complete - Please wait while installer starts in your browser...");
 
-	python_launcher::launch_python_script(&config, graphical)?.wait()
+	let launch_result = python_launcher::launch_python_script(&config, graphical);
+
+	let mut process_runner = match launch_result {
+		Ok(process_runner) => process_runner,
+		Err(error) => {
+			println!(
+				r#"
+Error starting python process: {}
+
+Please check if any antivirus software or permission issues are stopping the installer from running."#,
+				error
+			);
+			return Err(error);
+		}
+	};
+
+	match process_runner.wait() {
+		Ok(res) => res,
+		Err(error) => {
+			println!("\nPython process exited with error: {}", error);
+			return Err(error);
+		}
+	}
+
+	Ok(())
 }
 
 /// When called, changes the default panic handler to print useful information to the end user and
@@ -219,10 +261,8 @@ pub fn set_hook(log_filename: String) {
 			eprintln!("Error: Crash log could not be written!");
 		}
 
-		if let Err(error) = fallback_installer() {
+		if let Err(error) = fallback_installer_pause() {
 			println!("Fallback Installer Error: {}", error);
 		};
-
-		pause("\nInstaller finished. Press any key to exit.");
 	}));
 }
