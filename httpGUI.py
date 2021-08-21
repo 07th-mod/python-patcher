@@ -829,7 +829,7 @@ class InstallerGUI:
 				retval = { 'installStarted': installValid }
 				if installValid:
 					if deleteVersionInformation:
-						fileVersionManagement.VersionManager.tryDeleteLocalVersionFile(fullInstallConfiguration.installPath)
+						fileVersionManagement.VersionManager.deleteLocalVersionFileIfExists(fullInstallConfiguration.installPath)
 
 					downloadItemsPreview, totalDownloadSize, numUpdatesRequired, fullUpdateRequired, partialReinstallDetected, scriptNeedsUpdate = getDownloadPreview(fullInstallConfiguration, verbosePrinting=not allowCache)
 					haveEnoughFreeSpace, freeSpaceAdvisoryString = common.checkFreeSpace(

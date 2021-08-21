@@ -114,7 +114,7 @@ class VersionManager:
 			print("Full Update: {} ({}/{}) excluding mod options".format(self.fullUpdateRequired(), self.numUpdatesRequired, self.totalNumUpdates))
 
 	def fullUpdateRequired(self):
-		return self.numUpdatesRequired == self.totalNumUpdates
+		return self.localVersionInfo is None
 
 	def getFilesRequiringUpdate(self):
 		#type: () -> List[installConfiguration.ModFile]
@@ -144,7 +144,7 @@ class VersionManager:
 		self.remoteVersionInfo.serialize(versionSavePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	@staticmethod
-	def tryDeleteLocalVersionFile(localVersionFolder):
+	def deleteLocalVersionFileIfExists(localVersionFolder):
 		localVersionFilePathToDelete = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
 		if os.path.exists(localVersionFilePathToDelete):
 			os.remove(localVersionFilePathToDelete)
