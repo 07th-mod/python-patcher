@@ -197,7 +197,6 @@ if BUILD_LINUX_MAC:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 else:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'))
-	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'))
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.SafeMode.exe'))
 	try_remove_tree(windows_zip_output_path)
 	try_remove_tree('install.bat')
@@ -283,7 +282,6 @@ if not BUILD_LINUX_MAC:
 		shutil.copy('install_loader/target/release/seventh_mod_loader.exe', final_exe_path)
 
 	build_rust_loader('07th-Mod.Installer.Windows.exe', True)
-	build_rust_loader('07th-Mod.Installer.Windows.NoAdmin.exe', False)
 	os.environ['NO_LAUNCHER_GUI'] = 'enabled'
 	build_rust_loader('07th-Mod.Installer.Windows.SafeMode.exe', True)
 	del os.environ['NO_LAUNCHER_GUI']
@@ -310,8 +308,9 @@ if BUILD_LINUX_MAC:
 	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'), 'rb') as file:
 		windows_exe_sha256 = hashlib.sha256(file.read()).hexdigest()
 
-	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'), 'rb') as file:
-		windows_exe_noadmin_sha256 = hashlib.sha256(file.read()).hexdigest()
+	# Get SHA256 of windows safemode .exe
+	with open(os.path.join(output_folder, '07th-Mod.Installer.Windows.SafeMode.exe'), 'rb') as file:
+		windows_exe_safemode_sha256 = hashlib.sha256(file.read()).hexdigest()
 
 	# Append VirusTotal result to changelog template
 	with open('github_actions_changelog_template.md', 'r') as changelog_template:
@@ -325,7 +324,7 @@ Typically we never get more than a couple false positives across the suite of ab
 
 `07th-Mod.Installer.Windows.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_sha256}/detection
 
-`07th-Mod.Installer.Windows.NoAdmin.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_noadmin_sha256}/detection
+`07th-Mod.Installer.Windows.SafeMode.exe` VirusTotal Result: https://www.virustotal.com/gui/file/{windows_exe_safemode_sha256}/detection
 """)
 
 try_remove_tree(staging_folder)
