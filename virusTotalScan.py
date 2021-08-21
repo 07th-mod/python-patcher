@@ -42,7 +42,7 @@ def do_scan(api_key, file_path):
 
 def scan():
 	output_folder = 'travis_installer_output'
-	loader_exe_names = ['07th-Mod.Installer.Windows.exe', '07th-Mod.Installer.Windows.NoAdmin.exe']
+	loader_exe_names = ['07th-Mod.Installer.Windows.exe', '07th-Mod.Installer.Windows.SafeMode.exe']
 
 	for exe_name in loader_exe_names:
 		final_exe_path = os.path.join(output_folder, exe_name)
