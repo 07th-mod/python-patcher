@@ -643,16 +643,27 @@ def getModList(jsonURI, isURL):
 	"""
 	info, exception = getJSON(jsonURI, isURL)
 	if info is None:
-		raise Exception("""------------------------------------------------------------------------
-Error: Couldn't reach Github to download mod list! ({})
+		if exception is HTTPError:
+			raise Exception("""------------------------------------------------------------------------
+	Error: Couldn't reach Github to download mod list! ({})
 
-Please check the following:
-- You have a working internet connection
-- Check if you can manually download the following file ({})
-- Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
+	Please check the following:
+	- You have a working internet connection
+	- Check if you can manually download the following file ({})
+	- Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
 
-Detailed Error: {}
-------------------------------------------------------------------------""".format(jsonURI, jsonURI, exception))
+	Detailed Error: {}
+	------------------------------------------------------------------------""".format(jsonURI, jsonURI, exception))
+		else:
+			raise Exception("""------------------------------------------------------------------------
+	Error while reading JSON: {}
+
+	Please check the following:
+	- Tell the developers
+	- You have a working internet connection
+	- Check if you can manually download the following file ({})
+	- Check our Wiki for more solutions: https://www.07th-mod.com/wiki/Installer/faq/
+	------------------------------------------------------------------------""".format(exception, jsonURI))
 
 	try:
 		version = info["version"]
