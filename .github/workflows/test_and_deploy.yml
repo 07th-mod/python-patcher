@@ -88,7 +88,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: windows-loader-exe
-          path: travis_installer_output/*.exe
+          path: travis_installer_output/*.*
           if-no-files-found: error
 
   # Linux/Mac Build
@@ -114,7 +114,7 @@ jobs:
       - name: Validate JSON
         run: bash travis_validate_json.sh
 
-      # Download windows .exe artifact
+      # Download Windows artifacts
       - name: Download all Windows .exe artifacts
         uses: actions/download-artifact@v2
         with:
@@ -132,11 +132,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/') # only publish tagged commits
         with:
           files: |
-            travis_installer_output/07th-Mod.Installer.mac.zip
-            travis_installer_output/07th-Mod.Installer.linux.tar.gz
-            travis_installer_output/07th-Mod.Installer.Windows.exe
-            travis_installer_output/07th-Mod.Installer.Windows.NoAdmin.exe
-            travis_installer_output/07th-Mod.Installer.Windows.SafeMode.exe
+            travis_installer_output/*.tar.gz
+            travis_installer_output/*.exe
+            travis_installer_output/*.zip
           body_path: github_actions_changelog_template_generated.md
           draft: true
         env:
