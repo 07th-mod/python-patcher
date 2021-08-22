@@ -97,6 +97,25 @@ def pre_build_validation():
 	fileVersionManagement.Developer_ValidateVersionDataJSON(sub_mod_configs)
 	print("Travis validation success")
 
+def generate_windows_batch(script_name):
+	return f"""
+	setlocal
+
+	:: Fix if batch file is run as administrator
+	pushd %~dp0
+
+	@echo off
+	cd 07th-mod_installer
+	"python/python.exe" {script_name}
+
+	echo -----------------------------------------------------------
+	echo ------------ Batch file has finished executing ------------
+	echo ------------ Press any key to close this window -----------
+	echo -----------------------------------------------------------
+	pause
+
+	popd
+	"""
 
 print("Python {}".format(sys.version))
 min_python = (3, 8)
@@ -112,6 +131,7 @@ print("\nTravis python build script started\n")
 staging_folder = os.path.join(tempfile.gettempdir(), '07th-mod_patcher_staging')
 output_folder = 'travis_installer_output'
 bootstrap_copy_folder = 'travis_installer_bootstrap_copy'
+windows_zip_output_path = os.path.join(output_folder, '07th-Mod.Installer.Windows.NoLauncher.zip')
 
 # No wildcards allowed in these paths to be ignored
 ignore_paths = [
@@ -179,6 +199,9 @@ else:
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.exe'))
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.NoAdmin.exe'))
 	try_remove_tree(os.path.join(output_folder, '07th-Mod.Installer.Windows.SafeMode.exe'))
+	try_remove_tree(windows_zip_output_path)
+	try_remove_tree('install.bat')
+	try_remove_tree('install_safe_mode.bat')
 
 clear_folder_if_exists(staging_folder)
 
@@ -264,6 +287,19 @@ if not BUILD_LINUX_MAC:
 	os.environ['NO_LAUNCHER_GUI'] = 'enabled'
 	build_rust_loader('07th-Mod.Installer.Windows.SafeMode.exe', True)
 	del os.environ['NO_LAUNCHER_GUI']
+
+	# Also build a plain batch + .zip file
+	call(['7z', 'a', '-aoa', windows_zip_output_path, f'./{bootstrap_copy_folder}/higu_win_installer_32/install_data'])
+	call(['7z', 'rn', windows_zip_output_path, 'install_data', '07th-mod_installer'])
+
+	with open('install.bat', 'w') as f:
+		f.write(generate_windows_batch('main.py'))
+
+	with open('install_safe_mode.bat', 'w') as f:
+		f.write(generate_windows_batch('cli_interactive.py'))
+
+	call(['7z', 'a', '-aoa', windows_zip_output_path, 'install.bat'])
+	call(['7z', 'a', '-aoa', windows_zip_output_path, 'install_safe_mode.bat'])
 
 # NOTE: mac zip doesn't need subdir - use '/*' to achieve this
 if BUILD_LINUX_MAC:
