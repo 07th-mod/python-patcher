@@ -99,24 +99,66 @@ final class JSONValidatorTests: XCTestCase {
 		}
 	}
 
-	func testURLsExist() {
-		let decoder = PedanticJSONDecoder()
-		guard let installData = try? decoder.decode(InstallDataDefinition.self, from: Data(contentsOf: installData)) else {
-			XCTFail("Failed to decode install data, look at other tests for details")
-			return
+	class URLTester: NSObject, URLSessionDataDelegate {
+		var session: URLSession!
+		var requests: [URLSessionTask: (req: URLRequest, url: URL, tries: Int, path: String, exp: XCTestExpectation)] = [:]
+
+		override init() {
+			super.init()
+			let config = URLSessionConfiguration.ephemeral
+			config.httpMaximumConnectionsPerHost = 1
+			session = URLSession(configuration: config, delegate: self, delegateQueue: .main)
 		}
 
-		func testDownload(_ urlString: String, codingPath: String) {
-			guard let url = URL(string: urlString) else {
-				XCTFail("The url \"\(urlString)\" was invalid")
+		func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+			guard dataTask.state != .canceling else { return }
+			if dataTask.countOfBytesExpectedToReceive > (1024 * 1024) {
+				// Server not honoring range request for a large (multi-megabyte) file!
+				let mb = dataTask.countOfBytesExpectedToReceive / (1024 * 1024)
+				if let info = requests[dataTask] {
+					print("::warning::Server did not honor range request when downloading the \(mb)mb file \(info.url) (path: \(info.path))")
+				} else {
+					let name = dataTask.currentRequest?.url?.absoluteString ?? "<unknown>"
+					print("::warning::Server did not honor range request when downloading the \(mb)mb file \(name)")
+				}
+				dataTask.cancel()
+			}
+		}
+
+		func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+			guard let (request, url, tries, codingPath, expectation) = requests[task] else {
+				print("Received callback for unregistered task!")
 				return
 			}
-			let e = expectation(description: "\(url) (at \(codingPath)) is downloadable")
-			var request = URLRequest(url: url)
-			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
-			request.timeoutInterval = Double.random(in: 4...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
-
-			tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 8)
+			requests[task] = nil
+			if let error = error, (error as NSError).code != NSURLErrorCancelled {
+				if tries > 1, (error as NSError).code == NSURLErrorTimedOut {
+					// If it times out, try again
+					print("Attempt to download \(url) timed out, \(tries - 1) retries left")
+					tryDownload(request, fulfilling: expectation, url: url, codingPath: codingPath, tries: tries - 1)
+					return
+				}
+				XCTFail("Failed to download \(url) (at \(codingPath)): \(error)")
+			}
+			else if let response = task.response as? HTTPURLResponse {
+				// Open source Foundation doesn't properly follow HTTP 300s
+				if response.statusCode / 100 == 3, let loc = response.allHeaderFields["location"].flatMap({ $0 as? String }).flatMap(URL.init(string:)) {
+					var request = request
+					request.url = loc
+					tryDownload(request, fulfilling: expectation, url: loc, codingPath: codingPath, tries: tries - 1)
+					return
+				}
+				if response.statusCode != 200 && response.statusCode != 206 {
+					XCTFail("Failed to download \(url) (at \(codingPath)): response code was \(response.statusCode)")
+				}
+			}
+			else if let response = task.response {
+				XCTFail("Failed to download \(url) (at \(codingPath)): unexpected response: \(response)")
+			}
+			else {
+				XCTFail("Failed to download \(url) (at \(codingPath)): got nil response with no error")
+			}
+			expectation.fulfill()
 		}
 
 		/// Attempts to download the given file, fulfilling the given expectation if it succeeds
@@ -128,39 +170,32 @@ final class JSONValidatorTests: XCTestCase {
 			codingPath: String,
 			tries: Int
 		) {
-			var task: URLSessionDataTask? = nil
-			task = URLSession.shared.dataTask(with: request) { [weak task] (data, response, error) in
-				task?.cancel()
-				if let error = error {
-					if tries > 1, (error as NSError).code == NSURLErrorTimedOut {
-						// If it times out, try again
-						print("Attempt to download \(url) timed out, \(tries - 1) retries left")
-						tryDownload(request, fulfilling: expectation, url: url, codingPath: codingPath, tries: tries - 1)
-						return
-					}
-					XCTFail("Failed to download \(url) (at \(codingPath)): \(error)")
-				}
-				else if let response = response as? HTTPURLResponse {
-					// Open source Foundation doesn't properly follow HTTP 300s
-					if response.statusCode / 100 == 3, let loc = response.allHeaderFields["location"].flatMap({ $0 as? String }).flatMap(URL.init(string:)) {
-						var request = request
-						request.url = loc
-						tryDownload(request, fulfilling: expectation, url: loc, codingPath: codingPath, tries: tries - 1)
-						return
-					}
-					if response.statusCode != 200 && response.statusCode != 206 {
-						XCTFail("Failed to download \(url) (at \(codingPath)): response code was \(response.statusCode)")
-					}
-				}
-				else if let response = response {
-					XCTFail("Failed to download \(url) (at \(codingPath)): unexpected response: \(response)")
-				}
-				else {
-					XCTFail("Failed to download \(url) (at \(codingPath)): got nil response with no error")
-				}
-				expectation.fulfill()
+			let task = session.dataTask(with: request)
+			requests[task] = (request, url, tries, codingPath, expectation)
+			task.resume()
+		}
+	}
+
+	func testURLsExist() {
+		let decoder = PedanticJSONDecoder()
+		guard let installData = try? decoder.decode(InstallDataDefinition.self, from: Data(contentsOf: installData)) else {
+			XCTFail("Failed to decode install data, look at other tests for details")
+			return
+		}
+
+		let tester = URLTester()
+
+		func testDownload(_ urlString: String, codingPath: String) {
+			guard let url = URL(string: urlString) else {
+				XCTFail("The url \"\(urlString)\" was invalid")
+				return
 			}
-			task!.resume()
+			let e = expectation(description: "\(url) (at \(codingPath)) is downloadable")
+			var request = URLRequest(url: url)
+			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
+			request.timeoutInterval = Double.random(in: 4...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
+
+			tester.tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 8)
 		}
 
 		for mod in installData.mods {
