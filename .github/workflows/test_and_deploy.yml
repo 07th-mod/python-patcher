@@ -111,8 +111,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       # Run JSON Validation script
-      - name: Validate JSON
-        run: bash travis_validate_json.sh
+      # - name: Validate JSON
+      #   run: bash travis_validate_json.sh
 
       # Download Windows artifacts
       - name: Download all Windows .exe artifacts
