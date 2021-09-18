@@ -100,6 +100,7 @@ final class JSONValidatorTests: XCTestCase {
 	}
 
 	func testURLsExist() {
+		let timeLimitPerURL = 120.0
 		let decoder = PedanticJSONDecoder()
 		guard let installData = try? decoder.decode(InstallDataDefinition.self, from: Data(contentsOf: installData)) else {
 			XCTFail("Failed to decode install data, look at other tests for details")
@@ -107,6 +108,7 @@ final class JSONValidatorTests: XCTestCase {
 		}
 
 		func testDownload(_ urlString: String, codingPath: String) {
+			print("Testing url \(urlString)...")
 			guard let url = URL(string: urlString) else {
 				XCTFail("The url \"\(urlString)\" was invalid")
 				return
@@ -114,7 +116,7 @@ final class JSONValidatorTests: XCTestCase {
 			let e = expectation(description: "\(url) (at \(codingPath)) is downloadable")
 			var request = URLRequest(url: url)
 			request.setValue("bytes=0-1023", forHTTPHeaderField: "Range")
-			request.timeoutInterval = Double.random(in: 4...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
+			request.timeoutInterval = Double.random(in: 20...30) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
 
 			tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 8)
 		}
@@ -163,27 +165,30 @@ final class JSONValidatorTests: XCTestCase {
 			task!.resume()
 		}
 
+		// NOTE: This code used to test every URL simultaneously, but we had issues where our server would complain if you did too many requests at once.
+		// To fix this, I've made it test each URL sequentially. See https://github.com/07th-mod/wiki/issues/25#issuecomment-911144984 for more details.
 		for mod in installData.mods {
 			for submod in mod.submods {
 				for file in submod.files {
 					if let url = file.url {
 						testDownload(url, codingPath: "\(mod.name) → \(submod.name) → \(file.name)")
+						waitForExpectations(timeout: timeLimitPerURL)
 					}
 				}
 				for (index, file) in submod.fileOverrides.enumerated() {
 					testDownload(file.url, codingPath: "\(mod.name) → \(submod.name) → override \(index) / \(submod.name)")
+					waitForExpectations(timeout: timeLimitPerURL)
 				}
 			}
 			for option in mod.modOptionGroups ?? [] {
 				if let entry = option.radio ?? option.checkBox {
 					for item in entry where item.data != nil {
 						testDownload(item.data!.url, codingPath: "\(mod.name) → option \(option.name) → \(item.name)")
+						waitForExpectations(timeout: timeLimitPerURL)
 					}
 				}
 			}
 		}
-
-		waitForExpectations(timeout: 60)
 	}
 
 	static var allTests = [
