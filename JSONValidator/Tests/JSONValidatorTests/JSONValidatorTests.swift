@@ -196,6 +196,8 @@ final class JSONValidatorTests: XCTestCase {
 			request.timeoutInterval = Double.random(in: 4...6) // Use a random interval so if the timeout reason was that the server didn't like our request spam, subsequent requests will be more and more spread out
 
 			tester.tryDownload(request, fulfilling: e, url: url, codingPath: codingPath, tries: 8)
+
+			waitForExpectations(timeout: 60) // Workaround for URLSession bug, normally we'd dispatch them all and wait for them all at once.  See https://bugs.swift.org/browse/SR-15214 for details
 		}
 
 		for mod in installData.mods {
@@ -217,8 +219,6 @@ final class JSONValidatorTests: XCTestCase {
 				}
 			}
 		}
-
-		waitForExpectations(timeout: 60)
 	}
 
 	static var allTests = [
