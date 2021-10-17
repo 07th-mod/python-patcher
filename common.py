@@ -441,9 +441,9 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 		'--continue=true', # Allow continuing the download of a partially downloaded file (is this flag actually necessary?)
 		'--retry-wait=5',  # Seconds to wait between retries
 		'-m 0', # max number of retries (0=unlimited). In some cases, like server rejects download, aria2c won't retry.
-		'-x 8', # max connections to the same server
-		'-s 8', # Split - Try to use N connections per each download item
-		'-j 1', # max concurrent download items (eg number of separate urls which can be downloaded in parallel)
+		'-x 1', # max connections to the same server
+		'-s 8', # how many mirrors to use to download each file - currently we only have one download source though
+		'-j 1', # how many files to download at the same time (eg number of separate urls which can be downloaded in parallel)
 		'--auto-file-renaming=false',
 		# By default, if aria2c detects a file already exists with the same name, and is different size to the file
 		# being downloaded (lets call this 'test.zip'), it will save to a different name ('test.2.zip', 'test.3.zip' etc)
@@ -808,6 +808,7 @@ class DownloaderAndExtractor:
 	:param extractionDir:	The folder where archives will be extracted to, and where any files will be copied to
 	:return:
 	"""
+	MAX_DOWNLOAD_ATTEMPTS_METALINK = 10
 	MAX_DOWNLOAD_ATTEMPTS = 3
 
 	class ExtractableItem:
@@ -932,11 +933,15 @@ class DownloaderAndExtractor:
 		for i, url in enumerate(self.downloadList):
 			extractables = self.extractablesForEachDownload[i]
 			attempt = 0
-			for attempt in range(DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS):
+			max_attempts = DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS
+			if DownloaderAndExtractor.__urlIsMetalink(url):
+				max_attempts = DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS_METALINK
+
+			for attempt in range(max_attempts):
 				overallPercentage = int(i*self.downloadProgressAmount/len(self.downloadList))
 				if not self.suppressDownloadStatus:
 					commandLineParser.printSeventhModStatusUpdate(overallPercentage, "Downloading: {} (total) DL Folder: [{}] URL: [{}] (Attempt: {}/{})"
-					                                          .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, DownloaderAndExtractor.MAX_DOWNLOAD_ATTEMPTS))
+					                                          .format(prettyPrintFileSize(totalDownloadSize), self.downloadTempDir, url, attempt + 1, max_attempts))
 				if aria(self.downloadTempDir, url=url, followMetaLink=DownloaderAndExtractor.__urlIsMetalink(url)) != 0:
 					print("ERROR - failed to download [{}]. Trying again in 3 seconds...".format(url))
 					time.sleep(3)
