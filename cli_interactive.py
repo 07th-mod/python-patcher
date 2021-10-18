@@ -184,7 +184,7 @@ if __name__ == "__main__":
 			uniqueGameNames.append(subMod.modName)
 
 	# Ask the user which game they want to install
-	gameName, _ = userPickFromList(uniqueGameNames, "Please choose the game you want to mod")
+	gameName, _ = userPickFromList(uniqueGameNames, "Please choose the mod you want to install")
 
 	# Get a list of variants with that name
 	modVariants = [subMod for subMod in subModList if subMod.modName == gameName] #type: List[SubModConfig]
