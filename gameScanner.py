@@ -120,6 +120,7 @@ def getMaybeGamePaths():
 	if common.Globals.IS_LINUX:
 		hardCodedGameContainingPaths.append("~/.steam/steam/steamapps/common/")
 		hardCodedGameContainingPaths.append("~/.steam/steambeta/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common") # Steam Flatpak
 		hardCodedGameContainingPaths.append("~/GOG Games")  # GOG's website states this, but is unconfirmed
 
 	for hardCodedPathNotNormalized in hardCodedGameContainingPaths:
