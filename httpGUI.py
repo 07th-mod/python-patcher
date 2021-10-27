@@ -908,7 +908,7 @@ class InstallerGUI:
 									path = os.path.join(common.Globals.LOG_FOLDER, filename)
 									myzip.write(path, os.path.basename(path))
 
-								if gameLogPath is not None:
+								if gameLogExists:
 									myzip.write(gameLogPath, higurashi_log_file_name)
 							break
 						except Exception as e:
