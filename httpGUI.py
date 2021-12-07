@@ -642,6 +642,11 @@ class InstallerGUI:
 				                "You need the NEW Steam/Mangagamer/GOG Version of the game for the mod to work correctly.\n"
 				                "Reason: found [{}] at game path [{}]".format(identifier, installPath))
 
+			# The below if statement should only trigger if the user manually selects a partially uninstalled path
+			# The auto path detection should skip partially uninstalled paths
+			if gameScanner.gamePathIsPartiallyUninstalled(installPath):
+				raise Exception("The game at '{}' is missing important files / was only partially uninstalled and may interfere with the installer.\n\nPlease click 'OK', then read the 'Action Required' error message in red.".format(installPath))
+
 			return (True, fullInstallConfigs[0]) if fullInstallConfigs else (False, '')
 		else:
 			if not fullInstallConfigs:

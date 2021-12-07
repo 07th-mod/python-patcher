@@ -265,8 +265,10 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 			if os.path.exists(possibleSteamPath):
 				isSteam = True
 
+		# Skip any game paths which look like they're corrupted / partially uninstalled
 		if gamePathIsPartiallyUninstalled(gamePath):
 			returnedPartiallyUninstalledPaths.append(gamePath)
+			continue
 
 		for possibleIdentifier in possibleIdentifiers:
 			try:
