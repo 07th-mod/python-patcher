@@ -317,6 +317,13 @@ Continue install anyway?`)) {
       showErrorModal(errorMessage, detailedExceptionInformation) {
         app.installErrorDescription = errorMessage;
         app.detailedExceptionInformation = detailedExceptionInformation;
+
+        // If an exception occurs while path validation is in progress, assume that path validation was unsuccessful
+        if(app.validationInProgress) {
+          app.validationInProgress = false;
+          app.showPathSelectionButtons = true;
+        }
+
         SetFaviconNotify();
 
         if (app.installStarted) {
