@@ -5,6 +5,7 @@ import argparse
 import locale
 import os
 import sys
+import platform
 
 # Embedded python doesn't have current directory as path
 import tempfile
@@ -145,6 +146,7 @@ def installerCommonStartupTasks():
 	print("> Install Started On {}".format(datetime.datetime.now()))
 	common.Globals.getBuildInfo()
 	print("Python {}".format(sys.version))
+	print("Operating System: {} {} {} ({})".format(platform.system(), platform.release(), platform.machine(), platform.version()))
 	print("Locale - Default: {} | Preferred: {} | Filesystem: {}".format(sys.getdefaultencoding(), locale.getpreferredencoding(), sys.getfilesystemencoding()))
 	print("Installer Build Information: {}".format(common.Globals.BUILD_INFO))
 	print("Installer is being run from: [{}]".format(os.getcwd()))
