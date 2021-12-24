@@ -200,15 +200,15 @@
 								<div class="tabbed-content button-tabs vertical">
 									<!-- Right Hand Column: Displaying submod description, install options, and 'start install' buttons -->
 									<ul class="col-md-8">
-										<div class="alert alert-danger">
 										<section class="section-small-padding" v-show="partiallyUninstalledPaths.length > 0">
+											<div class="alert alert-danger">
 											<h3>⚠️ Action Required: Please delete the partially uninstalled games below</h3>
 											<h4><strong>The below folders were not uninstalled properly.<br><br>Please manually delete the below folders to free disk space and avoid problems with the installer.<br><br>Click the links below to open each folder (check your taskbar for a flashing icon):</strong></h4>
 											<ul class="installer-bullets">
 											<li v-for="path in partiallyUninstalledPaths"><a href="#" v-on:click='showInFileBrowser(path)'>{{ path }}</a></li>
 											</ul>
+											</div>
 										</section>
-										</div>
 										<br><br>
 										<div v-if="metaInfo !== null">
 										<div class="alert alert-danger" role="alert"
