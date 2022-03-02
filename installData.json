@@ -49,7 +49,7 @@
 							"data": {"url": "https://github.com/orian34/onikakushi/releases/latest/download/Onikakushi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/onikakushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/onikakushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/onikakushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/onikakushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/onikakushi-ita/releases/latest/download/onikakushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -115,7 +115,7 @@
 							"data": {"url": "https://github.com/orian34/watanagashi/releases/latest/download/Watanagashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/watanagashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/watanagashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/watanagashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/watanagashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/watanagashi-ita/releases/latest/download/watanagashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -183,7 +183,7 @@
 							"data": {"url": "https://github.com/orian34/tatarigoroshi/releases/latest/download/Tatarigoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tatarigoroshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tatarigoroshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tatarigoroshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tatarigoroshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/tatarigoroshi-ita/releases/latest/download/tatarigoroshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -249,7 +249,7 @@
 							"data": {"url": "https://github.com/orian34/himatsubushi/releases/latest/download/Himatsubushi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/himatsubushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/himatsubushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/himatsubushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/himatsubushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/himatsubushi-ita/releases/latest/download/himatsubushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -671,7 +671,7 @@
 					"radio": [
 						{"name": "English", "description": "Use the default language", "data":null},
 						{
-							"name": "Apply Italian Language Patch", "description": "A patch partially translating Umineko to Italian. [More details here](https://github.com/The4Hokage99/umineko-questionsarc-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/The4Hokage99/umineko-questionsarc-ita/issues).\n - Also consider checking out the [translator's facebook page](https://it-it.facebook.com/CTHTranslations/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"name": "Apply Italian Language Patch", "description": "A patch partially translating Umineko to Italian. [More details here](https://github.com/The4Hokage99/umineko-questionsarc-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/The4Hokage99/umineko-questionsarc-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/The4Hokage99/umineko-questionsarc-ita/releases/latest/download/questionarcs_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
