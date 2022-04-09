@@ -137,6 +137,11 @@ class Globals:
 
 	PERMISSON_DENIED_ERROR_MESSAGE = "Permission error: See our installer wiki FAQ about this error at https://07th-mod.com/wiki/Installer/faq/#extraction-stage-fails-i-get-an-acess-denied-error-when-overwriting-files"
 
+	PROTON_ERROR_MESSAGE = ("It looks like you have installed the game under Proton or Wine\n"
+							"Please select the game in your Steam Library, right click, choose Properties, then under 'Compatability' force the use of 'Steam Linux Runtime'\n"
+							"For a video showing how to do this, see here: https://www.youtube.com/watch?v=f1GvONkE9S0\n"
+							"\n")
+
 	CA_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
 

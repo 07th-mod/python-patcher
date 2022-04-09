@@ -98,6 +98,13 @@ def mainUmineko(conf):
 			                "(Detected [{}]) Please install the latest Steam or Mangagamer release."
 			                .format(conf.subModConfig.modName, filename))
 
+	if common.Globals.IS_LINUX:
+		gameIsLinuxIdentifierPath = os.path.join(conf.installPath, "lib64/libfreetype.so.6")
+		print("Checking for Proton install by checking if identifier {} is missing".format(gameIsLinuxIdentifierPath))
+		if not os.path.exists(gameIsLinuxIdentifierPath):
+			raise Exception(common.Globals.PROTON_ERROR_MESSAGE +
+			                "\nIf you are absolutely sure you're not using Proton, create a dummy file at [{}] to bypass this error.".format(gameIsLinuxIdentifierPath))
+
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = conf.subModConfig.modName + " Downloads"
 
