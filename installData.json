@@ -666,6 +666,25 @@
 					]
 				},
 				{
+					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
+					"submods" : ["full", "voice-only"],
+					"radio": [
+						{"name": "No Change", "description": "No change to engine"},
+						{
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-fork/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-windows-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-osx-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux Experimental Engine / Executable", "description": "Same as above, LINUX ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
 					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
 					"checkBox": [
 						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
@@ -791,12 +810,30 @@
 					]
 				},
 				{
+					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
+					"submods" : ["novel-mode", "adv-mode"],
+					"radio": [
+						{"name": "No Change", "description": "No change to engine"},
+						{
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-fork/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-windows-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-osx-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux Experimental Engine / Executable", "description": "Same as above, LINUX ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
 					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
 					"checkBox": [
 						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
 					]
 				}
-
 			]
 		},
 		{
