@@ -360,16 +360,15 @@
 														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
 													</ul>
 												</div>
-												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneFull'">
-													<h4>
-														This patch is only for the ponscripter release of Umineko Hane.
-														This is the release bundled with Umineko Saku, and the one that will eventually
-														be published on Steam. This patch will NOT work with the old NScripter release.
-														To check which version you have, try resizing the game window by dragging its corners.
-														If you can do that, you're good to go.
-													</h4>
-													<h4>This patch is only for WINDOWS. It does not work on Mac or Linux</h4>
-													This mod merges the English translation of Umineko Hane together with Switch graphics and voices, as well as widescreen support.
+												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneFull' || selectedSubMod.descriptionID === 'uminekoTsubasaOnscripterFull || selectedSubMod.descriptionID === 'uminekoSakuFull">
+													<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+														<div style='font-weight: bold; background-color: rgba(255,145,0,.1); padding: 10px 0px 10px 0px; margin-bottom: 10px; text-align: center'>Alternate mod recommendation</div>
+														<p>The 07th-Mod patches for Tsubasa, Hane and Saku were never fully completed. As of now, the Hane patch is the only one to have full voice and widescreen support, while the other two are simple graphic replacement packs with console sprites. All patches are also missing CGs and advanced features such as animations and lip sync.</p>
+
+														<p>If you are able to emulate or hack a Nintendo Switch we recommend patching the Switch game to run in English instead. You may find instructions on how to do so <a href='https://github.com/ooa113y/umineko-catbox-english#readme'>here</a>.</p>
+
+														<p>The legacy patches will remain available for download in their unfinished state. If you are certain you would like to play with them, you may download them here.</p>
+													</div>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneVoiceOnly'">
 													<h4>
@@ -381,20 +380,6 @@
 													</h4>
 													<h4>This patch is only for WINDOWS. It does not work on Mac or Linux</h4>
 													This is the mod for Umineko Hane that provides nothing but voices. It does NOT update graphics or add widescreen support.
-												</div>
-												<div v-else-if="selectedSubMod.descriptionID === 'uminekoTsubasaOnscripterFull'">
-													<h4>
-														This patch can only be used on an original install of Umineko Tsubasa (the old nscripter version) -
-														it CANNOT be used on the newer Steam/Mangagamer release.
-													</h4>
-													<h4>This patch is only for WINDOWS. It does not work on Mac or Linux</h4>
-													This mod merges the English translation of Umineko Tsubasa together with PS3 graphics and an ADV mode patch.<br><br>
-													It does not add voices, since Tsubasa has never actually been released by Alchemist, and
-													therefore not voiced.<br><br>
-												</div>
-												<div v-else-if="selectedSubMod.descriptionID === 'uminekoSakuFull'">
-													This is an initial version of the mod for Umineko Saku, that uses a fan translation of the story combined with PS3 art wherever possible.<br><br>
-													Missing art, the official translation, and voice-acting will be added as they become available.<br><br>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoSakuTLOnly'">
 													This is an initial version of the mod for Umineko Saku, that uses a fan translation of the story with original art.<br><br>
