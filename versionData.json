@@ -216,7 +216,7 @@
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
 			{"id": "graphics",                  "version": "1.0.0"},
-			{"id": "script",                    "version": "1.0.31"},
+			{"id": "script",                    "version": "1.0.32"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.4.2"},
 			{"id": "os-specific-update",        "version": "1.0.0"},
@@ -231,7 +231,7 @@
 		"id" : "Umineko Question (Ch. 1-4)/voice-only",
 		"files":[
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.2"},
+			{"id": "script",                    "version": "1.0.32"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
