@@ -6,9 +6,9 @@ edition = "2018"
 
 [dependencies]
 xz2 = "0.1"
-tar = "0.4"
+tar = "0.4.36"
 progress-streams = "*"
-regex = "1"
+regex = "1.5.5"
 backtrace = "*"
 clap = "2.33.1"
 open = "1"
