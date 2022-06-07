@@ -19,11 +19,12 @@ path-clean = "0.1"
 
 # imgui dependencies
 clipboard = "0.5"
-glium = { version = "0.29", default-features = true }
 image = "0.23"
-imgui = { version = "0.7.0"}
-imgui-glium-renderer = { version = "0.7.0"}
-imgui-winit-support = { version = "0.7.0" }
+####### NOTE: Each time imgui version is updated, glium must be updated to match the example in the imgui-examples/Cargo.toml in imgui-rs folder #####
+glium = { version = "0.30", default-features = true }
+imgui = { version = "0.8.2"}
+imgui-glium-renderer = { version = "0.8.2"}
+imgui-winit-support = { version = "0.8.2" }
 
 # Windows specific dependencies
 winapi = { version = "*", features = ["shobjidl", "shtypes"] }

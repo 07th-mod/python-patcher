@@ -48,7 +48,7 @@ pub trait SimpleUI {
 
 impl<'ui> SimpleUI for Ui<'ui> {
 	fn simple_button(&self, label: &ImStr) -> bool {
-		self.button(label, [0.0f32, 0.0f32])
+		self.button(label)
 	}
 
 	fn show_developer_tools(&self) {
@@ -68,9 +68,9 @@ impl<'ui> SimpleUI for Ui<'ui> {
 	}
 
 	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &ImStr, text: T) {
-		self.popup_modal(modal_name).build(|| {
+		self.popup_modal(modal_name).build(self, || {
 			self.text(text);
-			if self.button(im_str!("OK"), [0.0, 0.0]) {
+			if self.button(im_str!("OK")) {
 				self.close_current_popup();
 			}
 		});
@@ -286,13 +286,13 @@ impl InstallerGUI {
 		// Exit confirmation modal triggered by the above
 		ui.popup_modal(confirm_exit_modal_name)
 			.always_auto_resize(true)
-			.build(|| {
+			.build(ui, || {
 				ui.text("Closing this window will terminate the installer!");
-				if ui.button(im_str!("OK - Quit Installer"), [0.0, 0.0]) {
+				if ui.button(im_str!("OK - Quit Installer")) {
 					ui.close_current_popup();
 					self.quit();
 				}
-				if ui.button(im_str!("Cancel"), [0.0, 0.0]) {
+				if ui.button(im_str!("Cancel")) {
 					ui.close_current_popup();
 				}
 			});
@@ -387,14 +387,14 @@ Please download the installer to your Downloads or other known location, then ru
 				);
 
 				// Exit confirmation modal triggered by the above
-				ui.popup_modal(redist_missing_modal_name).build(|| {
+				ui.popup_modal(redist_missing_modal_name).build(ui, || {
 					ui.text("You still seem to be missing the redist. Are you sure you want to continue?");
-					if ui.button(im_str!("Yes, continue anyway"), [0.0, 0.0]) {
+					if ui.button(im_str!("Yes, continue anyway")) {
 						ui.close_current_popup();
 						self.state.progression = InstallerProgression::WaitingUserPickInstallType;
 						return;
 					}
-					if ui.button(im_str!("No, let me fix it"), [0.0, 0.0]) {
+					if ui.button(im_str!("No, let me fix it")) {
 						ui.close_current_popup();
 					}
 				});
@@ -491,7 +491,7 @@ Please download the installer to your Downloads or other known location, then ru
 		if CollapsingHeader::new(im_str!("Advanced Tools")).build(&ui) {
 			// Button which shows the python installer logs folder.
 			// NOTE: the output of this launcher is currently not logged.
-			if ui.button(im_str!("Show Installer Logs"), [0., 0.]) {
+			if ui.button(im_str!("Show Installer Logs")) {
 				let _ = windows_utilities::system_open(&self.config.logs_folder);
 			}
 
@@ -500,7 +500,7 @@ Please download the installer to your Downloads or other known location, then ru
 				InstallerProgression::WaitingUserPickInstallType
 				| InstallerProgression::InstallFinished
 				| InstallerProgression::InstallFailed(_) => {
-					ui.same_line(0.);
+					ui.same_line();
 					if ui.simple_button(im_str!("Force Re-Extraction")) {
 						self.state.progression =
 							InstallerProgression::ExtractingPython(ExtractingPythonState::new());
@@ -520,14 +520,14 @@ Please download the installer to your Downloads or other known location, then ru
 					windows_utilities::hide_console_window();
 				}
 			}
-			ui.same_line(0.);
+			ui.same_line();
 
 			// Show ImGUI Developer tools (and any other tools)
 			ui.checkbox(
 				im_str!("Show Developer Tools"),
 				&mut self.ui_state.show_developer_tools,
 			);
-			ui.same_line(0.);
+			ui.same_line();
 		}
 	}
 
@@ -614,7 +614,7 @@ impl ApplicationGUI for InstallerGUI {
 				self.display_ui(ui);
 			});
 
-		unround_style.pop(&ui);
+		unround_style.pop();
 
 		let force_show_window = self.ui_state.focus_requested;
 		self.ui_state.focus_requested = false;
