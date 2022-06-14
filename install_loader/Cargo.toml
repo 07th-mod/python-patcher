@@ -18,7 +18,7 @@ tempfile = "3"
 path-clean = "0.1"
 
 # imgui dependencies
-clipboard = "0.5"
+# clipboard = "0.5" # removed for now as we don't use the clipboard
 image = "0.23"
 ####### NOTE: Each time imgui version is updated, glium must be updated to match the example in the imgui-examples/Cargo.toml in imgui-rs folder #####
 glium = { version = "0.30", default-features = true }

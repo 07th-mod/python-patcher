@@ -39,11 +39,12 @@ pub fn init(title: &str, window_size: [f64; 2]) -> System {
 	let mut imgui = Context::create();
 	imgui.set_ini_filename(None);
 
-	if let Some(backend) = clipboard::init() {
-		imgui.set_clipboard_backend(backend);
-	} else {
-		eprintln!("Failed to initialize clipboard");
-	}
+	// Clipboard disabled for now as we don't use it
+	// if let Some(backend) = clipboard::init() {
+	// 	imgui.set_clipboard_backend(backend);
+	// } else {
+	// 	eprintln!("Failed to initialize clipboard");
+	// }
 
 	let mut platform = WinitPlatform::init(&mut imgui);
 	{
