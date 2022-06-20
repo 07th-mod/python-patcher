@@ -9,6 +9,13 @@ import commandLineParser
 def getSteamPath():
     try:
         if common.Globals.IS_LINUX:
+            # Newer versions of Steam use this path
+            altSteamPath = os.path.expanduser("~/.steam/steam")
+
+            if os.path.exists(altSteamPath):
+                return altSteamPath
+
+            # Older versions of Steam and the Steam Deck use this path
             return os.path.expanduser("~/.local/share/Steam/")
         elif common.Globals.IS_WINDOWS:
             try:
