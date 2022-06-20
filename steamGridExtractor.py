@@ -26,6 +26,9 @@ def getSteamPath():
 
 def getUserDataFolders():
     steamPath = getSteamPath()
+
+    print("steamGridExtractor: Attempting to install steamgrid icons to [{}]".format(steamPath))
+
     if steamPath:
         return glob.glob(
             os.path.join(steamPath, "userdata", "**", "config"), recursive=True
@@ -53,5 +56,8 @@ def extractSteamGrid(downloadDir):
         if userDataFolders:
             for i in userDataFolders:
                 shutil.unpack_archive(os.path.join(downloadDir, "higumi-steamgrid.zip"), i)
+        else:
+            print("steamGridExtractor: WARNING: not extracting steamgrid icons as no steam user data folders found")
+
     except Exception as e:
         print("Steamgrid Installation Failed: {}".format(e))

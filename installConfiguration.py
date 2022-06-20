@@ -339,7 +339,7 @@ class SubModConfig:
 </tbody>
 </table>
 """
-		if common.Globals.IS_WINDOWS and 'voiceonly' not in self.descriptionID.lower():
+		if (common.Globals.IS_WINDOWS or common.Globals.IS_LINUX) and 'voiceonly' not in self.descriptionID.lower():
 			self.modOptions.append(ModOption(name="Update Steamgrid Icons",
 			                                 description=installSteamGridDescription,
 			                                 group="Common Options",

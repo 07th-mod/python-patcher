@@ -472,6 +472,8 @@ def main(fullInstallConfiguration):
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		if installer.optionParser.installSteamGrid:
+			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
 		installer.cleanup(cleanExtractionDirectory=True)
