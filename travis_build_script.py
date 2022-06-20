@@ -240,6 +240,11 @@ if not BUILD_LINUX_MAC:
 
 # RELATIVE PATHS MUST CONTAIN ./
 if BUILD_LINUX_MAC:
+	# Give execute permissions to linux scripts, which should be preserved when tar.gz'ing
+	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup', 0o775)
+	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup_safe_mode', 0o775)
+
+	# Rename folder, then .tar.gz it
 	os.rename(f'./{bootstrap_copy_folder}/higu_linux64_installer/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Linux64/')
 	tar_gz(f'./{bootstrap_copy_folder}/07th-Mod_Installer_Linux64/', os.path.join(output_folder, '07th-Mod.Installer.linux.tar.gz'))
 # zip(f'./{bootstrap_copy_folder}/higu_win_installer/', os.path.join(output_folder, '07th-Mod.Installer.win64.zip'))
