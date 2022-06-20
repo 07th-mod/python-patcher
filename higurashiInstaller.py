@@ -243,6 +243,14 @@ class Installer:
 		Moves files from the directory they were extracted to
 		to the game data folder
 		"""
+		# In some cases, the folders to be moved may not exist yet, so create them in advance
+		# This creates both the self.extractDir and the HigurashiEp0X subfolder
+		fromDataDir = os.path.join(self.extractDir, self.info.subModConfig.dataName)
+		try:
+			os.makedirs(fromDataDir)
+		except OSError:
+			pass
+
 		# On MacOS, the datadirectory has a different path than in the archive file:
 		#
 		# datadirectory in archive file : "Higurashi_Ep0X"
@@ -252,7 +260,7 @@ class Installer:
 		# To account for this, we rename the "Higurashi_Ep0X" folder to "Contents/Resources/Data" below
 		# (self.dataDirectory should equal "Contents/Resources/Data" on MacOS)
 		self._moveDirectoryIntoPlace(
-			fromDir = os.path.join(self.extractDir, self.info.subModConfig.dataName),
+			fromDir = fromDataDir,
 			toDir = self.dataDirectory,
 			log = True,
 		)
