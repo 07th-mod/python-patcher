@@ -6,24 +6,31 @@ import shutil
 import os
 import commandLineParser
 
-def getUserDataFolders():
-    if not common.Globals.IS_WINDOWS:
+def getSteamPath():
+    try:
+        if common.Globals.IS_LINUX:
+            return os.path.expanduser("~/.local/share/Steam/")
+        elif common.Globals.IS_WINDOWS:
+            try:
+                import winreg
+            except ImportError:
+                import _winreg as winreg
+            return winreg.QueryValueEx(
+                winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam"),
+                "SteamPath",
+            )[0]
+        else:
+            return None
+    except:
         return None
 
-    try:
-        import winreg
-    except ImportError:
-        import _winreg as winreg
-
-    try:
-        defaultSteamPath = winreg.QueryValueEx(
-            winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam"),
-            "SteamPath",
-        )[0]
+def getUserDataFolders():
+    steamPath = getSteamPath()
+    if steamPath:
         return glob.glob(
-            os.path.join(defaultSteamPath, "userdata", "**", "config"), recursive=True
+            os.path.join(steamPath, "userdata", "**", "config"), recursive=True
         )
-    except:
+    else:
         return None
 
 
