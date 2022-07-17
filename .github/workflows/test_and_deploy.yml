@@ -40,34 +40,19 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Restore cached cargo files to speed up future Rust builds
-      # This follows the example at https://github.com/actions/cache
-      # The cache will be saved automatically before the workflow ends
-      # NOTE: Caches are cleared if not used for 7 days
-      # NOTE: "Cache cargo registry" gives a "Can't unlink already-existing object" error. It should be fine anyway.
-      - name: Cache cargo registry
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo index
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo build
-        uses: actions/cache@v1
-        with:
-          path: install_loader/target
-          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-
       # Configure Rust for 32-bit builds
       # Please use fixed versions of rust so that installs build consistently
       # (So they don't randomly trigger Windows Defender)
-      - name: Configure Rust for 32-bit
-        run: |
-          rustup toolchain install 1.52.1-i686-pc-windows-msvc
-          rustup default 1.52.1-i686-pc-windows-msvc
+      - name: Install and configure rust for 32-bit builds
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: 1.52.1
+            target: i686-pc-windows-msvc
+            default: true
+
+      # Caching for Rust
+      - name: Cache rust builds
+        uses: Swatinem/rust-cache@v2
 
       # Run Python Deploy Script
       # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
