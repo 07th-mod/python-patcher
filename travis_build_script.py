@@ -243,6 +243,8 @@ if BUILD_LINUX_MAC:
 	# Give execute permissions to linux scripts, which should be preserved when tar.gz'ing
 	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup', 0o775)
 	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup_safe_mode', 0o775)
+	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup_proton_wine/setup_proton_wine', 0o775)
+	os.chmod(f'./{bootstrap_copy_folder}/higu_linux64_installer/setup_proton_wine/setup_safe_mode_proton_wine', 0o775)
 
 	# Rename folder, then .tar.gz it
 	os.rename(f'./{bootstrap_copy_folder}/higu_linux64_installer/', f'./{bootstrap_copy_folder}/07th-Mod_Installer_Linux64/')

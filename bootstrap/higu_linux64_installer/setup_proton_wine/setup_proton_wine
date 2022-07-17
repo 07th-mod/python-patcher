@@ -1,0 +1,4 @@
+#!/bin/sh
+cd "$(dirname "$0")"
+cd ../install_data
+python3 ./main.py --asset-os windows || python ./main.py --asset-os windows || python2 ./main.py --asset-os windows
