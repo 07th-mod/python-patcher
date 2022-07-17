@@ -66,7 +66,7 @@ jobs:
       # (So they don't randomly trigger Windows Defender)
       - name: Configure Rust for 32-bit
         run: |
-          rustup install 1.52.1-i686-pc-windows-msvc
+          rustup toolchain install 1.52.1-i686-pc-windows-msvc
           rustup default 1.52.1-i686-pc-windows-msvc
 
       # Run Python Deploy Script
