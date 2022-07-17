@@ -140,7 +140,11 @@ class Globals:
 	PROTON_ERROR_MESSAGE = ("It looks like you have installed the game under Proton or Wine\n"
 							"Please select the game in your Steam Library, right click, choose Properties, then under 'Compatability' force the use of 'Steam Linux Runtime'\n"
 							"For a video showing how to do this, see here: https://www.youtube.com/watch?v=f1GvONkE9S0\n"
-							"\n")
+							"\n"
+	                        "If you deliberately want to install under Proton or Wine, follow the 'Linux Wine' instructions here: https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/\n"
+	                        "\n")
+
+	PROTON_WITH_ASSETS_OVERRIDE_MESSAGE = "NOTE: Game is running under Proton/Wine, but user has deliberately selected which OS's assets to install, so it is OK"
 
 	CA_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False

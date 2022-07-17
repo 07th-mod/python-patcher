@@ -102,8 +102,11 @@ def mainUmineko(conf):
 		gameIsLinuxIdentifierPath = os.path.join(conf.installPath, "lib64/libfreetype.so.6")
 		print("Checking for Proton install by checking if identifier {} is missing".format(gameIsLinuxIdentifierPath))
 		if not os.path.exists(gameIsLinuxIdentifierPath):
-			raise Exception(common.Globals.PROTON_ERROR_MESSAGE +
+			if common.Globals.FORCE_ASSET_OS_STRING is None:
+				raise Exception(common.Globals.PROTON_ERROR_MESSAGE +
 			                "\nIf you are absolutely sure you're not using Proton, create a dummy file at [{}] to bypass this error.".format(gameIsLinuxIdentifierPath))
+			else:
+				print(common.Globals.PROTON_WITH_ASSETS_OVERRIDE_MESSAGE)
 
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = conf.subModConfig.modName + " Downloads"
