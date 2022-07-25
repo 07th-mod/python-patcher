@@ -46,31 +46,31 @@ window.onload = function onWindowLoaded() {
           dataFilter: 'Bonus Content'
         },
         'Console Arcs': {
-          img: 'img/games/console.jpg',
+          img: 'img/games/console.png',
           dataFilter: 'Console Arcs',
         },
         'Onikakushi Ch.1': {
-          img: 'img/games/header1.jpg',
+          img: 'img/games/header1.png',
           dataFilter: 'Question Arcs',
         },
         'Watanagashi Ch.2': {
-          img: 'img/games/header2.jpg',
+          img: 'img/games/header2.png',
           dataFilter: 'Question Arcs',
         },
         'Tatarigoroshi Ch.3': {
-          img: 'img/games/header3.jpg',
+          img: 'img/games/header3.png',
           dataFilter: 'Question Arcs',
         },
         'Himatsubushi Ch.4': {
-          img: 'img/games/header4.jpg',
+          img: 'img/games/header4.png',
           dataFilter: 'Question Arcs',
         },
         'Meakashi Ch.5': {
-          img: 'img/games/header5.jpg',
+          img: 'img/games/header5.png',
           dataFilter: 'Answer Arcs',
         },
         'Tsumihoroboshi Ch.6': {
-          img: 'img/games/header6.jpg',
+          img: 'img/games/header6.png',
           dataFilter: 'Answer Arcs',
         },
         'Minagoroshi Ch.7': {
