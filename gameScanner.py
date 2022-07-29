@@ -17,6 +17,57 @@ try:
 except ImportError:
 	pass # Just needed for pycharm comments
 
+def findAdditionalSteamLibraries(mainSteamPath):
+	# type: (str) -> List[str]
+	r"""
+	Try to locate additional steam libraries using the steamapps/libraryfolders.vdf file
+	This function should never throw an exception, and instead return an empty list
+
+	NOTE: we had some old code for scanning vdf files, but looks like the format and
+	vdf file path has changed since then.
+	"""
+	try:
+		vdf = os.path.join(mainSteamPath, r'steamapps\libraryfolders.vdf')
+		if not os.path.exists(vdf):
+			return []
+
+		import io
+		baseInstallFolderRegex = re.compile(r'^\s*"path"\s+"([^"]+)"', re.MULTILINE)
+		with io.open(vdf, 'r', encoding='UTF-8') as vdfFile:
+			return baseInstallFolderRegex.findall(vdfFile.read())
+	except:
+		traceback.print_exc()
+		return []
+
+def getSecondarySteamPaths(baseSteamPaths):
+	# type: (List[str]) -> List[str]
+	r"""
+	Given a list of possible steam paths (like 'c:\\program files (x86)\\steam)) returns a list of secondary steam paths
+	"""
+	libraries = []
+
+	for basePath in baseSteamPaths:
+		libraries += findAdditionalSteamLibraries(basePath)
+
+	return libraries
+
+
+def deDuplicatePaths(originalPaths):
+	# type: (List[str]) -> List[str]
+	r"""
+	Returns the input list with any duplicate paths removed
+	Paths are considered duplicates if they compare equal after os.path.abspath and os.path.normcase are called on them
+	"""
+	try:
+		# Normalize the paths
+		paths = [os.path.normcase(os.path.abspath(p)) for p in originalPaths]
+
+		# Eliminate duplicate paths
+		return list(dict.fromkeys(paths))
+	except:
+		return originalPaths
+
+
 def findPossibleGamePathsWindows():
 	r"""
 	Blindly retrieve all game folders in the `Steam\steamappps\common` folder (no filtering is performed)
@@ -41,9 +92,12 @@ def findPossibleGamePathsWindows():
 		allSteamPaths.append(defaultSteamPath)
 		winreg.CloseKey(registryKey)
 	except WindowsError:
-		print("findPossibleGamePaths: Couldn't read Steam registry key - Steam not installed?")
+		print("findPossibleGamePathsWindows: Couldn't read Steam registry key - Steam not installed?")
 		return []
 
+	# NOTE: this code only works with the old steam config.vdf file. I've added some more code
+	# to handle the new format, but left this code in incase it ends up finding more paths.
+	#
 	# now that we know the steam path, search the "Steam\config\config.vdf" file for extra install paths
 	# this is a purely optional step, so it's OK if it fails
 	try:
@@ -55,13 +109,17 @@ def findPossibleGamePathsWindows():
 	except Exception as e:
 		traceback.print_exc()
 
-	logger.printNoTerminal("Will scan the following steam install locations: {}".format(allSteamPaths))
+	# Find additional steam libraries
+	allSteamPaths += getSecondarySteamPaths(allSteamPaths)
+	allSteamPaths = deDuplicatePaths(allSteamPaths)
+
+	print("Will scan the following steam install locations: {}".format(allSteamPaths))
 
 	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
-	try:
-		allPossibleGamePaths = []
+	allPossibleGamePaths = []
 
-		for steamCommonPath in (os.path.join(steamPath, r'steamapps\common') for steamPath in allSteamPaths):
+	for steamCommonPath in (os.path.join(steamPath, r'steamapps\common') for steamPath in allSteamPaths):
+		try:
 			for gameFolderName in os.listdir(steamCommonPath):
 				gameFolderPath = os.path.join(steamCommonPath, gameFolderName)
 				if os.path.isdir(gameFolderPath):
@@ -70,13 +128,11 @@ def findPossibleGamePathsWindows():
 							gameFolderPath
 						)
 					)
+		except:
+			traceback.print_exc()
+			print("findPossibleGamePathsWindows: Failed to scan steam folder {}".format(steamCommonPath))
 
-		return allPossibleGamePaths
-	except:
-		print("findPossibleGamePaths: Couldn't open registry key folder - Steam folder deleted?")
-		return []
-
-	return []
+	return allPossibleGamePaths
 
 # Get paths which COULD be game paths.
 def getMaybeGamePaths():
@@ -123,6 +179,17 @@ def getMaybeGamePaths():
 		hardCodedGameContainingPaths.append("~/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common") # Steam Flatpak
 		hardCodedGameContainingPaths.append("~/GOG Games")  # GOG's website states this, but is unconfirmed
 
+	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
+	try:
+		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower()]
+		hardCodedGameContainingPaths += [os.path.join(p, r'steamapps\common') for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
+	except:
+		traceback.print_exc()
+
+	# Remove any duplicated paths
+	hardCodedGameContainingPaths = deDuplicatePaths(hardCodedGameContainingPaths)
+
+	print("Will scan secondary game containing paths: {}".format(hardCodedGameContainingPaths))
 	for hardCodedPathNotNormalized in hardCodedGameContainingPaths:
 		hardCodedPath = os.path.realpath(os.path.expanduser(hardCodedPathNotNormalized))
 		try:
@@ -130,8 +197,11 @@ def getMaybeGamePaths():
 				gameFolderPath = os.path.normpath(os.path.join(hardCodedPath, gameFolderName))
 				if os.path.isdir(gameFolderPath):
 					allPossibleGamePaths.append(gameFolderPath)
-		except:
-			print("Warning: Failed to scan hard coded path: {}".format(hardCodedPath))
+		except Exception as e:
+			print("Warning: Failed to scan hard coded path: {} - {}".format(hardCodedPath, e))
+
+	# Remove any duplicate game paths
+	allPossibleGamePaths = deDuplicatePaths(allPossibleGamePaths)
 
 	# if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
