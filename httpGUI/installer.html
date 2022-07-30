@@ -257,36 +257,58 @@
 												</div>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
-													<div v-if="selectedSubMod.modName === 'Console Arcs'">
-														<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
-														<strong style="color: red">Warning: This will replace your Himatsubushi Ch.4 installation with the console arcs</strong><br>
-														We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
-														A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
-														</div>
-														<br><br>
-														The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
-														<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target='_blank'><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
+													<div v-if="selectedSubMod.modName === 'Rei'">
+														<H2>Higurashi Rei Pre-Release</H2>
+														<H3>If you want to try this <strong>pre-release</strong>, please be prepared for more bugs than usual.</H3>
+														<H3>Linux and MacOS users may have problems with <strong>installation</strong> and <strong>movie playback</strong> - please let us know if you do.</H3>
+														<H3>Report any bugs you find to 07th-mod and we'll try to get them fixed (or let us know if you had no problems).</H3>
+														<H3>This message will be removed once more people have tested the mod.</H3>
+														This release of the mod contains:
+														<ul class="installer-bullets">
+															<li>Full voiceover</li>
+															<li>PS3 backgrounds and CGs in Full HD</li>
+															<li>PS3 sprites with lipsync in 1440p</li>
+															<li>Upgraded user interface</li>
+															<li>Opening videos</li>
+														</ul>
+														The following features are <strong>NOT</strong> available at the moment (should be added later):
+														<ul class="installer-bullets">
+															<li><strong>NOT AVAILABLE:</strong> Mangagamer Sprites</li>
+															<li><strong>NOT AVAILABLE:</strong> OG Sprites and Backgrounds</li>
+														</ul>
 													</div>
-													This option combines all the patches available to create the best experience possible. It contains:
-													<ul class="installer-bullets">
-														<li>Full voiceover</li>
-														<li>PS3 backgrounds and CGs in Full HD</li>
-														<li>PS3 sprites with lipsync in 1440p</li>
-														<li>Updated MangaGamer sprites in 1440p</li>
-														<li>Upgraded user interface</li>
-														<li>Opening videos</li>
-														<li>In-game switchable BGM/SE with a choice of:
-															<ul class="installer-bullets">
-																<li>New BGM/SE (BGM introduced in the April 2019 update)</li>
-																<li>Original BGM/SE (original BGM/SE from the Japanese version of the game)</li>
-																<li>For Chapters 2,3,4 Only: OST Remake (handmade remakes of nine tracks from the original release). <a href="https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1">Click here to listen to samples</a></li>
-															</ul>
-														</li>
-													</ul>
-													<br>
-													<div>
-														NOTE: There is no OST Remake for Onikakushi, because Onikakushi does not use any of the OST Remake tracks.<br>
-														NOTE: There is no OST Remake for Chapters 5-8 as an OST remake for those chapters hasn't been created.
+													<div v-else>
+														<div v-if="selectedSubMod.modName === 'Console Arcs'">
+															<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+															<strong style="color: red">Warning: This will replace your Himatsubushi Ch.4 installation with the console arcs</strong><br>
+															We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
+															A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
+															</div>
+															<br><br>
+															The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
+															<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target='_blank'><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
+														</div>
+														This option combines all the patches available to create the best experience possible. It contains:
+														<ul class="installer-bullets">
+															<li>Full voiceover</li>
+															<li>PS3 backgrounds and CGs in Full HD</li>
+															<li>PS3 sprites with lipsync in 1440p</li>
+															<li>Updated MangaGamer sprites in 1440p</li>
+															<li>Upgraded user interface</li>
+															<li>Opening videos</li>
+															<li>In-game switchable BGM/SE with a choice of:
+																<ul class="installer-bullets">
+																	<li>New BGM/SE (BGM introduced in the April 2019 update)</li>
+																	<li>Original BGM/SE (original BGM/SE from the Japanese version of the game)</li>
+																	<li>For Chapters 2,3,4 Only: OST Remake (handmade remakes of nine tracks from the original release). <a href="https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1">Click here to listen to samples</a></li>
+																</ul>
+															</li>
+														</ul>
+														<br>
+														<div>
+															NOTE: There is no OST Remake for Onikakushi, because Onikakushi does not use any of the OST Remake tracks.<br>
+															NOTE: There is no OST Remake for Chapters 5-8 as an OST remake for those chapters hasn't been created.
+														</div>
 													</div>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'higurashiVoiceOnly'">
