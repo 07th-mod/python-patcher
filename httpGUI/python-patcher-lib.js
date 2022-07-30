@@ -436,7 +436,8 @@ Continue install anyway?`)) {
       'Meakashi Ch.5': 'https://github.com/07th-mod/meakashi/releases',
       'Tsumihoroboshi Ch.6': 'https://github.com/07th-mod/tsumihoroboshi/releases',
       'Minagoroshi Ch.7': 'https://github.com/07th-mod/minagoroshi/releases',
-      'Matsuribayashi Ch.8': 'https://github.com/07th-mod/matsuribayashi/releases'
+      'Matsuribayashi Ch.8': 'https://github.com/07th-mod/matsuribayashi/releases',
+      'Rei': 'https://github.com/07th-mod/higurashi-rei/releases'
     }, app.selectedMod, null);
 
     app.metaInfo = responseData.metaInfo;

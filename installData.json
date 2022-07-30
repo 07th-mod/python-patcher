@@ -540,6 +540,34 @@
 		},
 		{
 			"family": "higurashi",
+			"name": "Rei",
+			"target": "Rei",
+			"CFBundleName": "Higurashi When They Cry Hou - Rei",
+			"dataname": "HigurashiEp09_Data",
+			"identifiers" : ["HigurashiEp09_Data", "HigurashiEp09.x86_64", "HigurashiEp09.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files": [
+						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Rei-Graphics.7z", "priority": 0},
+						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Rei-Movie.7z", "priority": 0},
+						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
+						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
+						{"name": "ui",          "url": null, "priority": 0},
+						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5}
+					],
+					"fileOverrides": [
+						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z"},
+						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.3"},
+						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"}
+					]
+				}
+			],
+			"modOptionGroups": []
+		},
+		{
+			"family": "higurashi",
 			"name": "Console Arcs",
 			"target": "Himatsubushi",
 			"CFBundleName": "Higurashi When They Cry - Console Arcs",

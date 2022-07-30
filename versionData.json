@@ -187,6 +187,19 @@
 		]
 	},
 	{
+		"id": "Rei/full",
+		"files": [
+			{"id": "graphics",            "version": "1.0.0"},
+			{"id": "movie",               "version": "1.0.0"},
+			{"id": "voices",              "version": "1.0.0"},
+			{"id": "bgm-se",              "version": "1.0.0"},
+			{"id": "script",              "version": "1.0.0"},
+			{"id": "movie-unix",          "version": "1.0.0"},
+			{"id": "ui-windows",          "version": "1.0.0"},
+			{"id": "ui-unix",             "version": "1.0.0"}
+		]
+	},
+	{
 		"id": "Matsuribayashi Ch.8/voice-only",
 		"files": [
 			{"id": "voices",              "version": "0.0.1"},
