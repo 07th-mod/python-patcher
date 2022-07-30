@@ -53,7 +53,7 @@ def _TKAskPath(subMod):
 	try:
 		Tk
 	except NameError:
-		raise RuntimeError("Tk is not installed on this system")
+		raise Exception("Tk is not installed on this system. NOTE: You can still manually copy and paste the game path into the 'Currently Chosen Path' box.")
 
 	# TODO: on 2.7 you can use .withdraw on the root window, but on python 3 it prevents the filedialog from showing!
 	# TODO: for now, put up with the root window showing when choosing path manually
