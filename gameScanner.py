@@ -179,6 +179,9 @@ def getMaybeGamePaths():
 		hardCodedGameContainingPaths.append("~/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common") # Steam Flatpak
 		hardCodedGameContainingPaths.append("~/GOG Games")  # GOG's website states this, but is unconfirmed
 
+	# Expand '~' before continuing to the next steps so os.path.* functions work correctly
+	hardCodedGameContainingPaths = [os.path.expanduser(p) for p in hardCodedGameContainingPaths]
+
 	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
 	try:
 		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower()]
