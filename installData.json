@@ -1,5 +1,5 @@
 {
-	"version": 10,
+	"version": 12,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -486,20 +486,20 @@
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
-							["sharedassets0.assets.backup", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"],
-							["sharedassets0.assets", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"]
+							["sharedassets0.assets.backup", "4C846650"],
+							["sharedassets0.assets", "4C846650"]
 						]},
 						{"name": "ui",    "id": "ui-linux-gog-mg", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/rikachama/ui/Matsuribayashi-UI_2017.2.5_unix_gog_mg.7z", "targetChecksums": [
-							["sharedassets0.assets.backup", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"],
-							["sharedassets0.assets", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"]
+							["sharedassets0.assets.backup", "51100D6D"],
+							["sharedassets0.assets", "51100D6D"]
 						]},
 						{"name": "ui",    "id": "ui-windows-old", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-windows-gog-upgraded", "os": ["windows"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5", "targetChecksums": [
-							["sharedassets0.assets.backup", "22890F97997B7B7BD21F5E64F69E1A6FB2E0FF82B3DF6C59860D8D1A56B23BBB"]
+							["sharedassets0.assets.backup", "BE4892CF"]
 						]},
 						{"name": "ui",    "id": "ui-linux-old", "os": ["linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-linux-gog-upgraded", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
-							["sharedassets0.assets.backup", "a1f7b39665d63d704bc14275dcdf71cf4cca9532ac61bee23b5b18b62a5cd3af"]
+							["sharedassets0.assets.backup", "1A9CD5FC"]
 						]},
 						{"name": "system", "id": "system-gog-linux", "os": ["linux"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System_unix.7z"},
 						{"name": "system", "id": "system-gog-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System.7z"}
