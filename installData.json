@@ -560,7 +560,9 @@
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z"},
 						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.3"},
-						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"}
+						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.4"},
+						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"},
+						{"name": "ui",    "id": "ui-unix-mg",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.4"}
 					]
 				}
 			],
