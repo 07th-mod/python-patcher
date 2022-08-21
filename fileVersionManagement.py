@@ -358,7 +358,7 @@ def Developer_ValidateVersionDataJSON(modList):
 
 	onDiskVersionData, error = common.getJSON("versionData.json", isURL=False)
 
-	# reformat versionData as mapping of { versionID : set(file.id) }
+	# reformat versionData as mapping of { subModID : set(file.id) }
 	reformattedVersionData = {}  # type: Dict[str, Set[str]]
 	for versionData in onDiskVersionData:
 		reformattedVersionData[versionData['id']] = set(file['id'] for file in versionData['files'])
@@ -366,24 +366,24 @@ def Developer_ValidateVersionDataJSON(modList):
 	failureStrings = []
 	for subMod in modList:
 		# The ID in the versionData.json is of the format "game/mod_variant"
-		versionID = subMod.modName + '/' + subMod.subModName
+		subModID = subMod.modName + '/' + subMod.subModName
 
 		# Check versionData has a listing for this submod
-		if versionID not in reformattedVersionData:
+		if subModID not in reformattedVersionData:
 			failureStrings.append(
-				"DEVELOPER ERROR: versionData.json is missing the game/submod pair: {}".format(versionID))
+				"DEVELOPER ERROR: versionData.json is missing the game/submod pair: {}".format(subModID))
 			continue
 
 		# Check each file in the submod exists in the versionData.json
-		for file in subMod.files:
+		for file in subMod.files + subMod.fileOverrides:
 			# Items with file.url = None are not downloaded/installed, so skip them
 			if file.url is None:
 				continue
 
-			if file.name not in reformattedVersionData[versionID]:
+			if file.id not in reformattedVersionData[subModID]:
 				failureStrings.append(
-					"DEVELOPER ERROR: versionData.json is missing the file: [{}] from [{}]".format(
-						file.name, versionID))
+					"DEVELOPER ERROR: In versionData.json, [{}] is missing [{}]".format(
+						subModID, file.id))
 
 	if failureStrings:
 		raise Exception('\n'.join(failureStrings))
