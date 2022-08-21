@@ -374,6 +374,16 @@ def Developer_ValidateVersionDataJSON(modList):
 				"DEVELOPER ERROR: versionData.json is missing the game/submod pair: {}".format(subModID))
 			continue
 
+		# Check for duplicate ids in versionData.json
+		dup_ids_check = set()
+		for file in subMod.files + subMod.fileOverrides:
+			if file.id in dup_ids_check:
+				failureStrings.append(
+					"DEVELOPER ERROR: In versionData.json, [{}] is has duplicate id [{}]".format(
+						subModID, file.id))
+			else:
+				dup_ids_check.add(file.id)
+
 		# Check each file in the submod exists in the versionData.json
 		for file in subMod.files + subMod.fileOverrides:
 			# Items with file.url = None are not downloaded/installed, so skip them
