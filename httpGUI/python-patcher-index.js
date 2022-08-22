@@ -26,23 +26,23 @@ window.onload = function onWindowLoaded() {
       uniqueSubMods: [],
       subModExtraProperties: {
         'Umineko Question (Ch. 1-4)': {
-          img: 'img/games/header_umineko_question.jpg',
+          img: 'img/games/header_umineko_question.png',
           dataFilter: 'Question Arcs',
         },
         'Umineko Answer (Ch. 5-8)': {
-          img: 'img/games/header_umineko_answer.jpg',
+          img: 'img/games/header_umineko_answer.png',
           dataFilter: 'Answer Arcs',
         },
         'Umineko Tsubasa': {
-          img: 'img/games/header_umineko_tsubasa.jpg',
+          img: 'img/games/header_umineko_tsubasa.png',
           dataFilter: 'Bonus Content',
         },
         'Umineko Hane': {
-          img: 'img/games/header_umineko_hane.jpg',
+          img: 'img/games/header_umineko_hane.png',
           dataFilter: 'Bonus Content',
         },
         'Umineko Saku': {
-          img: 'img/games/header_umineko_saku.jpg',
+          img: 'img/games/header_umineko_saku.png',
           dataFilter: 'Bonus Content'
         },
         'Console Arcs': {
