@@ -550,7 +550,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Rei-Graphics.7z", "priority": 0},
+						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Rei-Graphics-V2.7z", "priority": 0},
 						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Rei-Movie.7z", "priority": 0},
 						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
 						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
