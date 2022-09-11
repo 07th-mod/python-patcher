@@ -201,7 +201,9 @@
 			{"id": "ui-windows",          "version": "1.0.0"},
 			{"id": "ui-windows-mg",       "version": "1.0.0"},
 			{"id": "ui-unix",             "version": "1.0.0"},
-			{"id": "ui-unix-mg",          "version": "1.0.0"}
+			{"id": "ui-unix-mg",          "version": "1.0.0"},
+			{"id": "ui-mac",              "version": "1.0.0"},
+			{"id": "ui-mac-mg",           "version": "1.0.0"}
 		]
 	},
 	{
