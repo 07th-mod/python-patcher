@@ -544,7 +544,7 @@
 			"target": "Rei",
 			"CFBundleName": "Higurashi When They Cry Hou - Rei",
 			"dataname": "HigurashiEp09_Data",
-			"identifiers" : ["HigurashiEp09_Data", "HigurashiEp09.x86_64", "HigurashiEp09.exe"],
+			"identifiers" : ["Higurashi When They Cry Rei_Data", "HigurashiEp09_Data", "HigurashiEp09.x86_64", "HigurashiEp09.exe"],
 			"submods": [
 				{
 					"name": "full",
