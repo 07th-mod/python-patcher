@@ -301,7 +301,7 @@ class SubModVersionInfo:
 			return installAll("Full Install Required - No local version info")
 
 		if localVersionInfo.id != remoteVersionInfo.id:
-			return installAll("Full Install Required - A Different submod is installed")
+			return installAll("Full Install Required to overwrite existing mod - [{}] is currently installed, but want to install [{}]".format(localVersionInfo.id, remoteVersionInfo.id))
 
 		if localVersionInfo.lastAttemptedInstallID is None:
 			return installAll("Full Install Required - Missing last attempted install ID")
