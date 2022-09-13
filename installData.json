@@ -13,14 +13,14 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-Graphics.7z",                "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",             "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",            "priority": 0},
-						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip",          "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 10}
+						{"name": "graphics", "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",        "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",       "priority": 0},
+						{"name": "ui",      "url":null,                                                              "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority": 0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
@@ -33,7 +33,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Onikakushi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/download/v0.9.0/Onikakushi.Voice.Patch.v0.9.0.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/download/v0.9.0/Onikakushi.Voice.Patch.v0.9.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -82,15 +82,15 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Watanagashi-Graphics.7z",               "priority": 0},
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Watanagashi-Graphics.7z",      "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
-						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",         "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10},
-						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 10}
+						{"name": "ui",      "url":null,                                                                   "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",                                  "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
@@ -103,7 +103,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Watanagashi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/watanagashi/releases/download/v1.5.1/Watanagashi.Voices.Patch.v1.5.1.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/watanagashi/releases/download/v1.5.1/Watanagashi.Voices.Patch.v1.5.1.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -148,15 +148,15 @@
 					"name" : "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-Graphics.7z",             "priority": 0},
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-Graphics.7z",    "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
-						{"name": "ui",      "url": null,                                                            "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",       "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10},
-						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 10}
+						{"name": "ui",      "url": null,                                                                  "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority": 0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",                              "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
@@ -172,7 +172,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tatarigoroshi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/tatarigoroshi/releases/download/v0.5.2/Tatarigoroshi.Voice.Patch.v0.5.2.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/tatarigoroshi/releases/download/v0.5.2/Tatarigoroshi.Voice.Patch.v0.5.2.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -217,15 +217,15 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-Graphics.7z",              "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",           "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",          "priority": 0},
-						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",        "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10},
-						{"name": "remake-bgm", "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 10}
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-Graphics.7z",   "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",         "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",        "priority": 0},
+						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",                                "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
@@ -238,7 +238,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Himatsubushi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/himatsubushi/releases/download/v0.5.1/Himatsubushi.Voice.Patch.v0.5.1.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/himatsubushi/releases/download/v0.5.1/Himatsubushi.Voice.Patch.v0.5.1.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -282,14 +282,14 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Meakashi-Graphics.7z",                  "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",               "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",              "priority": 0},
-						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",            "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 10}
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Meakashi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",       "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",      "priority": 0},
+						{"name": "ui",      "url":null,                                                           "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority": 0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",                                        "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
@@ -304,7 +304,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Meakashi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/meakashi/releases/download/v0.5.0/Meakashi.Voice.Patch.v0.5.0.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/meakashi/releases/download/v0.5.0/Meakashi.Voice.Patch.v0.5.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -348,15 +348,15 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics",      "url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-Graphics.7z",            "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",         "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",        "priority": 0},
-						{"name": "ui",      "url":null,                                                             "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Voice.and.Graphics.Patch.zip",      "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z", "priority": 10},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 10}
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",       "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",      "priority": 0},
+						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z",   "priority": 0},
+						{"name": "system",              "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z",         "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority": 0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Voice.and.Graphics.Patch.zip",                            "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
@@ -371,7 +371,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tsumihoroboshi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/tsumihoroboshi/releases/download/v0.1.0/Tsumihoroboshi.Voice.Patch.v0.1.0.7z", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/tsumihoroboshi/releases/download/v0.1.0/Tsumihoroboshi.Voice.Patch.v0.1.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -411,14 +411,14 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics",      "url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-Graphics.7z", "priority": 0},
-						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z", "priority": 0},
-						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z", "priority": 0},
-						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip", "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 10}
+						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-Graphics.7z",   "priority": 0},
+						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z",         "priority": 0},
+						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z",        "priority": 0},
+						{"name": "ui",      "url": null,                                                                "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority": 0},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip",                                 "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
@@ -431,7 +431,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -471,15 +471,15 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics",      "url": "https://07th-mod.com/rikachama/graphics/Matsuribayashi-Graphics.7z", "priority": 0},
-						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Matsuribayashi-Movie.7z", "priority": 0},
-						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z", "priority": 0},
-						{"name": "ui",      "url": null, "priority": 0},
-						{"name": "script",  "url": "https://github.com/07th-mod/matsuribayashi/releases/latest/download/Matsuribayashi.Voice.and.Graphics.Patch.zip", "priority": 5},
-						{"name": "system", "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 10},
+						{"name": "system",  "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 0},
+						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Matsuribayashi-Graphics.7z",    "priority": 5},
+						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Matsuribayashi-Movie.7z",          "priority": 5},
+						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z",         "priority": 5},
+						{"name": "ui",      "url": null,                                                                    "priority": 5, "installOnRepair":  true},
 						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/matsuribayashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se", "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  10},
-						{"name": "og-bgm-se", "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z", "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 10}
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "skipIfModNewerThan": "2021-4-2", "priority":  5},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5},
+						{"name": "script",              "url": "https://github.com/07th-mod/matsuribayashi/releases/latest/download/Matsuribayashi.Voice.and.Graphics.Patch.zip",                           "priority": 10, "installOnRepair":  true}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
@@ -510,7 +510,7 @@
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Matsuribayashi-Voices.7z", "priority": 0},
-						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/download/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5}
+						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/download/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
 				}
@@ -554,8 +554,8 @@
 						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Rei-Movie.7z", "priority": 0},
 						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
 						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
-						{"name": "ui",          "url": null, "priority": 0},
-						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5}
+						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
+						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
 						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z"},
@@ -586,10 +586,10 @@
 						{"name": "se",      "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-SE.7z",               "priority": 0},
 						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie.7z",            "priority": 0},
 						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/ConsoleArcs-Voices.7z",           "priority": 0},
-						{"name": "ui",      "url":null,                                                                  "priority": 0},
+						{"name": "ui",      "url":null,                                                                  "priority": 0, "installOnRepair":  true},
 						{"name": "system",  "url":null,                                                                  "priority": 0},
-						{"name": "script",    "url":"https://github.com/07th-mod/higurashi-console-arcs/releases/latest/download/ConsoleArcs.Voice.and.Graphics.Patch.zip", "priority": 5},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/console-og-dll-asset-update.7z", "priority": 5}
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/console-og-dll-asset-update.7z", "priority": 0},
+						{"name": "script",    "url":"https://github.com/07th-mod/higurashi-console-arcs/releases/latest/download/ConsoleArcs.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},

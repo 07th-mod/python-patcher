@@ -109,7 +109,7 @@ class FullInstallConfiguration:
 
 			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
-			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id, relativeExtractionPath=fileOverride.relativeExtractionPath)
+			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id, relativeExtractionPath=fileOverride.relativeExtractionPath, installOnRepair=currentModFile.installOnRepair)
 
 		# Look for override-required files that weren't overridden
 		for key, value in filesDict.items():
@@ -131,8 +131,8 @@ class FullInstallConfiguration:
 
 class ModFile:
 	modFileCounter = 0
-	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None, skipIfModNewerThan=None):
-		# type: (str, Optional[str], int, str, Optional[str], Optional[str]) -> None
+	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None, skipIfModNewerThan=None, installOnRepair=False):
+		# type: (str, Optional[str], int, str, Optional[str], Optional[str], Optional[bool]) -> None
 		self.name = name
 		self.url = url
 
@@ -157,6 +157,10 @@ class ModFile:
 		# to ensure files are downloaded and extracted in a deterministic manner
 		self.nativeOrder = ModFile.modFileCounter
 		ModFile.modFileCounter += 1
+
+		# Files where this is set to True will always be installed when installer is run in 'repair' mode
+		# These are generally small files which might be overwritten by Steam an other game manager
+		self.installOnRepair = installOnRepair
 
 
 class ModFileOverride:
@@ -226,6 +230,7 @@ class ModOptionParser:
 		self.keepDownloads = False
 		self.installSteamGrid = False
 		self.partialManualInstall = False
+		self.repairMode = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -247,6 +252,8 @@ class ModOptionParser:
 					self.installSteamGrid = True
 				elif modOption.type == 'partialManualInstall':
 					self.partialManualInstall = True
+				elif modOption.type == 'repairMode':
+					self.repairMode = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -285,7 +292,8 @@ class SubModConfig:
 				url=subModFile.get('url'),
 				priority=subModFile['priority'],
 				relativeExtractionPath=subModFile.get('relativeExtractionPath'),
-				skipIfModNewerThan=subModFile.get('skipIfModNewerThan')
+				skipIfModNewerThan=subModFile.get('skipIfModNewerThan'),
+				installOnRepair=subModFile.get('installOnRepair', False)
 			))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]
@@ -363,6 +371,23 @@ You are also need to manually delete the temporary installer files (see end of v
 		                                 isRadio=False,
 		                                 data=None,
 		                                 isGlobal=True))
+
+		if self.family == 'higurashi':
+			self.modOptions.append(ModOption(name="Quick Repair",
+			                                 description="""This option repairs your install by re-installing critical mod files. This is useful if:
+
+- Steam updated your install, which overwrote some important mod files
+- Enabling or Disabling Proton on Linux has broken your install.
+    - On Linux, changing your "Steam Play Compatability Tool" (disabling or enabling Proton) will cause Steam to overwrite your mod files, causing a black screen on startup. Enable this option to fix this problem.
+- In some cases, this will fix crashing on startup, or getting a black screen on startup
+
+Make sure to select the same mod options you chose previously before using this option (for example, "French Language Patch"), as this option may overwrite them.
+""",
+			                                 group="Common Options",
+			                                 type="repairMode",
+			                                 isRadio=False,
+			                                 data=None,
+			                                 isGlobal=True))
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)

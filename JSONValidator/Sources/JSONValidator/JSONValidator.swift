@@ -71,6 +71,8 @@ public struct FileDefinition: Codable {
 	public var relativeExtractionPath: String?
 	/// Do not apply this file if the last mod installation was newer than this date, or mod not installed at all
 	public var skipIfModNewerThan: String?
+	/// Files where this is set to True will always be installed when installer is run in 'repair' mode
+	public var installOnRepair: Bool?
 }
 
 public struct FileOverrideDefinition: Codable {
