@@ -118,7 +118,7 @@ def mainUmineko(conf):
 
 	######################################## Query and Download Files ##################################################
 	fileVersionManager = fileVersionManagement.VersionManager(
-		subMod=conf.subModConfig,
+		fullInstallConfiguration=conf,
 		modFileList=conf.buildFileListSorted(),
 		localVersionFolder=conf.installPath)
 

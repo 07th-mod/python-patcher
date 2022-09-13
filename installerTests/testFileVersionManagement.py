@@ -227,7 +227,7 @@ class TestSubModVersion(unittest.TestCase):
 
 		# If there is no file present, all files should require download
 		fileVersionManager = fileVersionManagement.VersionManager(
-			subMod=subModConfig,
+			fullInstallConfiguration=fullConfig,
 			modFileList=originalModFileList,
 			localVersionFolder=test_dir,
 			_testRemoteSubModVersion=remoteVersionObject)
@@ -239,7 +239,7 @@ class TestSubModVersion(unittest.TestCase):
 
 		# If there is a file present which is identical, no files should require download
 		fileVersionManagerIdentical = fileVersionManagement.VersionManager(
-			subMod=subModConfig,
+			fullInstallConfiguration=fullConfig,
 			modFileList=originalModFileList,
 			localVersionFolder=test_dir,
 			_testRemoteSubModVersion=remoteVersionObject)

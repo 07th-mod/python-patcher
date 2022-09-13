@@ -136,7 +136,7 @@ class Installer:
 			self.extractDir = forcedExtractDirectory
 
 		self.fileVersionManager = fileVersionManagement.VersionManager(
-			subMod=self.info.subModConfig,
+			fullInstallConfiguration=self.info,
 			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
 			localVersionFolder=self.directory)
 

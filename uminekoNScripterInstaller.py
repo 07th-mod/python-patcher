@@ -43,7 +43,7 @@ def main(conf):
 
 	######################################## DOWNLOAD, BACKUP, THEN EXTRACT ############################################
 	fileVersionManager = fileVersionManagement.VersionManager(
-		subMod=conf.subModConfig,
+		fullInstallConfiguration=conf,
 		modFileList=conf.buildFileListSorted(),
 		localVersionFolder=conf.installPath)
 

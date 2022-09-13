@@ -43,12 +43,15 @@ class VersionManager:
 		# For the version file, the "modified" date is when the game mod was last applied
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
-	def __init__(self, subMod, modFileList, localVersionFolder, _testRemoteSubModVersion=None, verbosePrinting=True):
-		#type: (installConfiguration.SubModConfig, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo], bool) -> None
+	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, _testRemoteSubModVersion=None, verbosePrinting=True, repairMode=True):
+		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo], bool, bool) -> None
+		subMod = fullInstallConfiguration.subModConfig
 		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
 		self.localVersionFilePath = os.path.join(localVersionFolder, VersionManager.localVersionFileName)
+
+		modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
 
 		# Get remote and local versions
 		try:
@@ -82,7 +85,7 @@ class VersionManager:
 				self.updatesRequiredDict[file.id] = (True, "Failed to retrieve remote version information")
 		else:
 			# Mark files which need update
-			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo)
+			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo, repairMode=modOptionParser.repairMode)
 
 			if verbosePrinting:
 				print("\nInstaller Update Information:")
@@ -200,8 +203,8 @@ def getRemoteVersion(remoteTargetID):
 
 
 # given a mod
-def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
-	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo) -> Dict[str, Tuple[bool, str]]
+def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo, repairMode):
+	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo, bool) -> Dict[str, Tuple[bool, str]]
 	"""
 
 	:param modFileList:
@@ -232,6 +235,10 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo):
 	for file in modFileList:
 		result = updatesRequiredDict.get(file.id)
 		needUpdate, updateReason = (True, "Missing version info") if result is None else result
+
+		if not needUpdate and repairMode and file.installOnRepair:
+			needUpdate = True
+			updateReason = "Re-installing as Repair Mode Enabled"
 
 		updateDict[file.id] = (needUpdate, updateReason)
 		if needUpdate:
