@@ -132,7 +132,12 @@ they have zero height. This forces the height to some valid value*/
 }
 
 body {
+    color: black;
     overflow-y: scroll;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: black;
 }
 
 #globalNews {
