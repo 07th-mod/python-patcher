@@ -61,8 +61,16 @@ they have zero height. This forces the height to some valid value*/
 }
 
 .installer-options-group {
+    background-color: #e2e9e4;
+    border-radius: 5px;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 10px;
+}
+
+.installer-options-group-heading {
+    padding: 20px 20px 0px 20px;
+    font-weight: 600;
 }
 
 .installer-bullets {
@@ -198,13 +206,17 @@ The snackbar - position it at the bottom and in the middle of the screen */
 }
 
 .mod-option-group {
-    background-color: #a4b7ac;
-    color: #f7f7f7;
+    background-color: #f1f4f2;
+    border-radius: 5px;
+    color: black;
     margin-top: 10px;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
     padding-bottom: 10px;
+    border-color: #f1f4f2;
+    border-style: solid;
+    border-width: 10px;
 }
 
 .mod-option-group a:link {
@@ -224,8 +236,7 @@ The snackbar - position it at the bottom and in the middle of the screen */
 }
 
 .mod-option-group-active {
-    background-color: #47b475;
-    color: white;
+    border-color: #47b475;
 }
 
 .mod-option-group ul {
