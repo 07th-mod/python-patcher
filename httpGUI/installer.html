@@ -538,7 +538,7 @@
 													<h4 class="uppercase mt40">Choose Mod Options</h4>
 													<hr>
 													<div class="installer-options-group" v-for="modOptionGroup in selectedSubMod.modOptionGroups">
-														<h5 class="uppercase"> {{ modOptionGroup.name }} </h5>
+														<h5 class="uppercase installer-options-group-heading"> {{ modOptionGroup.name }} </h5>
 														<div v-for="radioOption in modOptionGroup.radio">
 															<div class="mod-option-group"
 															v-bind:class="{'mod-option-group-active': modOptionGroup.selectedRadio === radioOption.id}"
