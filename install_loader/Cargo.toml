@@ -10,7 +10,7 @@ tar = "0.4.36"
 progress-streams = "*"
 regex = "1.5.5"
 backtrace = "*"
-clap = "2.33.1"
+clap = "3.2.22"
 open = "1"
 os_info = { version = "2.0.6", default-features = false }
 fs2 = "0.4.3"
