@@ -1046,8 +1046,11 @@ class InstallerGUI:
 
 		def on_server_started(web_server):
 			web_server_url = 'http://{}:{}/loading_screen.html'.format(*web_server.server_address)
-			common.openURLInBrowser(web_server_url)
-			print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
+			if common.Globals.LAUNCH_BROWSER:
+				common.openURLInBrowser(web_server_url)
+				print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
+			else:
+				print("NOTE: Launching browser from Python script is disabled. Server started at {}".format(web_server_url))
 
 		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,

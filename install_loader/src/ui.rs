@@ -568,7 +568,8 @@ Please download the installer to your Downloads or other known location, then ru
 
 		// TODO: Tell python script which port to use, OR retreive port to use from python script
 		// For now we assume python script chose port 8000, but it could choose other ports if 8000 is in use
-		let webview = WebViewBuilder::new(window)?.with_url("http://127.0.0.1:8000/")?;
+		let webview =
+			WebViewBuilder::new(window)?.with_url("http://127.0.0.1:8000/loading_screen.html")?;
 
 		#[cfg(debug_assertions)]
 		let webview = webview.with_devtools(true);
@@ -600,12 +601,25 @@ Please download the installer to your Downloads or other known location, then ru
 			windows_utilities::show_console_window();
 		}
 
-		let python_monitor = python_launcher::launch_python_script(&self.config, is_graphical)?;
+		let launch_browser = false;
+
+		let python_monitor = python_launcher::launch_python_script_all_options(
+			&self.config,
+			is_graphical,
+			launch_browser,
+		)?;
+
+		// TODO: fallback to the below if above fails
+		//let python_monitor = python_launcher::launch_python_script(&self.config, is_graphical)?;
 
 		self.state.progression = InstallerProgression::InstallStarted(InstallStartedState::new(
 			python_monitor,
 			is_graphical,
 		));
+
+		// TODO: only launch installer once it has finished starting up
+		// not sure of best way to do this - either write to a file once installer started up
+		// or monitor console output for startup indicator string.
 
 		// TODO: fall back to old method of launching browser if this fails
 		match InstallerGUI::launch() {
