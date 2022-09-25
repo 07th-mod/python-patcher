@@ -159,6 +159,13 @@ class Globals:
 	"""True if installer is latest released version, False if installer is not latest, None if can't determine if is latest
 	The second part of the tuple is set to a descriptive message explaining the version status"""
 
+	LAUNCH_BROWSER = True
+	"""Normally the Python scripts launch the browser to view the web interface. However if the Rust side handles
+	launching a webview or browser we want to avoid opening the browser twice, which can be done by setting this
+	variable to False (set by command line arg)
+
+	Currently this is only used when the Rust launcher on Windows opens a Webview, so launching browser is not necessary"""
+
 	@staticmethod
 	def scanForCURL():
 		# On Windows 10, default to system CURL (which uses Windows's certificates)

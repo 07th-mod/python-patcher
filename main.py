@@ -123,7 +123,19 @@ def installerCommonStartupTasks():
 			'Mainly used on Linux to install Windows assets for use under Wine'
 		),
 	)
+
+	parser.add_argument(
+		'--no-launch-browser',
+		action='store_true',
+        help=(
+			'Launch the browser automatically after web server started'
+		)
+	)
+
 	args = parser.parse_args()
+
+	if args.no_launch_browser:
+		common.Globals.LAUNCH_BROWSER = False
 
 	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
 	if args.launcher_path is not None:

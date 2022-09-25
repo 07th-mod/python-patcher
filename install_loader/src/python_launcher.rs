@@ -8,6 +8,14 @@ pub fn launch_python_script(
 	config: &InstallerConfig,
 	graphical: bool,
 ) -> Result<ProcessRunner, Box<dyn Error>> {
+	launch_python_script_all_options(config, graphical, true)
+}
+
+pub fn launch_python_script_all_options(
+	config: &InstallerConfig,
+	graphical: bool,
+	launch_browser: bool,
+) -> Result<ProcessRunner, Box<dyn Error>> {
 	let script_name = OsStr::new(if graphical {
 		"main.py"
 	} else {
@@ -15,6 +23,10 @@ pub fn launch_python_script(
 	});
 
 	let mut args = vec![OsStr::new("-u"), OsStr::new("-E"), script_name];
+
+	if !launch_browser {
+		args.push(OsStr::new("--no-launch-browser"))
+	}
 
 	let maybe_path = std::env::current_exe();
 	match maybe_path.as_ref() {
