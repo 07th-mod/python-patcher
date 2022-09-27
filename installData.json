@@ -53,7 +53,7 @@
 							"data": {"url": "https://github.com/Xorboth/onikakushi-ita/releases/latest/download/onikakushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/UVNTeam) for support.",
+							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/OnigafuchiUA) for support.",
 							"data": {"url": "https://github.com/toxic-devoloper/HigurashiUA/releases/latest/download/OnikakushiUA.zip", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
