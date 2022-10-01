@@ -80,19 +80,19 @@ class FullInstallConfiguration:
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 		self.unityVersion = None
-		self.isProton = False
+		self.isWine = False
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir="", verbosePrinting=True):
 		# type: (Optional[str], Optional[bool]) -> List[ModFile]
 		# convert the files list into a dict
 		if self.subModConfig.family == "higurashi" and common.Globals.IS_LINUX and higurashiWindowsExecutableExists(self):
-			self.isProton = True
+			self.isWine = True
 
 		osString = common.Globals.OS_STRING
 		if common.Globals.FORCE_ASSET_OS_STRING is not None:
 			osString = common.Globals.FORCE_ASSET_OS_STRING
-		elif self.isProton:
+		elif self.isWine:
 			osString = "windows"
 
 		filesDict = {}
@@ -106,9 +106,12 @@ class FullInstallConfiguration:
 			print("Unity Version: [{}/Not a Unity game]".format(unityVersion))
 
 		for fileOverride in self.subModConfig.fileOverrides:
-			# skip overrides where OS doesn't match
-			if osString not in fileOverride.os:
-				continue
+			if self.isWine and fileOverride.wine:
+				print("Forcing install of {} on {} because wine mode enabled".format(fileOverride.id, osString))
+			else:
+				# skip overrides where OS/wine doesn't match
+				if osString not in fileOverride.os:
+					continue
 
 			# skip overrides where isSteam doesn't match (NOTE: 'steam' can be null, which means that any type is acceptable
 			if fileOverride.steam is not None and fileOverride.steam != self.isSteam:
@@ -180,8 +183,8 @@ class ModFile:
 
 
 class ModFileOverride:
-	def __init__(self, name, id, os, steam, unity, url, targetChecksums, relativeExtractionPath=None):
-		# type: (str, str, List[str], Optional[bool], Optional[str], str, List[Tuple[str, str]], Optional[str]) -> None
+	def __init__(self, name, id, os, steam, unity, url, targetChecksums, relativeExtractionPath=None, wine=None):
+		# type: (str, str, List[str], Optional[bool], Optional[str], str, List[Tuple[str, str]], Optional[str], Optional[bool]) -> None
 		self.name = name # type: str
 		self.id = id
 		"""A unique identifier among all files and modfiles for this submod. Set manually as 'movie-unix' for example"""
@@ -195,9 +198,12 @@ class ModFileOverride:
 		"""This field can be None for no checksum checking.
 		This field consists of a list of tuples. Each tuple is a pair of (PATH, CHECKSUM).
 		If a file exists at PATH and matches CHECKSUM then this override will be accepted"""
-		self.relativeExtractionPath = relativeExtractionPath  # type: str
+		self.relativeExtractionPath = relativeExtractionPath  #type: Optional[str]
 		"""A path relative to the *top-level game directory*
 		(should contain HigurashiEp##_data for a higurashi game's data folder)"""
+		self.wine = False if wine is None else wine #type: bool
+		"""If set to True, this file override should be installed if the target install is using Wine or Proton
+		even if the OS does not match"""
 
 class ModOption:
 	def __init__(self, name, description, group, type, isRadio, data, isGlobal=False, value=False):
@@ -322,7 +328,8 @@ class SubModConfig:
 				url=subModFileOverride['url'],
 				id=subModFileOverride['id'],
 				targetChecksums=subModFileOverride.get('targetChecksums'),
-				relativeExtractionPath=subModFileOverride.get('relativeExtractionPath')
+				relativeExtractionPath=subModFileOverride.get('relativeExtractionPath'),
+				wine=subModFileOverride.get('wine')
 			))
 
 		# If no mod options are specified in the JSON, the 'self.modOptions' field defaults to the empty list ([])
