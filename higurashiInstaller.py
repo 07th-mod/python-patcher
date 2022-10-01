@@ -431,16 +431,6 @@ def main(fullInstallConfiguration):
 
 	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
 
-	if common.Globals.IS_LINUX:
-		windowsExeName = fullInstallConfiguration.subModConfig.dataName.split('_')[0] + ".exe"
-		windowsExePath = os.path.join(fullInstallConfiguration.installPath, windowsExeName)
-		print("Checking for Proton install by checking if identifier {} exists".format(windowsExePath))
-		if os.path.exists(windowsExePath):
-			if common.Globals.FORCE_ASSET_OS_STRING is None:
-				raise Exception(common.Globals.PROTON_ERROR_MESSAGE)
-			else:
-				print(common.Globals.PROTON_WITH_ASSETS_OVERRIDE_MESSAGE)
-
 	# The Partial Manual Install option is mainly for Windows, so please don't assume it works properly on Linux/MacOS
 	if modOptionParser.partialManualInstall:
 		extractDir = fullInstallConfiguration.subModConfig.modName + " " + fullInstallConfiguration.subModConfig.subModName + " Extracted"
