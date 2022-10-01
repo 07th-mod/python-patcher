@@ -23,7 +23,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=win&unity=5.2.2f1"},
 						{"name": "ui",    "id": "ui-unix" ,    "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=unix&unity=5.2.2f1"}
 					]
@@ -97,7 +97,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",                                  "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z"},
+						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",     "id": "ui-windows", "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=win&unity=5.2.2f1"},
 						{"name": "ui",     "id": "ui-unix" ,   "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=unix&unity=5.2.2f1"}
 					]
@@ -163,7 +163,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",                              "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z"},
+						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",     "id": "ui-windows-5.4.0f1", "os": ["windows"],      "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.4.0f1"},
 						{"name": "ui",     "id": "ui-windows-5.3.4p1", "os": ["windows"],      "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.4p1"},
 						{"name": "ui",     "id": "ui-windows-5.3.5f1", "os": ["windows"],      "unity": "5.3.5f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.5f1"},
@@ -232,7 +232,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",                                "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
 						{"name": "ui",    "id": "ui-unix",     "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
 					]
@@ -296,7 +296,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",                                        "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z"},
+						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",     "id": "ui-windows-5.5.3p3", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p3"},
 						{"name": "ui",     "id": "ui-windows-5.5.3p1", "os": ["windows"],      "unity": "5.5.3p1", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p1"},
 						{"name": "ui",     "id": "ui-unix-5.5.3p3", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=unix&unity=5.5.3p3"},
@@ -363,7 +363,7 @@
 						{"name": "script",              "url":"https://github.com/07th-mod/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Voice.and.Graphics.Patch.zip",                            "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
 						{"name": "ui",    "id": "ui-windows-downgrade", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
 						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=unix&unity=5.5.3p3"},
@@ -425,7 +425,7 @@
 						{"name": "script",              "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip",                                 "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=win&unity=5.6.7f1"},
 						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=unix&unity=5.6.7f1"}
 					]
@@ -486,7 +486,7 @@
 						{"name": "script",              "url": "https://github.com/07th-mod/matsuribayashi/releases/latest/download/Matsuribayashi.Voice.and.Graphics.Patch.zip",                           "priority": 10, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
 						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
@@ -562,7 +562,7 @@
 						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z"},
+						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.3"},
 						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.4"},
 						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"},
@@ -599,7 +599,7 @@
 						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},
 						{"name": "system", "id": "system-linux",   "os": ["linux"],        "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_linux.7z"},
 						{"name": "system", "id": "system-mac",     "os": ["mac"],          "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_mac.7z"},
-						{"name": "movie",  "id": "movie-unix",     "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z"},
+						{"name": "movie",  "id": "movie-unix",     "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",     "id": "ui-windows",     "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
 						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
 					]

@@ -102,6 +102,9 @@ public struct FileOverrideDefinition: Codable {
 	public var targetChecksums: [[String]]?
 	/// A path relative to the *top-level game directory* (should contain HigurashiEp##_data for a higurashi game's data folder)
 	public var relativeExtractionPath: String?
+	/// If set to True, this file override should be installed if the target install is using Wine or Proton
+	/// even if the OS does not match
+	public var wine: Bool?
 }
 
 public enum OS: String, Codable, CaseIterable {
