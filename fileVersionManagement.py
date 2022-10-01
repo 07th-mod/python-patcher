@@ -132,6 +132,7 @@ class VersionManager:
 			print("VersionManager: Not saving local version info as this is the 'first' install")
 			return
 
+		# Update the existing version info with new install id, in case the game/mod variant changed
 		self.localVersionInfo.serialize(self.localVersionFilePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
 
 	# When install finishes, copy the remoteVersionInfo
@@ -144,7 +145,13 @@ class VersionManager:
 		if forcedSaveFolder is not None:
 			versionSavePath = os.path.join(forcedSaveFolder, VersionManager.localVersionFileName)
 
-		self.remoteVersionInfo.serialize(versionSavePath, lastAttemptedInstallID=self.remoteVersionInfo.id)
+		# Save only the version info of files which were relevant to the last installation
+		# This includes:
+		#  - Files installed on a previous installation, which were not updated on the latest install attempt
+		#  - Files which were re-installed or installed for the first time on the latest install attempt
+		self.remoteVersionInfo.serialize(versionSavePath,
+										lastAttemptedInstallID=self.remoteVersionInfo.id,
+										idsToSerialize={f.id for f in self.unfilteredModFileList})
 
 	@staticmethod
 	def deleteLocalVersionFileIfExists(localVersionFolder):
@@ -270,13 +277,20 @@ class SubModVersionInfo:
 			self.fileVersionsDict[row['id']] = FileVersion(row['id'], row['version'])
 		self.lastAttemptedInstallID = jsonObject.get('lastAttemptedInstallID')
 
-	def serialize(self, path, lastAttemptedInstallID):
+	def serialize(self, path, lastAttemptedInstallID, idsToSerialize=None):
+		def selectorFunction(id):
+			if idsToSerialize is None:
+				return True
+			else:
+				return id in idsToSerialize
+
 		files = [{'id':fileVersion.id, 'version': fileVersion.version}
-		         for fileVersion in self.fileVersionsDict.values()]
+		         for fileVersion in self.fileVersionsDict.values() if selectorFunction(fileVersion.id)]
 
 		obj = {
 			'id': self.id,
 			'files' : files,
+			'lastAttemptedInstallDate': datetime.now().strftime("%Y-%m-%d %I:%M:%S %p"),
 			'lastAttemptedInstallID': lastAttemptedInstallID
 		}
 
