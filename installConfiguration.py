@@ -395,7 +395,7 @@ You are also need to manually delete the temporary installer files (see end of v
 		                                 data=None,
 		                                 isGlobal=True))
 
-		if self.family == 'higurashi':
+		if self.family == 'higurashi' or self.family == 'umineko':
 			self.modOptions.append(ModOption(name="Quick Repair",
 			                                 description="""This option repairs your install by re-installing critical mod files. This is useful if:
 
