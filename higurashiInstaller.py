@@ -425,6 +425,9 @@ class Installer:
 def main(fullInstallConfiguration):
 	# type: (installConfiguration.FullInstallConfiguration) -> None
 
+	if common.Globals.IS_LINUX:
+		print("Linux Compatibility Layer: {}".format("YES: Using Wine or Proton" if fullInstallConfiguration.isWine else "no: Using Native"))
+
 	isVoiceOnly = fullInstallConfiguration.subModConfig.subModName == 'voice-only'
 	if isVoiceOnly:
 		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
