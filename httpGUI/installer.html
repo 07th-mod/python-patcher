@@ -568,7 +568,14 @@
 															<strong>Configuration</strong><br>
 															Mod Name: {{ selectedMod }} <br>
 															Patch Type: {{ selectedSubMod.subModName }} <br>
-															Install Path: {{ validatedInstallPath === null ? "Not Selected" : validatedInstallPath }}" <br><br>
+															Install Path: {{ validatedInstallPath === null ? "Not Selected" : validatedInstallPath }}" <br>
+															<span v-if="isWine || metaInfo.operatingSystem === 'linux'">
+															Linux Compatibility Layer:
+																<span v-if="isWine"><strong>YES: Using Wine or Proton</strong></span>
+																<span v-else>no: Using Native</span>
+															</span>
+
+															<br><br>
 															<strong>Options</strong><br>
 															<div v-if="selectedSubMod.modOptionGroups.length == 0">
 																There are no game specific options for this mod.

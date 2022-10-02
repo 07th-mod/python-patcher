@@ -856,6 +856,7 @@ class InstallerGUI:
 					retval['fullUpdateRequired'] = fullUpdateRequired
 					retval['partialReinstallDetected'] = partialReinstallDetected
 					retval['scriptNeedsUpdate'] = scriptNeedsUpdate
+					retval['isWine'] = fullInstallConfiguration.isWine
 				return retval
 
 			# requestData: Not necessary - will be ignored
