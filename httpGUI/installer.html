@@ -211,15 +211,51 @@
 										</section>
 										<br><br>
 										<div v-if="metaInfo !== null">
-										<div class="alert alert-danger" role="alert"
-										v-if="	selectedSubMod !== null &&
-												selectedSubMod.family === 'higurashi' &&
-												metaInfo.operatingSystem === 'linux'"><strong>
-												Warning: GNOME/MATE Desktop (the default on Ubuntu and Fedora Linux) will cause Higurashi Ep.4 and upwards to <strong>crash the entire desktop when you start the game.</strong>
-												This happens even on the base game (without any mods applied).<br><br>
-												A workaround for this is to install XFCE desktop (please look up instructions for your specific operating system).<br><br>
-												Please make sure you can launch the base game before applying any mods (please don't make any saves on the base game as they are not compatible with the mod).
-										</strong></div>
+										<div v-if="selectedSubMod !== null && selectedSubMod.family === 'higurashi' && metaInfo.operatingSystem === 'linux'">
+											<h3>Linux PLEASE READ</h3>
+											There are two ways to run the game on Linux:
+											<ol class="installer-ordered">
+												<li>Running the <strong>Native Linux version of the game</strong></li>
+												<li>Running the <strong>Windows version of the game using Proton (Steam/Mangagamer/GOG) or Wine (Mangagamer/GOG)</strong></li>
+											</ol>
+											<br>
+
+											<span class="border border-primary">Your game is detected as: </span>
+											<strong class="installer-text-border" v-if="installPathValid">
+												{{ isWine ? (isSteam ? "2. Proton" : "2. Wine/Proton") : "1. Native Linux" }}
+											</strong>
+											<strong class="installer-text-border" v-else>
+												Install path not yet selected or auto-detected! Please select it below!
+											</strong>
+											<br><br>
+
+											As some users have issues with the Native Linux version of the game, we recommend the following:
+											<br>
+											<ul class="installer-bullets">
+												<li>
+													<strong>If you bought from Steam</strong>, it is suggested you enable Proton compatibility mode before installing the mod.
+												</li>
+												<li>
+													<strong>If you bought from GOG/Mangagamer:</strong>
+													<ul class="installer-bullets">
+														<li>We suggest trying the Native Linux version of the game first</li>
+														<li>If you have problems with the native version, you can try Wine (plain Wine, using Lutris, or using Minigalaxy for GOG).</li>
+														<li>You might only encounter issues with the Native version when reaching Chapter 5 onwards</li>
+													</ul>
+												</li>
+											</ul>
+											Please visit <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/">our wiki's Higurashi install instructions page</a>, then click the <strong>"Linux/Proton/Wine" tab</strong> for instructions on <strong>how to enable/disable Proton</strong> and general <strong>information on Wine/Proton</strong>.
+											<br><br>
+
+											<div class="alert alert-danger" role="alert">
+												<strong>
+													Warning: Some GNOME/MATE Desktop users (the default on Ubuntu and Fedora Linux) report Higurashi Ep.4 and upwards will <strong>crash the entire desktop when you start the game.</strong>
+													This happens even on the base game (without any mods applied).<br><br>
+													A workaround for this is to install XFCE desktop (please look up instructions for your specific operating system).<br><br>
+													Please make sure you can launch the base game before applying any mods (please don't make any saves on the base game as they are not compatible with the mod).
+												</strong>
+											</div>
+										</div>
 										<div class="alert alert-warning" role="alert" v-if="!metaInfo.installAlreadyInProgress && metaInfo.lockFileExists"><strong>
 											Warning: It appears an install is already in progress, or the last install was closed unexpectedly.<br>
 											Please double check that there is only one console window open, and the install is not already running.<br>
@@ -621,7 +657,7 @@
 																</div>
 															</strong>
 														</div>
-														<h4 class="uppercase mt40">Start The Install</h4>
+														<h4 class="uppercase mt40">Start The Install {{ isWine ? "(Wine/Proton)" : "" }}</h4>
 														<hr>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
 															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
