@@ -80,6 +80,20 @@ they have zero height. This forces the height to some valid value*/
     margin-bottom: 10px;
 }
 
+.installer-ordered {
+    list-style: decimal;
+    margin-left: 40px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.installer-text-border {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 4px;
+}
+
 .rendered-markdown h1 {
     text-transform: uppercase;
     letter-spacing: 17px;
