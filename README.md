@@ -53,23 +53,24 @@ When the installer is run in developer mode, it checks that all URLs in `install
 The web interface component is located in the httpGUI folder.
 
 It is setup as a npm package with `eslint`, such that you can install
-the `markdownlint` plugin in Visual Studio Code and have code
+the `eslint` plugin in Visual Studio Code and have code
 style checks/syntax checks etc. applied.
 
 To setup the development environment:
 
-- Install `npm`
+- Install `npm` (You may want to use [`nvm`](https://github.com/nvm-sh/nvm) or [`nvm-windows`](https://github.com/coreybutler/nvm-windows) to manage `npm` versions)
 - Install `visual studio code`
-- Install the `markdownlint` plugin for visual studio code (available in the marketplace)
-- Open a terminal in the `httpGUI` subdirectory, then run `npm install eslint`
+- Install the `eslint` plugin for visual studio code (available in the marketplace)
+- Open a terminal in the `httpGUI` subdirectory, then run `npm install`
 - Open the httpGUI **folder** in Visual Studio Code. Just opening the file by itself won't work.
-- You will likely get a huge number of warnings as the file will have CRLF
-  line endings (TODO: fix git settings so it downloads as LF). To fix this,
+- You *might* get a huge number of warnings as the file will have CRLF
+  line endings (I think this is fixed now?). To fix this,
   on the bottom right of the window, click where it says `CRLF`, then choose
   `LF`
 
 To use the plugin:
 
+- If you open the `httpGUI` folder, but no syntax highlighting appears, most likely you didn't run `npm install` earlier.
 - When you get an error, move the text cursor to the end of the red squiggle
 - A lightbulb icon will appear
 - Click the lightbulb icon and you can automatically fix the issue
