@@ -59,6 +59,10 @@
 						{
 							"name": "Aplicar parche en Español / Apply Spanish language patch", "description": "Parche que incluye una traducción completa del juego al Español. **Ten en cuenta:**\n - Los desarrolladores de 07th-Mod no son parte de este Fork comunitario. Por favor, para cualquier problema con la instalación contáctate con los responsables del parche mediante [Discord](https://discord.gg/urDawUn4Nq).\n - Alternativamente, [deja un comentario en la guía de Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2764742715).",
 							"data": {"url": "https://github.com/dailyrana/onikakushi-es/releases/latest/download/Onikakushi.Patch.ES.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Onikakushi).",
+							"data": {"url": "https://github.com/wf1264/onikakushi-ru/releases/latest/download/onikakushi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -125,6 +129,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/watanagashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/watanagashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/watanagashi-ita/releases/latest/download/watanagashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Watanagashi).",
+							"data": {"url": "https://github.com/wf1264/watanagashi-ru/releases/latest/download/watanagashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -193,6 +201,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tatarigoroshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tatarigoroshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/tatarigoroshi-ita/releases/latest/download/tatarigoroshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Tatarigoroshi).",
+							"data": {"url": "https://github.com/wf1264/tatarigoroshi-ru/releases/latest/download/tatarigoroshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -259,6 +271,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/himatsubushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/himatsubushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/himatsubushi-ita/releases/latest/download/himatsubushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Himatsubushi).",
+							"data": {"url": "https://github.com/wf1264/himatsubushi-ru/releases/latest/download/himatsubushi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -325,6 +341,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/meakashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/meakashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/meakashi-ita/releases/latest/download/meakashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Meakashi).",
+							"data": {"url": "https://github.com/wf1264/meakashi-ru/releases/latest/download/meakashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -392,6 +412,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tsumihoroboshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tsumihoroboshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/tsumihoroboshi-ita/releases/latest/download/tsumihoroboshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Tsumihoroboshi).",
+							"data": {"url": "https://github.com/wf1264/tsumihoroboshi-ru/releases/latest/download/tsumihoroboshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -452,6 +476,10 @@
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/minagoroshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/minagoroshi/releases/latest/download/Minagoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Minagoroshi).",
+							"data": {"url": "https://github.com/wf1264/minagoroshi-ru/releases/latest/download/minagoroshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
@@ -541,6 +569,10 @@
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. [More details here](https://github.com/orian34/matsuribayashi/releases). **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/matsuribayashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/matsuribayashi/releases/latest/download/Matsuribayashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Matsuribayashi).",
+							"data": {"url": "https://github.com/wf1264/matsuribayashi-ru/releases/latest/download/matsuribayashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				}
