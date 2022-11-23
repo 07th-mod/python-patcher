@@ -160,6 +160,10 @@
 							<div class="alert alert-danger" role="alert" v-if="!installFinished"><strong>
 								To quit the installation, click <button type="button" class="btn" v-on:click="abortInstall()" style="margin-bottom: 0">Quit Installer</button></a>. Download progress will be kept (resuming downloads is supported).
 							</strong></div>
+							<div class="alert alert-warning" role="alert" v-if="!installFinished">
+								If you're getting <strong>unusually slow download speeds</strong>, we suggest retrying the download in 12 to 24 hours.<br>
+								Just click "Quit Installer" above. Then 12 to 24 hours later, start the installer again with the same options.
+							</div>
 							<h3> Overall Progress: {{ overallPercentage }}% </h3>
 							<h5 style="font-family: monospace"> {{ overallTaskDescription }} </h5>
 							<div class="progress">
