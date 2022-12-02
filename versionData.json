@@ -105,7 +105,7 @@
 			{"id": "ui-windows-5.5.3p1",  "version": "1.4.0"},
 			{"id": "ui-unix-5.5.3p3",     "version": "1.4.0"},
 			{"id": "ui-unix-5.5.3p1",     "version": "1.4.0"},
-			{"id": "og-dll-asset-update", "version": "1.0.1"},
+			{"id": "og-dll-asset-update", "version": "1.0.2"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.1"}
 		]
