@@ -749,20 +749,20 @@
 					"radio": [
 						{"name": "No Change", "description": "No change to engine"},
 						{
-							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-fork/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-windows-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-umineko/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-windows-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-osx-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-osx-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Linux Steam Experimental Engine / Executable", "description": "Same as above, For LINUX STEAM.\n\nNOTE: **Only use this if you are running the game through the Steam launcher** - use the below `nodep` version if you are planning to run the game without Steam running.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Linux GOG/MangaGamer Experimental Engine / Executable (nodep)", "description": "Same as above, for LINUX GOG/MangaGamer.\n\nThis 'nodep' version fixes problems with missing libraries, such as having no sound at all due to missing PulseAudio libs.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-nodep-question.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-question.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -897,20 +897,20 @@
 					"radio": [
 						{"name": "No Change", "description": "No change to engine"},
 						{
-							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-fork/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-windows-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-umineko/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-windows-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-osx-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-osx-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Linux Steam Experimental Engine / Executable", "description": "Same as above, For LINUX STEAM.\n\nNOTE: **Only use this if you are running the game through the Steam launcher** - use the below `nodep` version if you are planning to run the game without Steam running.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Linux GOG/MangaGamer Experimental Engine / Executable (nodep)", "description": "Same as above, for LINUX GOG/MangaGamer.\n\nThis 'nodep' version fixes problems with missing libraries, such as having no sound at all due to missing PulseAudio libs.",
-							"data": {"url": "https://github.com/07th-mod/ponscripter-fork/releases/latest/download/umineko-linux-nodep-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-answer.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
