@@ -107,7 +107,7 @@
 			{"id": "ui-unix-5.5.3p1",     "version": "1.4.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.2"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"}
+			{"id": "og-bgm-se",           "version": "1.0.3"}
 		]
 	},
 	{
@@ -132,7 +132,7 @@
 			{"id": "system", "version": "1.1.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.1"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"}
+			{"id": "og-bgm-se",           "version": "1.0.3"}
 		]
 	},
 	{
@@ -154,7 +154,7 @@
 			{"id": "ui-unix",             "version": "1.2.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"}
+			{"id": "og-bgm-se",           "version": "1.0.3"}
 		]
 	},
 	{
@@ -186,7 +186,7 @@
 			{"id": "system",              "version": "1.0.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.1"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"}
+			{"id": "og-bgm-se",           "version": "1.0.3"}
 		]
 	},
 	{
