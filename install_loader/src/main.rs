@@ -18,6 +18,7 @@ mod version;
 mod windows_dialog;
 mod windows_message_box;
 mod windows_utilities;
+mod installer_webview;
 
 fn handle_open_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
 	// Expect filters to be given as description1, filter1, description2, filter2
