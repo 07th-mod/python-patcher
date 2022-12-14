@@ -220,7 +220,8 @@ shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
 shutil.copytree('.', staging_folder, ignore=ignore_filter, dirs_exist_ok=True)
 
 # Save the build information in the staging folder. Will later be read by installer.
-with open(os.path.join(staging_folder, 'build_info.json'), 'w', encoding='utf-8') as build_info_file:
+build_info_path = 'build_info.json'
+with open(os.path.join(staging_folder, build_info_path), 'w', encoding='utf-8') as build_info_file:
 	json.dump({
 		"build_date": f"{datetime.datetime.now()}",
 		"git_tag": f"{GIT_TAG}",
@@ -338,3 +339,4 @@ Typically we never get more than a couple false positives across the suite of ab
 
 try_remove_tree(staging_folder)
 try_remove_tree(bootstrap_copy_folder)
+try_remove_tree(build_info_path)
