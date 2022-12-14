@@ -186,11 +186,15 @@ struct InstallerGUI {
 }
 
 impl InstallerGUI {
-	pub fn new(
+	pub fn init(
 		window_size: [f32; 2],
 		constants: InstallerConfig,
 		initial_progression: InstallerProgression,
 	) -> InstallerGUI {
+		// Try to rename the old server-info.json file if it exists, to avoid reading
+		// a server info file from a previous run of the installer
+		let _ = std::fs::rename(&constants.server_info_path, &constants.server_info_old);
+
 		InstallerGUI {
 			ui_state: UIState::new(window_size),
 			state: InstallerState {
@@ -580,7 +584,7 @@ Please download the installer to your Downloads or other known location, then ru
 		// or monitor console output for startup indicator string.
 
 		// TODO: fall back to old method of launching browser if this fails
-		match installer_webview::launch() {
+		match installer_webview::launch(&self.config) {
 			Ok(_) => {}
 			Err(e) => {
 				println!("Failed to launch webview: {e}")
@@ -681,7 +685,7 @@ impl AppBuilder<InstallerGUI> for InstallerBuilder {
 	fn build(&self) -> InstallerGUI {
 		let window_size = self.window_size();
 		// if self.retry {
-		InstallerGUI::new(
+		InstallerGUI::init(
 			[window_size[0] as f32, window_size[1] as f32],
 			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
 			InstallerProgression::PreExtractionChecks,
@@ -691,7 +695,7 @@ impl AppBuilder<InstallerGUI> for InstallerBuilder {
 	fn build_cleanup_error(&self, failed_cleanup_path: PathBuf) -> InstallerGUI {
 		let window_size = self.window_size();
 		// if self.retry {
-		InstallerGUI::new(
+		InstallerGUI::init(
 			[window_size[0] as f32, window_size[1] as f32],
 			InstallerConfig::new(&PathBuf::from("07th-mod_installer"), false),
 			InstallerProgression::TempDirCleanupFailed(failed_cleanup_path),
@@ -704,7 +708,7 @@ impl AppBuilder<InstallerGUI> for InstallerBuilder {
 		let temp_dir = TempDir::new()?;
 
 		let window_size = self.window_size();
-		let retval = Ok(InstallerGUI::new(
+		let retval = Ok(InstallerGUI::init(
 			[window_size[0] as f32, window_size[1] as f32],
 			InstallerConfig::new(&PathBuf::from(temp_dir.path()), false),
 			InstallerProgression::PreExtractionChecks,
