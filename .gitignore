@@ -42,6 +42,10 @@ travis_installer_staging
 INSTALLER_LOGS
 07th-mod-logs.zip
 
+server-info.json
+server-info-old.json
+lockfile.lock
+
 # Created by https://www.gitignore.io/api/macos,linux,python,windows,pycharm
 # Edit at https://www.gitignore.io/?templates=macos,linux,python,windows,pycharm
 
