@@ -168,6 +168,10 @@ ignore_paths = [
 	'INSTALLER_LOGS',
 	'github_actions_changelog_template.md',
 	'github_actions_changelog_template_generated.md',
+	'07th-mod_temp_dir',
+	'travis_build_script.py',
+	'server-info.json',
+	'server-info-old.json',
 ]
 ignore_paths_realpaths = set([os.path.realpath(x) for x in ignore_paths])
 
