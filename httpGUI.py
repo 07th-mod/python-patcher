@@ -1045,12 +1045,23 @@ class InstallerGUI:
 		}
 
 		def on_server_started(web_server):
-			web_server_url = 'http://{}:{}/loading_screen.html'.format(*web_server.server_address)
+			page = 'loading_screen.html'
+			web_server_url = 'http://{}:{}/{}'.format(*web_server.server_address, page)
+			print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
 			if common.Globals.LAUNCH_BROWSER:
 				common.openURLInBrowser(web_server_url)
-				print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
 			else:
-				print("NOTE: Launching browser from Python script is disabled. Server started at {}".format(web_server_url))
+				try:
+					serverInfoPath = 'server-info.json'
+					print("NOTE: Launching browser from Python script is disabled. Server started at {}, info written to {}".format(web_server_url, serverInfoPath))
+					with open(serverInfoPath, 'w') as serverInfo:
+						serverInfo.write(json.dumps({
+							'ip': web_server.server_address[0],
+							'port': web_server.server_address[1],
+							'page': page,
+						}))
+				except Exception as e:
+					print("Failed to write server info: {}".format(e))
 
 		start_server(working_directory=workingDirectory,
 		             post_handlers=post_handlers,

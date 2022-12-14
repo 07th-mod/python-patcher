@@ -9,6 +9,8 @@ pub struct InstallerConfig {
 	pub logs_folder: PathBuf,
 	pub python_path: PathBuf,
 	pub is_retry: bool,
+	pub server_info_path: PathBuf,
+	pub server_info_old: PathBuf,
 }
 
 impl InstallerConfig {
@@ -20,6 +22,8 @@ impl InstallerConfig {
 		));
 		let logs_folder = sub_folder.join("INSTALLER_LOGS");
 		let python_path = sub_folder.join("python/python.exe");
+		let server_info_path = sub_folder.join("server-info.json");
+		let server_info_old = sub_folder.join("server-info-old.json");
 
 		InstallerConfig {
 			sub_folder,
@@ -27,6 +31,8 @@ impl InstallerConfig {
 			logs_folder,
 			python_path,
 			is_retry,
+			server_info_path,
+			server_info_old,
 		}
 	}
 }

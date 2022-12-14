@@ -2569,6 +2569,7 @@ dependencies = [
 name = "seventh_mod_loader"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "backtrace",
  "clap",
  "fs2",
@@ -2582,6 +2583,8 @@ dependencies = [
  "path-clean",
  "progress-streams",
  "regex",
+ "serde",
+ "serde_json",
  "tar",
  "tempfile",
  "widestring",
