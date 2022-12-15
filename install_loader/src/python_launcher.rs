@@ -1,32 +1,25 @@
 use std::error::Error;
 use std::ffi::OsStr;
 
-use crate::config::InstallerConfig;
+use crate::config::{InstallerConfig, LaunchType};
 use crate::process_runner::ProcessRunner;
 
 pub fn launch_python_script(
 	config: &InstallerConfig,
-	graphical: bool,
+	launch_type: LaunchType,
 ) -> Result<ProcessRunner, Box<dyn Error>> {
-	launch_python_script_all_options(config, graphical, true)
-}
+	let mut args = vec!["-u", "-E"];
 
-pub fn launch_python_script_all_options(
-	config: &InstallerConfig,
-	graphical: bool,
-	launch_browser: bool,
-) -> Result<ProcessRunner, Box<dyn Error>> {
-	let script_name = OsStr::new(if graphical {
-		"main.py"
-	} else {
-		"cli_interactive.py"
-	});
+	match launch_type {
+		LaunchType::TextMode => args.push("cli_interactive.py"),
+		LaunchType::Browser => args.push("main.py"),
+		LaunchType::WebView => {
+			args.push("main.py");
+			args.push("--no-launch-browser");
+		}
+	};
 
-	let mut args = vec![OsStr::new("-u"), OsStr::new("-E"), script_name];
-
-	if !launch_browser {
-		args.push(OsStr::new("--no-launch-browser"))
-	}
+	let mut args : Vec<&OsStr> = args.iter().map(|arg| OsStr::new(arg)).collect();
 
 	let maybe_path = std::env::current_exe();
 	match maybe_path.as_ref() {

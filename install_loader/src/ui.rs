@@ -3,7 +3,7 @@ use imgui::*;
 use tempfile::TempDir;
 
 use crate::archive_extractor::{ArchiveExtractor, ExtractionStatus};
-use crate::config::InstallerConfig;
+use crate::config::{InstallerConfig, LaunchType};
 use crate::process_runner::ProcessRunner;
 use crate::{python_launcher, installer_webview};
 use crate::support;
@@ -79,17 +79,17 @@ impl<'ui> SimpleUI for Ui<'ui> {
 
 pub struct InstallStartedState {
 	pub python_monitor: ProcessRunner,
-	pub is_graphical: bool,
+	pub launch_type: LaunchType,
 	pub timer: TimeoutTimer,
 	pub webview_launched: bool,
 	pub python_started_poll_count: usize,
 }
 
 impl InstallStartedState {
-	pub fn new(python_monitor: ProcessRunner, is_graphical: bool, timer: TimeoutTimer) -> InstallStartedState {
+	pub fn new(python_monitor: ProcessRunner, launch_type: LaunchType, timer: TimeoutTimer) -> InstallStartedState {
 		InstallStartedState {
 			python_monitor,
-			is_graphical,
+			launch_type,
 			timer,
 			webview_launched: false,
 			python_started_poll_count: 0,
@@ -419,7 +419,8 @@ Please download the installer to your Downloads or other known location, then ru
 					&mut self.ui_state.safe_mode_enabled,
 				);
 				if install_button_clicked {
-					if let Err(e) = self.start_install(!self.ui_state.safe_mode_enabled) {
+					let launch_type = if self.ui_state.safe_mode_enabled { LaunchType::TextMode } else { LaunchType::WebView };
+					if let Err(e) = self.start_install(launch_type) {
 						println!("Failed to start install! {:?}", e)
 					}
 				}
@@ -438,7 +439,7 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
-				if !graphical_install.webview_launched
+				if graphical_install.launch_type == LaunchType::WebView && !graphical_install.webview_launched
 				{
 					if graphical_install.python_started_poll_count > 50
 					{
@@ -455,6 +456,7 @@ Please download the installer to your Downloads or other known location, then ru
 						{
 							Ok(url) => {
 								graphical_install.webview_launched = true;
+								// TODO: fix installer launcher freezing when webview launched
 								let _ = installer_webview::launch(url.as_str());
 							},
 							Err(_) => {
@@ -466,7 +468,8 @@ Please download the installer to your Downloads or other known location, then ru
 					}
 				}
 
-				if graphical_install.is_graphical {
+				// TODO: add specific text for webview launcher?
+				if graphical_install.launch_type != LaunchType::TextMode {
 					ui.text(im_str!(
 						"Please wait - Installer will launch in your web browser (Poll attempts: {})"
 					, graphical_install.python_started_poll_count));
@@ -478,6 +481,15 @@ Please download the installer to your Downloads or other known location, then ru
 					ui.text_yellow(im_str!(
 						"Console Installer Started - Please use the console window that just opened."
 					));
+				}
+
+				if ui.simple_button(im_str!("Re-Launch Installer In Browser"))
+				{
+					graphical_install.python_monitor.try_wait().unwrap_or(None);
+					if let Err(e) = self.start_install(LaunchType::Browser) {
+						println!("Failed to start install! {:?}", e)
+					}
+					return;
 				}
 
 				if let Some(exit_status) =
@@ -592,31 +604,23 @@ Please download the installer to your Downloads or other known location, then ru
 
 
 	// Start either the graphical or console install. Advances the installer progression to "InstallStarted"
-	fn start_install(&mut self, is_graphical: bool) -> Result<(), Box<dyn std::error::Error>> {
-		if !is_graphical {
+	fn start_install(&mut self, launch_type: LaunchType) -> Result<(), Box<dyn std::error::Error>> {
+		if launch_type == LaunchType::TextMode {
 			windows_utilities::show_console_window();
 		}
 
-		let launch_browser = false;
-
-		let python_monitor = python_launcher::launch_python_script_all_options(
+		let python_monitor = python_launcher::launch_python_script(
 			&self.config,
-			is_graphical,
-			launch_browser,
+			launch_type,
 		)?;
-
-		// TODO: fallback to the below if above fails
-		//let python_monitor = python_launcher::launch_python_script(&self.config, is_graphical)?;
 
 		self.state.progression = InstallerProgression::InstallStarted(
 			InstallStartedState::new(
 				python_monitor,
-				is_graphical,
+				launch_type,
 				TimeoutTimer::new(std::time::Duration::from_millis(500)),
 			)
 		);
-
-		// TODO: fall back to old method of launching browser if this fails
 
 		Ok(())
 	}

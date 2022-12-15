@@ -8,7 +8,7 @@ use std::panic::PanicInfo;
 
 use crate::archive_extractor;
 use crate::archive_extractor::ExtractionStatus;
-use crate::config::InstallerConfig;
+use crate::config::{InstallerConfig, LaunchType};
 use crate::python_launcher;
 use crate::version;
 use crate::windows_utilities;
@@ -166,19 +166,22 @@ Please make sure it's installed.
 	}
 
 	// Check whether the user wants to run the web installer or text installer
-	let graphical = {
+	let launch_type = {
 		let user_choice = pause(
 			r#"Please choose which installer to run:
-  0: Web-based installer (Try this first)
-  1: Simple Text-based installer
+  0: Normal installer (Try this first)
+  1: Normal installer launched in browser
+  2: Simple Text-based installer
 
 > (Please type '0' or '1', then press ENTER)
 "#,
 		);
 
 		match user_choice {
-			Some(x) if x == "1" => false,
-			_ => true,
+			Some(x) if x == "0" => LaunchType::WebView,
+			Some(x) if x == "1" => LaunchType::Browser,
+			Some(x) if x == "2" => LaunchType::TextMode,
+			_ => LaunchType::WebView,
 		}
 	};
 
@@ -205,7 +208,7 @@ Please make sure it's installed.
 
 	println!("Extraction Complete - Please wait while installer starts in your browser...");
 
-	let launch_result = python_launcher::launch_python_script(&config, graphical);
+	let launch_result = python_launcher::launch_python_script(&config, launch_type);
 
 	let mut process_runner = match launch_result {
 		Ok(process_runner) => process_runner,
