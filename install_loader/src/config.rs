@@ -2,6 +2,13 @@ use crate::windows_utilities;
 use imgui::ImString;
 use std::path::PathBuf;
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum LaunchType {
+	TextMode,	// Launch the fallback text-mode installer (user interacts with installer via terminal)
+	Browser,	// Launch the python installer web server, and let the python script launch the web browser to view it
+	WebView,	// Launch the python installer web server, then launch a webview window via Rust to view it
+}
+
 // Please define these as paths relative to the current directory
 pub struct InstallerConfig {
 	pub sub_folder: PathBuf,
