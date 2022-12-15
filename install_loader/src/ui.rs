@@ -80,13 +80,19 @@ impl<'ui> SimpleUI for Ui<'ui> {
 pub struct InstallStartedState {
 	pub python_monitor: ProcessRunner,
 	pub is_graphical: bool,
+	pub timer: TimeoutTimer,
+	pub webview_launched: bool,
+	pub python_started_poll_count: usize,
 }
 
 impl InstallStartedState {
-	pub fn new(python_monitor: ProcessRunner, is_graphical: bool) -> InstallStartedState {
+	pub fn new(python_monitor: ProcessRunner, is_graphical: bool, timer: TimeoutTimer) -> InstallStartedState {
 		InstallStartedState {
 			python_monitor,
 			is_graphical,
+			timer,
+			webview_launched: false,
+			python_started_poll_count: 0,
 		}
 	}
 }
@@ -432,10 +438,38 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 			}
 			InstallerProgression::InstallStarted(graphical_install) => {
+				if !graphical_install.webview_launched
+				{
+					if graphical_install.python_started_poll_count > 50
+					{
+						let default_url = "http://127.0.0.1:8000/loading_screen.html";
+						println!("Error: Couldn't determine python launch url, will try default url {}", &default_url);
+						graphical_install.webview_launched = true;
+						let _ = installer_webview::launch(default_url);
+					}
+					else if graphical_install.timer.expired()
+					{
+						graphical_install.python_started_poll_count += 1;
+
+						match installer_webview::get_url(&self.config)
+						{
+							Ok(url) => {
+								graphical_install.webview_launched = true;
+								let _ = installer_webview::launch(url.as_str());
+							},
+							Err(_) => {
+								println!("Attempt {} waiting for python server to start...", graphical_install.python_started_poll_count);
+							},
+						}
+
+						graphical_install.timer.refresh();
+					}
+				}
+
 				if graphical_install.is_graphical {
 					ui.text(im_str!(
-						"Please wait - Installer will launch in your web browser"
-					));
+						"Please wait - Installer will launch in your web browser (Poll attempts: {})"
+					, graphical_install.python_started_poll_count));
 					ui.text_yellow(im_str!("If you have problems:"));
 					ui.text_yellow(im_str!(" - try refreshing the webpage"));
 					ui.text_yellow(im_str!(" - try restarting this launcher, then try 'Restart using temporary folder'"));
@@ -574,22 +608,15 @@ Please download the installer to your Downloads or other known location, then ru
 		// TODO: fallback to the below if above fails
 		//let python_monitor = python_launcher::launch_python_script(&self.config, is_graphical)?;
 
-		self.state.progression = InstallerProgression::InstallStarted(InstallStartedState::new(
-			python_monitor,
-			is_graphical,
-		));
-
-		// TODO: only launch installer once it has finished starting up
-		// not sure of best way to do this - either write to a file once installer started up
-		// or monitor console output for startup indicator string.
+		self.state.progression = InstallerProgression::InstallStarted(
+			InstallStartedState::new(
+				python_monitor,
+				is_graphical,
+				TimeoutTimer::new(std::time::Duration::from_millis(500)),
+			)
+		);
 
 		// TODO: fall back to old method of launching browser if this fails
-		match installer_webview::launch(&self.config) {
-			Ok(_) => {}
-			Err(e) => {
-				println!("Failed to launch webview: {e}")
-			}
-		}
 
 		Ok(())
 	}
