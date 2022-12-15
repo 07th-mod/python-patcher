@@ -3,6 +3,7 @@ use std::{fs, path::Path, thread};
 
 use serde::{Deserialize, Serialize};
 use anyhow::{Result, Context};
+use wry::application::{window::Window, dpi::{PhysicalSize, LogicalPosition, PhysicalPosition}};
 
 use crate::config::InstallerConfig;
 
@@ -55,6 +56,26 @@ fn get_url(config: &InstallerConfig) -> String
     }
 }
 
+pub fn window_position_size(window: &Window) -> (PhysicalPosition<u32>, PhysicalSize<u32>)
+{
+    if let Some(monitor) = window.current_monitor()
+    {
+        let monitor_size = monitor.size();
+        let width = std::cmp::min(1600, monitor_size.width * 9 / 10);
+        let size = PhysicalSize::new(width, monitor_size.height * 9 / 10);
+
+        let x_pos = monitor_size.width.saturating_sub(size.width)/2;
+        let y_pos = monitor_size.height.saturating_sub(size.height)/2;
+        let position = PhysicalPosition::new(x_pos, y_pos);
+
+        (position, size)
+    }
+    else
+    {
+        (PhysicalPosition::new(0,0), PhysicalSize::new(1280, 720))
+    }
+}
+
 pub fn launch(config: &InstallerConfig) -> wry::Result<()> {
     use wry::{
         application::{
@@ -70,6 +91,9 @@ pub fn launch(config: &InstallerConfig) -> wry::Result<()> {
         .with_title("07th-mod Installer")
         .build(&event_loop)?;
 
+    let (window_position, window_size) = window_position_size(&window);
+    window.set_inner_size(window_size);
+    window.set_outer_position(window_position);
 
     let webview =
         WebViewBuilder::new(window)?.with_url(get_url(config).as_str())?;
