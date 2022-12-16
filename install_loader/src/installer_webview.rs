@@ -1,8 +1,8 @@
-use std::fs;
+use std::{fs, thread::{JoinHandle, self}};
 
 use serde::{Deserialize, Serialize};
 use anyhow::Result;
-use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}};
+use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows};
 
 use crate::config::InstallerConfig;
 
@@ -15,7 +15,6 @@ struct ServerInfo {
 
 pub fn get_url(config: &InstallerConfig) -> Result<String>
 {
-    // let server_info_contents = read_file_with_polling(&config.server_info_path).context("Failed to read server-info.json from disk")?;
     let server_info_contents = fs::read_to_string(&config.server_info_path)?;
 
     let server_info : ServerInfo = serde_json::from_str(server_info_contents.as_str())?;
@@ -24,27 +23,16 @@ pub fn get_url(config: &InstallerConfig) -> Result<String>
     Ok(format!("http://127.0.0.1:{}/{}", server_info.port, server_info.page))
 }
 
-pub fn window_position_size(window: &Window) -> (PhysicalPosition<u32>, PhysicalSize<u32>)
-{
-    if let Some(monitor) = window.current_monitor()
-    {
-        let monitor_size = monitor.size();
-        let width = std::cmp::min(1600, monitor_size.width * 9 / 10);
-        let size = PhysicalSize::new(width, monitor_size.height * 9 / 10);
-
-        let x_pos = monitor_size.width.saturating_sub(size.width)/2;
-        let y_pos = monitor_size.height.saturating_sub(size.height)/2;
-        let position = PhysicalPosition::new(x_pos, y_pos);
-
-        (position, size)
-    }
-    else
-    {
-        (PhysicalPosition::new(0,0), PhysicalSize::new(1280, 720))
-    }
+// NOTE: once the webview window is launched, it cannot be closed without closing
+// the whole program (not just this thread, but the entire program). So the returned
+// JoinHandle isn't very useful.
+pub fn launch(url: String) -> JoinHandle<Result<()>> {
+    thread::spawn(move || {
+        launch_inner(&url.to_string())
+    })
 }
 
-pub fn launch(url: &str) -> wry::Result<()> {
+fn launch_inner(url: &str) -> Result<()> {
     use wry::{
         application::{
             event::{Event, StartCause, WindowEvent},
@@ -54,7 +42,7 @@ pub fn launch(url: &str) -> wry::Result<()> {
         webview::WebViewBuilder,
     };
 
-    let event_loop = EventLoop::new();
+    let event_loop: EventLoop<()> = EventLoop::new_any_thread();
     let window = WindowBuilder::new()
         .with_title("07th-mod Installer")
         .build(&event_loop)?;
@@ -74,8 +62,7 @@ pub fn launch(url: &str) -> wry::Result<()> {
     #[cfg(debug_assertions)]
     webview.open_devtools();
 
-    // TODO: spawn event loop on new thread? Currently this freezes the launcher-ui
-    // Could also just close the launcher UI at this point as it's not really needed anymore.
+    // This function call can never return - once the user closes the window, the entire program closes!
     event_loop.run(move |event, _, control_flow| {
         *control_flow = ControlFlow::Wait;
 
@@ -88,4 +75,24 @@ pub fn launch(url: &str) -> wry::Result<()> {
             _ => (),
         }
     });
+}
+
+fn window_position_size(window: &Window) -> (PhysicalPosition<u32>, PhysicalSize<u32>)
+{
+    if let Some(monitor) = window.current_monitor()
+    {
+        let monitor_size = monitor.size();
+        let width = std::cmp::min(1600, monitor_size.width * 9 / 10);
+        let size = PhysicalSize::new(width, monitor_size.height * 9 / 10);
+
+        let x_pos = monitor_size.width.saturating_sub(size.width)/2;
+        let y_pos = monitor_size.height.saturating_sub(size.height)/2;
+        let position = PhysicalPosition::new(x_pos, y_pos);
+
+        (position, size)
+    }
+    else
+    {
+        (PhysicalPosition::new(0,0), PhysicalSize::new(1280, 720))
+    }
 }
