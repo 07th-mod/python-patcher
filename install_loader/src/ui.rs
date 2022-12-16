@@ -1,3 +1,4 @@
+use std::io::{self, Write};
 use glium::glutin::event::WindowEvent;
 use imgui::*;
 use tempfile::TempDir;
@@ -11,6 +12,7 @@ use crate::support::{AppBuilder, ApplicationGUI, NextFrameCommands};
 use crate::version;
 use crate::windows_utilities;
 use std::path::PathBuf;
+use anyhow::Result;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
 
@@ -429,8 +431,17 @@ Please download the installer to your Downloads or other known location, then ru
 
 				ui.text_yellow(im_str!("If you have problems:"));
 				ui.text_yellow(im_str!(" - try refreshing the webpage"));
+				ui.text_yellow(im_str!(" - try 'Launch Installer in Web Browser'"));
 				ui.text_yellow(im_str!(" - try 'Restart using temporary folder'"));
 				ui.text_yellow(im_str!(" - try enabling 'Text-Mode Installer'"));
+
+				if ui.simple_button(im_str!("Launch Installer in Web Browser"))
+				{
+					if let Err(e) = self.start_install(LaunchType::Browser) {
+						println!("Failed to start install! {:?}", e)
+					}
+					return;
+				}
 
 				if !self.config.is_retry
 					&& ui.simple_button(im_str!("Restart using temporary folder"))
@@ -443,7 +454,7 @@ Please download the installer to your Downloads or other known location, then ru
 				{
 					if graphical_install.python_started_poll_count > 50
 					{
-						let default_url = "http://127.0.0.1:8000/loading_screen.html";
+						let default_url = String::from("http://127.0.0.1:8000/loading_screen.html");
 						println!("Error: Couldn't determine python launch url, will try default url {}", &default_url);
 						graphical_install.webview_launched = true;
 						let _ = installer_webview::launch(default_url);
@@ -456,11 +467,15 @@ Please download the installer to your Downloads or other known location, then ru
 						{
 							Ok(url) => {
 								graphical_install.webview_launched = true;
-								// TODO: fix installer launcher freezing when webview launched
-								let _ = installer_webview::launch(url.as_str());
+								let _ = installer_webview::launch(url);
 							},
 							Err(_) => {
-								println!("Attempt {} waiting for python server to start...", graphical_install.python_started_poll_count);
+								if graphical_install.python_started_poll_count == 1 {
+									print!("Waiting for python server to start");
+								} else {
+									print!(".");
+								}
+								let _ = io::stdout().flush();
 							},
 						}
 
@@ -468,28 +483,28 @@ Please download the installer to your Downloads or other known location, then ru
 					}
 				}
 
-				// TODO: add specific text for webview launcher?
-				if graphical_install.launch_type != LaunchType::TextMode {
-					ui.text(im_str!(
-						"Please wait - Installer will launch in your web browser (Poll attempts: {})"
-					, graphical_install.python_started_poll_count));
-					ui.text_yellow(im_str!("If you have problems:"));
-					ui.text_yellow(im_str!(" - try refreshing the webpage"));
-					ui.text_yellow(im_str!(" - try restarting this launcher, then try 'Restart using temporary folder'"));
-					ui.text_yellow(im_str!(" - try restarting this launcher, then enable the 'Text-Mode Installer' option"));
-				} else {
-					ui.text_yellow(im_str!(
-						"Console Installer Started - Please use the console window that just opened."
-					));
+				match graphical_install.launch_type {
+					LaunchType::TextMode => {
+						ui.text_yellow(im_str!(
+							"Console Installer Started - Please use the console window that just opened."
+						));
+					},
+					LaunchType::Browser => {
+						ui.text(im_str!("Please wait - Installer will launch in your web browser..."));
+					}
+					LaunchType::WebView => {
+						if graphical_install.webview_launched {
+							ui.text("Installer has launched!");
+						} else {
+							ui.text(format!("Please wait for installer to launch in new window{}", ".".repeat(graphical_install.python_started_poll_count % 5)));
+						}
+					}
 				}
 
-				if ui.simple_button(im_str!("Re-Launch Installer In Browser"))
-				{
-					graphical_install.python_monitor.try_wait().unwrap_or(None);
-					if let Err(e) = self.start_install(LaunchType::Browser) {
-						println!("Failed to start install! {:?}", e)
-					}
-					return;
+				if graphical_install.launch_type != LaunchType::TextMode {
+					ui.text_yellow(im_str!("If you have problems:"));
+					ui.text_yellow(im_str!(" - try refreshing the webpage (CTRL + R)"));
+					ui.text_yellow(im_str!(" - try restarting this launcher, then read the yellow text before starting the installer"));
 				}
 
 				if let Some(exit_status) =
