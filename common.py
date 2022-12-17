@@ -268,6 +268,12 @@ You can try manually running [{}] once so the installer can use the file.""".for
 
 	@staticmethod
 	def getBuildInfo():
+		if Globals.DEVELOPER_MODE:
+			Globals.BUILD_DATE = "{}".format(datetime.datetime.now())
+			Globals.GIT_TAG = "v0.0.0-dev-build"
+			Globals.BUILD_INFO = "Git Tag: {}\nBuild Date:{}".format(Globals.GIT_TAG, Globals.BUILD_DATE)
+			return
+
 		try:
 			with open('build_info.json', 'r') as build_info_file:
 				buildInfo = json.load(build_info_file)
