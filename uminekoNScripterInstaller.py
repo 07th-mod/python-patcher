@@ -47,12 +47,13 @@ def main(conf):
 		modFileList=conf.buildFileListSorted(),
 		localVersionFolder=conf.installPath)
 
+	parser = installConfiguration.ModOptionParser(conf)
+	skipDownload = parser.downloadManually
+
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
 	conf.subModConfig.printEnabledOptions()
-	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45, skipDownload=skipDownload)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
-
-	parser = installConfiguration.ModOptionParser(conf)
 
 	for opt in parser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(
