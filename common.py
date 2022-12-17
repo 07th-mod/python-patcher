@@ -903,8 +903,8 @@ class DownloaderAndExtractor:
 			except Exception as e:
 				print("ExtractableItem: Failed to delete {}: {}".format(oldDownloadPath, e))
 
-	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45, supressDownloadStatus=False):
-		# type: (List[installConfiguration.ModFile], str, str, int, int, bool) -> None
+	def __init__(self, modFileList, downloadTempDir, extractionDir, downloadProgressAmount=45, extractionProgressAmount=45, supressDownloadStatus=False, skipDownload=False):
+		# type: (List[installConfiguration.ModFile], str, str, int, int, bool, bool) -> None
 		self.modFileList = modFileList
 		self.downloadTempDir = downloadTempDir
 		self.defaultExtractionDir = extractionDir
@@ -920,6 +920,8 @@ class DownloaderAndExtractor:
 		self.extractablesForEachDownload = [] # type: List[List[DownloaderAndExtractor.ExtractableItem]]
 
 		self.extractList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
+
+		self.skipDownload = skipDownload
 
 	def buildDownloadAndExtractionList(self):
 		#type: () -> None
@@ -946,6 +948,9 @@ class DownloaderAndExtractor:
 		# download all urls to the download temp folder
 		makeDirsExistOK(self.downloadTempDir)
 		makeDirsExistOK(self.defaultExtractionDir)
+
+		if self.skipDownload:
+			return
 
 		# check if any downloads have been modified on the server - if so, delete the local downloads
 		for extractableItem in self.extractList:

@@ -122,13 +122,14 @@ def mainUmineko(conf):
 		modFileList=conf.buildFileListSorted(),
 		localVersionFolder=conf.installPath)
 
+	optionParser = installConfiguration.ModOptionParser(conf)
+	skipDownload = optionParser.downloadManually
+
 	filesRequiringUpdate = fileVersionManager.getFilesRequiringUpdate()
 	print("Perform Full Install: {}".format(fileVersionManager.fullUpdateRequired()))
 	conf.subModConfig.printEnabledOptions()
-	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45)
+	downloaderAndExtractor = common.DownloaderAndExtractor(filesRequiringUpdate, downloadTempDir, conf.installPath, downloadProgressAmount=45, extractionProgressAmount=45, skipDownload=skipDownload)
 	downloaderAndExtractor.buildDownloadAndExtractionList()
-
-	optionParser = installConfiguration.ModOptionParser(conf)
 
 	for opt in optionParser.downloadAndExtractOptionsByPriority:
 		downloaderAndExtractor.addItemManually(
@@ -139,8 +140,9 @@ def mainUmineko(conf):
 	downloaderAndExtractor.printPreview()
 
 	# Delete all non-checksummed files from the download folder, if they exist
-	print("Removing non-checksummed downloads:")
-	deleteExtractablesFromFolder(downloadTempDir, [x for x in downloaderAndExtractor.extractList if not x.fromMetaLink])
+	if not optionParser.downloadManually:
+		print("Removing non-checksummed downloads:")
+		deleteExtractablesFromFolder(downloadTempDir, [x for x in downloaderAndExtractor.extractList if not x.fromMetaLink])
 
 	downloaderAndExtractor.download()
 
@@ -231,7 +233,7 @@ pause
 		steamGridExtractor.extractSteamGrid(downloadTempDir)
 	fileVersionManager.saveVersionInstallFinished()
 
-	if not optionParser.keepDownloads:
+	if not optionParser.keepDownloads and not skipDownload:
 		print("Removing temporary downloads:")
 		deleteExtractablesFromFolder(downloadTempDir, downloaderAndExtractor.extractList)
 

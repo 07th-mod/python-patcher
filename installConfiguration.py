@@ -253,6 +253,7 @@ class ModOptionParser:
 		self.installSteamGrid = False
 		self.partialManualInstall = False
 		self.repairMode = False
+		self.downloadManually = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -276,6 +277,8 @@ class ModOptionParser:
 					self.partialManualInstall = True
 				elif modOption.type == 'repairMode':
 					self.repairMode = True
+				elif modOption.type == 'downloadManually':
+					self.downloadManually = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -411,6 +414,19 @@ Make sure to select the same mod options you chose previously before using this 
 			                                 isRadio=False,
 			                                 data=None,
 			                                 isGlobal=True))
+
+		self.modOptions.append(ModOption(name="Download Manually",
+		                                 description="""This option requires you to perform the download stage manually.
+
+If you're having problems downloading via the installer, you can use this option to bypass the download stage.
+
+The files you manually downloaded will not be deleted automatically at the end of the install (in case you want to back them up).
+""",
+		                                 group="Common Options",
+		                                 type="downloadManually",
+		                                 isRadio=False,
+		                                 data=None,
+		                                 isGlobal=True))
 
 	def __repr__(self):
 		return "Type: [{}] Game Name: [{}]".format(self.modName, self.subModName)

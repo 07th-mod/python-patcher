@@ -97,8 +97,8 @@ class Installer:
 		else:
 			return path.join(installPath, self.info.subModConfig.dataName)
 
-	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, modOptionParser, forcedExtractDirectory=None):
-		# type: (installConfiguration.FullInstallConfiguration, bool, installConfiguration.ModOptionParser, Optional[str]) -> None
+	def __init__(self, fullInstallConfiguration, extractDirectlyToGameDirectory, modOptionParser, forcedExtractDirectory=None, skipDownload=False):
+		# type: (installConfiguration.FullInstallConfiguration, bool, installConfiguration.ModOptionParser, Optional[str], bool) -> None
 
 		"""
 		Installer Init
@@ -112,6 +112,7 @@ class Installer:
 		self.dataDirectory = self.getDataDirectory(self.directory)
 		self.clearScripts = False  # If true, will clear CompiledUpdateScripts before extraction stage
 		self.languagePatchIsEnabled = False  # True if at least one language patch will be installed
+		self.skipDownload = skipDownload
 
 		logger.getGlobalLogger().trySetSecondaryLoggingPath(
 			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
@@ -149,7 +150,8 @@ class Installer:
 		self.info.subModConfig.printEnabledOptions()
 		self.downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=modFileList,
 		                                                            downloadTempDir=self.downloadDir,
-		                                                            extractionDir=self.extractDir)
+		                                                            extractionDir=self.extractDir,
+		                                                            skipDownload=self.skipDownload)
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
@@ -384,7 +386,7 @@ class Installer:
 				forceRemove(toPath)
 			shutil.move(fromPath, toPath)
 
-	def cleanup(self, cleanExtractionDirectory):
+	def cleanup(self, cleanExtractionDirectory, cleanDownloadDirectory=True):
 		"""
 		General cleanup and other post-install things
 
@@ -392,7 +394,8 @@ class Installer:
 		On mac, modifies the application Info.plist with new values if available
 		"""
 		try:
-			forceRmTree(self.downloadDir)
+			if cleanDownloadDirectory:
+				forceRmTree(self.downloadDir)
 			if cleanExtractionDirectory:
 				forceRmTree(self.extractDir)
 		except OSError:
@@ -433,6 +436,7 @@ def main(fullInstallConfiguration):
 		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
 
 	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
+	skipDownload = modOptionParser.downloadManually
 
 	# The Partial Manual Install option is mainly for Windows, so please don't assume it works properly on Linux/MacOS
 	if modOptionParser.partialManualInstall:
@@ -448,7 +452,7 @@ def main(fullInstallConfiguration):
 		common.tryShowInFileBrowser(fullInstallConfiguration.installPath)
 	elif common.Globals.IS_WINDOWS:
 		# On Windows, extract directly to the game directory to avoid path-length issues and speed up install
-		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True, modOptionParser=modOptionParser)
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=True, modOptionParser=modOptionParser, skipDownload=skipDownload)
 		print("Downloading...")
 		installer.download()
 		installer.saveFileVersionInfoStarted()
@@ -462,9 +466,9 @@ def main(fullInstallConfiguration):
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
-		installer.cleanup(cleanExtractionDirectory=False)
+		installer.cleanup(cleanExtractionDirectory=False, cleanDownloadDirectory=not skipDownload)
 	else:
-		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser)
+		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, skipDownload=skipDownload)
 		print("Downloading...")
 		installer.download()
 		installer.saveFileVersionInfoStarted()
@@ -480,7 +484,7 @@ def main(fullInstallConfiguration):
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
-		installer.cleanup(cleanExtractionDirectory=True)
+		installer.cleanup(cleanExtractionDirectory=True, cleanDownloadDirectory=not skipDownload)
 
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")
