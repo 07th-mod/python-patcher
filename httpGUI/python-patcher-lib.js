@@ -195,7 +195,8 @@ window.onload = function onWindowLoaded() {
       TIMEOUT_AUTO_DETECT_PATHS: 15,
       gamePathsXHR: null, //The last gamePaths XMLHttpRequest, or null if none exists
       isWine: false, // Set true if game was detected as using Wine or Proton
-      isSteam: false // True if game was installed by Steam (If the game cannot have Steam, set to false)
+      isSteam: false, // True if game was installed by Steam (If the game cannot have Steam, set to false)
+      startInstallCounter: 0, // Prevents race condition when startInstall POSTs overlap
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -256,8 +257,13 @@ Continue install anyway?`)) {
           allowCache: allowCache === true,
         };
 
+        app.startInstallCounter = (app.startInstallCounter + 1) % 0xFFFFFFFF;
+        const startInstallCounterLocal = app.startInstallCounter;
         doPost('startInstall', args,
           (responseData) => {
+            if (app.startInstallCounter !== startInstallCounterLocal) {
+              return;
+            }
             app.installPathValid = responseData.installStarted;
             app.validatedInstallPath = responseData.validatedInstallPath;
             app.validationInProgress = false;
