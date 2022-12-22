@@ -388,7 +388,7 @@ Please watch the instructions on using this option: [https://www.youtube.com/wat
 
 This makes the installer download and extract the mod files to a temporary folder (shown at the end of the install). After this, **you** have to manually copy the mod files to the game directory.
 
-You are also need to manually delete the temporary installer files (see end of video).""",
+You also need to manually delete the temporary installer files (see end of video).""",
 		                                 group="Experimental Options",
 		                                 type="partialManualInstall",
 		                                 isRadio=False,
