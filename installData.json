@@ -194,6 +194,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/tatarigoroshi/issues)\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/tatarigoroshi/releases/latest/download/Tatarigoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
@@ -264,6 +265,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/himatsubushi/issues)\n- Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/himatsubushi/releases/latest/download/Himatsubushi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
@@ -334,6 +336,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/meakashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/meakashi/releases/latest/download/Meakashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
@@ -405,6 +408,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/tsumihoroboshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
@@ -473,6 +477,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/minagoroshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/minagoroshi/releases/latest/download/Minagoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
@@ -566,6 +571,7 @@
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
 						{
 							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. [More details here](https://github.com/orian34/matsuribayashi/releases). **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/matsuribayashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
 							"data": {"url": "https://github.com/orian34/matsuribayashi/releases/latest/download/Matsuribayashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
