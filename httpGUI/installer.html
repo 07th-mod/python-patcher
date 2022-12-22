@@ -630,27 +630,37 @@
 															</div>
 															<br>
 															<strong>Files to be downloaded</strong><br>
-															<table class="umineko-image-table-content">
-																<thead>
-																	<tr>
-																		<th style="width: 50px">DL</th>
-																		<th style="width: 150px">File Name</th>
-																		<th style="width: 100px">File Size</th>
-																		<th style="width: 100%">Update Reason</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<tr v-for="fileInfo in downloadItemsPreview"
-																	v-bind:class="{ active: fileInfo[2] === true, inactive: fileInfo[2] === false }">
-																		<td v-if="fileInfo[2] === null"></td>
-																		<td v-if="fileInfo[2] === true">✓</td>
-																		<td v-if="fileInfo[2] === false">—</td>
-																		<td>{{ fileInfo[0] }}</td>
-																		<td>{{ fileInfo[1] }}</td>
-																		<td>{{ fileInfo[3] }}</td>
-																	</tr>
-																</tbody>
-															</table>
+															<div v-if="startInstallInProgress">
+																<div class="text-center">
+																<br><br>
+																<strong>Please wait - Download Preview Loading...</strong><br><br>
+																<span class="loader loader-big"></span>
+																<br><br><br>
+																</div>
+															</div>
+															<div v-else>
+																<table class="umineko-image-table-content">
+																	<thead>
+																		<tr>
+																			<th style="width: 50px">DL</th>
+																			<th style="width: 150px">File Name</th>
+																			<th style="width: 100px">File Size</th>
+																			<th style="width: 100%">Update Reason</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr v-for="fileInfo in downloadItemsPreview"
+																		v-bind:class="{ active: fileInfo[2] === true, inactive: fileInfo[2] === false }">
+																			<td v-if="fileInfo[2] === null"></td>
+																			<td v-if="fileInfo[2] === true">✓</td>
+																			<td v-if="fileInfo[2] === false">—</td>
+																			<td>{{ fileInfo[0] }}</td>
+																			<td>{{ fileInfo[1] }}</td>
+																			<td>{{ fileInfo[3] }}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
 															<strong>
 																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
 																<div class="alert" v-bind:class="[alertClassFromMaybeBool(haveEnoughFreeSpace)]">
