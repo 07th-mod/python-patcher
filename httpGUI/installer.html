@@ -642,21 +642,25 @@
 																<table class="umineko-image-table-content">
 																	<thead>
 																		<tr>
-																			<th style="width: 50px">DL</th>
-																			<th style="width: 150px">File Name</th>
-																			<th style="width: 100px">File Size</th>
+																			<th style="width: 100px">File</th>
+																			<th style="width: 80px">Size</th>
 																			<th style="width: 100%">Update Reason</th>
+																			<th v-if="downloadItemsPreview.downloadManually" style="width: 200%">Manual Download Status</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="fileInfo in downloadItemsPreview"
-																		v-bind:class="{ active: fileInfo[2] === true, inactive: fileInfo[2] === false }">
-																			<td v-if="fileInfo[2] === null"></td>
-																			<td v-if="fileInfo[2] === true">✓</td>
-																			<td v-if="fileInfo[2] === false">—</td>
-																			<td>{{ fileInfo[0] }}</td>
-																			<td>{{ fileInfo[1] }}</td>
-																			<td>{{ fileInfo[3] }}</td>
+																		<tr v-for="fileInfo in downloadItemsPreview.downloadItems"
+																		v-bind:class="{ active: fileInfo.rowClass === 'active', inactive: fileInfo.rowClass === 'inactive', warning: fileInfo.rowClass === 'warning' }">
+																			<td>{{ fileInfo.id }}</td>
+																			<td>{{ fileInfo.fileSize }}</td>
+																			<td>{{ fileInfo.updateReason }}</td>
+																			<td v-if="downloadItemsPreview.downloadManually"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span></td>
+																		</tr>
+																		<tr>
+																			<td>Total Download Size</td>
+																			<td>{{ downloadItemsPreview.totalDownload }}</td>
+																			<td>{{ downloadItemsPreview.updateTypeDescription }}</td>
+																			<td v-if="downloadItemsPreview.downloadManually"></td>
 																		</tr>
 																	</tbody>
 																</table>
