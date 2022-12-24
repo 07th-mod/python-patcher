@@ -78,7 +78,7 @@ class VersionManager:
 		if self.localVersionInfo is None:
 			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
-				self.updatesRequiredDict[file.id] = (True, "No local version information - Assuming update is required")
+				self.updatesRequiredDict[file.id] = (True, "Not Installed")
 		elif self.remoteVersionInfo is None:
 			self.updatesRequiredDict = {}
 			for file in self.unfilteredModFileList:
@@ -98,12 +98,12 @@ class VersionManager:
 				installIsNewer, reason = installNewerThanDate(self.localVersionFilePath, file.skipIfModNewerThan)
 				if installIsNewer:
 					msg = "Not installing {} because: ({})".format(file.id, reason)
-					self.updatesRequiredDict[file.id] = (False, "Not installing because you already have these files")
+					self.updatesRequiredDict[file.id] = (False, "Already Installed (By Date)")
 					if verbosePrinting:
 						logger.printNoTerminal(msg)
 				else:
 					msg = "{} - Will install because: ({})".format(self.updatesRequiredDict[file.id][1], reason)
-					self.updatesRequiredDict[file.id] = (self.updatesRequiredDict[file.id][0], "You are missing these files (judging from your last mod install date)")
+					self.updatesRequiredDict[file.id] = (self.updatesRequiredDict[file.id][0], "Not Installed (By Date)")
 					if verbosePrinting:
 						logger.printNoTerminal(msg)
 
