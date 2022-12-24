@@ -774,11 +774,11 @@ def prettyPrintFileSize(fileSizeBytesWithSign):
 		sign = '-'
 
 	if fileSizeBytes >= 1e9:
-		return "{}{:.2f}".format(sign, fileSizeBytes / 1e9).strip('0').strip('.') + ' GB'
+		return "{}{:.1f}".format(sign, fileSizeBytes / 1e9).strip('0').strip('.') + ' GB'
 	elif fileSizeBytes >= 1e6:
-		return "{}{:.2f}".format(sign, fileSizeBytes / 1e6).strip('0').strip('.') + ' MB'
+		return "{}{:.0f}".format(sign, fileSizeBytes / 1e6).strip('0').strip('.') + ' MB'
 	elif fileSizeBytes > 0:
-		return "{}{:.2f}".format(sign, fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
+		return "{}{:.0f}".format(sign, fileSizeBytes / 1e3).strip('0').strip('.') + ' KB'
 	else:
 		return "0 KB"
 
