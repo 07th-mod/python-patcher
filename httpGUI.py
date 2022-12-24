@@ -6,6 +6,7 @@ import os
 import json
 import re
 import sys
+import time
 import zipfile
 import subprocess
 
@@ -47,6 +48,43 @@ try:
 	from typing import List, Optional, Dict, Tuple
 except ImportError:
 	pass # Just needed for pycharm comments
+
+class ExtractableItemCache:
+	def __init__(self):
+		self.cache = {}
+		self.lock = threading.Lock()
+
+	def cacheURLs(self, urls):
+		# type: (List[str]) -> ()
+
+		self.lock.acquire()
+		try:
+			# Get all the URLS not in the cache
+			urlsToQuery = [url for url in urls if url not in self.cache]
+
+			try:
+				# Query URLs in parallel on Python 3
+				import concurrent.futures
+
+				def query(url):
+					return url, common.DownloaderAndExtractor.getExtractableItem(url, '.')
+
+				with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+					for url, extractableItemList in executor.map(query, urlsToQuery):
+						self.cache[url] = extractableItemList
+
+			except ImportError:
+				# Fallback to querying in serial on Python 2
+				for url in urlsToQuery:
+					self.cache[url] = common.DownloaderAndExtractor.getExtractableItem(url, '.')
+		finally:
+			self.lock.release()
+
+	def get(self, url):
+		# type: (str) -> List[common.DownloaderAndExtractor.ExtractableItem]
+		return self.cache[url]
+
+extractableItemCache = ExtractableItemCache()
 
 collapseWhiteSpaceRegex = re.compile(r"[\s\b]+")
 def _TKAskPath(subMod):
@@ -483,6 +521,127 @@ def updateModOptionsFromWebFormat(modOptionsToUpdate, webFormatModOptions, curre
 				modOptionToUpdate.value = modOptions[modOptionToUpdate.id].value
 
 
+class DownloadItem:
+	def __init__(self, modFileID, url, isOption):
+		# type: (str, str, bool) -> None
+		self.modFileID = modFileID  # type: str
+		self.url = url  # type: str
+		self.isOption = isOption  # type: bool
+		self.extractableItemList = []  # type: List[common.DownloaderAndExtractor.ExtractableItem]
+
+
+class DownloadPreviewFactory:
+	def __init__(self, fileVersionManager):
+		# type: (fileVersionManagement.VersionManager) -> None
+		self.downloadItems = []  #type: List[DownloadItem]
+		self.fileVersionManager = fileVersionManager #type: fileVersionManagement.VersionManager
+		self.scriptNeedsUpdate = False  #type: bool
+		self.totalDownload = 0  #type: int
+
+	def addPreviewRow(self, modFileID, url, isOption):
+		# type: (str, str, bool) -> None
+		self.downloadItems.append(DownloadItem(modFileID, url, isOption))
+
+	def getPreviewAsDict(self, downloadFolder, downloadManually):
+		# type: (str, bool) -> Dict
+		MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD = """You need to download this file
+
+<{}>
+
+Then save it to
+
+{}"""
+
+		MANUAL_DOWNLOAD_STATUS_WRONG_SIZE = """File exists but is the wrong size.
+Please make sure the download has finished, and check you've got the latest version of the file.
+Otherwise, re-download the file from
+
+<{}>
+
+Then save it to
+
+{}"""
+
+		# Query each download to determine the filename (and also for metalinks,
+		# there may be more than one file per metalink)
+		if downloadManually:
+			extractableItemCache.cacheURLs([item.url for item in self.downloadItems])
+
+			for item in self.downloadItems:
+				item.extractableItemList = extractableItemCache.get(item.url)
+
+		previewList = []
+		for item in self.downloadItems:
+			fileSizeBytes = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(item.url)
+
+			if item.isOption:
+				updateNeeded, updateReason = True, 'Mod options are always downloaded'
+				self.totalDownload += fileSizeBytes
+			else:
+				updateNeeded, updateReason = self.fileVersionManager.updatesRequiredDict[item.modFileID]
+				if updateNeeded and fileSizeBytes:
+					self.totalDownload += fileSizeBytes
+				if 'script' in item.modFileID and updateNeeded:
+					self.scriptNeedsUpdate = True
+
+			if not item.extractableItemList:
+				previewList.append(
+					{
+						"id": item.modFileID,
+						"fileSize": 'N/A' if fileSizeBytes is None else common.prettyPrintFileSize(fileSizeBytes),
+						"rowClass": "active" if updateNeeded else "inactive",
+						"updateReason": updateReason,
+						"url": item.url,
+						"manualDownloadStatus": None,
+						"fileName": None,
+					}
+				)
+			else:
+				for extractableItem in item.extractableItemList:
+					expectedDownloadPath = os.path.join(downloadFolder, extractableItem.filename)
+					existsOnDisk = os.path.exists(expectedDownloadPath)
+
+					# Check that the downloaded file has the correct file size
+					correctFileSize = extractableItem.length == os.path.getsize(expectedDownloadPath) if existsOnDisk else None
+
+					# Tell the user what they have to do to download each file (and if it's already downloaded)
+					# Also visually differentiate if the row needs action (eg the user needs to download the file)
+					# by setting the class of the html row
+					if updateNeeded:
+						if existsOnDisk:
+							if correctFileSize:
+								manualDownloadStatus = "OK - [{}] is already downloaded".format(extractableItem.filename)
+								rowClass = "active"
+							else:
+								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(item.url, expectedDownloadPath)
+								rowClass = "warning"
+						else:
+							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(item.url, expectedDownloadPath)
+							rowClass = "warning"
+					else:
+						manualDownloadStatus = "—"
+						rowClass = "inactive"
+
+					previewList.append(
+						{
+							"id": item.modFileID,
+							"fileSize": 'N/A' if fileSizeBytes is None else common.prettyPrintFileSize(fileSizeBytes),
+							"rowClass": rowClass,
+							"updateReason": updateReason,
+							"url": item.url,
+							"manualDownloadStatus": manualDownloadStatus,
+							"fileName": extractableItem.filename,
+						}
+					)
+
+		return {
+			"downloadItems": previewList,
+			"totalDownload": common.prettyPrintFileSize(self.totalDownload),
+			"downloadManually": downloadManually,
+			"updateTypeDescription": 'Update Type: {}'.format('Full Update' if self.fileVersionManager.fullUpdateRequired() else 'Partial Update'),
+		}
+
+
 def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
 	#type: (installConfiguration.FullInstallConfiguration, bool) -> Any
 	####### Preview which files are going to be downloaded #######
@@ -517,38 +676,23 @@ def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
 	else:
 		partialReinstallDetected = fileVersionManager.userDidPartialReinstall(installTimeProbePath)
 
-	# Generate rows for the normal/overridden files
-	totalDownload = 0
-	downloadItemsPreview = []
-	scriptNeedsUpdate = False
-	for modFile in modFileList:
-		updateNeeded, updateReason = fileVersionManager.updatesRequiredDict[modFile.id]
-		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(modFile.url)
-		downloadItemsPreview.append((modFile.id, downloadSize, updateNeeded, updateReason))
-		if updateNeeded and downloadSize:
-			totalDownload += downloadSize
-		if 'script' in modFile.id and updateNeeded:
-			scriptNeedsUpdate = True
+	factory = DownloadPreviewFactory(fileVersionManager)
 
-	# Generate rows for the mod option files
+	# Generate preview rows for the mod files
+	for modFile in modFileList:
+		factory.addPreviewRow(modFile.id, modFile.url, isOption=False)
+
+	# Generate preview rows for the mod options
 	parser = installConfiguration.ModOptionParser(fullInstallConfig)
 	for option in parser.downloadAndExtractOptionsByPriority:
-		downloadSize = common.Globals.URL_FILE_SIZE_LOOKUP_TABLE.get(option.url)
-		downloadItemsPreview.append((option.name, downloadSize, True, 'Mod options are always downloaded'))
-		if downloadSize:
-			totalDownload += downloadSize
+		factory.addPreviewRow(option.name, option.url, isOption=True)
 
-	# The last row is the total download size of all the
-	updateTypeString = 'Update Type: {}'.format('Full Update' if fileVersionManager.fullUpdateRequired() else 'Partial Update')
-	downloadItemsPreview.append(("Total Download Size", totalDownload, None, updateTypeString))
+	preview = factory.getPreviewAsDict(
+		downloadFolder=fullInstallConfig.subModConfig.modName + " Downloads",
+		downloadManually=parser.downloadManually
+	)
 
-	# Convert the size in bytes to a nicely formatted string
-	downloadItemsPreview = [(row[0],
-	                         'N/A' if row[1] is None else common.prettyPrintFileSize(row[1]),
-	                         row[2],
-	                         row[3]) for row in downloadItemsPreview]
-
-	return downloadItemsPreview, totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired(), partialReinstallDetected, scriptNeedsUpdate
+	return preview, factory.totalDownload, fileVersionManager.numUpdatesRequired, fileVersionManager.fullUpdateRequired(), partialReinstallDetected, factory.scriptNeedsUpdate
 
 class InstallerGUIException(Exception):
 	def __init__(self, errorReason):
