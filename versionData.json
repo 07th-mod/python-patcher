@@ -196,12 +196,12 @@
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.0"},
 			{"id": "bgm-se",              "version": "1.0.2"},
-			{"id": "script",              "version": "1.0.4"},
+			{"id": "script",              "version": "1.0.5"},
 			{"id": "movie-unix",          "version": "1.0.1"},
-			{"id": "ui-windows",          "version": "1.0.0"},
-			{"id": "ui-windows-mg",       "version": "1.0.0"},
-			{"id": "ui-unix",             "version": "1.0.0"},
-			{"id": "ui-unix-mg",          "version": "1.0.0"}
+			{"id": "ui-windows",          "version": "1.0.1"},
+			{"id": "ui-windows-mg",       "version": "1.0.1"},
+			{"id": "ui-unix",             "version": "1.0.1"},
+			{"id": "ui-unix-mg",          "version": "1.0.1"}
 		]
 	},
 	{
