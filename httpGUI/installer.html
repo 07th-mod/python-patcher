@@ -629,16 +629,10 @@
 																</div>
 															</div>
 															<br>
-															<strong>Files to be downloaded</strong><br>
-															<div v-if="startInstallInProgress">
-																<div class="text-center">
-																<br><br>
-																<strong>Please wait - Download Preview Loading...</strong><br><br>
-																<span class="loader loader-big"></span>
-																<br><br><br>
-																</div>
-															</div>
-															<div v-else>
+															<strong>Files to be downloaded</strong>
+															<span v-if="startInstallInProgressFiltered"><span class="loader loader-small"></span></span>
+															<br>
+															<div v-bind:class="{ 'greyed-out': startInstallInProgressFiltered }">
 																<table class="umineko-image-table-content">
 																	<thead>
 																		<tr>
