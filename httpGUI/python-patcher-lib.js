@@ -178,7 +178,7 @@ window.onload = function onWindowLoaded() {
       haveEnoughFreeSpace: null,
       CWDHaveEnoughFreeSpace: null,
       // The download items preview includes mod options, and an extra summary row at the end
-      downloadItemsPreview: [],
+      downloadItemsPreview: {},
       // scriptNeedsUpdate: True if the installer will modify the game script (meaning saves might be invalidated)
       scriptNeedsUpdate: false,
       // The number of updated files detected, EXCEPT for mod options
@@ -198,6 +198,8 @@ window.onload = function onWindowLoaded() {
       isSteam: false, // True if game was installed by Steam (If the game cannot have Steam, set to false)
       startInstallCounter: 0, // Prevents race condition when startInstall POSTs overlap
       startInstallInProgress: false, // Indicates when a startInstall POST is in progress
+      validateInstallPathPollingEnabled: false, // Used to ensure only one polling instance is created
+      startInstallInProgressFiltered: false, // Like startInstallInProgress but does not activate from polled validateInstallPath()
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -248,7 +250,7 @@ Continue install anyway?`)) {
       renderMarkdown(markdownText) {
         return DOMPurify.sanitize(marked(markdownText));
       },
-      validateInstallPath(deleteVersionInformation, allowCache) {
+      validateInstallPath(deleteVersionInformation, allowCache, noProgressUpdate) {
         // Just validate the install - don't actually start the installation
         const args = {
           subMod: app.selectedSubMod,
@@ -261,6 +263,10 @@ Continue install anyway?`)) {
         app.startInstallCounter = (app.startInstallCounter + 1) % 0xFFFFFFFF;
         const startInstallCounterLocal = app.startInstallCounter;
         app.startInstallInProgress = true;
+        if (!noProgressUpdate)
+        {
+          app.startInstallInProgressFiltered = true;
+        }
         doPost('startInstall', args,
           (responseData) => {
             if (app.startInstallCounter !== startInstallCounterLocal) {
@@ -283,6 +289,33 @@ Continue install anyway?`)) {
               alert("WARNING: It appears you re-installed the game without fully deleting the game folder. If you wish to update or re-install, you MUST click the\n'RE-INSTALL FROM SCRATCH' button at the bottom of this page, otherwise the mod may not work!\n\nFor more info, see Install Instructions - Uninstalling Games:\nhttps://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#uninstalling-games\n\nIf this message incorrect (you did not partially re-install the game), ignore this message, and let the mod team know.");
             }
             app.startInstallInProgress = false;
+            app.startInstallInProgressFiltered = false;
+
+
+            // When downloadManually is enabled, periodically check if new files have been
+            // downloaded by the user
+            if (!app.validateInstallPathPollingEnabled && app?.downloadItemsPreview?.downloadManually) {
+              app.validateInstallPathPollingEnabled = true;
+
+              const repeatFunction = () => {
+                // Stop polling if the install is started, or if the downloadManually option is disabled
+                if (app.installStarted || !app?.downloadItemsPreview?.downloadManually) {
+                  app.validateInstallPathPollingEnabled = false;
+                  return;
+                }
+
+                if (!app.startInstallInProgress)
+                {
+                  // Don't show a loading icon when validateInstallPath(...) called from Polling,
+                  // as it would be very distracting. This should work OK most of the time.
+                  app.validateInstallPath(false, true, true);
+                }
+
+                setTimeout(repeatFunction, 1000);
+              };
+
+              repeatFunction();
+            }
           });
       },
       updateAndValidateInstallSettings(newPath, allowCache) {
@@ -292,7 +325,7 @@ Continue install anyway?`)) {
           if (app.installPathFocussed) {
             app.debouncedValidateInstallPath(false, allowCache);
           } else {
-            app.validateInstallPath(false, allowCache);
+            app.validateInstallPath(false, allowCache, false);
           }
         }
       },

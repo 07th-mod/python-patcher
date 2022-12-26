@@ -268,6 +268,13 @@ The snackbar - position it at the bottom and in the middle of the screen */
     padding-bottom: 10px;
 }
 
+/* This class greys out/reduces contrast*/
+.greyed-out {
+    background-color: lightgray;
+    opacity: .6;
+}
+
+
 /* This class greys out/reduces contrast and prevents user clicking on an element*/
 .greyed-out-disabled {
     background-color: lightgray;
