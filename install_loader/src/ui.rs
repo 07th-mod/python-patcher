@@ -14,7 +14,7 @@ use crate::support;
 use crate::support::{AppBuilder, ApplicationGUI, NextFrameCommands};
 use crate::version;
 use crate::windows_utilities;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use anyhow::Result;
 
 const MOUSE_ACTIVITY_TIMEOUT_SECS: u64 = 1;
@@ -415,7 +415,7 @@ Please download the installer to your Downloads or other known location, then ru
 						let default_url = String::from("http://127.0.0.1:8000/loading_screen.html");
 						println!("Error: Couldn't determine python launch url, will try default url {}", &default_url);
 						graphical_install.webview_launched = true;
-						if let Err(e) = Self::launch_or_reuse_webview(default_url, proxy) {
+						if let Err(e) = Self::launch_or_reuse_webview(default_url, self.config.webview_data_directory.as_path(), proxy) {
 							self.on_install_failed(e);
 							return;
 						}
@@ -428,7 +428,7 @@ Please download the installer to your Downloads or other known location, then ru
 						{
 							Ok(url) => {
 								graphical_install.webview_launched = true;
-								if let Err(e) = Self::launch_or_reuse_webview(url, proxy) {
+								if let Err(e) = Self::launch_or_reuse_webview(url, self.config.webview_data_directory.as_path(), proxy) {
 									self.on_install_failed(e);
 									return;
 								}
@@ -668,13 +668,13 @@ Please download the installer to your Downloads or other known location, then ru
 		!self.ui_state.program_is_focused && self.ui_state.mouse_activity_timer.expired()
 	}
 
-	fn launch_or_reuse_webview(url: String, proxy: &mut Option<EventLoopProxy<UserEvent>>) -> Result<()> {
+	fn launch_or_reuse_webview<P: AsRef<Path>>(url: String, data_directory: P, proxy: &mut Option<EventLoopProxy<UserEvent>>) -> Result<()> {
 		match proxy {
 			Some(proxy) => {
 				proxy.send_event(UserEvent::SetVisible(true))?;
 				proxy.send_event(UserEvent::NavigateToURL(url))?;
 			}
-			None => *proxy = Some(installer_webview::launch(url)?),
+			None => *proxy = Some(installer_webview::launch(url, data_directory)?),
 		};
 
 		Ok(())
