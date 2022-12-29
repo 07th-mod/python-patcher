@@ -6,9 +6,11 @@ use glium::{Display, Surface};
 use imgui::{Context, FontConfig, FontGlyphRanges, FontSource, Ui};
 use imgui_glium_renderer::Renderer;
 use imgui_winit_support::{HiDpiMode, WinitPlatform};
+use wry::application::event_loop::EventLoopProxy;
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
+use crate::installer_webview::UserEvent;
 use crate::resources;
 
 mod clipboard;
@@ -106,6 +108,7 @@ impl System {
 		let mut last_frame = Instant::now();
 		let mut application = Some(builder.build());
 		let mut terminate_next_frame = false;
+		let mut proxy: Option<EventLoopProxy<UserEvent>> = None;
 
 		event_loop.run(move |event, _, control_flow| match event {
 			Event::NewEvents(_) => {
@@ -126,7 +129,7 @@ impl System {
 				let mut ui = imgui.frame();
 
 				if let Some(app) = &mut application {
-					let next_frame_commands = app.run_ui(&mut ui);
+					let next_frame_commands = app.run_ui(&mut ui, &mut proxy);
 
 					if terminate_next_frame {
 						// Forcibly drop the application to make it clean up anything it still owns
@@ -150,12 +153,8 @@ impl System {
 					}
 
 					if next_frame_commands.retry_using_tempdir {
-						match builder.build_retry() {
-							Ok(app) => application = Some(app),
-							Err(e) => {
-								println!("Error retrying with tempdir: {}", e);
-							}
-						}
+						builder.use_temp_dir(true);
+						application = Some(builder.build());
 					}
 				}
 
@@ -199,15 +198,15 @@ pub struct NextFrameCommands {
 }
 
 pub trait ApplicationGUI {
-	fn run_ui(&mut self, ui: &mut Ui) -> NextFrameCommands;
+	fn run_ui(&mut self, ui: &mut Ui, proxy: &mut Option<EventLoopProxy<UserEvent>>) -> NextFrameCommands;
 	fn handle_event(&mut self, event: &WindowEvent);
 }
 
 pub trait AppBuilder<T> {
 	fn window_size(&self) -> [f64; 2];
 	fn window_name(&self) -> String;
-	fn build(&self) -> T;
+	fn build(&mut self) -> T;
 	fn build_cleanup_error(&self, failed_cleanup_path: PathBuf) -> T;
-	fn build_retry(&mut self) -> Result<T, Box<dyn std::error::Error>>;
 	fn cleanup(&mut self) -> Option<PathBuf>;
+	fn use_temp_dir(&mut self, use_temp_dir: bool);
 }

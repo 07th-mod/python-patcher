@@ -15,13 +15,13 @@ pub struct InstallerConfig {
 	pub sub_folder_display: ImString,
 	pub logs_folder: PathBuf,
 	pub python_path: PathBuf,
-	pub is_retry: bool,
+	pub use_temp_dir: bool,
 	pub server_info_path: PathBuf,
 	pub server_info_old: PathBuf,
 }
 
 impl InstallerConfig {
-	pub fn new(root: &PathBuf, is_retry: bool) -> InstallerConfig {
+	pub fn new(root: &PathBuf, use_temp_dir: bool) -> InstallerConfig {
 		let sub_folder = PathBuf::from(root);
 		let sub_folder_display = ImString::new(windows_utilities::absolute_path_str(
 			&sub_folder,
@@ -37,7 +37,7 @@ impl InstallerConfig {
 			sub_folder_display,
 			logs_folder,
 			python_path,
-			is_retry,
+			use_temp_dir,
 			server_info_path,
 			server_info_old,
 		}
