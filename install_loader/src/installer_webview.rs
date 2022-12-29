@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use anyhow::Result;
 use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows};
 
-use crate::config::InstallerConfig;
+use crate::{config::InstallerConfig, resources};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct ServerInfo {
@@ -50,6 +50,11 @@ fn launch_inner(url: &str) -> Result<()> {
     let (window_position, window_size) = window_position_size(&window);
     window.set_inner_size(window_size);
     window.set_outer_position(window_position);
+
+    // Set the window icon
+    // NOTE: Setting the taskbar icon with set_taskbar_icon() seems to have no effect
+    // Instead, it is set by embedding an icon into the .exe with the winres library
+    window.set_window_icon(resources::get_wry_icon().ok());
 
     let webview =
         WebViewBuilder::new(window)?.with_url(url)?;
