@@ -9,6 +9,8 @@ use imgui_winit_support::{HiDpiMode, WinitPlatform};
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
+use crate::resources;
+
 mod clipboard;
 
 pub struct System {
@@ -32,7 +34,8 @@ pub fn init(title: &str, window_size: [f64; 2]) -> System {
 		.with_inner_size(glutin::dpi::LogicalSize::new(
 			window_size[0],
 			window_size[1],
-		));
+		))
+		.with_window_icon(resources::get_glium_icon().ok());
 	let display =
 		Display::new(builder, context, &event_loop).expect("Failed to initialize display");
 

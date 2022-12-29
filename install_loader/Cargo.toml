@@ -20,6 +20,7 @@ wry = "0.23.4"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 anyhow = "1.0"
+png = "0.17.*"
 
 # imgui dependencies
 # clipboard = "0.5" # removed for now as we don't use the clipboard
@@ -34,3 +35,6 @@ imgui-winit-support = { version = "0.8.2" }
 winapi = { version = "*", features = ["shobjidl", "shtypes"] }
 widestring = "*"
 win32job = "1"
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
