@@ -1,8 +1,8 @@
-use std::{fs, thread::{JoinHandle, self}};
+use std::{fs, thread, sync::mpsc::{Sender, self}};
 
 use serde::{Deserialize, Serialize};
 use anyhow::Result;
-use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows};
+use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows, event_loop::EventLoopProxy};
 
 use crate::{config::InstallerConfig, resources};
 
@@ -23,16 +23,25 @@ pub fn get_url(config: &InstallerConfig) -> Result<String>
     Ok(format!("http://127.0.0.1:{}/{}", server_info.port, server_info.page))
 }
 
-// NOTE: once the webview window is launched, it cannot be closed without closing
-// the whole program (not just this thread, but the entire program). So the returned
-// JoinHandle isn't very useful.
-pub fn launch(url: String) -> JoinHandle<Result<()>> {
-    thread::spawn(move || {
-        launch_inner(&url.to_string())
-    })
+#[derive(Debug)]
+pub enum UserEvent {
+    NavigateToURL(String),
+    SetVisible(bool),
 }
 
-fn launch_inner(url: &str) -> Result<()> {
+pub fn launch(url: String) -> Result<EventLoopProxy<UserEvent>> {
+    let (tx, rx) = mpsc::channel();
+
+    // NOTE: once the webview window is launched, it cannot be closed without closing
+    // the whole program (not just this thread, but the entire program). So the returned
+    // JoinHandle isn't very useful.
+    thread::spawn(move || { launch_inner(&url.to_string(), tx) });
+
+    Ok(rx.recv()?)
+}
+
+
+fn launch_inner(url: &str, tx: Sender<EventLoopProxy<UserEvent>>) -> Result<()> {
     use wry::{
         application::{
             event::{Event, StartCause, WindowEvent},
@@ -42,7 +51,10 @@ fn launch_inner(url: &str) -> Result<()> {
         webview::WebViewBuilder,
     };
 
-    let event_loop: EventLoop<()> = EventLoop::new_any_thread();
+    let event_loop = EventLoop::<UserEvent>::new_any_thread();
+
+    tx.send(event_loop.create_proxy())?;
+
     let window = WindowBuilder::new()
         .with_title("07th-mod Installer")
         .build(&event_loop)?;
@@ -72,6 +84,8 @@ fn launch_inner(url: &str) -> Result<()> {
         *control_flow = ControlFlow::Wait;
 
         match event {
+            Event::UserEvent(UserEvent::NavigateToURL(url)) => webview.load_url(url.as_str()),
+            Event::UserEvent(UserEvent::SetVisible(visible)) => webview.window().set_visible(visible),
             Event::NewEvents(StartCause::Init) => println!("Wry has started!"),
             Event::WindowEvent {
                 event: WindowEvent::CloseRequested,
