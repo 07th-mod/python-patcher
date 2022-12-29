@@ -1,8 +1,8 @@
-use std::{fs, thread, sync::mpsc::{Sender, self}};
+use std::{fs, thread, sync::mpsc::{Sender, self}, path::{Path, PathBuf}};
 
 use serde::{Deserialize, Serialize};
 use anyhow::Result;
-use wry::application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows, event_loop::EventLoopProxy};
+use wry::{application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows, event_loop::EventLoopProxy}, webview::WebContext};
 
 use crate::{config::InstallerConfig, resources};
 
@@ -29,19 +29,22 @@ pub enum UserEvent {
     SetVisible(bool),
 }
 
-pub fn launch(url: String) -> Result<EventLoopProxy<UserEvent>> {
+pub fn launch<P: AsRef<Path>>(url: String, data_directory: P) -> Result<EventLoopProxy<UserEvent>> {
     let (tx, rx) = mpsc::channel();
+    let data_directory = PathBuf::from(data_directory.as_ref());
 
     // NOTE: once the webview window is launched, it cannot be closed without closing
     // the whole program (not just this thread, but the entire program). So the returned
     // JoinHandle isn't very useful.
-    thread::spawn(move || { launch_inner(&url.to_string(), tx) });
+    thread::spawn(move || {
+        launch_inner(&url.to_string(), Some(data_directory), tx)
+    });
 
     Ok(rx.recv()?)
 }
 
 
-fn launch_inner(url: &str, tx: Sender<EventLoopProxy<UserEvent>>) -> Result<()> {
+fn launch_inner(url: &str, data_directory: Option<PathBuf>, tx: Sender<EventLoopProxy<UserEvent>>) -> Result<()> {
     use wry::{
         application::{
             event::{Event, StartCause, WindowEvent},
@@ -68,8 +71,11 @@ fn launch_inner(url: &str, tx: Sender<EventLoopProxy<UserEvent>>) -> Result<()> 
     // Instead, it is set by embedding an icon into the .exe with the winres library
     window.set_window_icon(resources::get_wry_icon().ok());
 
-    let webview =
-        WebViewBuilder::new(window)?.with_url(url)?;
+    let mut web_context = WebContext::new(data_directory);
+
+    let webview = WebViewBuilder::new(window)?
+        .with_web_context(&mut web_context)
+        .with_url(url)?;
 
     #[cfg(debug_assertions)]
     let webview = webview.with_devtools(true);

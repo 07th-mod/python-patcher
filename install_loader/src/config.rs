@@ -18,6 +18,7 @@ pub struct InstallerConfig {
 	pub use_temp_dir: bool,
 	pub server_info_path: PathBuf,
 	pub server_info_old: PathBuf,
+	pub webview_data_directory: PathBuf,
 }
 
 impl InstallerConfig {
@@ -31,6 +32,7 @@ impl InstallerConfig {
 		let python_path = sub_folder.join("python/python.exe");
 		let server_info_path = sub_folder.join("server-info.json");
 		let server_info_old = sub_folder.join("server-info-old.json");
+		let webview_data_directory = sub_folder.join("webview");
 
 		InstallerConfig {
 			sub_folder,
@@ -40,6 +42,7 @@ impl InstallerConfig {
 			use_temp_dir,
 			server_info_path,
 			server_info_old,
+			webview_data_directory
 		}
 	}
 }
