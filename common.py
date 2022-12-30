@@ -359,13 +359,19 @@ def trySystemOpen(path, normalizePath=False):
 		if normalizePath:
 			path = os.path.normpath(path)
 
+		print("Attempting to open path {} in system browser...".format(path))
+
+		if not os.path.exists(path):
+			print("WARNING: Path {} does not exist - system open will probably fail!".format(path))
+
 		if Globals.IS_WINDOWS:
 			return subprocess.Popen(["explorer", path]) == 0
 		elif Globals.IS_MAC:
 			return subprocess.Popen(["open", path]) == 0
 		else:
 			return subprocess.Popen(["xdg-open", path]) == 0
-	except:
+	except Exception as e:
+		print("Failed to show path {} in browser:\n{}".format(path, e))
 		return False
 
 def openURLInBrowser(url):
