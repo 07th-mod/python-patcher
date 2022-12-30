@@ -208,6 +208,14 @@ h1, h2, h3, h4, h5, h6 {
     border-style: solid;
 }
 
+.warning-text {
+    background-color: yellow;
+    border-width: 4px;
+    border-style: solid;
+    font-size: 20px;
+    padding: 10px;
+}
+
 /* From https://www.w3schools.com/howto/howto_js_snackbar.asp
 Bootstrap 4 has native notifications, but the theme uses Bootstrap 3.3
 The snackbar - position it at the bottom and in the middle of the screen */
