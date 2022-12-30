@@ -416,9 +416,11 @@ Make sure to select the same mod options you chose previously before using this 
 			                                 isGlobal=True))
 
 		self.modOptions.append(ModOption(name="Download Manually",
-		                                 description="""This option requires you to perform the download stage manually.
+		                                 description="""This option requires you to manually download the files for the installation.
 
 If you're having problems downloading via the installer, you can use this option to bypass the download stage.
+
+Please scroll down the page to the download preview table below, which will tell you what to download and where to put the downloads.
 
 The files you manually downloaded will not be deleted automatically at the end of the install (in case you want to back them up).
 """,

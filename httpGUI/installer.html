@@ -630,8 +630,14 @@
 															</div>
 															<br>
 															<strong>Files to be downloaded</strong>
-															<span v-if="startInstallInProgressFiltered"><span class="loader loader-small"></span></span>
-															<br>
+															<div class="warning-text"
+																v-if="downloadItemsPreview.downloadManually"
+																v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)">
+																<span>Please put downloaded files in:<br><br>
+																	<a>{{ downloadItemsPreview.downloadFolder }}</a> (click to open)
+																</span><br><br>
+																<span>Rows will turn green when downloaded correctly.</span>
+															</div>
 															<div v-bind:class="{ 'greyed-out': startInstallInProgressFiltered }">
 																<table class="umineko-image-table-content">
 																	<thead>
@@ -648,7 +654,7 @@
 																			<td>{{ fileInfo.id }}</td>
 																			<td>{{ fileInfo.fileSize }}</td>
 																			<td>{{ fileInfo.updateReason }}</td>
-																			<td v-if="downloadItemsPreview.downloadManually"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span></td>
+																			<td v-if="downloadItemsPreview.downloadManually"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span>	</td>
 																		</tr>
 																		<tr>
 																			<td>Total Download Size</td>
