@@ -736,13 +736,16 @@ def getMetalinkFilenames(url):
 	for fileNode in root.iter():
 		if getTagNoNamespace(fileNode.tag) == 'file':
 			length = 0
+			fileURL = None
 			for fileNodeChild in fileNode:
 				if getTagNoNamespace(fileNodeChild.tag) == 'size':
 					try:
 						length = int(fileNodeChild.text)
 					except:
 						pass
-			filename_length_pairs.append((fileNode.attrib['name'], length))
+				if getTagNoNamespace(fileNodeChild.tag) == 'url':
+					fileURL = fileNodeChild.text
+			filename_length_pairs.append((fileNode.attrib['name'], length, fileURL))
 
 	return filename_length_pairs
 
@@ -840,12 +843,13 @@ class DownloaderAndExtractor:
 	MAX_DOWNLOAD_ATTEMPTS = 3
 
 	class ExtractableItem:
-		def __init__(self, filename, length, destinationPath, fromMetaLink, remoteLastModified):
+		def __init__(self, filename, length, destinationPath, fromMetaLink, remoteLastModified, fileURL=None):
 			self.filename = filename
 			self.length = length
 			self.destinationPath = os.path.normpath(destinationPath)
 			self.fromMetaLink = fromMetaLink
 			self.remoteLastModified = remoteLastModified
+			self.fileURL = fileURL
 
 		def __repr__(self):
 			return '[{} ({})] to [{}] {}'.format(self.filename, prettyPrintFileSize(self.length), self.destinationPath, "(metalink)" if self.fromMetaLink else "")
@@ -1106,7 +1110,8 @@ class DownloaderAndExtractor:
 						length=length,
 						destinationPath=extractionDir,
 						fromMetaLink=True,
-						remoteLastModified=None) for filename, length in metalinkFilenames]
+						remoteLastModified=None,
+						fileURL=fileURL) for filename, length, fileURL in metalinkFilenames]
 				else:
 					filename, length, remoteLastModified = DownloaderAndExtractor.__getFilenameFromURL(url)
 					return [DownloaderAndExtractor.ExtractableItem(
@@ -1114,7 +1119,8 @@ class DownloaderAndExtractor:
 						length=length,
 						destinationPath=extractionDir,
 						fromMetaLink=False,
-						remoteLastModified=remoteLastModified)]
+						remoteLastModified=remoteLastModified,
+						fileURL=url)]
 			except Exception as e:
 				traceback.print_exc()
 				if attempt_no >= MAX_QUERY_ATTEMPTS:

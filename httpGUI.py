@@ -606,10 +606,10 @@ Otherwise, re-download the file from
 								manualDownloadStatus = "OK - [{}] is already downloaded".format(extractableItem.filename)
 								rowClass = "active"
 							else:
-								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(item.url, expectedDownloadPath)
+								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(extractableItem.fileURL, expectedDownloadPath)
 								rowClass = "warning"
 						else:
-							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(item.url, expectedDownloadPath)
+							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(extractableItem.fileURL, expectedDownloadPath)
 							rowClass = "warning"
 					else:
 						manualDownloadStatus = "—"
@@ -621,7 +621,7 @@ Otherwise, re-download the file from
 							"fileSize": 'N/A' if fileSizeBytes is None else common.prettyPrintFileSize(fileSizeBytes),
 							"rowClass": rowClass,
 							"updateReason": updateReason,
-							"url": item.url,
+							"url": extractableItem.fileURL,
 							"manualDownloadStatus": manualDownloadStatus,
 							"fileName": extractableItem.filename,
 						}
