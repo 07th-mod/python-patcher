@@ -1115,8 +1115,7 @@ class InstallerGUI:
 				         'consoleLines': logger.getGlobalLogger().threadSafeReadAll()}
 
 			def showInFileBrowser(requestData):
-				if os.path.exists(requestData):
-					common.tryShowInFileBrowser(requestData)
+				common.tryShowInFileBrowser(requestData)
 				return {}
 
 			def shutdown(_requestData):
