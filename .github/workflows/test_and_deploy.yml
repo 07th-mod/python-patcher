@@ -46,7 +46,7 @@ jobs:
       - name: Install and configure rust for 32-bit builds
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: 1.63.0
+            toolchain: 1.66.0
             target: i686-pc-windows-msvc
             default: true
 
