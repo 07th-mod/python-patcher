@@ -75,6 +75,7 @@ fn launch_inner(url: &str, data_directory: Option<PathBuf>, tx: Sender<EventLoop
 
     let webview = WebViewBuilder::new(window)?
         .with_web_context(&mut web_context)
+        .with_new_window_req_handler(|url| { webbrowser::open(&url).is_err() })
         .with_url(url)?;
 
     #[cfg(debug_assertions)]

@@ -21,6 +21,7 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 anyhow = "1.0"
 png = "0.17.*"
+webbrowser = "0.8.4"
 
 # imgui dependencies
 # clipboard = "0.5" # removed for now as we don't use the clipboard
