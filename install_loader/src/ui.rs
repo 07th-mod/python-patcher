@@ -117,15 +117,13 @@ impl InstallFailedState {
 }
 
 pub struct ExtractingPythonState {
-	pub extractor: ArchiveExtractor,
-	pub progress_percentage: usize,
+	pub extractor: ArchiveExtractor
 }
 
 impl ExtractingPythonState {
 	pub fn new() -> ExtractingPythonState {
 		ExtractingPythonState {
 			extractor: ArchiveExtractor::new(),
-			progress_percentage: 0,
 		}
 	}
 }
@@ -190,6 +188,7 @@ struct InstallerGUI {
 	// Configuration information which doesn't change during the course of the install is put here
 	config: InstallerConfig,
 	retry_using_temp_dir: bool,
+	progress_percentage: usize,
 }
 
 impl InstallerGUI {
@@ -208,7 +207,8 @@ impl InstallerGUI {
 				progression: initial_progression,
 			},
 			config: constants,
-			retry_using_temp_dir: false
+			retry_using_temp_dir: false,
+			progress_percentage: 0,
 		}
 	}
 
@@ -243,7 +243,7 @@ impl InstallerGUI {
 					.extractor
 					.start_extraction(&self.config.sub_folder),
 				ExtractionStatus::Started(Some(progress)) => {
-					extraction_state.progress_percentage = progress;
+					self.progress_percentage = progress;
 				}
 				ExtractionStatus::Started(None) => {}
 				ExtractionStatus::Finished => {
@@ -314,6 +314,26 @@ impl InstallerGUI {
 	/// destructured state. On the next time the function is called, the match statement can then
 	/// correctly destructure/match the new state.
 	fn display_main_installer_flow(&mut self, ui: &Ui, proxy: &mut Option<EventLoopProxy<UserEvent>>) {
+		let current_task_description = match &self.state.progression {
+			InstallerProgression::ExtractingPython(_) => "Extracting...",
+			InstallerProgression::InstallStarted(_) => "Launching Python",
+			InstallerProgression::InstallFinished => "Finished...",
+			InstallerProgression::InstallFailed(_) => "Failed...",
+			InstallerProgression::PreExtractionChecks => "Pre-Extraction...",
+			InstallerProgression::PreExtractionChecksFailed(_) => "Pre-Extraction Failed...",
+			InstallerProgression::UserNeedsCPPRedistributable => "CPP Redist...",
+			InstallerProgression::TempDirCleanupFailed(_) => "Temp Dir Cleanup Failed...",
+		};
+
+		ProgressBar::new((self.progress_percentage as f32) / 100.0f32)
+			.size([500.0, 24.0])
+			.overlay_text(&format!(
+				"{}% {}",
+				self.progress_percentage,
+				current_task_description
+			))
+			.build(&ui);
+
 		// Display parts of the UI which depend on the installer progression
 		match &mut self.state.progression {
 			InstallerProgression::PreExtractionChecks => {
@@ -337,15 +357,8 @@ Please download the installer to your Downloads or other known location, then ru
 					return;
 				}
 			}
-			InstallerProgression::ExtractingPython(extraction_state) => {
+			InstallerProgression::ExtractingPython(_) => {
 				ui.text_yellow(im_str!("Please wait for extraction to finish..."));
-				ProgressBar::new((extraction_state.progress_percentage as f32) / 100.0f32)
-					.size([500.0, 24.0])
-					.overlay_text(&im_str!(
-						"{}% extracted",
-						extraction_state.progress_percentage
-					))
-					.build(&ui);
 			}
 			InstallerProgression::UserNeedsCPPRedistributable => {
 				let download_failure_modal_name = im_str!("Download Failure (C++ Redistributable)");
@@ -410,7 +423,10 @@ Please download the installer to your Downloads or other known location, then ru
 			InstallerProgression::InstallStarted(graphical_install) => {
 				if graphical_install.launch_type == LaunchType::WebView && !graphical_install.webview_launched
 				{
-					if graphical_install.python_started_poll_count > 50
+					let max_poll_count = 100;
+					self.progress_percentage = 100 * graphical_install.python_started_poll_count / max_poll_count;
+
+					if graphical_install.python_started_poll_count > max_poll_count
 					{
 						let default_url = String::from("http://127.0.0.1:8000/loading_screen.html");
 						println!("Error: Couldn't determine python launch url, will try default url {}", &default_url);
@@ -428,6 +444,7 @@ Please download the installer to your Downloads or other known location, then ru
 						{
 							Ok(url) => {
 								graphical_install.webview_launched = true;
+								self.progress_percentage = 100;
 								if let Err(e) = Self::launch_or_reuse_webview(url, self.config.webview_data_directory.as_path(), proxy) {
 									self.on_install_failed(e);
 									return;
@@ -464,6 +481,8 @@ Please download the installer to your Downloads or other known location, then ru
 						}
 					}
 				}
+
+				ui.dummy([0.0, 20.0]);
 
 				if graphical_install.launch_type != LaunchType::TextMode {
 					ui.text_yellow(im_str!("If you have problems:"));
