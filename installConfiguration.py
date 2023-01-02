@@ -103,11 +103,13 @@ class FullInstallConfiguration:
 			unityVersion = getUnityVersion(datadir, verbosePrinting)
 		else:
 			unityVersion = None
-			print("Unity Version: [{}/Not a Unity game]".format(unityVersion))
+			if verbosePrinting:
+				print("Unity Version: [{}/Not a Unity game]".format(unityVersion))
 
 		for fileOverride in self.subModConfig.fileOverrides:
 			if self.isWine and fileOverride.wine:
-				print("Forcing install of {} on {} because wine mode enabled".format(fileOverride.id, osString))
+				if verbosePrinting:
+					print("Forcing install of {} on {} because wine mode enabled".format(fileOverride.id, osString))
 			else:
 				# skip overrides where OS/wine doesn't match
 				if osString not in fileOverride.os:
