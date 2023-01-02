@@ -677,6 +677,12 @@
 														</div>
 														<h4 class="uppercase mt40">Start The Install {{ isWine ? "(Wine/Proton)" : "" }}</h4>
 														<hr>
+														<div v-if="downloadItemsPreview?.manualDownloadIncomplete">
+															<div class="warning-text">
+																<span>You haven't downloaded all the files yet! Please do this before starting the install!</span>
+															</div>
+															<br>
+														</div>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
 															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
 																<span v-if="fullUpdateRequired" style="font-size:24px">🚀 Start the installation! 🚀</span>

@@ -554,6 +554,8 @@ Otherwise, re-download the file from
 
 <{}>"""
 
+		manualDownloadIncomplete = False
+
 		# Query each download to determine the filename (and also for metalinks,
 		# there may be more than one file per metalink)
 		if downloadManually:
@@ -608,9 +610,11 @@ Otherwise, re-download the file from
 							else:
 								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(extractableItem.fileURL, expectedDownloadPath)
 								rowClass = "warning"
+								manualDownloadIncomplete = True
 						else:
 							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(extractableItem.fileURL, expectedDownloadPath)
 							rowClass = "warning"
+							manualDownloadIncomplete = True
 					else:
 						manualDownloadStatus = "—"
 						rowClass = "inactive"
@@ -631,6 +635,7 @@ Otherwise, re-download the file from
 			"downloadItems": previewList,
 			"totalDownload": common.prettyPrintFileSize(self.totalDownload),
 			"downloadManually": downloadManually,
+			"manualDownloadIncomplete": manualDownloadIncomplete,
 			"downloadFolder": os.path.abspath(downloadFolder),
 			"updateTypeDescription": 'Update Type: {}'.format('Full Update' if self.fileVersionManager.fullUpdateRequired() else 'Partial Update'),
 		}
