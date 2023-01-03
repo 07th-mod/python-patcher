@@ -139,7 +139,8 @@ class Installer:
 		self.fileVersionManager = fileVersionManagement.VersionManager(
 			fullInstallConfiguration=self.info,
 			modFileList=self.info.buildFileListSorted(datadir=self.dataDirectory),
-			localVersionFolder=self.directory)
+			localVersionFolder=self.directory,
+			datadir=self.dataDirectory)
 
 		modFileList = self.fileVersionManager.getFilesRequiringUpdate()
 

@@ -10,6 +10,7 @@ import time
 import traceback
 import tempfile
 import webbrowser
+import zlib
 
 import commandLineParser
 import installConfiguration
@@ -1473,3 +1474,16 @@ def ensureUnicodeOrStr(text):
 		return text.decode('utf-8')
 	else:
 		return text
+
+
+def crc32_of_file(file_path):
+	BLOCK_SIZE = 65536
+
+	hash = 0
+	with open(file_path, 'rb') as f:
+		fb = f.read(BLOCK_SIZE)
+		while len(fb) > 0:
+			hash = zlib.crc32(fb, hash)
+			fb = f.read(BLOCK_SIZE)
+
+	return "{:08x}".format(hash & 0xffffffff)

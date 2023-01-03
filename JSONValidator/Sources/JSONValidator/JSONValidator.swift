@@ -73,6 +73,8 @@ public struct FileDefinition: Codable {
 	public var skipIfModNewerThan: String?
 	/// Files where this is set to True will always be installed when installer is run in 'repair' mode
 	public var installOnRepair: Bool?
+	/// A list of various requirements determining whether the file will be installed
+	public var requirementsList: [String]?
 }
 
 public struct FileOverrideDefinition: Codable {

@@ -130,7 +130,7 @@ class FullInstallConfiguration:
 
 			# for all other overrides, overwrite the value in the filesDict with a new ModFile
 			currentModFile = filesDict[fileOverride.name]
-			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id, relativeExtractionPath=fileOverride.relativeExtractionPath, installOnRepair=currentModFile.installOnRepair)
+			filesDict[fileOverride.name] = ModFile(currentModFile.name, fileOverride.url, currentModFile.priority, id=fileOverride.id, relativeExtractionPath=fileOverride.relativeExtractionPath, installOnRepair=currentModFile.installOnRepair, requirementsList=currentModFile.requirementsList)
 
 		# Look for override-required files that weren't overridden
 		for key, value in filesDict.items():
@@ -152,8 +152,8 @@ class FullInstallConfiguration:
 
 class ModFile:
 	modFileCounter = 0
-	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None, skipIfModNewerThan=None, installOnRepair=False):
-		# type: (str, Optional[str], int, str, Optional[str], Optional[str], Optional[bool]) -> None
+	def __init__(self, name, url, priority, id=None, relativeExtractionPath=None, skipIfModNewerThan=None, installOnRepair=False, requirementsList=None):
+		# type: (str, Optional[str], int, str, Optional[str], Optional[str], Optional[bool], Optional[List[str]]) -> None
 		self.name = name
 		self.url = url
 
@@ -183,6 +183,8 @@ class ModFile:
 		# These are generally small files which might be overwritten by Steam an other game manager
 		self.installOnRepair = installOnRepair
 
+		self.requirementsList = requirementsList # type: Optional[List[str]]
+		"""A list of various requirements determining whether the file will be installed"""
 
 class ModFileOverride:
 	def __init__(self, name, id, os, steam, unity, url, targetChecksums, relativeExtractionPath=None, wine=None):
@@ -320,7 +322,8 @@ class SubModConfig:
 				priority=subModFile['priority'],
 				relativeExtractionPath=subModFile.get('relativeExtractionPath'),
 				skipIfModNewerThan=subModFile.get('skipIfModNewerThan'),
-				installOnRepair=subModFile.get('installOnRepair', False)
+				installOnRepair=subModFile.get('installOnRepair', False),
+				requirementsList=subModFile.get('requirementsList')
 			))
 
 		self.fileOverrides = [] # type: List[ModFileOverride]

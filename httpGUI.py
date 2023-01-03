@@ -660,7 +660,8 @@ def getDownloadPreview(fullInstallConfig, verbosePrinting=True):
 		fullInstallConfiguration=fullInstallConfig,
 		modFileList=modFileList,
 		localVersionFolder=fullInstallConfig.installPath,
-		verbosePrinting=False)
+		verbosePrinting=False,
+		datadir=dataDirectory)
 
 	# Check for partial re-install (see https://github.com/07th-mod/python-patcher/issues/93)
 	if fullInstallConfig.subModConfig.family == 'higurashi':

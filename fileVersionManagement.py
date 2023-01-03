@@ -24,6 +24,50 @@ except ImportError:
 import common
 import installConfiguration
 
+
+def parseRequirementsList(scanPath, requirementsListString):
+	requirementsList = []
+
+	for requirementString in requirementsListString:
+		tokens = [token.strip() for token in requirementString.split(":")]
+		if tokens:
+			requirementsList.append(tokens)
+
+	gotSkipIfExists = False
+	gotInstallIfCRC32 = False
+	skipIfExistsList = []
+
+	for requirement in requirementsList:
+		if requirement[0] == "skip-if-exists":
+			gotSkipIfExists = True
+			path = os.path.join(scanPath, requirement[1])
+			skipIfExistsList.append(os.path.basename(path))
+			if not os.path.exists(path):
+				return True, "[{}] is missing".format(path)
+		elif requirement[0] == "skip-if-crc32":
+			gotInstallIfCRC32 = True
+			path = os.path.join(scanPath, requirement[1])
+			targetCRC32 = requirement[2]
+
+			if not os.path.exists(path):
+				return True, "[{}] is missing".format(os.path.basename(path))
+
+			crc = common.crc32_of_file(path).lower()
+			target = targetCRC32.lower()
+			if crc != target:
+				return True, "Not Installed ([{}] is {} expect {})".format(os.path.basename(path), crc, target)
+
+	# All files exist already, so assume already installed
+	if gotSkipIfExists:
+		return False, "Already Installed ({} exists)".format(skipIfExistsList)
+
+	# All files matched CRC, so assume already installed
+	if gotInstallIfCRC32:
+		return False, "Already Installed (by CRC32)"
+
+	return None, "No action"
+
+
 class VersionManager:
 	localVersionFileName = "installedVersionData.json"
 	def userDidPartialReinstall(self, gameInstallTimeProbePath):
@@ -43,8 +87,8 @@ class VersionManager:
 		# For the version file, the "modified" date is when the game mod was last applied
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
-	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, _testRemoteSubModVersion=None, verbosePrinting=True, repairMode=True):
-		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, Optional[SubModVersionInfo], bool, bool) -> None
+	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, datadir=None, _testRemoteSubModVersion=None, verbosePrinting=True, repairMode=True):
+		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool, bool) -> None
 		subMod = fullInstallConfiguration.subModConfig
 		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
@@ -107,7 +151,14 @@ class VersionManager:
 					if verbosePrinting:
 						logger.printNoTerminal(msg)
 
+		# Check the requirementsList to see if the above version logic should be overriden
+		checkFolder = datadir if datadir else fullInstallConfiguration.installPath
 
+		for file in self.unfilteredModFileList:
+			if file.requirementsList is not None:
+				forceInstallOrSkip, reason = parseRequirementsList(checkFolder, file.requirementsList)
+				if forceInstallOrSkip is not None:
+					self.updatesRequiredDict[file.id] = forceInstallOrSkip, reason
 
 		# Check how many updates are required
 		updatesRequiredList = self.updatesRequiredDict.values()
