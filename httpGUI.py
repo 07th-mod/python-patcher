@@ -616,7 +616,7 @@ Otherwise, re-download the file from
 							rowClass = "warning"
 							manualDownloadIncomplete = True
 					else:
-						manualDownloadStatus = "—"
+						manualDownloadStatus = "--"
 						rowClass = "inactive"
 
 					previewList.append(
@@ -1185,7 +1185,7 @@ class InstallerGUI:
 
 		def on_server_started(web_server):
 			page = 'loading_screen.html'
-			web_server_url = 'http://{}:{}/{}'.format(*web_server.server_address, page)
+			web_server_url = 'http://{}:{}/{}'.format(web_server.server_address[0], web_server.server_address[1], page)
 			print("If the web page did not open, you can manually navigate to {} in your browser.".format(web_server_url))
 			if common.Globals.LAUNCH_BROWSER:
 				common.openURLInBrowser(web_server_url)
