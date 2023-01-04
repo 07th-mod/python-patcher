@@ -1,7 +1,10 @@
 import hashlib
 import os
+import time
 
 import vt  # VirusTotal - pip install vt-py
+
+VT_POLL_RATE_SECONDS = 60
 
 VT_API_KEY = os.environ.get('VT_API_KEY') # VirusTotal API Key
 if VT_API_KEY is None:
@@ -29,9 +32,21 @@ def do_scan(api_key, file_path):
 		except vt.APIError as e:
 			print(f"Uploading file as file not already in database ({e})")
 			with open(file_path, "rb") as final_exe_file:
-				analysis = client.scan_file(final_exe_file, wait_for_completion=True)
-				stats = analysis.stats
-				results = analysis.results
+				analysis = client.scan_file(final_exe_file, wait_for_completion=False)
+
+				# We used to use wait_for_completion=True, but it just blocks forever for some reason?
+				# Use this workaround in the mean time.
+				while True:
+					print(f"Waiting {VT_POLL_RATE_SECONDS}s for results...")
+					time.sleep(VT_POLL_RATE_SECONDS)
+
+					try:
+						file = client.get_object(f"/files/{sha256_of_file(file_path)}")
+						stats = file.last_analysis_stats
+						results = file.last_analysis_results
+						break
+					except vt.APIError as e:
+						print(f"Results not ready: ({e})")
 
 		print(stats)
 		print("Scanners with positive results:")
