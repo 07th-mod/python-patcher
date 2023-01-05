@@ -59,7 +59,7 @@ fn launch_inner(url: &str, data_directory: Option<PathBuf>, tx: Sender<EventLoop
     tx.send(event_loop.create_proxy())?;
 
     let window = WindowBuilder::new()
-        .with_title("07th-mod Installer")
+        .with_title("07th-Mod Installer")
         .build(&event_loop)?;
 
     let (window_position, window_size) = window_position_size(&window);
