@@ -330,6 +330,11 @@ The snackbar - position it at the bottom and in the middle of the screen */
   cursor: pointer;
 }
 
+.modal a {
+    font-weight: 600;
+    color: #47b475;
+}
+
 .loader {
   border: 8px solid #f3f3f3; /* Light grey */
   border-top: 8px solid #3498db; /* Blue */

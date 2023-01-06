@@ -24,7 +24,7 @@
 							<h4 class="panel-title">
 								<strong>Error Message</strong>
 								&nbsp;
-								<a data-toggle="collapse" href="#collapse1">(Show Details)</a>
+								<a data-toggle="collapse" href="#collapse1"><u>(Show Details)</u></a>
 							</h4>
 						</div>
 						<div class="panel-body">
@@ -41,9 +41,9 @@
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn" v-on:click="installErrorDescription = ''">OK</button></a>
-					<button type="button" class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</button>
-					<button type="button" class="btn">Visit 07th-mod Discord server (send install log here!)</button>
+					<a class="btn" v-on:click="installErrorDescription = ''">OK</a>
+					<a class="btn" v-on:click="getLogsZip(selectedSubMod, selectedInstallPath)">Download Install Logs</a>
+					<a class="btn" href="https://discord.gg/pf5VhF9" target="_blank">Visit 07th-mod Discord server (send install log here!)</a>
 				</modal>
 			</div>
 			<div class="main-container">
