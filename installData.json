@@ -696,7 +696,7 @@
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "Use Console BGM", "description": "This option replaces the BGM fortitude, novelette, slowmotion, system0, tekuteku, tsubaki, and tsurupeta-128 with their Console versions.\n\nMost of these are significantly different from the original PC game's BGM.",
+							"name": "Use Console BGM", "description": "This option replaces the tracks Fortitude, Novelette, Moonlit Night, system0, Steady Pace, and Thunberg Lily, and Tsurupettan with Dead of Dawn, fragrant cypress, dark-shines, System Zero, ordinary-noon, and ab-sinthe, similar to the PS4/Switch release.",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -838,7 +838,7 @@
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "Use Console BGM", "description": "This option replaces the BGM fortitude, novelette, slowmotion, system0, tekuteku, tsubaki, and tsurupeta-128 with their Console versions.\n\nMost of these are significantly different from the original PC game's BGM.",
+							"name": "Use Console BGM", "description": "This option replaces the tracks Fortitude, Novelette, Moonlit Night, system0, Steady Pace, and Thunberg Lily, and Tsurupettan with Dead of Dawn, fragrant cypress, dark-shines, System Zero, ordinary-noon, and ab-sinthe, similar to the PS4/Switch release.",
 							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
