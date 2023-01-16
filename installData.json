@@ -696,21 +696,17 @@
 					"name" : "BGM Options", "type": "downloadAndExtract",
 					"checkBox": [
 						{
-							"name": "Restore system0", "description": "The unmodded game's \"system0\" BGM is missing a sample from Star Trek: Nemesis (removed for copyright reasons) - this option restores the missing sample.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
-						},
-						{
-							"name": "Use SuiSui-SWEETS(^-^)", "description": "In one scene, the PS3 game replaces a copyrighted song with a new original song, \"SuiSui-SWEETS(^-^)\". This option allows you to use the song from the PS3 version.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Sweets.7z", "relativeExtractionPath": ".", "priority": 10}
+							"name": "Use Console BGM", "description": "This option replaces the BGM fortitude, novelette, slowmotion, system0, tekuteku, tsubaki, and tsurupeta-128 with their Console versions.\n\nMost of these are significantly different from the original PC game's BGM.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
 				{
-					"name" : "CG options", "type": "downloadAndExtract",
+					"name" : "Censorship options", "type": "downloadAndExtract",
 					"submods" : ["full"],
 					"checkBox": [
 						{
-							"name": "Make Jessica British", "description": "- In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons. This option lets you use the censored PS3 CG.",
+							"name": "Use Censored 'British Jessica' CG from PS3 game", "description": "In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons.\n\nTick this if you want the PS3 art style for that one CG, even if it removes the Touhou reference.",
 							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
@@ -840,12 +836,11 @@
 			"modOptionGroups": [
 				{
 					"name" : "BGM Options", "type": "downloadAndExtract",
-					"radio": [
+					"checkBox": [
 						{
-							"name": "Restore and Repair BGM", "description": "- The unmodded game's \"system0\" BGM is missing a sample from Star Trek: Nemesis (removed for copyright reasons) - this option restores the missing sample.\n- The unmodded game's \"kuina.ogg\" was slightly corrupted at the 53 second mark - this option repairs the corruption.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-restoration.zip", "relativeExtractionPath": ".", "priority": 10}
-						},
-						{"name": "No BGM Changes", "description": "Keep the currently installed Background Music"}
+							"name": "Use Console BGM", "description": "This option replaces the BGM fortitude, novelette, slowmotion, system0, tekuteku, tsubaki, and tsurupeta-128 with their Console versions.\n\nMost of these are significantly different from the original PC game's BGM.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
 					]
 				},
 				{
