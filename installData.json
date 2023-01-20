@@ -601,6 +601,7 @@
 						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
 						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/rei-og-dll-asset-update.7z",   "priority": 0},
 						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
