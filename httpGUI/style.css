@@ -360,3 +360,26 @@ The snackbar - position it at the bottom and in the middle of the screen */
   width: 200px;
   height: 200px;
 }
+
+.rendered-markdown table {
+    table-layout: fixed;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+    border-radius: 8px;
+    overflow: hidden; /* Fix top of table not being rounded */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rendered-markdown table th {
+    background-color: #47b475;
+    color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.rendered-markdown table td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
