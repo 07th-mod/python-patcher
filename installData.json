@@ -694,6 +694,19 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{
+							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
 					"name" : "Censorship options", "type": "downloadAndExtract",
 					"submods" : ["full"],
 					"checkBox": [
@@ -826,6 +839,19 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{
+							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
 				{
 					"name" : "Sprite Options", "type": "downloadAndExtract",
 					"submods" : ["novel-mode", "adv-mode"],
