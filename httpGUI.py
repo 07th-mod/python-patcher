@@ -571,7 +571,8 @@ Otherwise, re-download the file from
 
 			if item.isOption:
 				updateNeeded, updateReason = True, 'Mod options are always downloaded'
-				self.totalDownload += fileSizeBytes
+				if fileSizeBytes is not None:
+					self.totalDownload += fileSizeBytes
 			else:
 				updateNeeded, updateReason = self.fileVersionManager.updatesRequiredDict[item.modFileID]
 				if updateNeeded and fileSizeBytes:
