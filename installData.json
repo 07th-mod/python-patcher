@@ -752,7 +752,7 @@
 				},
 				{
 					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
-					"submods" : ["full", "voice-only"],
+					"submods" : ["full"],
 					"radio": [
 						{"name": "No Change", "description": "No change to engine"},
 						{
@@ -903,7 +903,7 @@
 				},
 				{
 					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
-					"submods" : ["novel-mode", "adv-mode", "voice-only"],
+					"submods" : ["novel-mode", "adv-mode"],
 					"radio": [
 						{"name": "No Change", "description": "No change to engine"},
 						{
