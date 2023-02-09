@@ -50,7 +50,7 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "6.0.10"},
+			{"id": "script",              "version": "6.0.11"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows-5.4.0f1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.4p1",  "version": "1.3.0"},
