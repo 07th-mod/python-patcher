@@ -736,6 +736,17 @@
 					]
 				},
 				{
+					"name": "Translations", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English/Japanese", "description": "Uses the official English and Japanese translations for the game."},
+						{
+							"name": "Ukrainian", "description": "Replaces the English translation with Ukrainian. Currently only covers Episode 1. This is not compatible with the experimental script option below.",
+							"data": {"url": "https://github.com/Shreibikus/UminekoGolden/releases/latest/download/07thmod_ukr.zip", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
 					"name" : "Experimental Script", "type": "downloadAndExtract",
 					"submods" : ["full"],
 					"radio": [
