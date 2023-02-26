@@ -323,6 +323,9 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 
 	logger.printNoTerminal("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
 
+	# Remove any duplicate game paths
+	pathsToBeScanned = deDuplicatePaths(pathsToBeScanned)
+
 	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromFolder(gamePath)
 		subModConfigsInThisGamePath = set()
