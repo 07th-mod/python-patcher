@@ -308,15 +308,30 @@ class Installer:
 			osString = "windows"
 			print("Language Patch UI: Proton/Wine detected! Forcing install of Windows sharedassets0.assets.")
 
+		# TODO: use the sharedassets0.assets.backup to determine store name?
+		# For now, only differentiate steam/non-steam
+		# Or if can prove that it's always steam+mangagamer and gog, then can leave as-is
+		if self.isSteam:
+			print("Language Patch UI: Assuming store is Steam/Mangagamer")
+			storeName = 'steam'
+		else:
+			print("Language Patch UI: Assuming store is GOG")
+			storeName = 'gog'
+
+		bestAltUIPath = None
 		for altUIFilename in os.listdir(folderToApply):
 			altUIPath = os.path.join(folderToApply, altUIFilename)
 			_, ext = os.path.splitext(altUIFilename)
 			if ext.lower() == '.assets' or ext.lower() == '.languagespecificassets':
 				if os.path.isfile(altUIPath) and versionString in altUIFilename.lower() and osString in altUIFilename.lower():
-					uiPath = path.join(folderToApply, "sharedassets0.assets")
-					print("Language Patch UI: Will copy UI File {} -> {}".format(altUIPath, uiPath))
-					shutil.copy(altUIPath, uiPath)
-					return True
+					if bestAltUIPath is None or storeName in altUIFilename.lower():
+						bestAltUIPath = altUIPath
+
+		if bestAltUIPath is not None:
+			uiPath = path.join(folderToApply, "sharedassets0.assets")
+			print("Language Patch UI: Will copy UI File {} -> {}".format(bestAltUIPath, uiPath))
+			shutil.copy(bestAltUIPath, uiPath)
+			return True
 
 		print("Language Patch UI: No UI/sharedassets0 found for ({},{}) - using default sharedassets0.assets".format(osString, versionString))
 		return True
