@@ -40,10 +40,10 @@ def getUnityVersion(datadir, verbosePrinting=True):
 			raise OldUnityException(unityVersion)
 		return unityVersion
 
-def higurashiWindowsExecutableExists(fullInstallConfiguration):
-	# type: (FullInstallConfiguration) -> bool
-	windowsExeName = fullInstallConfiguration.subModConfig.dataName.split('_')[0] + ".exe"
-	windowsExePath = os.path.join(fullInstallConfiguration.installPath, windowsExeName)
+def higurashiWindowsExecutableExists(dataName, installPath):
+	# type: (str, str) -> bool
+	windowsExeName = dataName.split('_')[0] + ".exe"
+	windowsExePath = os.path.join(installPath, windowsExeName)
 	isProtonOrWindows = os.path.exists(windowsExePath)
 
 	print("Checking [{}] for Windows Executable".format(windowsExePath))
@@ -80,15 +80,16 @@ class FullInstallConfiguration:
 		self.isSteam = isSteam # type: bool
 		self.useIPV6 = False
 		self.unityVersion = None
-		self.isWine = False
+
+		if self.subModConfig.family == "higurashi" and common.Globals.IS_LINUX and higurashiWindowsExecutableExists(self.subModConfig.dataName, self.installPath):
+			self.isWine = True
+		else:
+			self.isWine = False
 
 	#applies the fileOverrides to the files to
 	def buildFileListSorted(self, datadir="", verbosePrinting=True):
 		# type: (Optional[str], Optional[bool]) -> List[ModFile]
 		# convert the files list into a dict
-		if self.subModConfig.family == "higurashi" and common.Globals.IS_LINUX and higurashiWindowsExecutableExists(self):
-			self.isWine = True
-
 		osString = common.Globals.OS_STRING
 		if common.Globals.FORCE_ASSET_OS_STRING is not None:
 			osString = common.Globals.FORCE_ASSET_OS_STRING

@@ -113,6 +113,7 @@ class Installer:
 		self.clearScripts = False  # If true, will clear CompiledUpdateScripts before extraction stage
 		self.languagePatchIsEnabled = False  # True if at least one language patch will be installed
 		self.skipDownload = skipDownload
+		self.isWine = fullInstallConfiguration.isWine
 
 		logger.getGlobalLogger().trySetSecondaryLoggingPath(
 			os.path.join(self.dataDirectory, common.Globals.LOG_BASENAME)
@@ -303,6 +304,9 @@ class Installer:
 		# Use the sharedassets file with matching os/unityversion if provided by the language patch
 		versionString = self.info.unityVersion
 		osString = common.Globals.OS_STRING
+		if self.isWine:
+			osString = "windows"
+			print("Language Patch UI: Proton/Wine detected! Forcing install of Windows sharedassets0.assets.")
 
 		for altUIFilename in os.listdir(folderToApply):
 			altUIPath = os.path.join(folderToApply, altUIFilename)
