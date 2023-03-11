@@ -34,7 +34,7 @@
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.1"},
-			{"id": "remake-bgm",          "version": "1.0.0"}
+			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
 	{
@@ -60,7 +60,7 @@
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.1"},
-			{"id": "remake-bgm",          "version": "1.0.0"}
+			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
 	{
@@ -83,7 +83,7 @@
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.1"},
-			{"id": "remake-bgm",          "version": "1.0.0"}
+			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
 	{
