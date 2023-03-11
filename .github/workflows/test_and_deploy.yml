@@ -53,6 +53,8 @@ jobs:
       # Caching for Rust
       - name: Cache rust builds
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: install_loader
 
       # Run Python Deploy Script
       # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
