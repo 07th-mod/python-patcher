@@ -26,6 +26,8 @@ def getSteamPath():
                 winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam"),
                 "SteamPath",
             )[0]
+        elif common.Globals.IS_MAC:
+            return os.path.expanduser('~/Library/Application Support/Steam')
         else:
             return None
     except:
@@ -37,6 +39,9 @@ def getUserDataFolders():
     print("steamGridExtractor: Attempting to install steamgrid icons to [{}]".format(steamPath))
 
     if steamPath:
+        if not os.path.exists(steamPath):
+            print("steamGridExtractor: WARNING: steamPath [{}] does not exist! steamGrid extraction will probably fail!".format(steamPath))
+
         return glob.glob(
             os.path.join(steamPath, "userdata", "**", "config"), recursive=True
         )
