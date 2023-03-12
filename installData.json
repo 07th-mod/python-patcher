@@ -752,7 +752,7 @@
 					"radio": [
 						{"name": "No Change", "description": "No change to scripts"},
 						{
-							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-question/issues/155).\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-question/issues/155).\n\nYou must choose this option if you want to play with **Japanese Text!**\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
 							"data": {"url": "https://github.com/07th-mod/umineko-question/raw/fix_clickwait_test_rebase/InDevelopment/ManualUpdates/0.utf", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
@@ -888,7 +888,7 @@
 					"radio": [
 						{"name": "No Change", "description": "No change to scripts"},
 						{
-							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-answer/issues/72).\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-answer/issues/72).\n\nYou must choose this option if you want to play with **Japanese Text!**\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
 							"data": {"url": "https://github.com/07th-mod/umineko-answer/raw/master_no_clickwait_fix/0.utf", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
