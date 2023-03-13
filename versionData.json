@@ -237,7 +237,7 @@
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "script",                    "version": "1.0.32"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
-			{"id": "rolling-update",            "version": "1.4.4"},
+			{"id": "rolling-update",            "version": "1.4.5"},
 			{"id": "os-specific-update",        "version": "1.0.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
