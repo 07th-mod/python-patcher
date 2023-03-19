@@ -686,13 +686,15 @@
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
 															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
 																<span v-if="fullUpdateRequired" style="font-size:24px">🚀 Start the installation! 🚀</span>
-																<span v-else style="font-size:20px">⏫ Start Update!</span>
+																<span v-else style="font-size:20px">⏫ Start Update!</span><br>
+																<span>(Install green files above)</span>
 															</div></li>
 														</ul>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="float: right">
 															<li>
 																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: darkred">
-																	<span style="font-size:20px">🔄 Re-install from scratch</span>
+																	<span style="font-size:20px">🔄 Re-install from scratch</span><br>
+																	<span>(Clear version data then re-install)</span>
 																</div>
 															</li>
 														</ul>
