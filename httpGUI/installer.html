@@ -667,6 +667,7 @@
 															</div>
 															<strong>
 																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
+																<div v-if="haveEnoughFreeSpace === false  || CWDHaveEnoughFreeSpace === false" style="color: red; background-color: yellow"><h1>WARNING: Probably not enough disk space to install mod! - please read below messages for details!</h1></div>
 																<div class="alert" v-bind:class="[alertClassFromMaybeBool(haveEnoughFreeSpace)]">
 																	Mod Install Disk Space: {{ freeSpaceAdvisoryString }}
 																</div>

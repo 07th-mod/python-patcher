@@ -132,7 +132,8 @@ class Globals:
 
 	IS_PYTHON_2 = sys.version_info.major == 2
 
-	DOWNLOAD_TO_EXTRACTION_SCALING = 2.5
+	FREE_SPACE_ESTIMATE_SCALING = 4
+	FREE_SPACE_ESTIMATE_FIXED = 5_000_000_000
 
 	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
@@ -1263,7 +1264,7 @@ def tryDeleteLockFile():
 	except:
 		print('WARNING: Failed to delete lock file!')
 
-def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
+def checkFreeSpace(installPath, downloadSize):
 	# type: (str, int) -> (Optional[bool], str)
 	"""
 	Checks for free disk space.
@@ -1279,6 +1280,7 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 	 - false: There is not enough free space
 	 - true: There is  enough free space on disk
 	"""
+	recommendedFreeSpaceBytes = downloadSize * Globals.FREE_SPACE_ESTIMATE_SCALING + Globals.FREE_SPACE_ESTIMATE_FIXED
 	recommendedFreeSpaceString = prettyPrintFileSize(recommendedFreeSpaceBytes)
 
 	# Try to calculate actual free space
@@ -1295,13 +1297,12 @@ def checkFreeSpace(installPath, recommendedFreeSpaceBytes):
 
 	if free_space is not None:
 		freeSpaceString = prettyPrintFileSize(free_space)
+		detailsString = " - have {}, need {} (We recommend significant extra space for download and extraction)".format(freeSpaceString, recommendedFreeSpaceString)
 		if free_space < recommendedFreeSpaceBytes:
-			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! at [{}]" \
-			                          "(have {}, need {})".format(installPath, freeSpaceString, recommendedFreeSpaceString)
+			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! at [{}] {}".format(installPath, detailsString)
 			haveEnoughFreeSpace = False
 		else:
-			freeSpaceAdvisoryString = "You have enough free disk space at [{}] (have {}, need {})".format(installPath, freeSpaceString,
-			                                                                                      recommendedFreeSpaceString)
+			freeSpaceAdvisoryString = "You have enough free disk space at [{}] {}".format(installPath, detailsString)
 			haveEnoughFreeSpace = True
 
 	return haveEnoughFreeSpace, freeSpaceAdvisoryString
