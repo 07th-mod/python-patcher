@@ -232,17 +232,10 @@ if __name__ == "__main__":
 		return getSubModConfigList(modList)
 
 	def thread_unimportantTasks():
-		t_loadNews = common.makeThread(installerGUI.loadNews)
 		t_loadDonations = common.makeThread(installerGUI.loadDonationStatus)
 		t_loadLatestInstallerStatus = common.makeThread(common.Globals.loadInstallerLatestStatus)
-		t_loadNews.start()
 		t_loadDonations.start()
 		t_loadLatestInstallerStatus.start()
-
-		try:
-			t_loadNews.join(timeout=6)
-		except Exception as e:
-			print(e)
 
 		try:
 			t_loadDonations.join(timeout=6)

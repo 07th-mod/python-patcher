@@ -591,23 +591,6 @@ def sevenZipTest(archive_path):
 	             ]
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
-def tryGetRemoteNews(newsName):
-	"""
-	:param changelogName: the name of the changelog to retrieve, without file extension
-	There should be one for each mod, and one called 'news' for the index.html page
-	:return:
-	"""
-	localPath = 'news/' + newsName + '.md'
-	url = Globals.GITHUB_MASTER_BASE_URL + 'news/' + quote(newsName) + '.md'
-	try:
-		if Globals.DEVELOPER_MODE and os.path.exists(localPath):
-			with io.open(localPath, 'r', encoding='utf-8') as file:
-				return file.read()
-		else:
-			return downloadFile(url, is_text=True)
-	except HTTPError as error:
-		return """The news [{}] couldn't be retrieved from [{}] the server.""".format(newsName, url)
-
 def getDonationStatus():
 	# type: () -> (Optional[str], Optional[str])
 	"""

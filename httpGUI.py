@@ -720,7 +720,6 @@ class InstallerGUI:
 		self.threadException = None # type: Optional[Exception]
 		self.selectedModName = None # type: Optional[str] # user sets this while navigating the website
 
-		self.remoteNews = ""
 		self.donationMonthsRemaining = ""
 		self.donationProgressPercent = ""
 
@@ -735,9 +734,6 @@ class InstallerGUI:
 
 	def shutdown(self):
 		self.installRunningLock.release()
-
-	def loadNews(self):
-		self.remoteNews = common.tryGetRemoteNews('news')
 
 	def loadDonationStatus(self):
 		self.donationMonthsRemaining, self.donationProgressPercent = common.getDonationStatus()
@@ -897,7 +893,6 @@ class InstallerGUI:
 							'installAlreadyInProgress': self.installAlreadyInProgress(), # This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
 							'lastInstallPath': self.lastInstallPath, # The last path installed to - only valid if an install is currently running.
 							'lastSubModID': self.lastSubModID, # The ID of the last submod installed to - only valid if an install is currently running.
-							'news': self.remoteNews, # News across all mods, fetched from github
 							'donationMonthsRemaining': self.donationMonthsRemaining, # How many months the server can be paid for with current funding
 							'donationProgressPercent': self.donationProgressPercent, # How close funding is to the 12 month donation goal, in percent
 							},
