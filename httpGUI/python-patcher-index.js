@@ -90,7 +90,6 @@ window.onload = function onWindowLoaded() {
       dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],
       currentDataFilter: null,
       masonryInitialized: false,
-      globalNews: 'News not loaded',
       donationProgress: 'N months',
       donationMonthsRemaining: 'XXX%',
       metaInfo: {
@@ -99,7 +98,6 @@ window.onload = function onWindowLoaded() {
         lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
         operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
         installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
-        news: '', // News across all mods, fetched from github
         donationMonthsRemaining: '', // How many months the server can be paid for with current funding
         donationProgressPercent: '', // How close funding is to the 12 month donation goal, in percent
       },
@@ -151,8 +149,6 @@ window.onload = function onWindowLoaded() {
         if (app.metaInfo.installerIsLatest[0] !== true) {
           app.modalVisible = true;
         }
-
-        app.globalNews = DOMPurify.sanitize(marked(app.metaInfo.news));
 
         app.uniqueSubMods = Object.values(modNameToSubModHandleMap);
         app.uniqueSubMods.sort((a, b) => a.id - b.id);
