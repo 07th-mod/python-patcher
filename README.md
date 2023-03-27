@@ -39,7 +39,6 @@ The installer has a global variable called DEVELOPER_MODE, which controls how it
 In developer mode, the installer will prefer local files (on disk) if they are present, instead of remote files (from github). This mode will Specifically: 
 
 - `installData.json`
-- all .md files in the `news` folder
 - `cachedDownloadSizes.json`
 
 ## Cached Download Sizes

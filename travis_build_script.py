@@ -150,7 +150,6 @@ ignore_paths = [
 	'.gitignore',
 	'.travis.yml',
 	'__pycache__',
-	'news',
 	'install_loader',
 	'installerTests',
 	'Onikakushi Ch.1 Downloads',
