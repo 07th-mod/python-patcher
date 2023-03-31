@@ -281,7 +281,7 @@
 										</div>
 										<div v-if="selectedSubMod !== null">
 											<div class="tab-content">
-												<h4 class="uppercase ">{{selectedSubMod.subModName}} Patch</h4>
+												<h4 class="uppercase ">{{selectedSubMod.modName}} ({{selectedSubMod.subModName}} Patch)</h4>
 												<!-- This text is common to all umineko graphics patches -->
 												<div v-if="selectedSubMod.descriptionID === 'uminekoQuestionFull' || selectedSubMod.descriptionID === 'uminekoAnswerFull' || selectedSubMod.descriptionID === 'uminekoAnswerADV'">
 													<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
@@ -297,74 +297,76 @@
 												</div>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
-													<div v-if="selectedSubMod.modName === 'Rei'">
-														<H2>Higurashi Rei</H2>
-														This release of the mod contains:
+													<div v-if="selectedSubMod.modName === 'Console Arcs'">
+														<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+														<strong style="color: red">Warning: This will replace your Himatsubushi Ch.4 installation with the console arcs</strong><br>
+														We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
+														A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
+														</div>
+														<br><br>
+														The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
+														<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target="_blank"><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
+
+														This mod contains:
 														<ul class="installer-bullets">
 															<li>Full voiceover</li>
 															<li>PS3 backgrounds and CGs in Full HD</li>
-															<li>PS3 sprites with lipsync in 1440p</li>
-															<li>Updated MangaGamer sprites in 1440p</li>
-															<li>Optional OG Sprites and Backgrounds (from the original Japanese release)</li>
+															<li>In-game Sprite Options
+																<ul class="installer-bullets">
+																	<li>PS3 sprites with lipsync in 1440p</li>
+																	<li>Updated MangaGamer sprites in 1440p (if sprites exist for that character)</li>
+																	<li>Original Japanese release sprites (if sprites exist for that character)</li>
+																</ul>
+															</li>
 															<li>Upgraded user interface</li>
 															<li>Opening videos</li>
 														</ul>
-
-														<br>
-														<a href="https://github.com/07th-mod/higurashi-rei/releases/latest" target="_blank"><h4 style="color: green">Known Issues / Missing Features</h4></a>
-														<strong>There are still some known issues / missing features in Rei. Please see the <a href="https://github.com/07th-mod/higurashi-rei/releases/latest" target="_blank">latest release</a> for more information.</strong>
-														<br><br>
-														<h4>Why two versions of Hirukowashi? Which one should I read?</h4>
-														Hirukowashi had changes in the Console version which are difficult to combine with the PC version.<br>
-														Due to this, we made two versions of Hirukowashi:
-														<ul class="installer-bullets">
-															<li>An unvoiced PC version.</li>
-															<li>A full port of the Console version.</li>
-														</ul>
 													</div>
 													<div v-else>
-														<div v-if="selectedSubMod.modName === 'Console Arcs'">
-															<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
-															<strong style="color: red">Warning: This will replace your Himatsubushi Ch.4 installation with the console arcs</strong><br>
-															We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
-															A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
-															</div>
-															<br><br>
-															The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
-															<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target="_blank"><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
-
-															This mod contains:
+														For details and screenshots on what the mod contains, <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Getting-started/" target="_blank">see the Intro page on our Wiki</a><br>
+														This mod contains:
+														<ul class="installer-bullets">
+															<li>Full voiceover</li>
+															<li>In-game Background Options
+																<ul class="installer-bullets">
+																	<li>PS3 backgrounds and CGs in Full HD</li>
+																	<li>Original Japanese release Backgrounds</li>
+																</ul>
+															</li>
+															<li>In-game Sprite Options
+																<ul class="installer-bullets">
+																	<li>PS3 sprites with lipsync in 1440p</li>
+																	<li>Updated MangaGamer sprites in 1440p</li>
+																	<li>Original Japanese release sprites</li>
+																</ul>
+															</li>
+															<li>Upgraded user interface</li>
+															<li>Opening videos</li>
+															<li>In-game switchable Background Music (BGM) and Sound Effects (SE):<br>
+																<ul class="installer-bullets">
+																	<li><a href="https://07th-mod.com/wiki/Higurashi/BGM-SE-FAQ/" target="_blank">We highly recommend checking out our BGM/SE FAQ</a></li>
+																	<li><strong>New BGM/SE</strong> - The BGM introduced in the April 2019 update</li>
+																	<li><strong>GIN's BGM/SE</strong> - Brings the BGM/SE closer (but definitely NOT identical to) the original Japanese release and/or Pre April Update. See the <a href="https://07th-mod.com/wiki/Higurashi/BGM-SE-FAQ/" target="_blank">BGM/SE FAQ</a> for more details</li>
+																	<li>
+																		<strong>OST Remake (for Chapters 2,3,4 only): </strong>
+																		<ul class="installer-bullets">
+																			<li>Handmade remakes of nine tracks from the original release.</li>
+																			<li><a href="https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1" target="_blank">Click listen to OST Remake samples</a></li>
+																			<li>Note that Ch.1 does not use any OST Remake tracks, and that no OST remake for Ch.5-8 has been created.</li>
+																		</ul>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+														<br>
+														<div v-if="selectedSubMod.modName === 'Rei'">
+															<h4>Why two versions of Hirukowashi? Which one should I read?</h4>
+															Hirukowashi had changes in the Console version which are difficult to combine with the PC version.<br>
+															Due to this, we made two versions of Hirukowashi:
 															<ul class="installer-bullets">
-																<li>Full voiceover</li>
-																<li>PS3 backgrounds and CGs in Full HD</li>
-																<li>PS3 sprites with lipsync in 1440p</li>
-																<li>Upgraded user interface</li>
-																<li>Opening videos</li>
+																<li>An unvoiced PC version.</li>
+																<li>A full port of the Console version.</li>
 															</ul>
-														</div>
-														<div v-else>
-															This mod contains:
-															<ul class="installer-bullets">
-																<li>Full voiceover</li>
-																<li>PS3 backgrounds and CGs in Full HD</li>
-																<li>PS3 sprites with lipsync in 1440p</li>
-																<li>Updated MangaGamer sprites in 1440p</li>
-																<li>Optional OG Sprites and Backgrounds (from the original Japanese release)</li>
-																<li>Upgraded user interface</li>
-																<li>Opening videos</li>
-																<li>In-game switchable BGM/SE with a choice of:
-																	<ul class="installer-bullets">
-																		<li>New BGM/SE (BGM introduced in the April 2019 update)</li>
-																		<li>Original BGM/SE (original BGM/SE from the Japanese version of the game)</li>
-																		<li>For Chapters 2,3,4 Only: OST Remake (handmade remakes of nine tracks from the original release). <a href="https://radiataalice.bandcamp.com/album/hinamizawa-syndrome-vol-1" target="_blank">Click here to listen to samples</a></li>
-																	</ul>
-																</li>
-															</ul>
-															<br>
-															<div>
-																NOTE: There is no OST Remake for Onikakushi, because Onikakushi does not use any of the OST Remake tracks.<br>
-																NOTE: There is no OST Remake for Chapters 5-8 as an OST remake for those chapters hasn't been created.
-															</div>
 														</div>
 													</div>
 												</div>
