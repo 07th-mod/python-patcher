@@ -104,6 +104,9 @@ class VersionManager:
 			self.localVersionInfo = None
 			print("VersionManager: Error while retrieving version information: {}".format(error))
 
+		if modOptionParser.forceInstallFromScratch:
+			self.localVersionInfo = None
+
 		# allow overriding the remote sub mod version for testing purposes
 		if _testRemoteSubModVersion is not None:
 			self.remoteVersionInfo = _testRemoteSubModVersion

@@ -259,6 +259,7 @@ class ModOptionParser:
 		self.partialManualInstall = False
 		self.repairMode = False
 		self.downloadManually = False
+		self.forceInstallFromScratch = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -284,6 +285,8 @@ class ModOptionParser:
 					self.repairMode = True
 				elif modOption.type == 'downloadManually':
 					self.downloadManually = True
+				elif modOption.type == 'forceInstallFromScratch':
+					self.forceInstallFromScratch = True
 
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
@@ -432,6 +435,19 @@ The files you manually downloaded will not be deleted automatically at the end o
 """,
 		                                 group="Common Options",
 		                                 type="downloadManually",
+		                                 isRadio=False,
+		                                 data=None,
+		                                 isGlobal=True))
+
+		self.modOptions.append(ModOption(name="Force Install from Scratch",
+		                                 description="""Enabling this option forces re-install of all mod files.
+
+Use this option:
+ - If you re-installed the unmodded game, causing some mod files to be overwritten.
+ - If you think some previously installed files are broken or missing.
+""",
+		                                 group="Common Options",
+		                                 type="forceInstallFromScratch",
 		                                 isRadio=False,
 		                                 data=None,
 		                                 isGlobal=True))

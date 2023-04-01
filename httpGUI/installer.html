@@ -687,12 +687,11 @@
 															</div>
 															<br>
 														</div>
-														<div v-if="partialReinstallDetected">
+														<div v-if="partialReinstallDetected && !fullUpdateRequired">
 															<div class="warning-text">
 																<span>
-																	WARNING: We detected you re-installed the unmodded game without deleting the game folder - therefore you MUST choose 'RE-INSTALL FROM SCRATCH' below, otherwise the mod may not work!<br><br>
-																	For more info, see Install Instructions - <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#uninstalling-games" target="_blank" >Uninstalling Games on the wiki.</a><br><br>
-																	If this message incorrect (you did not re-install unmodded game), ignore this message, and let the mod team know.
+																	WARNING: We detected you re-installed the unmodded game without deleting the game folder - you MUST enable the 'Force Install from Scratch' option above, otherwise the mod may not work!<br><br>
+																	If this message incorrect (you did not re-install the unmodded game), ignore this message, and let the mod team know.
 																</span>
 															</div>
 															<br>
@@ -703,14 +702,6 @@
 																<span v-else style="font-size:20px">⏫ Start Update!</span><br>
 																<span>(Install green files above)</span>
 															</div></li>
-														</ul>
-														<ul class="tabs button-tabs" v-show="selectedSubMod!==null && !fullUpdateRequired" style="float: right">
-															<li>
-																<div class="tab-title" v-on:click=askPerformFullInstall() style="background: darkred">
-																	<span style="font-size:20px">🔄 Re-install from scratch</span><br>
-																	<span>(Clear version data then re-install)</span>
-																</div>
-															</li>
 														</ul>
 													</div>
 													<div v-else>
