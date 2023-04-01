@@ -87,8 +87,8 @@ class VersionManager:
 		# For the version file, the "modified" date is when the game mod was last applied
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
-	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, datadir=None, _testRemoteSubModVersion=None, verbosePrinting=True, repairMode=True):
-		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool, bool) -> None
+	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, datadir=None, _testRemoteSubModVersion=None, verbosePrinting=True):
+		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool) -> None
 		subMod = fullInstallConfiguration.subModConfig
 		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
