@@ -199,6 +199,7 @@ window.onload = function onWindowLoaded() {
       startInstallInProgress: false, // Indicates when a startInstall POST is in progress
       validateInstallPathPollingEnabled: false, // Used to ensure only one polling instance is created
       startInstallInProgressFiltered: false, // Like startInstallInProgress but does not activate from polled validateInstallPath()
+      partialReinstallDetected: false, // True if we detected the user re-installed the vanilla game to the current installation after it was modded
     },
     methods: {
       doInstall(deleteVersionInformation) {
@@ -303,9 +304,7 @@ Continue install anyway?`)) {
             app.fullUpdateRequired = responseData.fullUpdateRequired;
             app.isWine = responseData.isWine;
             app.isSteam = responseData.isSteam;
-            if (responseData.partialReinstallDetected) {
-              alert("WARNING: It appears you re-installed the game without fully deleting the game folder. If you wish to update or re-install, you MUST click the\n'RE-INSTALL FROM SCRATCH' button at the bottom of this page, otherwise the mod may not work!\n\nFor more info, see Install Instructions - Uninstalling Games:\nhttps://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#uninstalling-games\n\nIf this message incorrect (you did not partially re-install the game), ignore this message, and let the mod team know.");
-            }
+            app.partialReinstallDetected = responseData.partialReinstallDetected;
             app.startInstallInProgress = false;
             app.startInstallInProgressFiltered = false;
 

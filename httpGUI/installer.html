@@ -686,6 +686,16 @@
 															</div>
 															<br>
 														</div>
+														<div v-if="partialReinstallDetected">
+															<div class="warning-text">
+																<span>
+																	WARNING: We detected you re-installed the unmodded game without deleting the game folder - therefore you MUST choose 'RE-INSTALL FROM SCRATCH' below, otherwise the mod may not work!<br><br>
+																	For more info, see Install Instructions - <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Part-1---Voice-and-Graphics-Patch/#uninstalling-games" target="_blank" >Uninstalling Games on the wiki.</a><br><br>
+																	If this message incorrect (you did not re-install unmodded game), ignore this message, and let the mod team know.
+																</span>
+															</div>
+															<br>
+														</div>
 														<ul class="tabs button-tabs" v-show="selectedSubMod!==null">
 															<li><div class="tab-title" v-on:click=doInstall() style="background: red">
 																<span v-if="fullUpdateRequired" style="font-size:24px">🚀 Start the installation! 🚀</span>
