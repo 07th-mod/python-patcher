@@ -432,6 +432,8 @@ If you're having problems downloading via the installer, you can use this option
 Please scroll down the page to the download preview table below, which will tell you what to download and where to put the downloads.
 
 The files you manually downloaded will not be deleted automatically at the end of the install (in case you want to back them up).
+
+For detailed instructions, [see our Wiki](https://07th-mod.com/wiki/Installer/faq/#workaround-for-download-and-verify-stage-failed-error).
 """,
 		                                 group="Common Options",
 		                                 type="downloadManually",
