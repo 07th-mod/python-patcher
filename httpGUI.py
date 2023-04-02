@@ -546,13 +546,13 @@ class DownloadPreviewFactory:
 		# type: (str, bool) -> Dict
 		MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD = """You need to download this file
 
-<{}>"""
+<a href="{}" target="_blank" rel="noopener" style="word-break: break-all">{}</a>"""
 
 		MANUAL_DOWNLOAD_STATUS_WRONG_SIZE = """File exists but is the wrong size.
 Please make sure the download has finished, and check you've got the latest version of the file.
 Otherwise, re-download the file from
 
-<{}>"""
+<a href="{}" target="_blank" rel="noopener" style="word-break: break-all">{}</a>"""
 
 		manualDownloadIncomplete = False
 
@@ -609,11 +609,11 @@ Otherwise, re-download the file from
 								manualDownloadStatus = "OK - [{}] is already downloaded".format(extractableItem.filename)
 								rowClass = "active"
 							else:
-								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(extractableItem.fileURL, expectedDownloadPath)
+								manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_WRONG_SIZE.format(extractableItem.fileURL, extractableItem.fileURL)
 								rowClass = "warning"
 								manualDownloadIncomplete = True
 						else:
-							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(extractableItem.fileURL, expectedDownloadPath)
+							manualDownloadStatus = MANUAL_DOWNLOAD_STATUS_NEED_DOWNLOAD.format(extractableItem.fileURL, extractableItem.fileURL)
 							rowClass = "warning"
 							manualDownloadIncomplete = True
 					else:

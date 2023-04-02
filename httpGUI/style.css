@@ -201,6 +201,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: yellow;
     border-width: 4px;
     border-style: solid;
+    border-color: black;
 }
 
 .warning-text {
