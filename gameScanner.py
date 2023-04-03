@@ -27,7 +27,7 @@ def findAdditionalSteamLibraries(mainSteamPath):
 	vdf file path has changed since then.
 	"""
 	try:
-		vdf = os.path.join(mainSteamPath, r'steamapps\libraryfolders.vdf')
+		vdf = os.path.join(mainSteamPath, "steamapps", "libraryfolders.vdf")
 		if not os.path.exists(vdf):
 			return []
 
@@ -168,24 +168,24 @@ def getMaybeGamePaths():
 	# Scan hardcoded paths for game subfolders
 	hardCodedGameContainingPaths = []
 	if common.Globals.IS_MAC:
-		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common")
 		hardCodedGameContainingPaths.append("~/GOG Games")  # Not sure if this is correct for MacOS
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
 		hardCodedGameContainingPaths.append("c:/GOG Games")
 	if common.Globals.IS_LINUX:
-		hardCodedGameContainingPaths.append("~/.steam/steam/steamapps/common/")
-		hardCodedGameContainingPaths.append("~/.steam/steambeta/steamapps/common/")
+		hardCodedGameContainingPaths.append("~/.steam/steam/steamapps/common")
+		hardCodedGameContainingPaths.append("~/.steam/steambeta/steamapps/common")
 		hardCodedGameContainingPaths.append("~/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common") # Steam Flatpak
 		hardCodedGameContainingPaths.append("~/GOG Games")  # GOG's website states this, but is unconfirmed
 
 	# Expand '~' before continuing to the next steps so os.path.* functions work correctly
-	hardCodedGameContainingPaths = [os.path.expanduser(p) for p in hardCodedGameContainingPaths]
+	hardCodedGameContainingPaths = [os.path.realpath(os.path.expanduser(p)) for p in hardCodedGameContainingPaths]
 
 	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
 	try:
 		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower()]
-		hardCodedGameContainingPaths += [os.path.join(p, r'steamapps\common') for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
+		hardCodedGameContainingPaths += [os.path.realpath(os.path.join(p, "steamapps", "common")) for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
 	except:
 		traceback.print_exc()
 
@@ -193,8 +193,7 @@ def getMaybeGamePaths():
 	hardCodedGameContainingPaths = deDuplicatePaths(hardCodedGameContainingPaths)
 
 	print("Will scan secondary game containing paths: {}".format(hardCodedGameContainingPaths))
-	for hardCodedPathNotNormalized in hardCodedGameContainingPaths:
-		hardCodedPath = os.path.realpath(os.path.expanduser(hardCodedPathNotNormalized))
+	for hardCodedPath in hardCodedGameContainingPaths:
 		try:
 			for gameFolderName in os.listdir(hardCodedPath):
 				gameFolderPath = os.path.normpath(os.path.join(hardCodedPath, gameFolderName))
