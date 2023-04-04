@@ -61,8 +61,21 @@ def findWorkingExecutablePath(executable_paths, flags):
 	:param flags: a list [] of any extra flags like "-h" required to make the executable have a 0 exit code
 	:return: the path of the valid executable, or None if no valid executables found
 	"""
-	with open(os.devnull, 'w') as os_devnull:
+	extra_paths = []
+
+	if Globals.DEVELOPER_MODE:
+		if Globals.IS_WINDOWS:
+			bundled_dev_path = 'bootstrap/higu_win_installer_32/install_data'
+		elif Globals.IS_MAC:
+			bundled_dev_path = 'bootstrap/higu_mac_installer/install_data'
+		elif Globals.IS_LINUX:
+			bundled_dev_path = 'bootstrap/higu_linux64_installer/install_data'
+
 		for path in executable_paths:
+			extra_paths.append(os.path.join(bundled_dev_path, path))
+
+	with open(os.devnull, 'w') as os_devnull:
+		for path in executable_paths + extra_paths:
 			try:
 				if subprocess.call([path] + flags, stdout=os_devnull, stderr=os_devnull) == 0:
 					return path
