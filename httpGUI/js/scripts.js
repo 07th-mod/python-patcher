@@ -1128,7 +1128,7 @@ function masonryFlyIn() {
         setTimeout(function() {
             item.addClass('fadeIn');
         }, time);
-        time += 100;
+        time += 10;
     });
 }
 
