@@ -379,3 +379,10 @@ The snackbar - position it at the bottom and in the middle of the screen */
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.free-space-warning-text {
+    font-size: 2em;
+    line-height: 1.2em;
+    font-weight: bold;
+    color: black;
+}

@@ -670,12 +670,17 @@
 															</div>
 															<strong>
 																<div v-if="numUpdatesRequired === 0" class="alert alert-warning">Warning: No updates detected. Mod options will still be installed, however.</div>
-																<div v-if="haveEnoughFreeSpace === false  || CWDHaveEnoughFreeSpace === false" style="color: red; background-color: yellow"><h1>WARNING: Probably not enough disk space to install mod! - please read below messages for details!</h1></div>
-																<div class="alert" v-bind:class="[alertClassFromMaybeBool(haveEnoughFreeSpace)]">
-																	Mod Install Disk Space: {{ freeSpaceAdvisoryString }}
+																<div v-if="haveEnoughFreeSpace === false" style="color: red; background-color: yellow">
+																	<span class="rendered-markdown free-space-warning-text" v-html="renderMarkdown(freeSpaceAdvisoryString)"></span>
 																</div>
-																<div class="alert" v-bind:class="[alertClassFromMaybeBool(CWDHaveEnoughFreeSpace)]">
-																	Temporary Downloads Disk Space: {{ CWDFreeSpaceAdvisoryString }}
+																<div v-if="CWDHaveEnoughFreeSpace === false" style="color: red; background-color: yellow">
+																	<span class="rendered-markdown free-space-warning-text" v-html="renderMarkdown(CWDFreeSpaceAdvisoryString)"></span>
+																</div>
+																<div class="alert" v-bind:class="[alertClassFromMaybeBool(haveEnoughFreeSpace === true && CWDHaveEnoughFreeSpace === true)]">
+																	<div class="row">
+																		<div class="col-md-6">Install Space: <span class="rendered-markdown" v-html="renderMarkdown(freeSpaceAdvisoryString)"></span></div>
+																		<div class="col-md-6">Temp Space: <span class="rendered-markdown" v-html="renderMarkdown(CWDFreeSpaceAdvisoryString)"></span></div>
+																	</div>
 																</div>
 															</strong>
 														</div>

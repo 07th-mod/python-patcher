@@ -1293,12 +1293,18 @@ def checkFreeSpace(installPath, downloadSize):
 
 	if free_space is not None:
 		freeSpaceString = prettyPrintFileSize(free_space)
-		detailsString = " - have {}, need {} (We recommend significant extra space for download and extraction)".format(freeSpaceString, recommendedFreeSpaceString)
+		detailsString = "Have {}, need {}.".format(freeSpaceString, recommendedFreeSpaceString)
+		driveName, _ = os.path.splitdrive(installPath)
+
+		driveFragment = ""
+		if Globals.IS_WINDOWS:
+			driveFragment = " drive"
+
 		if free_space < recommendedFreeSpaceBytes:
-			freeSpaceAdvisoryString = "WARNING: You might not have enough free disk space! at [{}] {}".format(installPath, detailsString)
+			freeSpaceAdvisoryString = "Warning: Not enough space on{} [{}]<br>{}".format(driveFragment, driveName, detailsString)
 			haveEnoughFreeSpace = False
 		else:
-			freeSpaceAdvisoryString = "You have enough free disk space at [{}] {}".format(installPath, detailsString)
+			freeSpaceAdvisoryString = "You have enough free disk space on{} [{}]<br>{}".format(driveFragment, driveName, detailsString)
 			haveEnoughFreeSpace = True
 
 	return haveEnoughFreeSpace, freeSpaceAdvisoryString
