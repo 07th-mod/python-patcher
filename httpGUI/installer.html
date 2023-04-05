@@ -295,6 +295,19 @@
 														<p>If you are able to emulate or hack a Nintendo Switch, and you do not rely on PC-specific features such as Ryukishi/Pachinko sprites or original backgrounds, we recommend patching the Switch game to run in English instead. You may find instructions on how to do so <a href='https://andolga.github.io/umineko-catbox-english/' target="_blank">here</a>.</p>
 													</div>
 													<hr>
+													<p style="font-size: 1.5em; font-weight: bold; line-height: 1.3em;">
+														2023-04-05: Experimental Script Feedback Wanted!<br><br>
+														The Experimental Script Option mainly fixes the mod having no auto-advancement of text. We would like to make it the default script, but need to make sure there are no serious bugs.<br><br>
+														If you play the Experimental Script (even just one episode), let us know on our
+														<a href="https://discord.gg/pf5VhF9" target="_blank">Discord</a> or
+														<span v-if="selectedSubMod.descriptionID === 'uminekoQuestionFull'">
+															<a href="https://github.com/07th-mod/umineko-question/issues/new" target="_blank">Question Arcs Repo</a>.
+														</span>
+														<span v-else>
+															<a href="https://github.com/07th-mod/umineko-answer/issues/new" target="_blank">Answer Arcs Repo</a>.
+														</span>
+													</p>
+													<hr>
 												</div>
 												<!-- Show the appropriate description depending on the descriptionID -->
 												<div v-if="selectedSubMod.descriptionID === 'higurashiFull'">
