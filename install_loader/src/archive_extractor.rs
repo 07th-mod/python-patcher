@@ -101,6 +101,7 @@ fn extract_archive(sub_folder_path: &Path, progress_update: Sender<Result<usize,
 	let mut progress_counter = ProgressCounter::new(archive_bytes.len(), 1_000_000);
 	let intermediate_reader = ProgressReader::new(&archive_bytes[..], |progress_bytes: usize| {
 		if let Some(percentage) = progress_counter.update(progress_bytes) {
+			println!("Extraction {}%", percentage);
 			progress_update
 				.send(Ok(percentage))
 				.expect("Failed to send progress update - aborting extraction");
@@ -121,6 +122,10 @@ You can also try 'Run as Administrator', but the installer may not work correctl
 		// Extraction was successful. Write extraction lock with installer version,
 		// so we don't need to extract again unless installer's version changes
 		write_extraction_lock(&saved_git_tag_path);
+		progress_update
+			.send(Ok(100))
+			.expect("Failed to send progress update - aborting extraction");
+		println!("Extraction Complete.");
 	}
 }
 
