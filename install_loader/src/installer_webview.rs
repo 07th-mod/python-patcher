@@ -2,7 +2,7 @@ use std::{fs, thread, sync::mpsc::{Sender, self}, path::{Path, PathBuf}};
 
 use serde::{Deserialize, Serialize};
 use anyhow::Result;
-use wry::{application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows, event_loop::EventLoopProxy}, webview::WebContext};
+use wry::{application::{window::Window, dpi::{PhysicalSize, PhysicalPosition}, platform::windows::EventLoopExtWindows, event_loop::EventLoopProxy, error::NotSupportedError}, webview::WebContext};
 
 use crate::{config::InstallerConfig, resources};
 
@@ -66,6 +66,8 @@ fn launch_inner(url: &str, data_directory: Option<PathBuf>, tx: Sender<EventLoop
     window.set_inner_size(window_size);
     window.set_outer_position(window_position);
 
+    // window.set_fullscreen(Some(window::Fullscreen::Borderless(None)));
+
     // Set the window icon
     // NOTE: Setting the taskbar icon with set_taskbar_icon() seems to have no effect
     // Instead, it is set by embedding an icon into the .exe with the winres library
@@ -103,22 +105,40 @@ fn launch_inner(url: &str, data_directory: Option<PathBuf>, tx: Sender<EventLoop
     });
 }
 
-fn window_position_size(window: &Window) -> (PhysicalPosition<u32>, PhysicalSize<u32>)
+// Note: this function will briefly maximize the window, so that it can correctly calculate the window position.
+// We need to do this to take into account the size and position of the taskbar
+fn window_position_size(window: &Window) -> (PhysicalPosition<i32>, PhysicalSize<u32>)
 {
-    if let Some(monitor) = window.current_monitor()
-    {
-        let monitor_size = monitor.size();
-        let width = std::cmp::min(1600, monitor_size.width * 9 / 10);
-        let size = PhysicalSize::new(width, monitor_size.height * 9 / 10);
+    let original_maximized_state = window.is_maximized();
 
-        let x_pos = monitor_size.width.saturating_sub(size.width)/2;
-        let y_pos = monitor_size.height.saturating_sub(size.height)/2;
-        let position = PhysicalPosition::new(x_pos, y_pos);
+    // We use the maximized size of the window in the calculation, rather than the monitor resolution, to take into account
+    // the taskbar when setting the windowed size. The taskbar size and position may be on any size of the window,
+    // and also be bigger or smaller depending on scaling settings and which windows version they are using.
+    window.set_maximized(true);
 
-        (position, size)
-    }
-    else
-    {
-        (PhysicalPosition::new(0,0), PhysicalSize::new(1280, 720))
-    }
+    let result = window_position_size_inner(window);
+
+    // Reset the maximized state to what it was before calling this function
+    window.set_maximized(original_maximized_state);
+
+    // Default to 720p window if can't get outer position of maximized window
+    result.unwrap_or((PhysicalPosition::new(0,0), PhysicalSize::new(1280, 720)))
+}
+
+// Window should be maximized before calling this function
+fn window_position_size_inner(window: &Window) -> Result<(PhysicalPosition<i32>, PhysicalSize<u32>), NotSupportedError>
+{
+    let maximized_position = window.outer_position()?;
+    let maximized_size = window.inner_size();
+
+    // Add padding on all sides of the window
+    // UI looks weird if the window is too wide, so also limit width to a reasonable value
+    let new_width = std::cmp::min(1600, maximized_size.width * 95 / 100);
+    let new_height = maximized_size.height * 95 / 100;
+
+    // Center the window in the middle of the maximized window area (this takes into account the taskbar)
+    let new_pos_x = maximized_position.x + ((maximized_size.width - new_width) as i32 / 2);
+    let new_pos_y = maximized_position.y + ((maximized_size.height - new_height) as i32 / 2);
+
+    Ok((PhysicalPosition::new(new_pos_x, new_pos_y), PhysicalSize::new(new_width, new_height)))
 }
