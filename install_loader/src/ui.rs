@@ -44,15 +44,15 @@ impl TimeoutTimer {
 
 // Extension methods for imgui-rs
 pub trait SimpleUI {
-	fn simple_button(&self, label: &ImStr) -> bool;
+	fn simple_button(&self, label: &str) -> bool;
 	fn show_developer_tools(&self);
 	fn text_red<T: AsRef<str>>(&self, text: T);
 	fn text_yellow<T: AsRef<str>>(&self, text: T);
-	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &ImStr, text: T);
+	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &str, text: T);
 }
 
 impl<'ui> SimpleUI for Ui<'ui> {
-	fn simple_button(&self, label: &ImStr) -> bool {
+	fn simple_button(&self, label: &str) -> bool {
 		self.button(label)
 	}
 
@@ -72,10 +72,10 @@ impl<'ui> SimpleUI for Ui<'ui> {
 		self.text_colored([1.0, 1.0, 0.0, 1.0], text);
 	}
 
-	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &ImStr, text: T) {
+	fn build_ok_modal<T: AsRef<str>>(&self, modal_name: &str, text: T) {
 		self.popup_modal(modal_name).build(self, || {
 			self.text(text);
-			if self.button(im_str!("OK")) {
+			if self.button("OK") {
 				self.close_current_popup();
 			}
 		});
@@ -264,7 +264,7 @@ impl InstallerGUI {
 	// If python is extracting or installation has started, show a popup for user to confirm exit
 	// In any other case, just let the user exit immediately
 	fn exit_handler(&mut self, ui: &Ui) {
-		let confirm_exit_modal_name = im_str!("Confirm Exit");
+		let confirm_exit_modal_name = "Confirm Exit";
 		if self.ui_state.close_requested {
 			self.ui_state.close_requested = false;
 
@@ -296,11 +296,11 @@ impl InstallerGUI {
 			.always_auto_resize(true)
 			.build(ui, || {
 				ui.text("Closing this window will terminate the installer!");
-				if ui.button(im_str!("OK - Quit Installer")) {
+				if ui.button("OK - Quit Installer") {
 					ui.close_current_popup();
 					self.quit();
 				}
-				if ui.button(im_str!("Cancel")) {
+				if ui.button("Cancel") {
 					ui.close_current_popup();
 				}
 			});
@@ -351,44 +351,44 @@ Please download the installer to your Downloads or other known location, then ru
 			}
 			InstallerProgression::PreExtractionChecksFailed(reason) => {
 				ui.text_yellow(reason);
-				if ui.simple_button(im_str!("Try to continue install anyway")) {
+				if ui.simple_button("Try to continue install anyway") {
 					self.state.progression =
 						InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					return;
 				}
 			}
 			InstallerProgression::ExtractingPython(_) => {
-				ui.text_yellow(im_str!("Please wait for extraction to finish..."));
+				ui.text_yellow("Please wait for extraction to finish...");
 			}
 			InstallerProgression::UserNeedsCPPRedistributable => {
-				let download_failure_modal_name = im_str!("Download Failure (C++ Redistributable)");
-				let open_failure_modal_name = im_str!("Open Failure (C++ Redistributable)");
-				let redist_missing_modal_name = im_str!("Redist Missing (C++ Redistributable)");
+				let download_failure_modal_name = "Download Failure (C++ Redistributable)";
+				let open_failure_modal_name = "Open Failure (C++ Redistributable)";
+				let redist_missing_modal_name = "Redist Missing (C++ Redistributable)";
 
-				ui.text_yellow(im_str!("Warning: You are missing the Visual C++ Redistributable (x86), needed to run the installer!"));
-				ui.text_yellow(im_str!(
+				ui.text_yellow("Warning: You are missing the Visual C++ Redistributable (x86), needed to run the installer!");
+				ui.text_yellow(
 					"Please download and install it using the buttons below."
-				));
+				);
 
 				ui.new_line();
-				if ui.simple_button(im_str!("Option 1: Download Directly")) {
+				if ui.simple_button("Option 1: Download Directly") {
 					if let Err(_) = windows_utilities::cpp_redist_download_in_browser() {
 						ui.open_popup(download_failure_modal_name);
 					}
 				}
-				if ui.simple_button(im_str!(
+				if ui.simple_button(
 					"Option 2: Visit C++ Redistributable Website (Choose [x86: vc_redist.x86.exe])"
-				)) {
+				) {
 					if let Err(_) = windows_utilities::cpp_redist_open_website() {
 						ui.open_popup(open_failure_modal_name);
 					}
 				}
-				ui.text(im_str!(
+				ui.text(
 					"If the redist install gets stuck for a long time, restart your computer and try again"
-				));
+				);
 
 				ui.new_line();
-				if ui.simple_button(im_str!("Click here when you have finished installing")) {
+				if ui.simple_button("Click here when you have finished installing") {
 					if windows_utilities::x86_cpp_redist_is_installed() {
 						self.start_install_default();
 						return;
@@ -400,22 +400,22 @@ Please download the installer to your Downloads or other known location, then ru
 				// Modal informing the user that the page/download couldn't be opened
 				ui.build_ok_modal(
 					download_failure_modal_name,
-					im_str!("Couldn't download directly - please visit website to download"),
+					"Couldn't download directly - please visit website to download",
 				);
 				ui.build_ok_modal(
 					open_failure_modal_name,
-					im_str!("Couldn't open Microsoft website - please try to visit manually"),
+					"Couldn't open Microsoft website - please try to visit manually",
 				);
 
 				// Exit confirmation modal triggered by the above
 				ui.popup_modal(redist_missing_modal_name).build(ui, || {
 					ui.text("You still seem to be missing the redist. Are you sure you want to continue?");
-					if ui.button(im_str!("Yes, continue anyway")) {
+					if ui.button("Yes, continue anyway") {
 						ui.close_current_popup();
 						self.start_install_default();
 						return;
 					}
-					if ui.button(im_str!("No, let me fix it")) {
+					if ui.button("No, let me fix it") {
 						ui.close_current_popup();
 					}
 				});
@@ -466,12 +466,12 @@ Please download the installer to your Downloads or other known location, then ru
 
 				match graphical_install.launch_type {
 					LaunchType::TextMode => {
-						ui.text_yellow(im_str!(
+						ui.text_yellow(
 							"Console Installer Started - Please use the console window that just opened."
-						));
+						);
 					},
 					LaunchType::Browser => {
-						ui.text(im_str!("Please wait - Installer will launch in your web browser..."));
+						ui.text("Please wait - Installer will launch in your web browser...");
 					}
 					LaunchType::WebView => {
 						if graphical_install.webview_launched {
@@ -485,9 +485,9 @@ Please download the installer to your Downloads or other known location, then ru
 				ui.dummy([0.0, 20.0]);
 
 				if graphical_install.launch_type != LaunchType::TextMode {
-					ui.text_yellow(im_str!("If you have problems:"));
-					ui.text_yellow(im_str!(" - try refreshing the webpage (CTRL + R)"));
-					ui.text_yellow(im_str!(" - try one of the below restart options"));
+					ui.text_yellow("If you have problems:");
+					ui.text_yellow(" - try refreshing the webpage (CTRL + R)");
+					ui.text_yellow(" - try one of the below restart options");
 				}
 
 				if let Some(exit_status) =
@@ -504,13 +504,13 @@ Please download the installer to your Downloads or other known location, then ru
 				let mut kill_python_and_hide_webview = false;
 				let mut restart_install = None;
 
-				if ui.simple_button(im_str!("Restart Installer in Web Browser"))
+				if ui.simple_button("Restart Installer in Web Browser")
 				{
 					kill_python_and_hide_webview = true;
 					restart_install = Some(LaunchType::Browser);
 				}
 
-				if ui.simple_button(im_str!("Restart Installer in Text Mode"))
+				if ui.simple_button("Restart Installer in Text Mode")
 				{
 					kill_python_and_hide_webview = true;
 					restart_install = Some(LaunchType::TextMode);
@@ -539,15 +539,15 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 			}
 			InstallerProgression::InstallFinished => {
-				ui.text_yellow(im_str!(
+				ui.text_yellow(
 					"The install is finished. Cleaning up...please wait"
-				));
+				);
 				self.ui_state.run = false;
 			}
 			InstallerProgression::InstallFailed(install_failed_state) => {
-				ui.text_red(im_str!("The installation failed!"));
-				ui.text_red(im_str!("[{}]", install_failed_state.failure_reason));
-				if ui.simple_button(im_str!("Open 07th-mod Support Page")) {
+				ui.text_red("The installation failed!");
+				ui.text_red(format!("[{}]", install_failed_state.failure_reason));
+				if ui.simple_button("Open 07th-mod Support Page") {
 					let _ = open::that("https://07th-mod.com/wiki/Installer/support/");
 				}
 
@@ -557,10 +557,10 @@ Please download the installer to your Downloads or other known location, then ru
 				}
 			}
 			InstallerProgression::TempDirCleanupFailed(last_temp_dir) => {
-				ui.text_yellow(im_str!("Warning: Failed to delete extraction folder."));
-				ui.text_yellow(im_str!("Please delete this folder manually to save disk space, or by running disk cleanup."));
+				ui.text_yellow("Warning: Failed to delete extraction folder.");
+				ui.text_yellow("Please delete this folder manually to save disk space, or by running disk cleanup.");
 
-				if ui.simple_button(im_str!("Open Extraction Folder")) {
+				if ui.simple_button("Open Extraction Folder") {
 					let _ = windows_utilities::system_open(last_temp_dir.clone());
 				}
 			}
@@ -570,10 +570,10 @@ Please download the installer to your Downloads or other known location, then ru
 	// Advanced tools used if something went wrong. Hidden by default unless you expand the header
 	fn display_advanced_tools(&mut self, ui: &Ui) {
 		// Advanced Tools Section
-		if CollapsingHeader::new(im_str!("Advanced Tools")).build(&ui) {
+		if CollapsingHeader::new("Advanced Tools").build(&ui) {
 			// Button which shows the python installer logs folder.
 			// NOTE: the output of this launcher is currently not logged.
-			if ui.button(im_str!("Show Installer Logs")) {
+			if ui.button("Show Installer Logs") {
 				let _ = windows_utilities::system_open(&self.config.logs_folder);
 			}
 
@@ -582,7 +582,7 @@ Please download the installer to your Downloads or other known location, then ru
 				InstallerProgression::InstallFinished
 				| InstallerProgression::InstallFailed(_) => {
 					ui.same_line();
-					if ui.simple_button(im_str!("Force Re-Extraction")) {
+					if ui.simple_button("Force Re-Extraction") {
 						self.state.progression =
 							InstallerProgression::ExtractingPython(ExtractingPythonState::new());
 					}
@@ -592,7 +592,7 @@ Please download the installer to your Downloads or other known location, then ru
 
 			// Show windows' 'cmd' console
 			if ui.checkbox(
-				im_str!("Show Debug Console"),
+				"Show Debug Console",
 				&mut self.ui_state.show_console,
 			) {
 				if self.ui_state.show_console {
@@ -605,7 +605,7 @@ Please download the installer to your Downloads or other known location, then ru
 
 			// Show ImGUI Developer tools (and any other tools)
 			ui.checkbox(
-				im_str!("Show Developer Tools"),
+				"Show Developer Tools",
 				&mut self.ui_state.show_developer_tools,
 			);
 			ui.same_line();
@@ -622,10 +622,10 @@ Please download the installer to your Downloads or other known location, then ru
 		}
 
 		if self.config.use_temp_dir {
-			ui.text_wrapped(im_str!("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted."));
+			ui.text_wrapped("NOTE: You are running the installer from a temp folder. Once you close this window, all partially completed downloads will be deleted.");
 		}
 
-		if ui.simple_button(im_str!("Open Extraction Folder:")) {
+		if ui.simple_button("Open Extraction Folder:") {
 			let _ = windows_utilities::system_open(self.config.sub_folder.clone());
 		}
 		ui.same_line_with_spacing(0., 20.);
@@ -723,7 +723,7 @@ impl ApplicationGUI for InstallerGUI {
 		}
 
 		// Main window containing the installer
-		Window::new(im_str!("07th-Mod Installer Launcher"))
+		Window::new("07th-Mod Installer Launcher")
 			.position([0.0, 0.0], Condition::Always)
 			.size(self.ui_state.window_size, Condition::Always)
 			.no_decoration() //remove title bar etc. so it acts like the "Main" window of the program
