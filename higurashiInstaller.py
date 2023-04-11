@@ -457,6 +457,7 @@ def main(fullInstallConfiguration):
 
 	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
 	skipDownload = modOptionParser.downloadManually
+	keepDownloads = modOptionParser.keepDownloads
 
 	# The Partial Manual Install option is mainly for Windows, so please don't assume it works properly on Linux/MacOS
 	if modOptionParser.partialManualInstall:
@@ -486,7 +487,7 @@ def main(fullInstallConfiguration):
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
-		installer.cleanup(cleanExtractionDirectory=False, cleanDownloadDirectory=not skipDownload)
+		installer.cleanup(cleanExtractionDirectory=False, cleanDownloadDirectory=not skipDownload and not keepDownloads)
 	else:
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, skipDownload=skipDownload)
 		print("Downloading...")
@@ -504,7 +505,7 @@ def main(fullInstallConfiguration):
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
 		installer.saveFileVersionInfoFinished()
-		installer.cleanup(cleanExtractionDirectory=True, cleanDownloadDirectory=not skipDownload)
+		installer.cleanup(cleanExtractionDirectory=True, cleanDownloadDirectory=not skipDownload and not keepDownloads)
 
 
 	commandLineParser.printSeventhModStatusUpdate(100, "Install Completed!")

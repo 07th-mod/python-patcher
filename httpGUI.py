@@ -766,6 +766,9 @@ class InstallerGUI:
 		import uminekoInstaller
 		import uminekoNScripterInstaller
 
+		# Create the download folder now, even if it's not used, in case the user wants to view it
+		common.makeDirsExistOK(os.path.abspath(subMod.modName + " Downloads"))
+
 		fullInstallConfigs = None
 
 		if os.path.isdir(installPath):

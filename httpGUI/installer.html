@@ -131,9 +131,7 @@
 			<hr>
 			<div class="mb40">
 				<h4>Temporary Downloads Cleanup</h4>
-				<p>For <strong>Higurashi</strong>, temporary downloads are deleted on a successful install. No action is necessary</p><br>
-				<p>For <strong>Umineko</strong>, if you chose to keep downloads, they are in the</p>
-				<p><strong>07th-mod_installer\install_data\[GAME NAME] Downloads</strong> folder</p>
+				<p>If you chose to keep downloads, they are at <a v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)"> {{ downloadItemsPreview.downloadFolder }} </a> (click to open)</p>
 				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
 				<p>You can also back-up the downloads if you wish to install again in the future.</p>
 			</div>

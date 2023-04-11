@@ -441,6 +441,19 @@ For detailed instructions, [see our Wiki](https://07th-mod.com/wiki/Installer/fa
 		                                 data=None,
 		                                 isGlobal=True))
 
+		if self.family == 'higurashi' or self.family == 'umineko':
+			self.modOptions.append(ModOption(name="Keep Temporary Downloads",
+			                                 description="""Temporary downloads are normally deleted after a successful install. This
+option keeps these downloads, useful for backup, a full re-install without re-downloading, or an offline install.
+
+Downloads will be saved in the `{}` folder.
+""".format(os.path.abspath(self.modName + " Downloads")),
+			                                 group="Common Options",
+			                                 type="keepDownloads",
+			                                 isRadio=False,
+			                                 data=None,
+			                                 isGlobal=True))
+
 		self.modOptions.append(ModOption(name="Force Install from Scratch",
 		                                 description="""Enabling this option forces re-install of all mod files.
 

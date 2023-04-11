@@ -783,12 +783,6 @@
 							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-question.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
-				},
-				{
-					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
-					"checkBox": [
-						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
-					]
 				}
 			]
 		},
@@ -933,12 +927,6 @@
 							"name": "Linux GOG/MangaGamer Experimental Engine / Executable (nodep)", "description": "Same as above, for LINUX GOG/MangaGamer.\n\nThis 'nodep' version fixes problems with missing libraries, such as having no sound at all due to missing PulseAudio libs.",
 							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-answer.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
-					]
-				},
-				{
-					"name" : "Keep Temporary Downloads", "type": "keepDownloads",
-					"checkBox": [
-						{"name": "Keep Temporary Downloads", "description": "Normally, temporary downloads are deleted when the install completes succesfully.\nKeeping downloads will allow you to skip downloading when performing a full re-install, but will occupy space on disk until you delete them manually.\nDownloads are kept in the `07th-mod_installer\\install_data\\[GAME NAME] Downloads` folder"}
 					]
 				}
 			]
