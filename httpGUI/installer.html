@@ -535,6 +535,15 @@
 													<h4 v-if="!installPathValid && !validationInProgress" class="uppercase mt40" style="color: red">Choose an install path ⚠️</h4>
 													<h4 v-else class="uppercase mt40">Choose an install path</h4>
 													<hr>
+													If available, please select one of the autodetected <strong>{{selectedSubMod.modName}}</strong> paths below.<br><br>
+													If no paths were detected, you need to find
+													<span v-if="metaInfo.operatingSystem === 'mac'">
+														a `.app` file which contains the <strong>{{selectedSubMod.modName}}</strong> game.
+													</span>
+													<span v-else>
+														a <strong>{{selectedSubMod.modName}}</strong> game path, containing at least one of {{ selectedSubMod.identifiers }} files.
+													</span>
+													<br><br>
 													<ul>
 														<div v-if="showPathSelectionButtons">
 															Currently Chosen Path:<br>
