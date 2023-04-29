@@ -58,12 +58,19 @@
 					<div v-if='!initCompleted'>
 						<p v-if='installErrorDescription === ""'>Status: Waiting for init to complete ({{ pollCount }})
 						<p v-else>Status: Init Failed
-						<div v-if='timeoutError && installErrorDescription === ""'>
-							<p><b>Warning:</b> {{ initTimeoutSeconds }} seconds and loading is still not complete.
-								You should wait a little while longer, but you may want to restart the installer (close everything, then start again) or restart your computer and try again.
-								<a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">Contact the 07th-mod team</a> if this happens repeatedly.
+						<div class="alert alert-warning" v-if='timeoutError && installErrorDescription === ""'>
+							<p>
+								<b>Warning:</b> {{ initTimeoutSeconds }} seconds and loading is still not complete.<br><br>
+								Please try the following:
+								<ol class="installer-ordered">
+									<li>Wait at least 20 minutes to see if loading completes (as a test to see if something is very slow, rather than completely broken)</li>
+									<li>Try restarting the installer (close everything, then start again)</li>
+									<li>Restart your whole computer and try again.</li>
+									<li>Try to launch the installer in safe mode.</li>
+								</ol>
+								This may indicate your antivirus software or internet connection is stalling the installer.<br><br>
+								<a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">Contact the 07th-mod team</a> if this happens repeatedly, and provide a screenshot of this page.
 							</p>
-							<p>You can also try to launch the installer in safe mode.</p>
 						</div>
 					</div>
 					<div v-else><p>Status: Init completed, launching main page. <a href=".">Click here if redirect doesn't happen automatically.</a></p></div>
