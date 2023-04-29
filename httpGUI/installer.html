@@ -129,7 +129,7 @@
 				</p>
 			</div>
 			<hr>
-			<div class="mb40">
+			<div class="mb40" v-if="downloadItemsPreview?.downloadFolder !== undefined">
 				<h4>Temporary Downloads Cleanup</h4>
 				<p>If you chose to keep downloads, they are at <a v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)"> {{ downloadItemsPreview.downloadFolder }} </a> (click to open)</p>
 				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
