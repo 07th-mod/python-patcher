@@ -103,11 +103,11 @@ function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCal
 }
 
 // TODO: should always navigate to the same install page, as it is shared amongst all games
-function setModNameAndNavigate(modName) {
+function setModNameAndNavigate(modName, targetURL) {
   doPost('setModName', { modName }, (response) => {
     console.log(response);
     if (response.valid) {
-      window.location.href = 'installer.html';
+      window.location.href = targetURL ?? 'installer.html';
     } else {
       alert(`Error: "${modName}" is not the name of a mod in the JSON config file. Check web console for a list of valid mod names`);
       console.error('Invalid Mod Name! Valid names below:');

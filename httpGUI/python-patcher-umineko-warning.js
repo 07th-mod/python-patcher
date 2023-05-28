@@ -23,72 +23,6 @@ window.onload = function onWindowLoaded() {
     el: '#app',
     data: {
       subModList: [],
-      uniqueSubMods: [],
-      subModExtraProperties: {
-        'Umineko Question (Ch. 1-4)': {
-          img: 'img/games/header_umineko_question.png',
-          dataFilter: 'Question Arcs',
-        },
-        'Umineko Answer (Ch. 5-8)': {
-          img: 'img/games/header_umineko_answer.png',
-          dataFilter: 'Answer Arcs',
-        },
-        'Umineko Tsubasa': {
-          img: 'img/games/header_umineko_tsubasa.png',
-          dataFilter: 'Bonus Content',
-        },
-        'Umineko Hane': {
-          img: 'img/games/header_umineko_hane.png',
-          dataFilter: 'Bonus Content',
-        },
-        'Umineko Saku': {
-          img: 'img/games/header_umineko_saku.png',
-          dataFilter: 'Bonus Content'
-        },
-        'Console Arcs': {
-          img: 'img/games/console.png',
-          dataFilter: 'Console Arcs',
-        },
-        'Onikakushi Ch.1': {
-          img: 'img/games/header1.png',
-          dataFilter: 'Question Arcs',
-        },
-        'Watanagashi Ch.2': {
-          img: 'img/games/header2.png',
-          dataFilter: 'Question Arcs',
-        },
-        'Tatarigoroshi Ch.3': {
-          img: 'img/games/header3.png',
-          dataFilter: 'Question Arcs',
-        },
-        'Himatsubushi Ch.4': {
-          img: 'img/games/header4.png',
-          dataFilter: 'Question Arcs',
-        },
-        'Meakashi Ch.5': {
-          img: 'img/games/header5.png',
-          dataFilter: 'Answer Arcs',
-        },
-        'Tsumihoroboshi Ch.6': {
-          img: 'img/games/header6.png',
-          dataFilter: 'Answer Arcs',
-        },
-        'Minagoroshi Ch.7': {
-          img: 'img/games/header7.png',
-          dataFilter: 'Answer Arcs',
-        },
-        'Matsuribayashi Ch.8': {
-          img: 'img/games/header8.png',
-          dataFilter: 'Answer Arcs',
-        },
-        'Rei': {
-          img: 'img/games/header9.png',
-          dataFilter: 'Bonus Content',
-        },
-      },
-      // Data filters are defined manually so you can set the order
-      dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],
-      currentDataFilter: null,
       masonryInitialized: false,
       donationProgress: 'N months',
       donationMonthsRemaining: 'XXX%',
@@ -105,15 +39,7 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       nav(gameName) {
-        setModNameAndNavigate(gameName, gameName.toLowerCase().includes('umineko') ? 'umineko-warning.html' : 'installer.html');
-      },
-      // if subModExtraProperties missing a game, use wrong image
-      // to make it obvious that the table needs to be updated
-      getSubModExtraProperties(name) {
-        return _.get(this.subModExtraProperties, name, {
-          img: 'img/umineko/sprite_potato.png',
-          dataFilter: 'Question Arcs',
-        });
+        setModNameAndNavigate(gameName);
       },
       clearModal() {
         doPost('clearLatestInstallerWarning', [], () => {});
@@ -149,10 +75,6 @@ window.onload = function onWindowLoaded() {
         if (app.metaInfo.installerIsLatest[0] !== true) {
           app.modalVisible = true;
         }
-
-        app.uniqueSubMods = Object.values(modNameToSubModHandleMap);
-        app.uniqueSubMods.sort((a, b) => a.id - b.id);
-        console.log(app.uniqueSubMods);
 
         // Force user back to the install page if the tried to leave
         if (app.metaInfo.installAlreadyInProgress) {

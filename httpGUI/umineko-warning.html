@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="icon" type="image/png" href="favicon.png" />
+		<meta charset="utf-8">
+		<title>07th-Mod Installer Index</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/flexslider.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/theme.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="style.css" rel="stylesheet" type="text/css" media="all" />
+		<link href='https://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<div id="app" class="main-container" v-cloak>
+		<div id="modal-container" >
+			<modal v-bind:visible="modalVisible" v-on:close="clearModal()">
+				<div v-if="versionInfoAvailable">
+					<h3>New Installer Available</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>You should update the installer to get bug-fixes and new features.</p>
+				</div>
+				<div v-else>
+					<h3>Error while checking if installer is latest</h3>
+					<p>{{metaInfo.installerIsLatest[1]}}</p>
+					<p>If you're sure you have the latest version, click "Use Old Installer", and ignore this message.</p>
+					<p>Otherwise please go to the installer download page and make sure you have the latest version.</p>
+				</div>
+				<a href="https://github.com/07th-mod/python-patcher/releases" target="_blank"><button type="button" class="btn">Go to installer download page</button></a>
+				<button type="button" class="btn" style="border: grey;" v-on:click="clearModal()">Use old installer (not recommended)</button>
+			</modal>
+		</div>
+
+		<div class="nav-container">
+			<nav>
+				<div class="nav-bar">
+					<div class="module left">
+						<a href="index.html">
+							<img class="logo logo-dark" alt="07th-Mod Installer" src="img/logo-07th.png">
+						</a>
+					</div>
+					<div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+						<i class="ti-menu"></i>
+					</div>
+					<div class="module-group right">
+						<div class="module left">
+							<dropdown-game-menu v-bind:handles="subModList"></dropdown-game-menu>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</div>
+
+		<div class="main-container">
+			<snack-bar></snack-bar>
+			<section class="page-title page-title-4 bg-secondary">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<h3 class="uppercase mb0">Alternate Mod Recommendation</h3>
+						</div>
+						<div class="col-md-4 text-right">
+							<ol class="breadcrumb breadcrumb-2">
+								<li>
+									<a href="index.html" target="_self">Home</a>
+								</li>
+								<li class="active">Umineko Warning<br></li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="pt48">
+					<div class="container">
+
+						<h3>Please read the information below!</h3>
+						07th-Mod is <b><i>not</i></b> the best way to experience Umineko. Our patches are missing some advanced features of the console game, and they also do not include any of the extra content that was added with the console releases. The Switch version of the game has a full translation patch available, which will provide a superior experience in most cases, and we <b><i>strongly recommend using that version instead</i></b>.<br><br>However, there are certain features which are exclusive to the 07th-Mod version of the game as well. A detailed breakdown is presented below to help you make your choice.
+						<br>
+						<br>
+
+						<!-- Dot Points Example-->
+						<ul class="installer-bullets">
+							<li>The console patch <b><i>relies on you actually having the Switch game's files</i></b>, as well as the ability to set up a Switch emulator (or CFW).<br>07th-Mod <b><i>is native to PC</i></b>, and requires you to own Umineko on <b><i>Steam, GOG or Mangagamer.com</i></b>, but has no requirements beyond game ownership.
+							<li>The console version <b><i>has exclusive content</i></b>. This is around 10-20 hours' worth of extra chapters, depending on your reading speed. They are <b><i>not required</i></b> to fully understand the main story, and they are <b><i>completely external</i></b>, housed in their own menu and not inserted into the main storyline, only made available after the main story is finished. However, they are well worth your time if you enjoyed the main story.
+							<li>The console patch uses an <b><i>improved, more natural English translation</i></b>.<br>07th-Mod uses the translation which is shipped with the Steam version of the game, <b><i>which is overly literal in places</i></b>.
+							<li>The console version has animated backgrounds and sprites, lip sync, and general visual polish that is missing from 07th-Mod as <b><i>it is completely impossible to replicate within the PC game's engine.</i></b>
+							<li>The console game has <b><i>more opening movies</i></b>.
+							<li>The console game has <b><i>higher audio quality</i></b>, as well as support for features such as lowering music volume when voices are playing and panning voices depending on characters' on-screen position. The audio channels are also better balanced, making voices easier to make out and ensuring no music tracks are overly loud.
+							<li>The console game <b><i>uses a larger, easier-to-read font</i></b> which may be helpful if you are at a longer distance from your monitor.
+							<li>The console game has a <b><i>better UI</i></b> with features such as displaying the name of songs as they play, a better backlog which includes a chapter select and the ability to "jump" to any line of the script at any time, a visual notification for unlocking new "tips", and more user-friendly menus.
+							<li>The console game has been <b><i>created with ADV-mode in mind</i></b>. This means that all text is displayed in a textbox at the bottom of the screen, akin to subtitles.<br>The PC game, and 07th-Mod, have instead been <b><i>designed for NVL</i></b>, which is a display mode where the text covers the entire screen, being displayed over the visuals.<br>07th-Mod has <b><i>partial ADV support</i></b>, with text automatically being formatted to re-fit into an ADV textbox. However, the text has not actually been re-written for ADV in 07th-Mod, which means it can break awkwardly in the middle of lines.
+							<li>The console game uses <b><i>a newer soundtrack</i></b>, both replacing some royalty-free music with original compositions and adding new original songs. These changes <b><i>are not generally seen as harmful to the experience</i></b>, as the new compositions have been specifically designed for Umineko, provide a similar atmosphere to the ones they replace, are composed in similar styles, and the replaced songs are not among the popular/"famous" tracks.<br>
+							07th-Mod <b><i>provides a choice between the console and the PC soundtracks</i></b>.
+							<li>The console game <b><i>does not support the original "Ryukishi" sprites, nor does it support the updated sprites from the Steam version</i></b>.<br>07th-Mod has <b><i>full support for those two sets</i></b>, as well as partial support for the console sprites (missing animations and some poses/facial expressions).
+						</ul>
+
+						<br>
+
+						Once you have finished reading the above, please make your choice on which version of the game you'd like to play.
+
+						<br>
+						<br>
+
+						<!-- Buttons to continue the install, or to install -->
+						<div class="row">
+							<div class="col-md-4 text-left">
+								<a style="font-size:20px" href="https://andolga.github.io/umineko-catbox-english/" target="_blank">
+									<ul class="tabs button-tabs">
+										<li><div class="tab-title">
+											Open Console Patch Website
+										</div></li>
+									</ul>
+								</a>
+							</div>
+
+							<div class="col-md-4 text-left">
+								<a style="font-size:20px" href="installer.html">
+									<ul class="tabs button-tabs">
+										<li><div class="warning-tab-title">
+											Continue PC Install Anyway
+										</div></li>
+									</ul>
+								</a>
+							</div>
+						</div>
+
+					</div>
+			</section>
+
+			<section class="section-small-padding bg-secondary">
+				<div class="container">
+					<h4>Donation Status</h4>
+					<p>
+						Server time remaining: <b>{{ metaInfo.donationMonthsRemaining }}</b><b> months</b><br>
+						This year's funding goal is <b>{{ metaInfo.donationProgressPercent }}</b>% complete.<br>
+						<a href="https://07th-mod.com/wiki/Donations/" target="_blank">Click Here</a> to Donate!<br>
+					</p>
+				</div>
+				<div class="container">{{ metaInfo.buildInfo }}</div>
+			</section>
+		</div>
+		</div>
+
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/masonry.min.js"></script>
+		<script src="js/scripts.js"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/marked.min.js"></script>
+		<script src="js/lodash.min.js"></script>
+		<script src="js/purify.min.js"></script>
+		<script src="python-patcher-rest-lib.js"></script>
+		<script src="python-patcher-vue-common.js"></script>
+		<script src="python-patcher-umineko-warning.js"></script>
+		<script>
+			// Warn the user if they are on Internet Explorer - we don't support it!
+			if(window.navigator.userAgent.match(/(MSIE|Trident)/)) {
+				alert('ERROR: The 07th-Mod Installer does not support Internet Explorer!\n\nPlease install Microsoft Edge, Firefox, or Chrome. Please also restart the installer.');
+			}
+		</script>
+		</body>
+	</html>

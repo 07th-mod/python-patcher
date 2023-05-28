@@ -386,3 +386,25 @@ The snackbar - position it at the bottom and in the middle of the screen */
     font-weight: bold;
     color: black;
 }
+
+.button-tabs .warning-tab-title {
+    padding: 13px;
+    display: inline-block;
+    text-align: center;
+    min-width: 150px;
+    background: red;
+    color: #fff;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+}
+
+.button-tabs .warning-tab-title:hover {
+    background: brown;
+}

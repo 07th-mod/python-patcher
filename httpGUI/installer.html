@@ -283,16 +283,6 @@
 												<h4 class="uppercase ">{{selectedSubMod.modName}} ({{selectedSubMod.subModName}} Patch)</h4>
 												<!-- This text is common to all umineko graphics patches -->
 												<div v-if="selectedSubMod.descriptionID === 'uminekoQuestionFull' || selectedSubMod.descriptionID === 'uminekoAnswerFull' || selectedSubMod.descriptionID === 'uminekoAnswerADV'">
-													<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
-														<div style='font-weight: bold; background-color: rgba(255,145,0,.1); padding: 10px 0px 10px 0px; margin-bottom: 10px; text-align: center'>Alternate mod recommendation</div>
-														<p>While the <nobr>07th-Mod</nobr> team attempts to provide the best Umineko experience possible within the engine of the PC release,
-														the ponscripter engine that Mangagamer chose to use for it is limiting, so some of the advanced features of the console game such as lip sync,
-														sprite/background/rain animations, song subtitles, line jump within the backlog, and several others, are unimplemented.
-														As these would require difficult to implement engine-level modifications, we have no intent to implement them.</p>
-
-														<p>If you are able to emulate or hack a Nintendo Switch, and you do not rely on PC-specific features such as Ryukishi/Pachinko sprites or original backgrounds, we recommend patching the Switch game to run in English instead. You may find instructions on how to do so <a href='https://andolga.github.io/umineko-catbox-english/' target="_blank">here</a>.</p>
-													</div>
-													<hr>
 													<p style="font-size: 1.5em; font-weight: bold; line-height: 1.3em;">
 														2023-04-05: Experimental Script Feedback Wanted!<br><br>
 														The Experimental Script Option mainly fixes the mod having no auto-advancement of text. We would like to make it the default script, but need to make sure there are no serious bugs.<br><br>
@@ -452,16 +442,6 @@
 														<li>PS3 Backgrounds</li>
 														<li>DOES NOT add shader effects or lipsync from the PS3 game.</li>
 													</ul>
-												</div>
-												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneFull' || selectedSubMod.descriptionID === 'uminekoTsubasaOnscripterFull' || selectedSubMod.descriptionID === 'uminekoSakuFull'">
-													<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
-														<div style='font-weight: bold; background-color: rgba(255,145,0,.1); padding: 10px 0px 10px 0px; margin-bottom: 10px; text-align: center'>Alternate mod recommendation</div>
-														<p>The 07th-Mod patches for Tsubasa, Hane and Saku were never fully completed. As of now, the Hane patch is the only one to have full voice and widescreen support, while the other two are simple graphic replacement packs with console sprites. All patches are also missing CGs and advanced features such as animations and lip sync.</p>
-
-														<p>If you are able to emulate or hack a Nintendo Switch we recommend patching the Switch game to run in English instead. You may find instructions on how to do so <a href='https://andolga.github.io/umineko-catbox-english/' target="_blank">here</a>.</p>
-
-														<p>The legacy patches will remain available for download in their unfinished state. If you are certain you would like to play with them, you may download them here.</p>
-													</div>
 												</div>
 												<div v-else-if="selectedSubMod.descriptionID === 'uminekoHaneVoiceOnly'">
 													<h4>
