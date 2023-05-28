@@ -78,6 +78,33 @@
 								<h3>To begin the installation, choose the mod you want to install</h3>
 							</div>
 						</div>
+
+						<h2>Higurashi Mods</h2>
+						<div class="row masonry masonryFlyIn">
+							<div
+							v-for="subMod in higurashiSubMods"
+							class="col-md-4 col-sm-6 masonry-item project"
+							data-filter="Question Arcs"
+							>
+							<!-- A hard value of 168px is set for the heigh here. This is so that 'masonry' which provides the
+								 fly in animation knows the approximate size of the tiles before the images have been loaded.
+								I tried fixing this other ways but this seems the most foolproof.-->
+								<div class="image-tile inner-title hover-reveal text-center"
+								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === getSubModExtraProperties(subMod.modName).dataFilter) }">
+									<a v-on:click="nav(subMod.modName)">
+										<img v-bind:alt="subMod.modName" v-bind:src="getSubModExtraProperties(subMod.modName).img" height="168px">
+										<div class="title">
+											<h5 class="uppercase mb0">{{ subMod.modName }}</h5>
+											<span>{{ getSubModExtraProperties(subMod.modName).dataFilter }}</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- This section contains buttons that filter the Higurashi mods.
+							For example, clicking "Question Arcs" shows the buttons for Chapters 1-4,
+							and greys out all other chapters. -->
 						<div class="row pb24">
 							<div class="col-sm-12 text-center">
 								<ul class="filters mb0">
@@ -98,17 +125,15 @@
 								</ul>
 							</div>
 						</div>
+
+						<h2>Umineko Mods</h2>
 						<div class="row masonry masonryFlyIn">
 							<div
-							v-for="subMod in uniqueSubMods"
+							v-for="subMod in uminekoSubMods"
 							class="col-md-4 col-sm-6 masonry-item project" 
 							data-filter="Question Arcs"
 							>
-							<!-- A hard value of 168px is set for the heigh here. This is so that 'masonry' which provides the
-								 fly in animation knows the approximate size of the tiles before the images have been loaded. 
-								I tried fixing this other ways but this seems the most foolproof.-->
-								<div class="image-tile inner-title hover-reveal text-center" 
-								v-bind:class ="{'index-button-disable': !(currentDataFilter === null || currentDataFilter === getSubModExtraProperties(subMod.modName).dataFilter) }">
+								<div class="image-tile inner-title hover-reveal text-center">
 									<a v-on:click="nav(subMod.modName)">
 										<img v-bind:alt="subMod.modName" v-bind:src="getSubModExtraProperties(subMod.modName).img" height="168px">
 										<div class="title">
@@ -118,6 +143,10 @@
 									</a>
 								</div>
 							</div>
+						</div>
+
+						<h2>Tools</h2>
+						<div class="row masonry masonryFlyIn">
 							<div class="col-md-4 col-sm-6 masonry-item project button-tabs">
 								<a href="troubleshooting.html">
 									<div class="image-tile inner-title hover-reveal text-center tab-title" style="width:360px; height:168px"

@@ -124,6 +124,12 @@ window.onload = function onWindowLoaded() {
       versionInfoAvailable() {
         return this.metaInfo.installerIsLatest[0] !== null;
       },
+      uminekoSubMods() {
+        return this.uniqueSubMods.filter((s) => s.family.toLowerCase().includes('umineko'));
+      },
+      higurashiSubMods() {
+        return this.uniqueSubMods.filter((s) => s.family.toLowerCase().includes('higurashi'));
+      },
     },
     watch: {
 
