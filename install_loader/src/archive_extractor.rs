@@ -1,15 +1,20 @@
 use crate::version;
 use progress_streams::ProgressReader;
 use std::path::{Path, PathBuf};
-use std::sync::mpsc;
+use std::sync::mpsc::{self, TryRecvError};
 use std::sync::mpsc::{Receiver, Sender};
 use std::{fs, thread};
 use tar::Archive;
 use xz2::read::XzDecoder;
 
-enum ExtractionStatusInternal {
+enum ExtractionReport {
+	InProgress { percentage: usize },
+	Finished,
+}
+
+enum ExtractionStateMachine {
 	NotStarted,
-	Started(Receiver<Result<usize, String>>),
+	Started(Receiver<Result<ExtractionReport, String>>),
 	Finished,
 }
 
@@ -21,22 +26,22 @@ pub enum ExtractionStatus {
 }
 
 pub struct ArchiveExtractor {
-	receiver: ExtractionStatusInternal,
+	receiver: ExtractionStateMachine,
 }
 
 impl ArchiveExtractor {
 	pub fn new() -> ArchiveExtractor {
 		ArchiveExtractor {
-			receiver: ExtractionStatusInternal::NotStarted,
+			receiver: ExtractionStateMachine::NotStarted,
 		}
 	}
 
 	pub fn start_extraction(&mut self, sub_folder_path: &Path) {
 		match self.receiver {
-			ExtractionStatusInternal::NotStarted => {
-				let (sender, receiver) = mpsc::channel::<Result<usize, String>>();
+			ExtractionStateMachine::NotStarted => {
+				let (sender, receiver) = mpsc::channel::<Result<ExtractionReport, String>>();
 				extract_archive_new_thread(sub_folder_path, sender);
-				self.receiver = ExtractionStatusInternal::Started(receiver);
+				self.receiver = ExtractionStateMachine::Started(receiver);
 			}
 			_ => {}
 		}
@@ -45,31 +50,47 @@ impl ArchiveExtractor {
 	// This doesn't correctly handle the case where
 	pub fn poll_status(&mut self) -> ExtractionStatus {
 		match &mut self.receiver {
-			ExtractionStatusInternal::NotStarted => ExtractionStatus::NotStarted,
-			ExtractionStatusInternal::Started(receiver) => {
-				if let Ok(progress) = receiver.try_recv() {
-					match progress {
-						Ok(progress) => {
-							if progress >= 100 {
-								self.receiver = ExtractionStatusInternal::Finished
-							}
-							ExtractionStatus::Started(Some(progress))
+			ExtractionStateMachine::NotStarted => ExtractionStatus::NotStarted,
+			ExtractionStateMachine::Started(receiver) => {
+				// Check if an extraction update was received, nothing was received, or if there was an error
+				let progress = match receiver.try_recv() {
+					Ok(progress) => progress,
+					Err(e) => match e {
+						TryRecvError::Empty => return ExtractionStatus::Started(None),
+						TryRecvError::Disconnected => {
+							return ExtractionStatus::Error(
+								"ArchiveExtractor channel disconnected unexpectedly".to_string(),
+							)
 						}
-						Err(error_str) => ExtractionStatus::Error(error_str),
+					},
+				};
+
+				// If there was an extraction error, report the error
+				let progress = match progress {
+					Ok(progress) => progress,
+					Err(error_str) => return ExtractionStatus::Error(error_str),
+				};
+
+				// If extraction complete, report 100%, and advance to final state
+				// Otherwise, return the percentage completion and stay in same state
+				let percentage: usize = match progress {
+					ExtractionReport::Finished => {
+						self.receiver = ExtractionStateMachine::Finished;
+						100
 					}
-				} else {
-					// Extraction is started but no additional progress to tell
-					ExtractionStatus::Started(None)
-				}
+					ExtractionReport::InProgress { percentage } => percentage,
+				};
+
+				ExtractionStatus::Started(Some(percentage))
 			}
-			ExtractionStatusInternal::Finished => ExtractionStatus::Finished,
+			ExtractionStateMachine::Finished => ExtractionStatus::Finished,
 		}
 	}
 }
 
 fn extract_archive_new_thread(
 	sub_folder_path: &Path,
-	progress_update: Sender<Result<usize, String>>,
+	progress_update: Sender<Result<ExtractionReport, String>>,
 ) {
 	let mut path_copy = PathBuf::new();
 	path_copy.push(sub_folder_path);
@@ -79,7 +100,10 @@ fn extract_archive_new_thread(
 	});
 }
 
-fn extract_archive(sub_folder_path: &Path, progress_update: Sender<Result<usize, String>>) {
+fn extract_archive(
+	sub_folder_path: &Path,
+	progress_update: Sender<Result<ExtractionReport, String>>,
+) {
 	let saved_git_tag_path = sub_folder_path.join("installer_loader_extraction_lock.txt");
 
 	// During compilation, include the installer archive in .tar.xz format
@@ -103,7 +127,7 @@ fn extract_archive(sub_folder_path: &Path, progress_update: Sender<Result<usize,
 		if let Some(percentage) = progress_counter.update(progress_bytes) {
 			println!("Extraction {}%", percentage);
 			progress_update
-				.send(Ok(percentage))
+				.send(Ok(ExtractionReport::InProgress { percentage }))
 				.expect("Failed to send progress update - aborting extraction");
 		}
 	});
@@ -123,7 +147,7 @@ You can also try 'Run as Administrator', but the installer may not work correctl
 		// so we don't need to extract again unless installer's version changes
 		write_extraction_lock(&saved_git_tag_path);
 		progress_update
-			.send(Ok(100))
+			.send(Ok(ExtractionReport::Finished))
 			.expect("Failed to send progress update - aborting extraction");
 		println!("Extraction Complete.");
 	}
