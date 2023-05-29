@@ -103,11 +103,11 @@ function doPost(requestType, requestData, onSuccessCallback, timeout, onErrorCal
 }
 
 // TODO: should always navigate to the same install page, as it is shared amongst all games
-function setModNameAndNavigate(modName, targetURL) {
+function setModNameAndNavigate(modName) {
   doPost('setModName', { modName }, (response) => {
     console.log(response);
     if (response.valid) {
-      window.location.href = targetURL ?? 'installer.html';
+      window.location.href = modName.toLowerCase().includes('umineko') ? 'umineko-warning.html' : 'installer.html';
     } else {
       alert(`Error: "${modName}" is not the name of a mod in the JSON config file. Check web console for a list of valid mod names`);
       console.error('Invalid Mod Name! Valid names below:');

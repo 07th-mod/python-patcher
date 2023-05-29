@@ -105,7 +105,7 @@ window.onload = function onWindowLoaded() {
     },
     methods: {
       nav(gameName) {
-        setModNameAndNavigate(gameName, gameName.toLowerCase().includes('umineko') ? 'umineko-warning.html' : 'installer.html');
+        setModNameAndNavigate(gameName);
       },
       // if subModExtraProperties missing a game, use wrong image
       // to make it obvious that the table needs to be updated
