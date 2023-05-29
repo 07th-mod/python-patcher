@@ -424,13 +424,18 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 						character = fileLikeObject.read(1).decode(encoding='utf-8', errors='replace')
 
 					if character:
+						if character == '\r':
+							character = ' '
+
 						stringBuffer.append(character)
 
 						writeOutBuffer = False
+						writeOutCausedByNewline = False
 
 						# Write out buffer if newline detected
 						if character == '\n':
 							writeOutBuffer = True
+							writeOutCausedByNewline = True
 
 						# Insert newline after ']' characters
 						if ariaMode and character == ']':
@@ -444,7 +449,12 @@ def runProcessOutputToTempFile(arguments, ariaMode=False, sevenZipMode=False, li
 
 						if writeOutBuffer:
 							line = ''.join(stringBuffer)
-							print(line, end='')
+
+							if writeOutCausedByNewline:
+								print(line, end='')
+							else:
+								print(line.lstrip(), end='')
+
 							if lineMonitor:
 								lineMonitor.process(line)
 							stringBuffer = []
