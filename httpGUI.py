@@ -310,7 +310,8 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 			# Python 3 has the ability to change web directory built-in, but Python 2 does not.
 			relativePath = os.path.relpath(originalPath, os.getcwd())
 			path = os.path.join(working_directory, relativePath) # working_directory is captured from outer scope!
-			logger.printNoTerminal('Browser requested [{}], Trying to deliver [{}]'.format(self.path, path))
+			if common.Globals.DEBUG_BROWSER_REQUESTS:
+				print('Browser requested [{}], Trying to deliver [{}]'.format(self.path, path))
 			# --------- END ADDED SECTION ---------
 			f = None
 			if os.path.isdir(path):
@@ -430,7 +431,8 @@ def start_server(working_directory, post_handlers, installRunningLock, serverSta
 
 	# Spawn a thread to cause a shutdown of the server if lock is released
 	def shutdownThread():
-		print("Shutdown thread started")
+		if common.Globals.DEBUG_THREAD_INFO:
+			print("Shutdown thread started")
 		installRunningLock.acquire()
 		print("Lock released - initiating shutdown")
 		httpd.shutdown()
@@ -947,11 +949,6 @@ class InstallerGUI:
 
 
 				updateModOptionsFromWebFormat(subMod.modOptions, webModOptionGroups, subMod.family, self.allSubModConfigs)
-
-				if not validateOnly:
-					logger.printNoTerminal("\nUser selected options for install:")
-					for modOption in subMod.modOptions:
-						logger.printNoTerminal(modOption)
 
 				installPath = requestData.get('installPath', None)
 

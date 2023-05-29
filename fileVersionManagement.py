@@ -117,10 +117,6 @@ class VersionManager:
 				self.remoteVersionInfo = None
 				print("VersionManager: Error while retrieving remote version information {}".format(error))
 
-		if verbosePrinting:
-			logger.printNoTerminal("\nLocal Version: {}".format(self.localVersionInfo))
-			logger.printNoTerminal("Remote Version: {}".format(self.remoteVersionInfo))
-
 		# If can't retrieve version info, mark everything as needing update
 		if self.localVersionInfo is None:
 			self.updatesRequiredDict = {}
@@ -137,7 +133,10 @@ class VersionManager:
 			if verbosePrinting:
 				print("\nInstaller Update Information:")
 				for fileID, (needsUpdate, updateReason) in self.updatesRequiredDict.items():
-					print("[{}]: status: [{}] because [{}]".format(fileID, needsUpdate, updateReason))
+					updateMarker = '-'
+					if needsUpdate:
+						updateMarker = '+'
+					print(" {} {}: {}".format(updateMarker, fileID, updateReason))
 
 		# If file has 'skipIfModNewerThan' property, disable it if the mod install is older than the given date
 		for file in self.unfilteredModFileList:

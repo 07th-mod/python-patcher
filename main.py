@@ -76,7 +76,6 @@ def getSubModConfigList(modList):
 	for mod in modList:
 		for submod in mod['submods']:
 			conf = installConfiguration.SubModConfig(mod, submod)
-			logger.printNoTerminal(conf)
 			subModconfigList.append(conf)
 	return subModconfigList
 

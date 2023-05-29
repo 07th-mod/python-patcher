@@ -139,6 +139,10 @@ class Globals:
 
 	# Set to 'True' in main.py if installData.json is detected on disk
 	DEVELOPER_MODE = False
+	DEBUG_THREAD_INFO = False
+	"""Print to console when threads start or stop (these print statements have been manually added)"""
+	DEBUG_BROWSER_REQUESTS = False
+	DEBUG_GAME_SCAN_VERBOSE = False
 
 	BUILD_INFO = 'Build info not yet retrieved'
 	INSTALL_LOCK_FILE_PATH = 'lockfile.lock'
@@ -213,7 +217,6 @@ class Globals:
 
 	@staticmethod
 	def scanForExecutables():
-		print("Validating Executables...")
 		startAndJoinThreads(
 			[makeThread(t) for t in [Globals.scanForCURL, Globals.scanForAria, Globals.scanForSevenZip]]
 		)
@@ -334,10 +337,8 @@ You can try manually running [{}] once so the installer can use the file.""".for
 			]:
 				if os.path.exists(possibleCertLocation):
 					Globals.CA_CERT_PATH = possibleCertLocation
-					print("CA Cert - found at: {}".format(Globals.CA_CERT_PATH))
+					print("[Linux] CA Cert - found at: {}".format(Globals.CA_CERT_PATH))
 					return
-
-		print("CA Cert - using default certificate")
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
 def makeDirsExistOK(directoryToMake):
@@ -1395,17 +1396,18 @@ def makeThread(target):
 	join = t.join
 	def _join(timeout=None):
 		join(timeout=timeout)
-		print("Thread {} ".format(t.name), end='')
 		if hasattr(t, "result"):
-			print("finished successfully")
+			if Globals.DEBUG_THREAD_INFO:
+				print("Thread {} finished successfully".format(t.name), end='')
 			return t.result
 		else:
-			print("failed")
+			print("Thread {} FAILED!".format(t.name), end='')
 			raise t.failure
 	t.join = _join
 	start = t.start
 	def _start():
-		print("Thread {} started".format(t.name))
+		if Globals.DEBUG_THREAD_INFO:
+			print("Thread {} started".format(t.name))
 		start()
 	t.start = _start
 	return t

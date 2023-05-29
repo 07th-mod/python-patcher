@@ -113,7 +113,7 @@ def findPossibleGamePathsWindows():
 	allSteamPaths += getSecondarySteamPaths(allSteamPaths)
 	allSteamPaths = deDuplicatePaths(allSteamPaths)
 
-	print("Will scan the following steam install locations: {}".format(allSteamPaths))
+	print("Scanning Steam install locations: {}".format(allSteamPaths))
 
 	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
 	allPossibleGamePaths = []
@@ -192,15 +192,16 @@ def getMaybeGamePaths():
 	# Remove any duplicated paths
 	hardCodedGameContainingPaths = deDuplicatePaths(hardCodedGameContainingPaths)
 
-	print("Will scan secondary game containing paths: {}".format(hardCodedGameContainingPaths))
+	print("Scanning Secondary install locations:")
 	for hardCodedPath in hardCodedGameContainingPaths:
 		try:
 			for gameFolderName in os.listdir(hardCodedPath):
 				gameFolderPath = os.path.normpath(os.path.join(hardCodedPath, gameFolderName))
 				if os.path.isdir(gameFolderPath):
 					allPossibleGamePaths.append(gameFolderPath)
+			print(" - [{}] - OK".format(hardCodedPath))
 		except Exception as e:
-			print("Warning: Failed to scan hard coded path: {} - {}".format(hardCodedPath, e))
+			print(" - [{}] - {}".format(hardCodedPath, e))
 
 	# Remove any duplicate game paths
 	allPossibleGamePaths = deDuplicatePaths(allPossibleGamePaths)
@@ -320,11 +321,13 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 
 		pathsToBeScanned += extraPaths
 
-	logger.printNoTerminal("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
+	if common.Globals.DEBUG_GAME_SCAN_VERBOSE:
+		print("Scanning:\n\t- " + "\n\t- ".join(pathsToBeScanned))
 
 	# Remove any duplicate game paths
 	pathsToBeScanned = deDuplicatePaths(pathsToBeScanned)
 
+	print("\nThe following games were found:")
 	for gamePath in pathsToBeScanned:
 		possibleIdentifiers = getPossibleIdentifiersFromFolder(gamePath)
 		subModConfigsInThisGamePath = set()
@@ -352,7 +355,7 @@ def scanForFullInstallConfigs(subModConfigList, possiblePaths=None, scanExtraPat
 					if subModConfig not in subModConfigsInThisGamePath:
 						subModConfigsInThisGamePath.add(subModConfig)
 						returnedFullConfigs.append(installConfiguration.FullInstallConfiguration(subModConfig, gamePath, isSteam))
-						print("Found Game [{}] at [{}] id [{}]".format(subModConfig.modName, gamePath, possibleIdentifier))
+						print(" - {} ({}) at [{}]".format(subModConfig.modName, possibleIdentifier, gamePath))
 
 			except KeyError:
 				pass
