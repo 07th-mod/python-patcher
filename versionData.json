@@ -5,7 +5,7 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "7.0.10"},
+			{"id": "script",              "version": "7.0.11"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
@@ -152,7 +152,7 @@
 			{"id": "movie-unix",          "version": "1.0.1"},
 			{"id": "ui-windows",          "version": "1.2.0"},
 			{"id": "ui-unix",             "version": "1.2.0"},
-			{"id": "og-dll-asset-update", "version": "1.0.0"},
+			{"id": "og-dll-asset-update", "version": "1.0.1"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
 			{"id": "og-bgm-se",           "version": "1.0.6"}
 		]
@@ -264,11 +264,11 @@
 		"files":[
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.17"},
+			{"id": "script",                    "version": "1.1.18"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "rolling-update",            "version": "1.3.6"},
+			{"id": "rolling-update",            "version": "1.3.7"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
 			{"id": "common-lib",                "version": "1.0.0"}
@@ -279,12 +279,12 @@
 		"files":[
 			{"id": "graphics",                  "version": "1.0.0"},
 			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.1.17"},
+			{"id": "script",                    "version": "1.1.18"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "exe",                       "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "rolling-update",            "version": "1.3.6"},
+			{"id": "rolling-update",            "version": "1.3.7"},
 			{"id": "exe-linux",                 "version": "1.0.0"},
 			{"id": "exe-mac",                   "version": "1.0.0"},
 			{"id": "common-lib",                "version": "1.0.0"}
