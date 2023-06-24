@@ -5,13 +5,13 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "7.0.11"},
+			{"id": "script",              "version": "7.0.12"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"}
+			{"id": "og-bgm-se",           "version": "1.0.2"}
 		]
 	},
 	{
@@ -27,13 +27,13 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "5.0.9"},
+			{"id": "script",              "version": "5.0.10"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"},
+			{"id": "og-bgm-se",           "version": "1.0.2"},
 			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
@@ -50,7 +50,7 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "6.0.11"},
+			{"id": "script",              "version": "6.0.12"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows-5.4.0f1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.4p1",  "version": "1.3.0"},
@@ -59,7 +59,7 @@
 			{"id": "ui-unix-5.3.4.p1",    "version": "1.3.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"},
+			{"id": "og-bgm-se",           "version": "1.0.2"},
 			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
@@ -76,13 +76,13 @@
 			{"id": "graphics",            "version": "2.0.0"},
 			{"id": "movie",               "version": "1.0.0"},
 			{"id": "voices",              "version": "1.0.1"},
-			{"id": "script",              "version": "7.0.9"},
+			{"id": "script",              "version": "7.0.10"},
 			{"id": "movie-unix",          "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"},
-			{"id": "og-bgm-se",           "version": "1.0.1"},
+			{"id": "og-bgm-se",           "version": "1.0.2"},
 			{"id": "remake-bgm",          "version": "1.0.1"}
 		]
 	},
