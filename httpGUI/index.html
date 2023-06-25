@@ -17,6 +17,7 @@
     <body>
 		<div id="app" class="main-container" v-cloak>
 		<div id="modal-container" >
+			<!-- TODO: Show different message here if in offline mode? -->
 			<modal v-bind:visible="modalVisible" v-on:close="clearModal()">
 				<div v-if="versionInfoAvailable">
 					<h3>New Installer Available</h3>
