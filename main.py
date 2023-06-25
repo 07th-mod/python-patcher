@@ -46,24 +46,29 @@ def check07thModServerConnection():
 	This function/check can be removed if the block is removed.
 	"""
 	try:
+		# TODO: try a couple times before going into offline mode?
 		_ = common.downloadFile("https://07th-mod.com/", is_text=True)
 	except Exception as error:
-		traceback.print_exc()
-		raise Exception("""------------------------------------------------------------------------
-Error: Couldn't reach 07th Mod Server! (https://07th-mod.com/)
+		common.Globals.OFFLINE_MODE = True
 
-If you have a working internet connection, most likely you are in Japan, which is blocked from the 07th-mod server.
-Please visit https://www.07th-mod.com - if you get a "406 Not Acceptable" error, you are definitely blocked.
-As a workaround, VPNs like ProtonVPN could be used...
+		# TODO: show user a message that they must enable offline mode to continue
 
-Otherwise, please check the following:
-- You have a working internet connection
-- Check if our website is down (https://07th-mod.com/)
-- Check our Wiki for more solutions: https://07th-mod.com/wiki/Installer/faq/#connection-troubleshooting
-------------------------------------------------------------------------
+# 		traceback.print_exc()
+# 		raise Exception("""------------------------------------------------------------------------
+# Error: Couldn't reach 07th Mod Server! (https://07th-mod.com/)
 
-Dev Error Message: {}
-""".format(error))
+# If you have a working internet connection, most likely you are in Japan, which is blocked from the 07th-mod server.
+# Please visit https://www.07th-mod.com - if you get a "406 Not Acceptable" error, you are definitely blocked.
+# As a workaround, VPNs like ProtonVPN could be used...
+
+# Otherwise, please check the following:
+# - You have a working internet connection
+# - Check if our website is down (https://07th-mod.com/)
+# - Check our Wiki for more solutions: https://07th-mod.com/wiki/Installer/faq/#connection-troubleshooting
+# ------------------------------------------------------------------------
+
+# Dev Error Message: {}
+# """.format(error))
 
 def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):

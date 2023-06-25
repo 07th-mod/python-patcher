@@ -56,13 +56,16 @@ def extractSteamGrid(downloadDir):
         commandLineParser.printSeventhModStatusUpdate(98, "Downloading and Extracting Steam Grid")
         print("Downloading and Extracting Steam Grid Icons to {}".format(userDataFolders))
 
-        downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=[],
-                                                               downloadTempDir=downloadDir,
-                                                               extractionDir=downloadDir,
-                                                               supressDownloadStatus=True)
-        downloaderAndExtractor.addItemManually(url="https://07th-mod.com/installer/steamgrid/higumi-steamgrid.zip",
-                                               extractionDir=downloadDir)
-        downloaderAndExtractor.download()
+        if common.Globals.OFFLINE_MODE:
+            print("WARNING: In offline mode, steamgrid installation requires https://07th-mod.com/installer/steamgrid/higumi-steamgrid.zip to be placed in the download folder manually. If not present, steamgrid install will fail.")
+        else:
+            downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=[],
+                                                                   downloadTempDir=downloadDir,
+                                                                   extractionDir=downloadDir,
+                                                                   supressDownloadStatus=True)
+            downloaderAndExtractor.addItemManually(url="https://07th-mod.com/installer/steamgrid/higumi-steamgrid.zip",
+                                                   extractionDir=downloadDir)
+            downloaderAndExtractor.download()
 
         # Extract to each steam user's data folder (steam has one folder per user)
         if userDataFolders:
