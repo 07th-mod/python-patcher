@@ -67,7 +67,7 @@ def parseRequirementsList(scanPath, requirementsListString):
 
 	return None, "No action"
 
-
+# TODO: also cache version data?
 class VersionManager:
 	localVersionFileName = "installedVersionData.json"
 	def userDidPartialReinstall(self, gameInstallTimeProbePath):
