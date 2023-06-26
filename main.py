@@ -74,7 +74,16 @@ def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):
 		return common.getModList("installData.json", isURL=False)
 	else:
-		return common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
+		try:
+			return common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
+		except Exception as e:
+			if os.path.exists('cachedInstallData.json'):
+				print("WARNING: Attempting to use offline installData (cachedInstallData.json)")
+				offlineInstallData = common.getModList("cachedInstallData.json", isURL=False)
+				common.Globals.OFFLINE_MODE = True
+				return offlineInstallData
+			else:
+				raise
 
 def getSubModConfigList(modList):
 	subModconfigList = []

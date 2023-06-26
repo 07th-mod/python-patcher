@@ -189,6 +189,9 @@ def ignore_filter(folderPath, folderContents):
 
 	return ignored_children #ignore_patterns_func(folderPath, folderContents)
 
+# Make a copy of the installData.json for offline-mode use
+shutil.copy('installData.json', 'cachedInstallData.json')
+
 # Make sure the output folder exists
 os.makedirs(output_folder, exist_ok=True)
 
