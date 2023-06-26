@@ -67,7 +67,7 @@ def parseRequirementsList(scanPath, requirementsListString):
 
 	return None, "No action"
 
-
+# TODO: also cache version data?
 class VersionManager:
 	cachedRemoteVersionInfo = {}
 	localVersionFileName = "installedVersionData.json"
