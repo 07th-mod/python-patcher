@@ -230,6 +230,8 @@ class Globals:
 			Globals.CA_CERT_PATH = certificate_path
 			break
 
+		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
+
 	@staticmethod
 	def scanForAria():
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
