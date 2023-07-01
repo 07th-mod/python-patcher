@@ -32,15 +32,17 @@ except ImportError:
 	from urlparse import urlparse
 	from urllib import quote
 
-try:
-	import ssl
-	if ssl.OPENSSL_VERSION_NUMBER < 0x10001000: # Version 1.0.1, first to support TLS 1.1 and 1.2
-		SSL_VERSION_IS_OLD = True
-	else:
-		SSL_VERSION_IS_OLD = False
-except ImportError:
-	# No SSL at all
-	SSL_VERSION_IS_OLD = True
+# try:
+# 	import ssl
+# 	if ssl.OPENSSL_VERSION_NUMBER < 0x10001000: # Version 1.0.1, first to support TLS 1.1 and 1.2
+# 		SSL_VERSION_IS_OLD = True
+# 	else:
+# 		SSL_VERSION_IS_OLD = False
+# except ImportError:
+# 	# No SSL at all
+# 	SSL_VERSION_IS_OLD = True
+
+SSL_VERSION_IS_OLD = True
 
 try:
 	from html.parser import HTMLParser
