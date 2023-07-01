@@ -77,7 +77,8 @@ def findWorkingExecutablePath(executable_paths, flags):
 	with open(os.devnull, 'w') as os_devnull:
 		for path in executable_paths + extra_paths:
 			try:
-				if subprocess.call([path] + flags, stdout=os_devnull, stderr=os_devnull) == 0:
+				if subprocess.call([path] + flags) == 0:
+					print("Found executable {}".format(path))
 					return path
 			except:
 				pass
