@@ -130,6 +130,7 @@ class Globals:
 	ARIA_EXECUTABLE = None
 	SEVEN_ZIP_EXECUTABLE = None
 	CURL_EXECUTABLE = None # Not required, but if available will be used to download filenames on systems with old SSL versions
+	CURL_USE_BUNDLED_CERT = None
 
 	LOG_FOLDER = 'INSTALLER_LOGS'
 	LOG_BASENAME = datetime.datetime.now().strftime('MOD-INSTALLER-LOG-%Y-%m-%d_%H-%M-%S.txt')
@@ -187,9 +188,46 @@ class Globals:
 
 	@staticmethod
 	def scanForCURL():
-		# On Windows 10, default to system CURL (which uses Windows's certificates)
-		# If not available, use the curl bundled with the installer, which uses included cert file 'curl-ca-bundle.crt'
-		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl", "curl_bundled"], ["-I", "https://07th-mod.com/"])
+		# For now, just try to find a curl executable at all, don't check internet connectivity or if TLS is working
+		# Later in chooseCurlCertificate() we will check certs
+		Globals.CURL_EXECUTABLE = findWorkingExecutablePath(["curl", "curl_bundled"], ['-V'])
+
+	# this function must be run AFTER scanCertLocation()
+	@staticmethod
+	def chooseCurlCertificate():
+		# For now, this only executes if curl is available
+		if Globals.CURL_EXECUTABLE is None:
+			print("chooseCurlCertificate(): CURL not available: Not testing certificates.")
+			return
+
+		def testCurlHeaders(url, certPath):
+			args = [Globals.CURL_EXECUTABLE]
+
+			if certPath is not None:
+				args += ['--cacert', certificate_path]
+
+			args += ['-I', url]
+
+			return subprocess.call(args) == 0
+
+		# Try:
+		# 1. Default Cert (whatever CURL uses when you don't specify argument)
+		# 2. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
+		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
+
+		for certificate_path in paths_to_try:
+			if not testCurlHeaders('https://07th-mod.com/', certificate_path):
+				print("chooseCurlCertificate(): Failed to download headers using CURL from 07th-mod.com using cert {}".format(certificate_path))
+				continue
+
+			if not testCurlHeaders('https://github.com/', certificate_path):
+				print("chooseCurlCertificate(): Failed to download headers using CURL from github.com using cert {}".format(certificate_path))
+				continue
+
+			print("chooseCurlCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
+			Globals.CA_CERT_PATH = certificate_path
+			break
 
 	@staticmethod
 	def scanForAria():
@@ -1163,9 +1201,17 @@ class DownloaderAndExtractor:
 
 			# On old SSL if we have curl use that instead
 			with open(os.devnull, 'w') as os_devnull:
+				# Build CURL arguments
+				subprocess_args = [Globals.CURL_EXECUTABLE]
+				if Globals.CA_CERT_PATH is not None:
+					subprocess_args += ['--cacert', Globals.CA_CERT_PATH]
+				subprocess_args += ["-fILX", "GET", queryUrl]
+
+				print("queryUsingCURL(): Using args {}".format(subprocess_args))
+
 				# Get the header, the -X GET is required because the github download links return a 403 if you try to send a HEAD request
-				headers = subprocess.check_output([Globals.CURL_EXECUTABLE, "-fILX", "GET", queryUrl],
-				                                  stderr=os_devnull).decode("utf-8")
+				headers = subprocess.check_output(subprocess_args, stderr=os_devnull).decode("utf-8")
+
 			# If there's redirects curl may print multiple headers with multiple content dispositions.  We want the last one
 			contentDisposition = re.findall("Content-Disposition: (.+)", headers, re.IGNORECASE)
 			contentDisposition = contentDisposition[-1].strip() if contentDisposition else None

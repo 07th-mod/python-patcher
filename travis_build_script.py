@@ -226,6 +226,9 @@ with open(os.path.join(staging_folder, build_info_path), 'w', encoding='utf-8') 
 		"git_tag": f"{GIT_TAG}",
 	}, build_info_file, indent="\t", sort_keys=True)
 
+# Download CA cert to be bundled with installer
+call('curl https://curl.se/ca/cacert.pem --output curl-ca-bundle.crt')
+
 # now, copy the staged files into each os's bootstrap folder's install_data directory
 for osBootStrapPath in glob.glob(f'{bootstrap_copy_folder}/*/'):
 	print("processing", osBootStrapPath)
