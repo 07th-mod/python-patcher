@@ -228,7 +228,7 @@ class Globals:
 
 			print("chooseCurlCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
 			Globals.CA_CERT_PATH = certificate_path
-			break
+			return
 
 		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
 
