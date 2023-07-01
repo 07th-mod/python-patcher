@@ -255,6 +255,7 @@ if __name__ == "__main__":
 			# Executable scanning must happen first, as other init operations might require Aria or CURL to download
 			common.Globals.scanForExecutables()
 			common.Globals.scanCertLocation()
+			common.Globals.chooseCurlCertificate()
 
 			# Run remaining init tasks concurrently
 			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)

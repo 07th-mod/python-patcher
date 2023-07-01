@@ -38,6 +38,8 @@ travis_installer_staging
 .idea/misc.xml
 .idea/python-patcher.iml
 
+curl-ca-bundle.crt
+
 # Mod ignore folders
 INSTALLER_LOGS
 07th-mod-logs.zip

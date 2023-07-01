@@ -210,6 +210,9 @@ clear_folder_if_exists(staging_folder)
 # copy bootstrap folder to a temp folder
 shutil.copytree('bootstrap', bootstrap_copy_folder, dirs_exist_ok=True)
 
+# Download CA cert to be bundled with installer
+call(['curl', 'https://curl.se/ca/cacert.pem', '--output', 'curl-ca-bundle.crt'])
+
 # Note: previously the script created output folder in advance and then used dirs_exist_ok=True to
 # sidestep a problem in Python 3.8 where copying from the current folder
 # '.' would not ignore the destination folder even when applied as an ignore folder (the function caches
