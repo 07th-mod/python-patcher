@@ -208,7 +208,8 @@ class Globals:
 
 			args += ['-I', url]
 
-			return subprocess.call(args) == 0
+			with open(os.devnull, 'w') as os_devnull:
+				return subprocess.call(args, stdout=os_devnull, stderr=os_devnull) == 0
 
 		# Try:
 		# 1. Default Cert (whatever CURL uses when you don't specify argument)
