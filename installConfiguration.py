@@ -28,7 +28,21 @@ def getUnityVersion(datadir, verbosePrinting=True):
 	- The `HigurashiEp0X_Data/resources.assets` bundle failed to open (raises error from open() call or read() call)
 	- The Unity version was too old (raises OldUnityException)
 	"""
-	assetsbundlePath = os.path.join(datadir, "resources.assets")
+
+	# In certain cases, we upgrade the Unity version of the game (for example, from 5.6.7f1 to 2017.2.5)
+	#
+	# This involves overwriting the resources.assets file (which we usually only ever read the Unity version file) and various other system files
+	#
+	# It is possible to have a half-upgraded install due to this, as if the install fails or is stopped after the resources.assets is overwritten
+	# the installer would think the unity version is already upgraded, and not finish applying the upgrade when you re-run the installer
+	# (or if the resources.assets is only partially overwritten)
+	#
+	# For this reason, we make a temporary version of the 'original' resources.assets file as 'resources.assets.backup' when the install starts,
+	# When the upgrade finishes successfully, we delete this temporary file to signify that the upgrade is complete.
+	assetsbundlePath = os.path.join(datadir, "resources.assets.backup")
+	if not os.path.exists(assetsbundlePath):
+		assetsbundlePath = os.path.join(datadir, "resources.assets")
+
 	if not os.path.exists(assetsbundlePath):
 		raise MissingAssetsBundleException(assetsbundlePath)
 
