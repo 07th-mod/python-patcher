@@ -90,6 +90,24 @@ def listInvalidUIFiles(folder):
 
 	return invalidUIFileList
 
+def copyFileIfSourceExistsAndDestDoesNot(sourcePath, destinationPath):
+	#type: (str, str) -> None
+	"""
+	Try to copy + move a file in a transactional way so you can't get a half-copied file.
+	The copy will only be performed if the source path exists, and the destination path doesn't already exist.
+	If the copy is not performed a warning message will be printed.
+	"""
+	if not path.exists(sourcePath):
+		print("WARNING: Not copying {} -> {} as source does not exist".format(sourcePath, destinationPath))
+		return
+
+	if path.exists(destinationPath):
+		print("WARNING: Not copying {} -> {} as destination already exists".format(sourcePath, destinationPath))
+		return
+
+	shutil.copy(sourcePath, destinationPath + '.temp')
+	os.rename(destinationPath + '.temp', destinationPath)
+
 class Installer:
 	def getDataDirectory(self, installPath):
 		if common.Globals.IS_MAC:
@@ -170,30 +188,40 @@ class Installer:
 
 		self.downloaderAndExtractor.printPreview()
 
-	def backupUI(self):
-		"""
-		Backs up the `sharedassets0.assets` file
-		Try to do this in a transactional way so you can't get a half-copied .backup file.
-		This is important since the .backup file is needed to determine which ui file to use on future updates
-
-		The file is not moved directly in case the installer is halted before the new UI file can be placed, resulting
-		in an install completely missing a sharedassets0.assets UI file.
-		"""
-		try:
-			uiPath = path.join(self.dataDirectory, "sharedassets0.assets")
-
+	def getBackupPath(self, relativePath):
 			# partialManualInstall is not really supported on MacOS, so just assume output folder is HigurashiEpX_Data
 			if self.forcedExtractDirectory is not None:
-				backupPath = path.join(self.forcedExtractDirectory, self.info.subModConfig.dataName, "sharedassets0.assets.backup")
+				return path.join(self.forcedExtractDirectory, self.info.subModConfig.dataName, relativePath + '.backup')
 			else:
-				backupPath = path.join(self.dataDirectory, "sharedassets0.assets.backup")
+				return path.join(self.dataDirectory, relativePath + '.backup')
 
-			if path.exists(uiPath) and not path.exists(backupPath):
-				shutil.copy(uiPath, backupPath + '.temp')
-				os.rename(backupPath + '.temp', backupPath)
+	def tryBackupFile(self, relativePath):
+		"""
+		Tries to backup a file relative to the dataDirectory of the game, unless a backup already exists.
+		"""
+		try:
+			sourcePath = path.join(self.dataDirectory, relativePath)
+			backupPath = self.getBackupPath(relativePath)
+			copyFileIfSourceExistsAndDestDoesNot(sourcePath, backupPath)
 		except Exception as e:
-			print('Error: Failed to backup sharedassets0.assets file: {} (need backup for future installs!)'.format(e))
+			print('Error: Failed to backup {} file: {}'.format(relativePath, e))
 			raise e
+
+
+	def backupFiles(self):
+		"""
+		Backs up various files necessary for the installer to operate
+		Usually this is to prevent the installer having issues if it fails or is stopped half-way
+		"""
+		# Backs up the `sharedassets0.assets` file
+		# Try to do this in a transactional way so you can't get a half-copied .backup file.
+		# This is important since the .backup file is needed to determine which ui file to use on future updates
+		# The file is not moved directly in case the installer is halted before the new UI file can be placed, resulting
+		# in an install completely missing a sharedassets0.assets UI file.
+		self.tryBackupFile('sharedassets0.assets')
+		# Backs up the `resources.assets` file
+		# The backup (resources.assets.backup) will be deleted on a successful install
+		self.tryBackupFile('resources.assets')
 
 	def clearCompiledScripts(self):
 		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
@@ -439,6 +467,16 @@ class Installer:
 			# Removes the quarantine attribute from the game (which could cause it to get launched read-only, breaking the script compiler)
 			subprocess.call(["xattr", "-d", "com.apple.quarantine", self.directory])
 
+	def removeResourcesAssetsBackup(self):
+		# Remove the resources.assets.backup file if install succeeds
+		# This must be done immediately after extracting all files successfully (and before any languageSpecificAssets are applied)
+		resourcesBackupPath = self.getBackupPath('resources.assets')
+		try:
+			if os.path.exists(resourcesBackupPath):
+				forceRemove(resourcesBackupPath)
+		except Exception as e:
+			print("Warning: Failed to remove `{}`. Updating the mod may not work correctly unless this file is deleted.".format(resourcesBackupPath))
+
 	def saveFileVersionInfoStarted(self):
 		self.fileVersionManager.saveVersionInstallStarted()
 
@@ -453,7 +491,7 @@ def main(fullInstallConfiguration):
 
 	isVoiceOnly = fullInstallConfiguration.subModConfig.subModName == 'voice-only'
 	if isVoiceOnly:
-		print("Performing Voice-Only Install - backupUI() and cleanOld() will NOT be performed.")
+		print("Performing Voice-Only Install - backupFiles() and cleanOld() will NOT be performed.")
 
 	modOptionParser = installConfiguration.ModOptionParser(fullInstallConfiguration)
 	skipDownload = modOptionParser.downloadManually
@@ -465,6 +503,7 @@ def main(fullInstallConfiguration):
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, forcedExtractDirectory=extractDir)
 		installer.download()
 		installer.extractFiles()
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
@@ -478,11 +517,12 @@ def main(fullInstallConfiguration):
 		installer.download()
 		installer.saveFileVersionInfoStarted()
 		if not isVoiceOnly:
-			installer.backupUI()
+			installer.backupFiles()
 			installer.cleanOld()
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
@@ -497,10 +537,11 @@ def main(fullInstallConfiguration):
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(85, "Moving files into place...")
 		if not isVoiceOnly:
-			installer.backupUI()
+			installer.backupFiles()
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
