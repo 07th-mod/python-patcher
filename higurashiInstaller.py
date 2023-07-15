@@ -316,13 +316,18 @@ class Installer:
 		Returns False if there was an error during the proccess.
 		If no asset file was found to apply, this is not considered an error
 		(it's assumed the existing sharedassets0.assets is the correct one)"""
-		# If don't know own unity version, don't attempt to apply any UI
-		if self.info.unityVersion is None:
+		# Get the unity version (again) from the existing resources.assets file
+		# We don't use the version stored in self.info.unityVersion because on certain configurations,
+		# the mod itself updates the unity version, causing it to change mid-install.
+		try:
+			versionString = installConfiguration.getUnityVersion(self.dataDirectory)
+		except Exception as e:
+			# If don't know own unity version, don't attempt to apply any UI
+			print("ERROR (_applyLanguageSpecificSharedAssets()): Failed to retrieve unity version from resources.assets as {}".format(e))
 			print("ERROR: can't apply UI file as don't know own unity version!")
 			return False
 
 		# Use the sharedassets file with matching os/unityversion if provided by the language patch
-		versionString = self.info.unityVersion
 		osString = common.Globals.OS_STRING
 		if self.isWine:
 			osString = "windows"
