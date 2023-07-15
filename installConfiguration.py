@@ -19,7 +19,7 @@ def getSHA256(path):
 		m.update(file.read())
 		return m.hexdigest()
 
-def getUnityVersion(datadir, verbosePrinting=True):
+def getUnityVersion(datadir, verbosePrinting=True, ignoreBackupAssets=False):
 	# type: (str, bool) -> str
 	"""
 	Given the datadir of a Higurashi game (like 'HigurashiEp0X_Data'), returns the unity version of the game
@@ -40,7 +40,7 @@ def getUnityVersion(datadir, verbosePrinting=True):
 	# For this reason, we make a temporary version of the 'original' resources.assets file as 'resources.assets.backup' when the install starts,
 	# When the upgrade finishes successfully, we delete this temporary file to signify that the upgrade is complete.
 	assetsbundlePath = os.path.join(datadir, "resources.assets.backup")
-	if not os.path.exists(assetsbundlePath):
+	if ignoreBackupAssets or (not os.path.exists(assetsbundlePath)):
 		assetsbundlePath = os.path.join(datadir, "resources.assets")
 
 	if not os.path.exists(assetsbundlePath):
