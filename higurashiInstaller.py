@@ -472,7 +472,9 @@ class Installer:
 			# Removes the quarantine attribute from the game (which could cause it to get launched read-only, breaking the script compiler)
 			subprocess.call(["xattr", "-d", "com.apple.quarantine", self.directory])
 
+	def removeResourcesAssetsBackup(self):
 		# Remove the resources.assets.backup file if install succeeds
+		# This must be done immediately after extracting all files successfully (and before any languageSpecificAssets are applied)
 		resourcesBackupPath = self.getBackupPath('resources.assets')
 		try:
 			if os.path.exists(resourcesBackupPath):
@@ -506,6 +508,7 @@ def main(fullInstallConfiguration):
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, forcedExtractDirectory=extractDir)
 		installer.download()
 		installer.extractFiles()
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
@@ -524,6 +527,7 @@ def main(fullInstallConfiguration):
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
@@ -542,6 +546,7 @@ def main(fullInstallConfiguration):
 			installer.cleanOld()
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
+		installer.removeResourcesAssetsBackup()
 		if installer.optionParser.installSteamGrid:
 			steamGridExtractor.extractSteamGrid(installer.downloadDir)
 		installer.applyLanguagePatchFixesIfNecessary()
