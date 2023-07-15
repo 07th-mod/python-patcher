@@ -328,7 +328,7 @@ class Installer:
 		# We don't use the version stored in self.info.unityVersion because on certain configurations,
 		# the mod itself updates the unity version, causing it to change mid-install.
 		try:
-			versionString = installConfiguration.getUnityVersion(self.dataDirectory)
+			versionString = installConfiguration.getUnityVersion(self.dataDirectory, ignoreBackupAssets=True)
 		except Exception as e:
 			# If don't know own unity version, don't attempt to apply any UI
 			print("ERROR (_applyLanguageSpecificSharedAssets()): Failed to retrieve unity version from resources.assets as {}".format(e))
