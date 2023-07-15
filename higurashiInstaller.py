@@ -90,15 +90,15 @@ def listInvalidUIFiles(folder):
 
 	return invalidUIFileList
 
-def backupFileIfNotExist(sourcePath, backupPath):
+def copyFileIfNotExist(sourcePath, destinationPath):
 	#type: (str, str) -> None
 	"""
-	Try to backup a file in a transactional way so you can't get a half-copied file.
+	Try to copy + move a file in a transactional way so you can't get a half-copied file.
 	If the file already is backed up to the backupPath, it won't be overwritten
 	"""
-	if path.exists(sourcePath) and not path.exists(backupPath):
-		shutil.copy(sourcePath, backupPath + '.temp')
-		os.rename(backupPath + '.temp', backupPath)
+	if path.exists(sourcePath) and not path.exists(destinationPath):
+		shutil.copy(sourcePath, destinationPath + '.temp')
+		os.rename(destinationPath + '.temp', destinationPath)
 
 class Installer:
 	def getDataDirectory(self, installPath):
@@ -194,7 +194,7 @@ class Installer:
 		try:
 			sourcePath = path.join(self.dataDirectory, relativePath)
 			backupPath = self.getBackupPath(relativePath)
-			backupFileIfNotExist(sourcePath, backupPath)
+			copyFileIfNotExist(sourcePath, backupPath)
 		except Exception as e:
 			print('Error: Failed to backup {} file: {}'.format(relativePath, e))
 			raise e
