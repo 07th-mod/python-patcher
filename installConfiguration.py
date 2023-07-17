@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import os
 import hashlib
+import zlib
 import common
 from datetime import datetime
 
@@ -18,6 +19,13 @@ def getSHA256(path):
 		m = hashlib.sha256()
 		m.update(file.read())
 		return m.hexdigest()
+
+def getCRC32(path):
+	"""Gets the SHA256 Hex digest of a file at path as a string,
+	e.g. '51100D6D'
+	The file must fit in memory"""
+	with open(path, "rb") as file:
+		return hex(zlib.crc32(file.read()) & 0xffffffff)
 
 def getUnityVersion(datadir, verbosePrinting=True):
 	# type: (str, bool) -> str
@@ -59,7 +67,7 @@ def checkChecksumListMatches(installPath, checksumList):
 			print("checkChecksumListMatches(): File at {} does not exist, skipping this file".format(path))
 			continue
 
-		actualChecksum = getSHA256(path)
+		actualChecksum = getCRC32(path)
 
 		if actualChecksum.lower() == checksum.lower():
 			print("checkChecksumListMatches(): File at {} has matching checksum {}".format(path, actualChecksum))
