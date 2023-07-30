@@ -251,7 +251,7 @@ You can try manually running [{}] once so the installer can use the file.""".for
 		:param modList: The JSON object returned by common.getModList()
 		"""
 		try:
-			if Globals.DEVELOPER_MODE:
+			if Globals.OFFLINE_MODE or Globals.DEVELOPER_MODE:
 				downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
 			else:
 				downloadSizesDict, _error = getJSON(Globals.GITHUB_MASTER_BASE_URL + 'cachedDownloadSizes.json', isURL=True)
