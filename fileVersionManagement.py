@@ -243,7 +243,7 @@ def getRemoteVersion(remoteTargetID):
 	remoteVersionURL = common.Globals.GITHUB_MASTER_BASE_URL + "versionData.json"
 
 	# Get remote version
-	if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
+	if (common.Globals.OFFLINE_MODE or common.Globals.DEVELOPER_MODE) and os.path.exists("versionData.json"):
 		allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
 	else:
 		allRemoteVersions, remoteError = common.getJSON(remoteVersionURL, isURL=True)
