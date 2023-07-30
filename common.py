@@ -185,7 +185,8 @@ class Globals:
 
 	Currently this is only used when the Rust launcher on Windows opens a Webview, so launching browser is not necessary"""
 
-	OFFLINE_MODE = False
+	# TODO: for now, just force offline mode always true for this build
+	OFFLINE_MODE = True
 	CACHED_EXTRACTABLE_ITEMS = {} # type: dict[str, list[dict[str, Any]]]
 
 	@staticmethod
