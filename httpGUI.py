@@ -51,11 +51,11 @@ except ImportError:
 
 class ExtractableItemCache:
 	def __init__(self):
-		self.cache = {}
+		self.cache = {} # type: Dict[str, List[common.DownloaderAndExtractor.ExtractableItem]]
 		self.lock = threading.Lock()
 
 	def cacheURLs(self, urls):
-		# type: (List[str]) -> ()
+		# type: (List[str]) -> None
 
 		self.lock.acquire()
 		try:
@@ -590,8 +590,8 @@ Otherwise, re-download the file from
 						"rowClass": "active" if updateNeeded else "inactive",
 						"updateReason": updateReason,
 						"url": item.url,
-						"manualDownloadStatus": None,
-						"fileName": None,
+						"manualDownloadStatus": None, # TODO: revert this? fix this another way?
+						"fileName": None, # TODO: revert this? fix this another way?
 					}
 				)
 			else:

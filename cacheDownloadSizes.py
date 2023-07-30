@@ -56,7 +56,7 @@ def getAllURLsFromModList(modList, shouldPrint=False):
 
 	return [x for x in allURLsSet.keys() if x is not None]
 
-def generateCachedDownloadSizes():
+def generateCachedInstallerFiles():
 	#setup globals necessary for download
 	common.Globals.scanForExecutables()
 
@@ -69,6 +69,7 @@ def generateCachedDownloadSizes():
 		return url, res
 
 	# Only works on python 3
+	urlToListOfExtractableItemAsDict = {} # type: dict[str, list[dict[str, typing.Any]]]
 	urlToFileSizeDict = {}
 	with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
 		results = executor.map(queryAndPrint, allURLs)
@@ -80,9 +81,30 @@ def generateCachedDownloadSizes():
 			urlToFileSizeDict[url] = totalSize
 			print(url, extractableItemList)
 
-	with io.open('cachedDownloadSizes.json', 'w', encoding='utf-8') as file:
-		file.write(json.dumps(urlToFileSizeDict, indent=4, sort_keys=True))
+			# Convert extractable item list to a custom list of dicts
+			listOfExtractableItemAsDict = [] # type: list[dict[str, typing.Any]]
+			for extractableItem in extractableItemList:
+				extractableItemAsDict = {
+					"f" : extractableItem.filename,
+					"l" : extractableItem.length,
+					"m" : extractableItem.fromMetaLink,
+					"r" : extractableItem.remoteLastModified,
+				}
 
+				if extractableItem.fileURL != url:
+					extractableItemAsDict["u"] = extractableItem.fileURL
+
+				listOfExtractableItemAsDict.append(extractableItemAsDict)
+
+			urlToListOfExtractableItemAsDict[url] = listOfExtractableItemAsDict
+
+	with io.open('cachedDownloadSizes.json', 'w', encoding='utf-8') as file:
+		file.write(json.dumps(urlToFileSizeDict, indent=0, sort_keys=True))
+
+	with io.open('cachedExtractableItems.json', 'w', encoding='utf-8') as file:
+		file.write(json.dumps(urlToListOfExtractableItemAsDict, indent=0, sort_keys=True))
 
 if __name__ == '__main__':
-	generateCachedDownloadSizes()
+	# test = getAllExtractableItemsFromJSON("test extract path")
+	# print('hello')
+	generateCachedInstallerFiles()

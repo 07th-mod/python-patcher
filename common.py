@@ -186,6 +186,9 @@ class Globals:
 
 	Currently this is only used when the Rust launcher on Windows opens a Webview, so launching browser is not necessary"""
 
+	OFFLINE_MODE = False
+	CACHED_EXTRACTABLE_ITEMS = {} # type: dict[str, list[dict[str, Any]]]
+
 	@staticmethod
 	def scanForCURL():
 		# For now, just try to find a curl executable at all, don't check internet connectivity or if TLS is working
@@ -308,10 +311,10 @@ You can try manually running [{}] once so the installer can use the file.""".for
 						if urlToCheck not in Globals.URL_FILE_SIZE_LOOKUP_TABLE:
 							print("DEVELOPER: cachedDownloadSizes.json is missing url {} - regenerating list".format(urlToCheck))
 							try:
-								cacheDownloadSizes.generateCachedDownloadSizes()
-							except:
-								msg = "Failed to regenerate cachedDownloadSizes.json. Please check installer log for 'Could not query URL' to determine which URL in installData.json failed to load, and for other errors."
-								print("DEVELOPER: " + msg)
+								cacheDownloadSizes.generateCachedInstallerFiles()
+							except Exception as e:
+								msg = "Failed to regenerate cachedDownloadSizes.json or cachedExtractableItems.json. Please check installer log for 'Could not query URL' to determine which URL in installData.json failed to load, and for other errors."
+								print("DEVELOPER: " + msg + "{}".format(e))
 								try:
 									from tkinter import messagebox
 									messagebox.showerror("Cached Download Regeneration Failure", msg)
@@ -894,6 +897,7 @@ class DownloaderAndExtractor:
 
 	class ExtractableItem:
 		def __init__(self, filename, length, destinationPath, fromMetaLink, remoteLastModified, fileURL=None):
+			# type: (str, int, str, bool, str, str) -> None
 			self.filename = filename
 			self.length = length
 			self.destinationPath = os.path.normpath(destinationPath)
@@ -1147,6 +1151,10 @@ class DownloaderAndExtractor:
 		:param extractionDir: Where to extract or move the downloaded file to after download is finished
 		:return:
 		"""
+
+		if Globals.OFFLINE_MODE:
+			return DownloaderAndExtractor.getExtractableItemOfflineMode(url, extractionDir)
+
 		MAX_QUERY_ATTEMPTS = 5
 		for attempt_no in range(1, MAX_QUERY_ATTEMPTS + 1):
 			commandLineParser.printSeventhModStatusUpdate(1, "Inspecting URL '{}' (attempt {}/{})".format(url, attempt_no, MAX_QUERY_ATTEMPTS))
@@ -1177,6 +1185,39 @@ class DownloaderAndExtractor:
 					raise e
 
 			time.sleep(5)
+
+	@staticmethod
+	def getExtractableItemOfflineMode(url, extractionDir):
+		#type: (str, str) -> List[DownloaderAndExtractor.ExtractableItem]
+
+		try:
+			if not Globals.CACHED_EXTRACTABLE_ITEMS:
+				# Try to read the json file from disk
+				Globals.CACHED_EXTRACTABLE_ITEMS, error = getJSON('cachedExtractableItems.json', isURL=False)
+				if Globals.CACHED_EXTRACTABLE_ITEMS is None:
+					raise Exception("ERROR: Failed to read local cachedExtractableItems.json file: {}".format(error))
+
+			extractableItemList = [] # type: List[DownloaderAndExtractor.ExtractableItem]
+
+			extractableItemAsDictList = Globals.CACHED_EXTRACTABLE_ITEMS.get(url)
+			if extractableItemAsDictList is None:
+				raise Exception("ERROR: cached cachedExtractableItems.json missing entry for [{}], please tell developers to regenerate it!", url)
+
+			for extractableItemAsDict in extractableItemAsDictList:
+				extractableItemList.append(DownloaderAndExtractor.ExtractableItem(
+					filename=extractableItemAsDict["f"],
+					length=extractableItemAsDict["l"],
+					destinationPath=extractionDir,
+					fromMetaLink=extractableItemAsDict["m"],
+					remoteLastModified=extractableItemAsDict["r"],
+					fileURL=extractableItemAsDict.get("u", url), # If not specified in the json, then the fileURL is the same as the key/normal url
+				))
+
+			return extractableItemList
+
+		except Exception as e:
+			raise Exception("Unexpected exception when getting extractableItems from JSON: {}".format(e))
+
 
 	@staticmethod
 	def __urlIsMetalink(url):
