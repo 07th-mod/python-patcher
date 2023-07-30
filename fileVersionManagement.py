@@ -69,6 +69,7 @@ def parseRequirementsList(scanPath, requirementsListString):
 
 
 class VersionManager:
+	cachedRemoteVersionInfo = None
 	localVersionFileName = "installedVersionData.json"
 	def userDidPartialReinstall(self, gameInstallTimeProbePath):
 		"""
@@ -112,7 +113,12 @@ class VersionManager:
 			self.remoteVersionInfo = _testRemoteSubModVersion
 		else:
 			try:
-				self.remoteVersionInfo = getRemoteVersion(self.targetID)
+				# Cache the remote version info to avoid continuously re-downloading it
+				if VersionManager.cachedRemoteVersionInfo is None:
+					self.remoteVersionInfo = getRemoteVersion(self.targetID)
+					VersionManager.cachedRemoteVersionInfo = self.remoteVersionInfo
+				else:
+					self.remoteVersionInfo = VersionManager.cachedRemoteVersionInfo
 			except Exception as error:
 				self.remoteVersionInfo = None
 				print("VersionManager: Error while retrieving remote version information {}".format(error))
