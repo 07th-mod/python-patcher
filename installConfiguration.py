@@ -255,13 +255,14 @@ class ModOption:
 
 
 class DownloadAndExtractOption:
-	def __init__(self, name, description, url, relativeExtractionPath, priority, group):
+	def __init__(self, name, description, url, relativeExtractionPath, priority, group, deletePath):
 		self.name = name # type: str
 		self.description = description # type: str
 		self.url = url # type: str
 		self.relativeExtractionPath = relativeExtractionPath # type: str
 		self.priority = priority # type: int
 		self.group = group # type: str
+		self.deletePath = deletePath # type: str
 
 
 class ModOptionParser:
@@ -286,7 +287,8 @@ class ModOptionParser:
 							modOption.data['url'],
 							modOption.data['relativeExtractionPath'],
 							modOption.data['priority'],
-							modOption.group
+							modOption.group,
+							modOption.data.get('deletePath')
 						)
 					)
 				elif modOption.type == 'keepDownloads':

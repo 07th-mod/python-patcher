@@ -524,6 +524,8 @@ def main(fullInstallConfiguration):
 		if not isVoiceOnly:
 			installer.backupFiles()
 			installer.cleanOld()
+		# If any mod options request deletion of a folder, do it before the extraction
+		common.applyDeletions(fullInstallConfiguration.installPath, modOptionParser)
 		print("Extracting...")
 		installer.extractFiles()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
@@ -544,6 +546,8 @@ def main(fullInstallConfiguration):
 		if not isVoiceOnly:
 			installer.backupFiles()
 			installer.cleanOld()
+		# If any mod options request deletion of a folder, do it before the extraction
+		common.applyDeletions(fullInstallConfiguration.installPath, modOptionParser)
 		installer.moveFilesIntoPlace()
 		commandLineParser.printSeventhModStatusUpdate(97, "Cleaning up...")
 		installer.removeResourcesAssetsBackup()

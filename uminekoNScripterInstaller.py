@@ -73,6 +73,9 @@ def main(conf):
 
 	downloaderAndExtractor.download()
 
+	# If any mod options request deletion of a folder, do it before the extraction
+	common.applyDeletions(conf.installPath, parser)
+
 	# Extract files
 	fileVersionManager.saveVersionInstallStarted()
 	downloaderAndExtractor.extract()

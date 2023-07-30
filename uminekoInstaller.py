@@ -172,6 +172,9 @@ def mainUmineko(conf):
 		else:
 			return originalFolder, originalFilename
 
+	# If any mod options request deletion of a folder, do it before the extraction
+	common.applyDeletions(conf.installPath, optionParser)
+
 	downloaderAndExtractor.extract(remapPaths)
 
 	############################################# FIX .ARC FILE NAMING #################################################

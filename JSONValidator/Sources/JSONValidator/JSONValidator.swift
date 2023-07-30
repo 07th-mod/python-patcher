@@ -149,4 +149,6 @@ public struct ModOptionFileDefinition: Codable {
 	public var relativeExtractionPath: String?
 	/// The priority of this file (same system as above priorities)
 	public var priority: Int
+	/// A file or folder path relative to the *top-level game directory*, to be deleted before extraction
+	public var deletePath: String?
 }

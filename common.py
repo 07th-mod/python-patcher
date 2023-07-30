@@ -1551,3 +1551,22 @@ def crc32_of_file(file_path):
 			fb = f.read(BLOCK_SIZE)
 
 	return "{:08x}".format(hash & 0xffffffff)
+
+def applyDeletions(installPath, optionParser):
+	#type: (str, installConfiguration.ModOptionParser) -> None
+	for opt in optionParser.downloadAndExtractOptionsByPriority:
+			if opt.deletePath is not None:
+				# Do not allow paths with '..' to avoid deleting stuff outside the install path
+				if '..' in opt.deletePath.replace('\\', '/').split('/'):
+					raise Exception("Developer Error: You are not allowed to use '..' for deletePath")
+
+				fullDeletePath = os.path.join(installPath, opt.deletePath)
+
+				try:
+					print("applyDeletions(): Attempting to delete path {} due to option {}...".format(fullDeletePath, opt.name))
+					if os.path.isdir(fullDeletePath):
+						shutil.rmtree(fullDeletePath)
+					else:
+						os.remove(fullDeletePath)
+				except Exception as e:
+					print("applyDeletions(): Failed to delete path: {}".format(e))
