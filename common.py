@@ -1558,9 +1558,14 @@ def applyDeletions(installPath, optionParser):
 			if opt.deletePath is not None:
 				# Do not allow paths with '..' to avoid deleting stuff outside the install path
 				if '..' in opt.deletePath.replace('\\', '/').split('/'):
-					raise Exception("Developer Error: You are not allowed to use '..' for deletePath")
+					raise Exception("applyDeletions() Developer Error: You are not allowed to use '..' for the 'deletePath' option")
 
 				fullDeletePath = os.path.join(installPath, opt.deletePath)
+
+				# Do not allow deleting any paths outside of the streamingassets folder for now
+				if 'streamingassets' not in os.path.abspath(fullDeletePath).lower():
+					raise Exception("applyDeletions() Developer Error: You are not allowed to delete outside of the StreamingAssets folder deletePath. "
+					"NOTE: This assert should be removed if deletePath needs to be used for Umineko (and possibly some other check added)")
 
 				try:
 					print("applyDeletions(): Attempting to delete path {} due to option {}...".format(fullDeletePath, opt.name))
