@@ -40,6 +40,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep1.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp01_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
