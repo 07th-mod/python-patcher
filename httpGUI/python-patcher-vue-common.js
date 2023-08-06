@@ -3,7 +3,7 @@
 // DEPENDENCIES: This file depends on `python-patcher-rest-lib.js`. Make sure that file is loaded first.
 
 Vue.component('dropdown-game-menu', {
-  props: ['handles'],
+  props: ['handles', 'onDownloadLogs'],
   data() {
     return {};
   },
@@ -47,6 +47,7 @@ Vue.component('dropdown-game-menu', {
           <li v-for='num in modsInFamily'><a v-on:click="setModNameAndNavigate(num.modName)">{{ num.modName }}</a></li>
       </ul>
   </li>
+  <a class="btn" v-on:click="onDownloadLogs()" v-if="onDownloadLogs">Download Install Logs</a>
   </ul>
   `,
 });

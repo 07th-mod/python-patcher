@@ -119,6 +119,10 @@ window.onload = function onWindowLoaded() {
         doPost('clearLatestInstallerWarning', [], () => {});
         this.modalVisible = false;
       },
+      getLogsZip(subModToInstall, installPath) {
+        // Calls the function with same name in python-patcher-rest-lib.js
+        getLogsZip(subModToInstall, installPath);
+      }
     },
     computed: {
       versionInfoAvailable() {

@@ -23,6 +23,10 @@ window.onload = function onWindowLoaded() {
           }
         });
       },
+      getLogsZip(subModToInstall, installPath) {
+        // Calls the function with same name in python-patcher-rest-lib.js
+        getLogsZip(subModToInstall, installPath);
+      },
     },
     computed: {
 

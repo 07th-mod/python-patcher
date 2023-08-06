@@ -237,32 +237,6 @@ Continue install anyway?`)) {
           app.selectedInstallPath = pathToInstall;
         }
       },
-      // If either argument is null, will just get the installer logs and not the game logs
-      getLogsZip(subModToInstall, installPath) {
-        let errorMessage = "Failed to download log zip - Please see 'Getting Installer Log Files' at https://07th-mod.com/wiki/Installer/support/"
-
-        doPost('troubleshoot', { action: 'getLogsZip', subMod: subModToInstall, installPath }, (responseData) => {
-          console.log(responseData);
-
-          // Show an error message if couldn't generate logs zip
-          if (responseData.filePath === null) {
-            alert(errorMessage);
-            return;
-          }
-
-          // Before navigating to download, check that the link would not 404
-          // This prevents navigating away from the page to a 404 if the download does not exist
-          fetch(responseData.filePath,
-            { method: "HEAD" }
-          ).then((res) => {
-            if (res.ok) {
-              window.location.href = responseData.filePath;
-            } else {
-              alert(errorMessage);
-            }
-          });
-        });
-      },
       openSaveFolder(subModToInstall, installPath) {
         doPost('troubleshoot', { action: 'openSaveFolder', subMod: subModToInstall, installPath }, () => {});
       },
@@ -396,6 +370,10 @@ Continue install anyway?`)) {
 
         app.getLogsZip(app.selectedSubMod, app.selectedInstallPath);
       },
+      getLogsZip(subModToInstall, installPath) {
+        // Calls the function with same name in python-patcher-rest-lib.js
+        getLogsZip(subModToInstall, installPath);
+      }
     },
     computed: {
       modHandles() {

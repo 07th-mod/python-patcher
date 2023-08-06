@@ -14,8 +14,9 @@ window.onload = function onWindowLoaded() {
       detailedExceptionInformation: '',
     },
     methods: {
-      getLogsZip() {
-        doPost('troubleshoot', { action: 'getLogsZip' }, (responseData) => { window.location.href = responseData.filePath; });
+      getLogsZip(subModToInstall, installPath) {
+        // Calls the function with same name in python-patcher-rest-lib.js
+        getLogsZip(subModToInstall, installPath);
       },
     },
   });
