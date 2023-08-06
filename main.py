@@ -108,7 +108,15 @@ def installerCommonStartupTasks():
 	sys.stderr = logger.StdErrRedirector(sys.stdout)
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("launcher_path", nargs='?', default=None)
+
+	parser.add_argument(
+		'--launcher-path',
+		dest="launcher_path",
+		default=None,
+		help=('Optionally specify the path to the Windows install launcher. '
+		'This Python script may call the install launcher with special arguments (eg. to open the file picker)')
+	)
+
 	parser.add_argument(
 		"-ao",
 		"--asset-os",
@@ -138,7 +146,7 @@ def installerCommonStartupTasks():
 
 	# Optional first argument tells the script the path of the launcher (currently only used with Windows launcher)
 	if args.launcher_path is not None:
-		common.Globals.NATIVE_LAUNCHER_PATH = sys.argv[1]
+		common.Globals.NATIVE_LAUNCHER_PATH = args.launcher_path
 		print("Launcher is located at [{}]".format(common.Globals.NATIVE_LAUNCHER_PATH))
 	else:
 		if common.Globals.IS_WINDOWS:

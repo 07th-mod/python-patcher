@@ -23,7 +23,10 @@ pub fn launch_python_script(
 
 	let maybe_path = std::env::current_exe();
 	match maybe_path.as_ref() {
-		Ok(path) => args.push(path.as_os_str()),
+		Ok(path) => {
+			args.push(OsStr::new("--launcher-path"));
+			args.push(path.as_os_str());
+		},
 		Err(err) => {
 			println!("WARNING: couldn't determine own .exe path! File chooser may not work properly.\nError:{:?}", err);
 		}
