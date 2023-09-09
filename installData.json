@@ -45,7 +45,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep1.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp01_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep01.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp01_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -128,6 +128,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep02.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp02_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
@@ -201,6 +211,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep03.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp03_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
@@ -272,6 +292,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep04.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp04_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
@@ -342,6 +372,16 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep05.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp05_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -415,6 +455,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep06.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp06_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
 					"radio": [
@@ -483,6 +533,16 @@
 				}
 			],
 			"modOptionGroups": [
+				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep07.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp07_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
 				{
 					"name" : "Alternate Languages", "type": "downloadAndExtract",
 					"submods": ["full"],
@@ -572,6 +632,16 @@
 			],
 			"modOptionGroups": [
 				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep08.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp08_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				},
+				{
 					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
 					"submods": ["voice-only"],
 					"checkBox": [
@@ -627,7 +697,18 @@
 					]
 				}
 			],
-			"modOptionGroups": []
+			"modOptionGroups": [
+				{
+					"name" : "High Quality Ryukishi/OG Sprites (from Hou+)", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"checkBox": [
+						{
+							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
+							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep09.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp09_Data/StreamingAssets/OGSprites"}
+						}
+					]
+				}
+			]
 		},
 		{
 			"family": "higurashi",
