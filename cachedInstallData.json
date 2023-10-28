@@ -1,0 +1,1019 @@
+{
+	"version": 10,
+	"mods": [
+		{
+			"family": "higurashi",
+			"name": "Onikakushi Ch.1",
+			"target": "Onikakushi",
+			"CFBundleName": "Higurashi When They Cry - Ch.1 Onikakushi",
+			"dataname": "HigurashiEp01_Data",
+			"identifiers" : ["HigurashiEp01_Data", "HigurashiEp01.x86_64", "HigurashiEp01.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics", "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",        "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",       "priority": 0},
+						{"name": "ui",      "url":null,                                                              "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=win&unity=5.2.2f1"},
+						{"name": "ui",    "id": "ui-unix" ,    "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=unix&unity=5.2.2f1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Onikakushi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/download/v0.9.0/Onikakushi.Voice.Patch.v0.9.0.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/onikakushi/issues)\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/onikakushi/releases/latest/download/Onikakushi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/onikakushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/onikakushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/onikakushi-ita/releases/latest/download/onikakushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/OnigafuchiUA) for support.",
+							"data": {"url": "https://github.com/toxic-devoloper/HigurashiUA/releases/latest/download/OnikakushiUA.zip", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Aplicar parche en Español / Apply Spanish language patch", "description": "Parche que incluye una traducción completa del juego al Español. **Ten en cuenta:**\n - Los desarrolladores de 07th-Mod no son parte de este Fork comunitario. Por favor, para cualquier problema con la instalación contáctate con los responsables del parche mediante [Discord](https://discord.gg/urDawUn4Nq).\n - Alternativamente, [deja un comentario en la guía de Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2764742715).",
+							"data": {"url": "https://github.com/dailyrana/onikakushi-es/releases/latest/download/Onikakushi.Patch.ES.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Onikakushi).",
+							"data": {"url": "https://github.com/wf1264/onikakushi-ru/releases/latest/download/onikakushi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Onikakushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Watanagashi Ch.2",
+			"target": "Watanagashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.2 Watanagashi",
+			"dataname": "HigurashiEp02_Data",
+			"identifiers" : ["HigurashiEp02.x86_64", "HigurashiEp02.exe", "HigurashiEp02_Data"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Watanagashi-Graphics.7z",      "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
+						{"name": "ui",      "url":null,                                                                   "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",                                  "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",     "id": "ui-windows", "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=win&unity=5.2.2f1"},
+						{"name": "ui",     "id": "ui-unix" ,   "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=unix&unity=5.2.2f1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Watanagashi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/watanagashi/releases/download/v1.5.1/Watanagashi.Voices.Patch.v1.5.1.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/watanagashi/issues)\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/watanagashi/releases/latest/download/Watanagashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/watanagashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/watanagashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/watanagashi-ita/releases/latest/download/watanagashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Watanagashi).",
+							"data": {"url": "https://github.com/wf1264/watanagashi-ru/releases/latest/download/watanagashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Watanagashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Tatarigoroshi Ch.3",
+			"target": "Tatarigoroshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.3 Tatarigoroshi",
+			"dataname": "HigurashiEp03_Data",
+			"identifiers" : ["HigurashiEp03_Data", "HigurashiEp03.x86_64", "HigurashiEp03.exe"],
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-Graphics.7z",    "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
+						{"name": "ui",      "url": null,                                                                  "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",                              "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",     "id": "ui-windows-5.4.0f1", "os": ["windows"],      "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.4.0f1"},
+						{"name": "ui",     "id": "ui-windows-5.3.4p1", "os": ["windows"],      "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.4p1"},
+						{"name": "ui",     "id": "ui-windows-5.3.5f1", "os": ["windows"],      "unity": "5.3.5f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.5f1"},
+						{"name": "ui",     "id": "ui-unix-5.4.0f1",    "os": ["linux", "mac"], "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.4.0f1"},
+						{"name": "ui",     "id": "ui-unix-5.3.4.p1",   "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.3.4p1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tatarigoroshi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/tatarigoroshi/releases/download/v0.5.2/Tatarigoroshi.Voice.Patch.v0.5.2.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/tatarigoroshi/issues)\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/tatarigoroshi/releases/latest/download/Tatarigoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tatarigoroshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tatarigoroshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/tatarigoroshi-ita/releases/latest/download/tatarigoroshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Tatarigoroshi).",
+							"data": {"url": "https://github.com/wf1264/tatarigoroshi-ru/releases/latest/download/tatarigoroshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Tatarigoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Himatsubushi Ch.4",
+			"target": "Himatsubushi",
+			"CFBundleName": "Higurashi When They Cry - Ch.4 Himatsubushi",
+			"CFBundleIdentifier": "unity.MangaGamer.Higurashi When They Cry - Ch.4 Himatsubushi",
+			"dataname": "HigurashiEp04_Data",
+			"identifiers" : ["HigurashiEp04_Data", "HigurashiEp04.x86_64", "HigurashiEp04.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-Graphics.7z",   "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",         "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",        "priority": 0},
+						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE.7z",                "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
+						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",                                "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
+						{"name": "ui",    "id": "ui-unix",     "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Himatsubushi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/himatsubushi/releases/download/v0.5.1/Himatsubushi.Voice.Patch.v0.5.1.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/himatsubushi/issues)\n- Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/himatsubushi/releases/latest/download/Himatsubushi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/himatsubushi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/himatsubushi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/himatsubushi-ita/releases/latest/download/himatsubushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Himatsubushi).",
+							"data": {"url": "https://github.com/wf1264/himatsubushi-ru/releases/latest/download/himatsubushi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Himatsubushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Meakashi Ch.5",
+			"target": "Meakashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.5 Meakashi",
+			"dataname": "HigurashiEp05_Data",
+			"identifiers" : ["HigurashiEp05_Data", "HigurashiEp05.x86_64", "HigurashiEp05.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Meakashi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",       "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",      "priority": 0},
+						{"name": "ui",      "url":null,                                                           "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",                                        "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",     "id": "ui-windows-5.5.3p3", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p3"},
+						{"name": "ui",     "id": "ui-windows-5.5.3p1", "os": ["windows"],      "unity": "5.5.3p1", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p1"},
+						{"name": "ui",     "id": "ui-unix-5.5.3p3", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=unix&unity=5.5.3p3"},
+						{"name": "ui",     "id": "ui-unix-5.5.3p1", "os": ["mac", "linux"], "unity": "5.5.3p1", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=unix&unity=5.5.3p1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Meakashi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/meakashi/releases/download/v0.5.0/Meakashi.Voice.Patch.v0.5.0.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/meakashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/meakashi/releases/latest/download/Meakashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/meakashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/meakashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/meakashi-ita/releases/latest/download/meakashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Meakashi).",
+							"data": {"url": "https://github.com/wf1264/meakashi-ru/releases/latest/download/Meakashi.Patch.RU.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Meakashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Tsumihoroboshi Ch.6",
+			"target": "Tsumihoroboshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.6 Tsumihoroboshi",
+			"dataname": "HigurashiEp06_Data",
+			"identifiers" : ["HigurashiEp06_Data", "HigurashiEp06.x86_64", "HigurashiEp06.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-Graphics.7z", "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",       "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",      "priority": 0},
+						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z",   "priority": 0},
+						{"name": "system",              "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z",         "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url":"https://github.com/07th-mod/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Voice.and.Graphics.Patch.zip",                            "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
+						{"name": "ui",    "id": "ui-windows-downgrade", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
+						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=unix&unity=5.5.3p3"},
+						{"name": "system", "id": "system-mangagamer-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/tsumi-system/Tsumihoroboshi-System.7z"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tsumihoroboshi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/tsumihoroboshi/releases/download/v0.1.0/Tsumihoroboshi.Voice.Patch.v0.1.0.7z", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/tsumihoroboshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/tsumihoroboshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/tsumihoroboshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/tsumihoroboshi-ita/releases/latest/download/tsumihoroboshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Tsumihoroboshi).",
+							"data": {"url": "https://github.com/wf1264/tsumihoroboshi-ru/releases/latest/download/tsumihoroboshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Tsumihoroboshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Minagoroshi Ch.7",
+			"target": "Minagoroshi",
+			"CFBundleName": "Higurashi When They Cry - Ch.7 Minagoroshi",
+			"dataname": "HigurashiEp07_Data",
+			"identifiers" : ["HigurashiEp07_Data", "HigurashiEp07.x86_64", "HigurashiEp07.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files": [
+						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-Graphics.7z",   "priority": 0},
+						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z",         "priority": 0},
+						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z",        "priority": 0},
+						{"name": "ui",      "url": null,                                                                "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0},
+						{"name": "script",              "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip",                                 "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides": [
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=win&unity=5.6.7f1"},
+						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=unix&unity=5.6.7f1"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/minagoroshi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/minagoroshi/releases/latest/download/Minagoroshi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/minagoroshi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/minagoroshi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
+							"data": {"url": "https://github.com/Xorboth/minagoroshi-ita/releases/latest/download/minagoroshi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Minagoroshi).",
+							"data": {"url": "https://github.com/wf1264/minagoroshi-ru/releases/latest/download/minagoroshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "https://07th-mod.com/nipah/Minagoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Matsuribayashi Ch.8",
+			"target": "Matsuribayashi",
+			"CFBundleName": "Higurashi When They Cry - Ch.8 Matsuribayashi",
+			"dataname": "HigurashiEp08_Data",
+			"identifiers" : ["HigurashiEp08_Data", "HigurashiEp08.x86_64", "HigurashiEp08.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files": [
+						{"name": "system",  "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 0},
+						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Matsuribayashi-Graphics.7z",    "priority": 5},
+						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Matsuribayashi-Movie.7z",          "priority": 5},
+						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z",         "priority": 5},
+						{"name": "ui",      "url": null,                                                                    "priority": 5, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/matsuribayashi-og-dll-asset-update.7z", "priority": 5},
+						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
+						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5},
+						{"name": "script",              "url": "https://github.com/07th-mod/matsuribayashi/releases/latest/download/Matsuribayashi.Voice.and.Graphics.Patch.zip",                           "priority": 10, "installOnRepair":  true}
+					],
+					"fileOverrides": [
+						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
+							["sharedassets0.assets.backup", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"],
+							["sharedassets0.assets", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"]
+						]},
+						{"name": "ui",    "id": "ui-linux-gog-mg", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/rikachama/ui/Matsuribayashi-UI_2017.2.5_unix_gog_mg.7z", "targetChecksums": [
+							["sharedassets0.assets.backup", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"],
+							["sharedassets0.assets", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"]
+						]},
+						{"name": "ui",    "id": "ui-windows-old", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-windows-gog-upgraded", "os": ["windows"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5", "targetChecksums": [
+							["sharedassets0.assets.backup", "22890F97997B7B7BD21F5E64F69E1A6FB2E0FF82B3DF6C59860D8D1A56B23BBB"]
+						]},
+						{"name": "ui",    "id": "ui-linux-old", "os": ["linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
+						{"name": "ui",    "id": "ui-linux-gog-upgraded", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
+							["sharedassets0.assets.backup", "a1f7b39665d63d704bc14275dcdf71cf4cca9532ac61bee23b5b18b62a5cd3af"]
+						]},
+						{"name": "system", "id": "system-gog-linux", "os": ["linux"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System_unix.7z"},
+						{"name": "system", "id": "system-gog-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System.7z"}
+					]
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "higurashiVoiceOnly",
+					"files":[
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Matsuribayashi-Voices.7z", "priority": 0},
+						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/download/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : []
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "HD Ryukishi Sprites", "type": "downloadAndExtract",
+					"submods": ["voice-only"],
+					"checkBox": [
+						{
+							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
+							"data": {"url": "http://07th-mod.com/nipah/Matsuribayashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+						}
+					]
+				},
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply French Language Patch", "description": "A patch including a full conversion of the game to French. [More details here](https://github.com/orian34/matsuribayashi/releases). **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please visit the `#modding_french` channel of the 07th-mod discord, or raise an issue on the [French patch's Github page](https://github.com/orian34/matsuribayashi/issues).\n - Also consider checking out the [translator's site](https://www.hinamizawa.fr/trouver.htm) directly instead.",
+							"data": {"url": "https://github.com/orian34/matsuribayashi/releases/latest/download/Matsuribayashi.Patch.FR.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Matsuribayashi).",
+							"data": {"url": "https://github.com/wf1264/matsuribayashi-ru/releases/latest/download/matsuribayashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "higurashi",
+			"name": "Rei",
+			"target": "Rei",
+			"CFBundleName": "Higurashi When They Cry Hou - Rei",
+			"dataname": "HigurashiEp09_Data",
+			"identifiers" : ["Higurashi When They Cry Rei_Data", "HigurashiEp09_Data", "HigurashiEp09.x86_64", "HigurashiEp09.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files": [
+						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Rei-Graphics-V2.7z", "priority": 0},
+						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Rei-Movie.7z", "priority": 0},
+						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
+						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
+						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/rei-og-dll-asset-update.7z",   "priority": 0},
+						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides": [
+						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.3"},
+						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.4"},
+						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"},
+						{"name": "ui",    "id": "ui-unix-mg",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.4"}
+					]
+				}
+			],
+			"modOptionGroups": []
+		},
+		{
+			"family": "higurashi",
+			"name": "Console Arcs",
+			"target": "Himatsubushi",
+			"CFBundleName": "Higurashi When They Cry - Console Arcs",
+			"CFBundleIdentifier": "unity.MangaGamer.Higurashi When They Cry - Console Arcs",
+			"dataname": "HigurashiEp04_Data",
+			"identifiers" : ["HigurashiEp04_Data", "HigurashiEp04.x86_64", "HigurashiEp04.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files":[
+						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-Graphics.7z",               "priority": 0},
+						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-BGM.7z",              "priority": 0},
+						{"name": "se",      "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-SE.7z",               "priority": 0},
+						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie.7z",            "priority": 0},
+						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/ConsoleArcs-Voices.7z",           "priority": 0},
+						{"name": "ui",      "url":null,                                                                  "priority": 0, "installOnRepair":  true},
+						{"name": "system",  "url":null,                                                                  "priority": 0},
+						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/console-og-dll-asset-update.7z", "priority": 0},
+						{"name": "script",    "url":"https://github.com/07th-mod/higurashi-console-arcs/releases/latest/download/ConsoleArcs.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides" : [
+						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},
+						{"name": "system", "id": "system-linux",   "os": ["linux"],        "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_linux.7z"},
+						{"name": "system", "id": "system-mac",     "os": ["mac"],          "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_mac.7z"},
+						{"name": "movie",  "id": "movie-unix",     "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z", "wine": true},
+						{"name": "ui",     "id": "ui-windows",     "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
+						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
+					]
+				}
+			],
+			"modOptionGroups": []
+		},
+		{
+			"family": "umineko",
+			"name": "Umineko Question (Ch. 1-4)",
+			"target": "UminekoQuestion",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "Umineko1to4.app",
+			"identifiers" : ["Umineko1to4.app", "Umineko1to4.app.backup", "Umineko1to4.exe", "Umineko1to4.exe.backup", "Umineko1to4", "Umineko1to4.backup"],
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoQuestionFull",
+					"files":[
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v3.7z.meta4", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
+						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 2},
+						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
+						{"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-linux", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-mac", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip", "priority": 3, "installOnRepair":  true},
+						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+					],
+					"fileOverrides" : [
+						{"name": "os-specific-update",  "id": "os-specific-update-unix", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4"}
+					]
+				},
+				{
+					"name" : "voice-only",
+					"descriptionID": "uminekoVoiceOnly",
+					"files":[
+						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-linux", "url":"https://07th-mod.com/Beato-voice/Umineko1to4", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-mac", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip", "priority": 3, "installOnRepair":  true},
+						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+					],
+					"fileOverrides" : [
+					]
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{
+							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Censorship options", "type": "downloadAndExtract",
+					"submods" : ["full"],
+					"checkBox": [
+						{
+							"name": "Use Censored 'British Jessica' CG from PS3 game", "description": "In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons.\n\nTick this if you want the PS3 art style for that one CG, even if it removes the Touhou reference.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"submods" : ["full"],
+					"radio": [
+						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
+						{
+							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato-v3.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
+							"data": {"url": "https://07th-mod.com/Beato/Umineko-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name": "Translations", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English/Japanese", "description": "Uses the official English and Japanese translations for the game."},
+						{
+							"name": "Ukrainian", "description": "Replaces the English translation with Ukrainian. Currently only covers Episode 1. This is not compatible with the experimental script option below.",
+							"data": {"url": "https://github.com/Shreibikus/UminekoGolden/releases/latest/download/07thmod_ukr.zip", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name" : "Experimental Script", "type": "downloadAndExtract",
+					"submods" : ["full"],
+					"radio": [
+						{"name": "No Change", "description": "No change to scripts"},
+						{
+							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-question/issues/155).\n\nYou must choose this option if you want to play with **Japanese Text!**\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-question/raw/fix_clickwait_test_rebase/InDevelopment/ManualUpdates/0.utf", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert to normal script", "description": "This reverts your game to the normal script, if it was previously on the experimental one. **Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
+					"submods" : ["full"],
+					"radio": [
+						{"name": "No Change", "description": "No change to engine"},
+						{
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-umineko/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-windows-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-osx-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux Steam Experimental Engine / Executable", "description": "Same as above, For LINUX STEAM.\n\nNOTE: **Only use this if you are running the game through the Steam launcher** - use the below `nodep` version if you are planning to run the game without Steam running.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-steam-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux GOG/MangaGamer Experimental Engine / Executable (nodep)", "description": "Same as above, for LINUX GOG/MangaGamer.\n\nThis 'nodep' version fixes problems with missing libraries, such as having no sound at all due to missing PulseAudio libs.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-question.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "umineko",
+			"name" : "Umineko Answer (Ch. 5-8)",
+			"target": "UminekoAnswer",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "Umineko5to8.app",
+			"identifiers" : ["Umineko5to8.app", "Umineko5to8.app.backup", "Umineko5to8.exe", "Umineko5to8.exe.backup", "Umineko5to8", "Umineko5to8.backup"],
+			"submods": [
+				{
+					"name" : "novel-mode",
+					"descriptionID": "uminekoAnswerFull",
+					"files":[
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
+						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
+						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+					],
+					"fileOverrides" : [
+					]
+				},
+				{
+					"name" : "adv-mode",
+					"descriptionID": "uminekoAnswerADV",
+					"files":[
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
+						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
+						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
+						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+					],
+					"fileOverrides" : [
+					]
+				},
+				{
+					"name" : "voice-only",
+					"descriptionID": "uminekoVoiceOnly",
+					"files":[
+						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-linux", "url":"https://07th-mod.com/Bern-voice/Umineko5to8", "priority": 3, "installOnRepair":  true},
+						{"name": "exe-mac", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
+						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+					],
+					"fileOverrides" : [
+					]
+				}
+			],
+			"modOptionGroups": [
+				{
+					"name" : "BGM Options", "type": "downloadAndExtract",
+					"radio": [
+						{
+							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
+							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Sprite Options", "type": "downloadAndExtract",
+					"submods" : ["novel-mode", "adv-mode"],
+					"radio": [
+						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
+						{
+							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
+							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
+							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Potato.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
+							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Experimental Script", "type": "downloadAndExtract",
+					"submods" : ["novel-mode"],
+					"radio": [
+						{"name": "No Change", "description": "No change to scripts"},
+						{
+							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-answer/issues/72).\n\nYou must choose this option if you want to play with **Japanese Text!**\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-answer/raw/master_no_clickwait_fix/0.utf", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert to normal script", "description": "This reverts your game to the normal script, if it was previously on the experimental one. **Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Experimental Script", "type": "downloadAndExtract",
+					"submods" : ["adv-mode"],
+					"radio": [
+						{"name": "No Change", "description": "No change to scripts"},
+						{
+							"name": "Experimental Script", "description": "This script fixes the mod having no auto advancement of text. However it may introduce other bugs (such as the text disappearing issue), so please be warned. Let us know if this script worked for you on our [discord server](https://discord.gg/pf5VhF9) or on this [github issue](https://github.com/07th-mod/umineko-answer/issues/72).\n\n**Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-answer/raw/adv_mode_no_clickwait_fix/0.utf", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert to normal script", "description": "This reverts your game to the normal script, if it was previously on the experimental one. **Please do not apply this while you're in the middle of playing a episode, as your saves will not load properly anymore.**",
+							"data": {"url": "https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
+					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
+					"submods" : ["novel-mode", "adv-mode"],
+					"radio": [
+						{"name": "No Change", "description": "No change to engine"},
+						{
+							"name": "Windows Experimental Engine / Executable", "description": "WINDOWS ONLY. This experimental engine option [improves performance (especially on older computers) and fixes some bugs/crashes](https://github.com/07th-mod/ponscripter-umineko/releases). However, **saves are not compatible**, and it may cause other bugs. Use at your own risk.\n\nNOTE: To uninstall this option, you must manually download and install the full patch executable/voice-only executable (or force re-install the whole mod). See the manual install instructions on the wiki.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-windows-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "MacOS Experimental Engine / Executable", "description": "Same as above, MACOS ONLY",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-osx-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux Steam Experimental Engine / Executable", "description": "Same as above, For LINUX STEAM.\n\nNOTE: **Only use this if you are running the game through the Steam launcher** - use the below `nodep` version if you are planning to run the game without Steam running.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-steam-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Linux GOG/MangaGamer Experimental Engine / Executable (nodep)", "description": "Same as above, for LINUX GOG/MangaGamer.\n\nThis 'nodep' version fixes problems with missing libraries, such as having no sound at all due to missing PulseAudio libs.",
+							"data": {"url": "https://github.com/07th-mod/ponscripter-umineko/releases/latest/download/umineko-linux-nodep-answer.zip", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				}
+			]
+		},
+		{
+			"family": "umineko_nscripter",
+			"name" : "Umineko Tsubasa",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["うみねこのなく頃に翼.exe", "snow.dll"],
+			"autodetect" : false,
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoTsubasaOnscripterFull",
+					"files":[
+						{"name": "mod", "url":"https://07th-mod.com/Bern/Tsubasa/umineko-tsubasa-ons.zip", "priority": 0}
+					],
+					"fileOverrides" : []
+				}
+			]
+		},
+		{
+			"family": "umineko_nscripter",
+			"name" : "Umineko Hane",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["pscript.dat"],
+			"autodetect" : false,
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoHaneFull",
+					"files":[
+						{"name": "graphics", "url":"https://07th-mod.com/Lambdadelta/Hane/Graphics.7z", "priority": 0},
+						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/master/0.u", "priority": 0},
+						{"name": "exe", "url": "https://07th-mod.com/Lambdadelta/Hane/exe.7z", "priority": 0}
+					],
+					"fileOverrides" : []
+				},
+				{
+					"name": "voice-only",
+					"descriptionID": "uminekoHaneVoiceOnly",
+					"files": [
+						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/voice-only/0.utf", "priority": 0}
+					],
+					"fileOverrides" : []
+				}
+			]
+		},
+		{
+			"family": "umineko_nscripter",
+			"name" : "Umineko Saku",
+			"target": "Umineko",
+			"CFBundleName": "This Field is Not Used",
+			"dataname": "",
+			"identifiers" : ["うみねこのなく頃に咲.exe", "snow.dll"],
+			"autodetect" : false,
+			"submods": [
+				{
+					"name" : "full",
+					"descriptionID": "uminekoSakuFull",
+					"files":[
+						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
+						{"name": "graphics", "url":"https://07th-mod.com/Bern/Saku/UminekoSaku-Graphics.7z", "priority": 0},
+						{"name": "movie", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Movie.7z", "priority": 0}
+					],
+					"fileOverrides" : []
+				},
+				{
+					"name": "tl-only",
+					"descriptionID": "uminekoSakuTLOnly",
+					"files": [
+						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
+						{"name": "graphics", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Potato.7z", "priority": 0}
+					],
+					"fileOverrides": []
+				}
+			]
+		}
+	]
+}
