@@ -57,6 +57,9 @@ def getAllURLsFromModList(modList, shouldPrint=False):
 	return [x for x in allURLsSet.keys() if x is not None]
 
 def generateCachedInstallerFiles():
+	if common.Globals.OFFLINE_MODE:
+		raise Exception("Error: Cannot cache installer files while in offline mode - please go online")
+
 	#setup globals necessary for download
 	common.Globals.scanForExecutables()
 

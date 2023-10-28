@@ -316,6 +316,7 @@ You can try manually running [{}] once so the installer can use the file.""".for
 							except Exception as e:
 								msg = "Failed to regenerate cachedDownloadSizes.json or cachedExtractableItems.json. Please check installer log for 'Could not query URL' to determine which URL in installData.json failed to load, and for other errors."
 								print("DEVELOPER: " + msg + "{}".format(e))
+								print(traceback.format_exc())
 								try:
 									from tkinter import messagebox
 									messagebox.showerror("Cached Download Regeneration Failure", msg)
