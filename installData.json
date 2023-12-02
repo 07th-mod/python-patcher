@@ -842,6 +842,21 @@
 					]
 				},
 				{
+					"name": "Proton / Wine Small Movie Fixes", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "No Change (default)", "description": "Don't apply any Proton/Wine fixes"},
+						{
+							"name": "Small Movie Fix", "description": "Enable this option if you are playing the game on Linux/Steam Deck with Wine/Proton.\n\nFor the Question Arcs under Linux with Wine/Proton, the installer will install the wrong (small) movie files, causing movie playback to only display on the top left of the screen. This override installs the correct 'big' movie files.",
+							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						},
+						{
+							"name": "Revert Movie Fix", "description": "This reverts the above 'Proton Wine Movie Fix' by installing the (small) Native Linux movie files",
+							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+						}
+					]
+				},
+				{
 					"name" : "Experimental Script", "type": "downloadAndExtract",
 					"submods" : ["full"],
 					"radio": [
