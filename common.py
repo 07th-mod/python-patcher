@@ -52,6 +52,26 @@ try:
 except:
 	pass
 
+class NullOrTemp:
+	printError = True
+
+	# Workaround for some Windows systems where os.devnull (the 'nul' device) doesn't work
+	# On these systems, devnull will be replaced with a temporary file instead.
+	# See here for details:
+	# - https://github.com/jupyter/notebook/issues/2651#issuecomment-315628876
+	# - https://github.com/ipython/ipython/issues/9023
+	def open():
+		try:
+			return open(os.devnull, 'w')
+		except:
+			if NullOrTemp.printError:
+				NullOrTemp.printError = False
+				traceback.print_exc()
+				print(">>>> WARNING: os.devnull not working! Using temporary file instead.")
+
+			return tempfile.TemporaryFile()
+
+
 def findWorkingExecutablePath(executable_paths, flags):
 	#type: (List[str], List[str]) -> str
 	"""
@@ -74,7 +94,7 @@ def findWorkingExecutablePath(executable_paths, flags):
 		for path in executable_paths:
 			extra_paths.append(os.path.join(bundled_dev_path, path))
 
-	with open(os.devnull, 'w') as os_devnull:
+	with NullOrTemp.open() as os_devnull:
 		for path in executable_paths + extra_paths:
 			try:
 				if subprocess.call([path] + flags, stdout=os_devnull, stderr=os_devnull) == 0:
@@ -208,7 +228,7 @@ class Globals:
 
 			args += ['-I', url]
 
-			with open(os.devnull, 'w') as os_devnull:
+			with NullOrTemp.open() as os_devnull:
 				return subprocess.call(args, stdout=os_devnull, stderr=os_devnull) == 0
 
 		# Try:
@@ -1203,7 +1223,7 @@ class DownloaderAndExtractor:
 				raise Exception("URLOpen Metadata Query FAILED - No CURL executable available for fallback (URL [{}])".format(url))
 
 			# On old SSL if we have curl use that instead
-			with open(os.devnull, 'w') as os_devnull:
+			with NullOrTemp.open() as os_devnull:
 				# Build CURL arguments
 				subprocess_args = [Globals.CURL_EXECUTABLE]
 				if Globals.CA_CERT_PATH is not None:
