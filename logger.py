@@ -47,7 +47,9 @@ class Logger(object):
 		if not noTerminal:
 			self.terminal.write(message)
 
-		self.logFile.write(message)
+		if self.logFile:
+			self.logFile.write(message)
+
 		if self.secondaryLogFile is not None:
 			try:
 				self.secondaryLogFile.write(message)
@@ -62,7 +64,9 @@ class Logger(object):
 				callback(message)
 
 		#TODO: probably should flush every X seconds rather than every write
-		self.logFile.flush()
+		if self.logFile:
+			self.logFile.flush()
+
 		if self.secondaryLogFile is not None:
 			try:
 				self.secondaryLogFile.flush()
