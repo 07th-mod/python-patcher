@@ -137,8 +137,8 @@
 					Save files should be kept even after an uninstall, but check section 4 of <a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">the installer support page</a> if you want to find your saves.
 				</p>
 			</div>
-			<hr>
 			<div class="mb40" v-if="downloadItemsPreview?.downloadFolder !== undefined">
+				<hr>
 				<h4>Temporary Downloads Cleanup</h4>
 				<p>If you chose to keep downloads, they are at <a v-on:click="showInFileBrowser(downloadItemsPreview.downloadFolder)"> {{ downloadItemsPreview.downloadFolder }} </a> (click to open)</p>
 				<p>Please make sure your game works correctly before deleting the downloads, as you may wish to re-install.</p>
