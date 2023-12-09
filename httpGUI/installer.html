@@ -104,6 +104,15 @@
 				<br>
 				If you still have problems, queries, please follow the <a href="https://07th-mod.com/wiki/Installer/support/" target="_blank">Support Checklist</a>.
 				We also have a discord server: <a href="https://discord.gg/pf5VhF9" target="_blank">https://discord.gg/pf5VhF9</a>
+				<div v-if="selectedSubMod !== null && selectedSubMod.modName === 'Console Arcs'">
+					<hr>
+					<h4>🔧 Adding Console Arcs to Steam Library</h4>
+					<p>
+						See
+						<a href="https://07th-mod.com/wiki/Higurashi/steam-add-console-arcs/steam-add-console-arcs/">"Console Arcs Steam Library Tutorial"</a>
+						to make the Console Arcs appear in Steam with the correct logos and name.
+					</p>
+				</div>
 			</section>
 			<!-- Displayed when the install fails-->
 			<section class="section-small-padding" v-show="installFailed">
@@ -305,6 +314,19 @@
 														We recommend installing the console arcs on a clean copy of Himatsubushi. However, a patched version might still work.<br>
 														A backup of Himatsubushi also works with the console arcs patch. You can create a backup by making a copy of the game folder.<br>
 														</div>
+
+														<br>
+
+														<div style='border-left: solid #ff9100 5px; padding: 20px; margin: 0px;'>
+															<h4>🔧 Adding Console Arcs to Steam Library</h4>
+															<p>
+																See
+																<a href="https://07th-mod.com/wiki/Higurashi/steam-add-console-arcs/steam-add-console-arcs/">"Console Arcs Steam Library Tutorial"</a>
+																to make the Console Arcs appear in Steam with the correct logos and name.
+																You will need to follow these instructions <b>after the mod is installed.</b>
+															</p>
+														</div>
+
 														<br><br>
 														The console arcs should be played at the points of the story and in the order indicated by the below flowchart (<strong>click image for big version</strong>).<br>
 														<a href='https://07th-mod.com/wiki/Higurashi/img/flow.png' target="_blank"><img src='img/higurashi/flow_thumbnail.jpg'></a><br><br>
