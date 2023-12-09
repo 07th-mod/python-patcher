@@ -60,6 +60,7 @@ class NullOrTemp:
 	# See here for details:
 	# - https://github.com/jupyter/notebook/issues/2651#issuecomment-315628876
 	# - https://github.com/ipython/ipython/issues/9023
+	@staticmethod
 	def open():
 		try:
 			return open(os.devnull, 'w')
@@ -171,7 +172,7 @@ class Globals:
 	IS_PYTHON_2 = sys.version_info.major == 2
 
 	FREE_SPACE_ESTIMATE_SCALING = 4
-	FREE_SPACE_ESTIMATE_FIXED = 5_000_000_000
+	FREE_SPACE_ESTIMATE_FIXED = 5000000000
 
 	URL_FILE_SIZE_LOOKUP_TABLE = {}
 
