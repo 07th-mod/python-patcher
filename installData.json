@@ -63,10 +63,6 @@
 							"data": {"url": "https://github.com/Xorboth/onikakushi-ita/releases/latest/download/onikakushi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/OnigafuchiUA) for support.",
-							"data": {"url": "https://github.com/toxic-devoloper/HigurashiUA/releases/latest/download/OnikakushiUA.zip", "relativeExtractionPath": ".", "priority": 30}
-						},
-						{
 							"name": "Aplicar parche en Español / Apply Spanish language patch", "description": "Parche que incluye una traducción completa del juego al Español. **Ten en cuenta:**\n - Los desarrolladores de 07th-Mod no son parte de este Fork comunitario. Por favor, para cualquier problema con la instalación contáctate con los responsables del parche mediante [Discord](https://discord.gg/urDawUn4Nq).\n - Alternativamente, [deja un comentario en la guía de Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=2764742715).",
 							"data": {"url": "https://github.com/dailyrana/onikakushi-es/releases/latest/download/Onikakushi.Patch.ES.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
@@ -149,6 +145,10 @@
 						{
 							"name": "Apply Italian Language Patch", "description": "A patch including a full conversion of the game to Italian. [More details here](https://github.com/Xorboth/watanagashi-ita/releases). Please note:\n - 07th-mod doesn't directly support this community fork - instead, please visit the #modding_italian channel of the 07th-mod discord, or raise an issue on the [Italian patch's Github page](https://github.com/Xorboth/watanagashi-ita/issues).\n - Also consider checking out the [translator's facebook page](https://www.facebook.com/cthtranslationsv2/) directly instead.\n- You can contact them directly on their discord (https://discord.gg/nNHQxZ7)",
 							"data": {"url": "https://github.com/Xorboth/watanagashi-ita/releases/latest/download/watanagashi_ita_07th_mod_installer.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/OnigafuchiUA) for support.",
+							"data": {"url": "https://github.com/OniUA/HigurashiUA/releases/download/WatanagashiUA/WatanagashiUA.zip", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
 							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Watanagashi).",
