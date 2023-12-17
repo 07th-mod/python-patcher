@@ -148,7 +148,7 @@
 						},
 						{
 							"name": "Apply Ukrainian language patch", "description": "A patch including a full conversion of the game to Ukrainian. **Please note:** \n - 07th-Mod doesn't directly support this community fork. Please contact the patch developers [on Telegram](https://t.me/OnigafuchiUA) for support.",
-							"data": {"url": "https://github.com/OniUA/HigurashiUA/releases/download/WatanagashiUA/WatanagashiUA.zip", "relativeExtractionPath": ".", "priority": 30}
+							"data": {"url": "https://github.com/OniUA/HigurashiUA/releases/latest/download/WatanagashiUA.zip", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
 							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Watanagashi).",
