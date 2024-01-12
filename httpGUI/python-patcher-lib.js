@@ -478,7 +478,8 @@ Continue install anyway?`)) {
       'Tsumihoroboshi Ch.6': 'https://github.com/07th-mod/tsumihoroboshi/releases',
       'Minagoroshi Ch.7': 'https://github.com/07th-mod/minagoroshi/releases',
       'Matsuribayashi Ch.8': 'https://github.com/07th-mod/matsuribayashi/releases',
-      'Rei': 'https://github.com/07th-mod/higurashi-rei/releases'
+      'Rei': 'https://github.com/07th-mod/higurashi-rei/releases',
+      'Hou Plus': 'https://github.com/07th-mod/hou-plus/releases'
     }, app.selectedMod, null);
 
     app.metaInfo = responseData.metaInfo;
