@@ -243,6 +243,9 @@ Continue install anyway?`)) {
       renderMarkdown(markdownText) {
         return DOMPurify.sanitize(marked(markdownText));
       },
+      renderHTML(htmlText) {
+        return DOMPurify.sanitize(htmlText);
+      },
       validateInstallPath(deleteVersionInformation, allowCache, noProgressUpdate) {
         // Just validate the install - don't actually start the installation
         const args = {

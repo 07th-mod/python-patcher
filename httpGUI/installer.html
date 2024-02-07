@@ -358,6 +358,10 @@
 															<li>Opening videos</li>
 														</ul>
 													</div>
+													<!-- In the future should remotely get installer page description, but for now just test it on Hou Plus only -->
+													<div v-else-if="selectedSubMod.modName === 'Hou Plus'">
+														<span class="rendered-markdown" v-html="renderHTML(selectedSubMod.modUpdatesHTML)"></span>
+													</div>
 													<div v-else>
 														For details and screenshots on what the mod contains, <a href="https://07th-mod.com/wiki/Higurashi/Higurashi-Getting-started/" target="_blank">see the Intro page on our Wiki</a><br>
 														This mod contains:
