@@ -706,6 +706,15 @@ def getDonationStatus():
 
 	return parser.months_remaining, parser.funding_goal_percentage
 
+def preloadModUpdatesHTML():
+	html, errorInfo = getJSON("https://github.com/07th-mod/python-patcher-updates/releases/latest/download/updates.json", isURL=True)
+
+	if errorInfo is not None:
+		print('WARNING: Failed to get mod updates from server')
+		print(errorInfo)
+
+	return html
+
 def getJSON(jsonURI, isURL):
 	#type: (str, bool) -> (Dict, Exception)
 	"""

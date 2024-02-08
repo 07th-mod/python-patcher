@@ -733,12 +733,31 @@ class InstallerGUI:
 
 		# This caches the self.try_start_install(...) function, only used for install previews
 		self.cachedFullInstallConfigs = {}  # type: Dict[str, Tuple[bool, installConfiguration.FullInstallConfiguration]]
+		self.updates = None
 
 	def shutdown(self):
 		self.installRunningLock.release()
 
 	def loadDonationStatus(self):
 		self.donationMonthsRemaining, self.donationProgressPercent = common.getDonationStatus()
+
+	def preloadModUpdatesHTML(self):
+		self.updates = common.preloadModUpdatesHTML()
+
+	def getUpdate(self, modName):
+		try:
+			if self.updates is None:
+				return '<strong>ERROR: Failed to get Mod Updates - self.updates is None'
+
+			if modName not in self.updates:
+				return '<strong>ERROR: Failed to get Mod Updates HTML for {} - modName missing from self.updates</strong>'.format(modName)
+
+			if 'status' not in self.updates[modName]:
+				return '<strong>ERROR: Failed to get Mod Updates HTML for {} - status is missing! </strong>'.format(modName)
+
+			return self.updates[modName]['status']
+		except Exception as e:
+			return 'ERROR: Failed to get Mod Updates - {}'.format(e)
 
 	def setSubModconfigs(self, allSubModConfigs):
 		"""
@@ -884,6 +903,7 @@ class InstallerGUI:
 							'modOptionGroups': modOptionsToWebFormat(subModConfig.modOptions),
 							'family': subModConfig.family,
 							'identifiers': subModConfig.identifiers,
+							'modUpdatesHTML': self.getUpdate(subModConfig.modName),
 						}
 					)
 

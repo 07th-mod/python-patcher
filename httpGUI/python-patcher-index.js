@@ -85,6 +85,10 @@ window.onload = function onWindowLoaded() {
           img: 'img/games/header9.png',
           dataFilter: 'Bonus Content',
         },
+        'Hou Plus': {
+          img: 'img/games/header10.png',
+          dataFilter: 'Bonus Content',
+        }
       },
       // Data filters are defined manually so you can set the order
       dataFilters: ['Question Arcs', 'Answer Arcs', 'Console Arcs', 'Bonus Content'],

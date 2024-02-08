@@ -241,8 +241,10 @@ if __name__ == "__main__":
 	def thread_unimportantTasks():
 		t_loadDonations = common.makeThread(installerGUI.loadDonationStatus)
 		t_loadLatestInstallerStatus = common.makeThread(common.Globals.loadInstallerLatestStatus)
+		t_preloadModUpdatesHTML = common.makeThread(installerGUI.preloadModUpdatesHTML)
 		t_loadDonations.start()
 		t_loadLatestInstallerStatus.start()
+		t_preloadModUpdatesHTML.start()
 
 		try:
 			t_loadDonations.join(timeout=6)
@@ -253,6 +255,12 @@ if __name__ == "__main__":
 			t_loadLatestInstallerStatus.join(timeout=6)
 		except Exception as e:
 			print(e)
+
+		try:
+			t_preloadModUpdatesHTML.join(timeout=6)
+		except Exception as e:
+			print(e)
+
 
 	def doInstallerInit():
 		try:

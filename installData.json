@@ -727,6 +727,33 @@
 		},
 		{
 			"family": "higurashi",
+			"name": "Hou Plus",
+			"target": "Hou Plus",
+			"CFBundleName": "Higurashi When They Cry Hou+",
+			"dataname": "HigurashiEp10_Data",
+			"identifiers" : ["Higurashi When They Cry Hou Plus_Data", "HigurashiEp10_Data", "HigurashiEp10.x86_64", "HigurashiEp10.exe"],
+			"submods": [
+				{
+					"name": "full",
+					"descriptionID": "higurashiFull",
+					"files": [
+						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Hou-Plus-Graphics.7z", "priority": 0},
+						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Hou-Plus-Movie.7z", "priority": 0},
+						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Hou-Plus-Voices.7z", "priority": 0},
+						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Hou-Plus-BGM-SE.7z", "priority": 0},
+						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
+						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
+					],
+					"fileOverrides": [
+						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/rikachama/ui/Hou-Plus-UI_2019.4.4_win.7z"},
+						{"name": "ui",    "id": "ui-unix-mg",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://07th-mod.com/rikachama/ui/Hou-Plus-UI_2019.4.4_unix.7z"}
+					]
+				}
+			],
+			"modOptionGroups": []
+		},
+		{
+			"family": "higurashi",
 			"name": "Console Arcs",
 			"target": "Himatsubushi",
 			"CFBundleName": "Higurashi When They Cry - Console Arcs",
