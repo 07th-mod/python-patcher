@@ -731,7 +731,7 @@
 			"target": "Hou Plus",
 			"CFBundleName": "Higurashi When They Cry Hou+",
 			"dataname": "HigurashiEp10_Data",
-			"identifiers" : ["Higurashi When They Cry Hou Plus_Data", "HigurashiEp10_Data", "HigurashiEp10.x86_64", "HigurashiEp10.exe"],
+			"identifiers" : ["Higurashi When They Cry Hou+_Data", "HigurashiEp10_Data", "HigurashiEp10.x86_64", "HigurashiEp10.exe"],
 			"submods": [
 				{
 					"name": "full",
