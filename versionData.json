@@ -219,7 +219,7 @@
 			{"id": "movie",               "version": "1.0.1"},
 			{"id": "voices",              "version": "1.0.0"},
 			{"id": "bgm-se",              "version": "1.0.2"},
-			{"id": "script",              "version": "0.2.1"},
+			{"id": "script",              "version": "0.2.2"},
 			{"id": "ui-windows",          "version": "1.0.0"},
 			{"id": "ui-unix",             "version": "1.0.0"},
 			{"id": "og-dll-asset-update", "version": "1.0.0"}
