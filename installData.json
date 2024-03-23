@@ -745,8 +745,8 @@
 						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "ui",    "id": "ui-windows","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/rikachama/ui/Hou-Plus-UI_2019.4.4_win.7z"},
-						{"name": "ui",    "id": "ui-unix",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://07th-mod.com/rikachama/ui/Hou-Plus-UI_2019.4.4_unix.7z"}
+						{"name": "ui",    "id": "ui-windows","os": ["windows"],      "unity": "2019.4.4", "url":"https://github.com/07th-mod/ui-editing-scripts/releases/download/v1.0.6_hou-plus/Hou-Plus-UI_2019.4.4_win.7z"},
+						{"name": "ui",    "id": "ui-unix",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://github.com/07th-mod/ui-editing-scripts/releases/download/v1.0.6_hou-plus/Hou-Plus-UI_2019.4.4_unix.7z"}
 					]
 				}
 			],
