@@ -159,7 +159,7 @@
 							"data": {"url": "https://github.com/wf1264/watanagashi-ru/releases/latest/download/watanagashi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/onikakushi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
+							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/watanagashi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
 							"data": {"url": "https://github.com/0Mateus/watanagashi/releases/latest/download/Watanagashi_PT-BR.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -246,7 +246,7 @@
 							"data": {"url": "https://github.com/wf1264/tatarigoroshi-ru/releases/latest/download/tatarigoroshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/onikakushi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
+							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/tatarigoroshi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
 							"data": {"url": "https://github.com/0Mateus/tatarigoroshi/releases/latest/download/Tatarigoroshi_PT-BR.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -331,7 +331,7 @@
 							"data": {"url": "https://github.com/wf1264/himatsubushi-ru/releases/latest/download/himatsubushi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/onikakushi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
+							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/himatsubushi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
 							"data": {"url": "https://github.com/0Mateus/himatsubushi/releases/latest/download/Himatsubushi_PT-BR.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
@@ -416,7 +416,7 @@
 							"data": {"url": "https://github.com/wf1264/meakashi-ru/releases/latest/download/Meakashi.Patch.RU.7z", "relativeExtractionPath": ".", "priority": 30}
 						},
 						{
-							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/onikakushi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
+							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/meakashi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
 							"data": {"url": "https://github.com/0Mateus/meakashi/releases/latest/download/Meakashi_PT-BR.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
