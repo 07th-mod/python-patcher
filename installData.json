@@ -738,7 +738,7 @@
 					"radio": [
 						{"name": "English", "description": "Use the default language", "data":null},
 						{
-							"name": "Apply Russian language patch", "description": "Патч с полным переводом контента Higurashi Rei (за исключением консольной версии Хируковаси). [Больше информации](https://github.com/Airdrakis/Higurashi_Rei-ru/). Примечание:\n - 07th-mod не занимается поддержкой этого патча - вы можете оставить Issue на гитхаб странице патча [Гитхаб](https://github.com/Airdrakis/Higurashi_Rei-ru/issues).\n - Также вы можете обратиться за помощью в сообщество авторов перевода VK [Zettai TL](https://vk.com/zettai_tl)",
+							"name": "Apply Russian language patch", "description": "Патч с полным переводом контента Higurashi no Naku Koro ni Rei. [Больше информации](https://github.com/Airdrakis/Higurashi_Rei-ru/). Примечание:\n — Команда 07th-mod не занимается поддержкой данного перевода!\n — О возникших проблемах вы можете сообщить здесь [github](https://github.com/Airdrakis/Higurashi_Rei-ru/issues).\n — Также вы можете обратиться за помощью в личные сообщения сообщества авторов перевода [Zettai TL](https://vk.com/zettai_tl).",
 							"data": {"url": "https://github.com/Airdrakis/Higurashi_Rei-ru/releases/latest/download/HigurashiEp09_Data.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
