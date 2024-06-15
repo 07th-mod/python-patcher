@@ -272,6 +272,7 @@ if __name__ == "__main__":
 			common.Globals.scanForExecutables()
 			common.Globals.scanCertLocation()
 			common.Globals.chooseCurlCertificate()
+			common.Globals.chooseURLOpenCertificate()
 
 			# Run remaining init tasks concurrently
 			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)
