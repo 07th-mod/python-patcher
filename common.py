@@ -188,6 +188,7 @@ class Globals:
 	PROTON_WITH_ASSETS_OVERRIDE_MESSAGE = "NOTE: Game is running under Proton/Wine, but user has deliberately selected which OS's assets to install, so it is OK"
 
 	CA_CERT_PATH = None
+	URLOPEN_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
 
 	NATIVE_LAUNCHER_PATH = None
@@ -240,11 +241,11 @@ class Globals:
 
 		for certificate_path in paths_to_try:
 			if not testCurlHeaders('https://07th-mod.com/', certificate_path):
-				print("chooseCurlCertificate(): Failed to download headers using CURL from 07th-mod.com using cert {}".format(certificate_path))
+				print("chooseCurlCertificate(): Failed to download headers using CURL from 07th-mod.com using cert [{}]".format(certificate_path))
 				continue
 
 			if not testCurlHeaders('https://github.com/', certificate_path):
-				print("chooseCurlCertificate(): Failed to download headers using CURL from github.com using cert {}".format(certificate_path))
+				print("chooseCurlCertificate(): Failed to download headers using CURL from github.com using cert [{}]".format(certificate_path))
 				continue
 
 			print("chooseCurlCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
@@ -252,6 +253,39 @@ class Globals:
 			return
 
 		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
+
+	# this function must be run AFTER scanCertLocation()
+	@staticmethod
+	def chooseURLOpenCertificate():
+		def testURLOpenHeaders(url, certPath):
+			try:
+				urlopen(url, context=ssl.create_default_context(cafile=certPath))
+				return True
+			except Exception as error:
+				print("Error: chooseURLOpenCertificate() Failed: {}".format(error))
+				return False
+
+		# Try:
+		# 1. Default Cert (whatever CURL uses when you don't specify argument)
+		# 2. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
+		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
+
+		for certificate_path in paths_to_try:
+			if not testURLOpenHeaders(Request('https://07th-mod.com/', headers={"User-Agent": ""}), certificate_path):
+				print("chooseURLOpenCertificate(): Failed to download headers using urlOpen from 07th-mod.com using cert [{}]".format(certificate_path))
+				continue
+
+			if not testURLOpenHeaders(Request('https://github.com/', headers={"User-Agent": ""}), certificate_path):
+				print("chooseURLOpenCertificate(): Failed to download headers using urlOpen from github.com using cert [{}]".format(certificate_path))
+				continue
+
+			print("chooseURLOpenCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
+			Globals.URLOPEN_CERT_PATH = certificate_path
+			return
+
+		print("chooseURLOpenCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
+
 
 	@staticmethod
 	def scanForAria():
@@ -401,6 +435,13 @@ You can try manually running [{}] once so the installer can use the file.""".for
 					Globals.CA_CERT_PATH = possibleCertLocation
 					print("[Linux] CA Cert - found at: {}".format(Globals.CA_CERT_PATH))
 					return
+
+	@staticmethod
+	def getURLOpenContext():
+		context = None
+		if Globals.URLOPEN_CERT_PATH:
+			context = ssl.create_default_context(cafile=Globals.URLOPEN_CERT_PATH)
+		return context
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
 def makeDirsExistOK(directoryToMake):
@@ -1258,7 +1299,7 @@ class DownloaderAndExtractor:
 			return contentDisposition, remoteLastModified, responseURL, lengthString
 
 		def queryUsingURLOpen(queryUrl):
-			httpResponse = urlopen(Request(queryUrl, headers={"User-Agent": ""}))
+			httpResponse = urlopen(Request(queryUrl, headers={"User-Agent": ""}), context=Globals.getURLOpenContext())
 
 			try:
 				contentDisposition = httpResponse.getheader("Content-Disposition")  # python 3
@@ -1431,7 +1472,7 @@ def downloadFile(url, is_text):
 	:return:
 	"""
 	def downloadUsingURLOpen(download_url):
-		file = urlopen(Request(download_url, headers={"User-Agent": ""}))
+		file = urlopen(Request(download_url, headers={"User-Agent": ""}), context=Globals.getURLOpenContext())
 		data = file.read()
 		file.close()
 		return data
