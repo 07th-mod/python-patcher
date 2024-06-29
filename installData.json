@@ -819,16 +819,10 @@
 					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v3.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 2},
-						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
-						{"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.001", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.002", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.003", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 						{"name": "os-specific-update",  "id": "os-specific-update-unix", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4"}
@@ -855,11 +849,11 @@
 					"radio": [
 						{
 							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},

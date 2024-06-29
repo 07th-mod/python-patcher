@@ -246,8 +246,9 @@
 	{
 		"id" : "Umineko Question (Ch. 1-4)/full",
 		"files":[
-			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "graphics",                  "version": "1.0.0"},
+			{"id": "base1",                     "version": "1.0.0"},
+			{"id": "base2",                     "version": "1.0.0"},
+			{"id": "base3",                     "version": "1.0.0"},
 			{"id": "script",                    "version": "1.0.32"},
 			{"id": "adv-zip",                   "version": "1.0.0"},
 			{"id": "rolling-update",            "version": "1.4.5"},
