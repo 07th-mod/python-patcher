@@ -819,9 +819,9 @@
 					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
 					"files":[
-						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.001", "priority": 0},
-						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.002", "priority": 0},
-						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-question-base-full.7z.003", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.001", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.002", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.003", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
@@ -849,11 +849,11 @@
 					"radio": [
 						{
 							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -863,7 +863,7 @@
 					"checkBox": [
 						{
 							"name": "Use Censored 'British Jessica' CG from PS3 game", "description": "In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons.\n\nTick this if you want the PS3 art style for that one CG, even if it removes the Touhou reference.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -874,15 +874,15 @@
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
 							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato-v3.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Potato-v3.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-PS3-Sprites.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -904,11 +904,11 @@
 						{"name": "No Change (default)", "description": "Don't apply any Proton/Wine fixes"},
 						{
 							"name": "Small Movie Fix", "description": "Enable this option if you are playing the game on Linux/Steam Deck with Wine/Proton.\n\nFor the Question Arcs under Linux with Wine/Proton, the installer will install the wrong (small) movie files, causing movie playback to only display on the top left of the screen. This override installs the correct 'big' movie files.",
-							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert Movie Fix", "description": "This reverts the above 'Proton Wine Movie Fix' by installing the (small) Native Linux movie files",
-							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
