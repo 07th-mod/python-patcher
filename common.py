@@ -878,15 +878,25 @@ class SevenZipException(Exception):
 	def __str__(self):
 		return self.errorReason
 
+# Split archives are usually something like 'test.7z.001', 'test.7z.002' or 'test.zip.013'
+split_file_regex = re.compile(r'\.(\d+)$')
+
 def extractOrCopyFile(filename, sourceFolder, destinationFolder, copiedOutputFileName=None):
 	makeDirsExistOK(destinationFolder)
 	sourcePath = os.path.join(sourceFolder, filename)
 
 	if '.7z' in filename.lower() or '.zip' in filename.lower():
+		split_extension = split_file_regex.search(filename.lower())
+		if split_extension:
+			split_archive_number = int(split_extension.group(1))
+			# Assume archive numbers start at 1
+			# Only process split archives where the index is '1', ignore all others as they will be processed automatically
+			if split_archive_number != 1:
+				return
+
 		monitor = SevenZipMonitor()
 		if sevenZipExtract(sourcePath, outputDir=destinationFolder, lineMonitor=monitor) != 0:
 			raise SevenZipException("{}\n\n Could not extract [{}]".format(monitor.getErrorMessage(), sourcePath))
-
 	else:
 		try:
 			shutil.copy(sourcePath, os.path.join(destinationFolder, copiedOutputFileName if copiedOutputFileName else filename))
