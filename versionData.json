@@ -250,27 +250,13 @@
 			{"id": "base2",                     "version": "1.0.0"},
 			{"id": "base3",                     "version": "1.0.0"},
 			{"id": "script",                    "version": "1.0.32"},
-			{"id": "adv-zip",                   "version": "1.0.0"},
-			{"id": "rolling-update",            "version": "1.4.5"},
-			{"id": "os-specific-update",        "version": "1.0.0"},
-			{"id": "exe",                       "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"},
-			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "os-specific-update-unix",   "version": "1.0.0"},
-			{"id": "exe-linux",                 "version": "1.0.1"},
-			{"id": "exe-mac",                   "version": "1.0.0"},
-			{"id": "common-lib",                "version": "1.0.0"}
+			{"id": "os-specific-update-unix",   "version": "1.0.0"}
 		]
 	},
 	{
 		"id" : "Umineko Question (Ch. 1-4)/voice-only",
 		"files":[
-			{"id": "voices",                    "version": "1.0.0"},
-			{"id": "script",                    "version": "1.0.32"},
-			{"id": "exe",                       "version": "1.0.0"},
-			{"id": "exe-linux",                 "version": "1.0.0"},
-			{"id": "exe-mac",                   "version": "1.0.0"},
-			{"id": "common-lib",                "version": "1.0.0"}
+			{"id": "base",                    "version": "1.0.0"}
 		]
 	},
 	{
