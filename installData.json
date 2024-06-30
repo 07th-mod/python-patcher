@@ -959,14 +959,8 @@
 					"name" : "novel-mode",
 					"descriptionID": "uminekoAnswerFull",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -975,15 +969,9 @@
 					"name" : "adv-mode",
 					"descriptionID": "uminekoAnswerADV",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3, "installOnRepair":  true},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z", "priority": 0},
 						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
-						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -992,13 +980,8 @@
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern-voice/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-voice-only.7z", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -1010,11 +993,11 @@
 					"radio": [
 						{
 							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
