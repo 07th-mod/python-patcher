@@ -248,11 +248,11 @@ class Globals:
 				print("chooseCurlCertificate(): Failed to download headers using CURL from github.com using cert [{}]".format(certificate_path))
 				continue
 
-			print("chooseCurlCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
+			print("chooseCurlCertificate(): Will use certificate [{}] when using cURL with 07th-mod and github".format(certificate_path))
 			Globals.CA_CERT_PATH = certificate_path
 			return
 
-		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
+		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried [{}] Probably can't use installer!".format(paths_to_try))
 
 	# this function must be run AFTER scanCertLocation()
 	@staticmethod
@@ -280,11 +280,11 @@ class Globals:
 				print("chooseURLOpenCertificate(): Failed to download headers using urlOpen from github.com using cert [{}]".format(certificate_path))
 				continue
 
-			print("chooseURLOpenCertificate(): Successfully used certificate {} to download from 07th-mod and github".format(certificate_path))
+			print("chooseURLOpenCertificate(): Will use certificate [{}] for URLOpen() on 07th-mod and github".format(certificate_path))
 			Globals.URLOPEN_CERT_PATH = certificate_path
 			return
 
-		print("chooseURLOpenCertificate(): ERROR: No certificates were found to work, tried {} Probably can't use installer!".format(paths_to_try))
+		print("chooseURLOpenCertificate(): ERROR: No certificates were found to work, tried [{}] Probably can't use installer!".format(paths_to_try))
 
 
 	@staticmethod
