@@ -6,6 +6,22 @@ This repository contains the mod installer, used for installing all 07th-mod mod
 
 **The below information is for developers only.**
 
+## Common Installer tasks HOWTO
+
+### Updating landing page and mod page "update" banners
+
+The HTML for the landing page and update banners for each mod is dynamically fetched from this github repo [https://github.com/07th-mod/python-patcher-updates](https://github.com/07th-mod/python-patcher-updates).
+
+To update the html:
+
+ - Edit and save the appropriate HTML file
+ - Push the commit to the repo
+ - Wait for the release to be published automatically (normally takes 15-30 seconds)
+
+Currently only the landing page and Hou+ implement this updateable html function.
+
+More detail is available in the `Readme.md` page on that repo.
+
 ## Python Development Environment Setup
 
 If you have no preference for IDE, I would recommend `Pycharm` as it will help reduce mistakes while you're writing your code. Please conform to the follwing guidelines:

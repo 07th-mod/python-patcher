@@ -126,7 +126,10 @@ window.onload = function onWindowLoaded() {
       getLogsZip(subModToInstall, installPath) {
         // Calls the function with same name in python-patcher-rest-lib.js
         getLogsZip(subModToInstall, installPath);
-      }
+      },
+      renderHTML(htmlText) {
+        return DOMPurify.sanitize(htmlText);
+      },
     },
     computed: {
       versionInfoAvailable() {

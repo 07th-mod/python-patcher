@@ -920,6 +920,7 @@ class InstallerGUI:
 							'lastSubModID': self.lastSubModID, # The ID of the last submod installed to - only valid if an install is currently running.
 							'donationMonthsRemaining': self.donationMonthsRemaining, # How many months the server can be paid for with current funding
 							'donationProgressPercent': self.donationProgressPercent, # How close funding is to the 12 month donation goal, in percent
+							'landingBannerHTML': self.getUpdate('Landing Banner'), # HTML for the index page landing banner
 							},
 						}
 
