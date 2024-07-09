@@ -1,5 +1,5 @@
 {
-	"version": 10,
+	"version": 12,
 	"mods": [
 		{
 			"family": "higurashi",
@@ -13,17 +13,12 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/rikachama/graphics/Onikakushi-Graphics.7z", "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie.7z",        "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Onikakushi-Voices.7z",       "priority": 0},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/onikakushi-base.7z", "priority": 0},
 						{"name": "ui",      "url":null,                                                              "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/onikakushi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE-v1.3.7z",                "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Onikakushi-Movie_UNIX.7z", "wine": true},
 						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=win&unity=5.2.2f1"},
 						{"name": "ui",    "id": "ui-unix" ,    "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=unix&unity=5.2.2f1"}
 					]
