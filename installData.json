@@ -15,19 +15,19 @@
 					"files":[
 						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/onikakushi-base.7z", "priority": 0},
 						{"name": "ui",      "url":null,                                                              "priority": 0, "installOnRepair":  true},
-						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=win&unity=5.2.2f1"},
-						{"name": "ui",    "id": "ui-unix" ,    "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=onikakushi&os=unix&unity=5.2.2f1"}
+						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.2.2f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/Onikakushi-UI_5.2.2f1_win.7z"},
+						{"name": "ui",    "id": "ui-unix" ,    "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/Onikakushi-UI_5.2.2f1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Onikakushi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Onikakushi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/download/v0.9.0/Onikakushi.Voice.Patch.v0.9.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -40,7 +40,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep01.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp01_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep01.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp01_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -77,7 +77,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Onikakushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Onikakushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -95,27 +95,21 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Watanagashi-Graphics.7z",      "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie.7z",            "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Watanagashi-Voices.7z",           "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/watanagashi-v1.0/watanagashi-base.7z",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                   "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/watanagashi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE-v1.3.7z",                "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
-						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",                                  "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Watanagashi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",     "id": "ui-windows", "os": ["windows"],      "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=win&unity=5.2.2f1"},
-						{"name": "ui",     "id": "ui-unix" ,   "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://07th-mod.com/ui.php?chapter=watanagashi&os=unix&unity=5.2.2f1"}
+						{"name": "ui",     "id": "ui-windows", "os": ["windows"],      "unity": "5.2.2f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/watanagashi-v1.0/Watanagashi-UI_5.2.2f1_win.7z"},
+						{"name": "ui",     "id": "ui-unix" ,   "os": ["mac", "linux"], "unity": "5.2.2f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/watanagashi-v1.0/Watanagashi-UI_5.2.2f1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Watanagashi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Watanagashi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/watanagashi/releases/download/v1.5.1/Watanagashi.Voices.Patch.v1.5.1.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -128,7 +122,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep02.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp02_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep02.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp02_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -165,7 +159,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Watanagashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Watanagashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -183,30 +177,24 @@
 					"name" : "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tatarigoroshi-Graphics.7z",    "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie.7z",          "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tatarigoroshi-Voices.7z",         "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/tatarigoroshi-base.7z",    "priority": 0},
 						{"name": "ui",      "url": null,                                                                  "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tatarigoroshi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE-v1.3.7z",                "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
-						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",                              "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix",         "os": ["linux", "mac"], "steam": null,      "url":"https://07th-mod.com/rikachama/video/Tatarigoroshi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",     "id": "ui-windows-5.4.0f1", "os": ["windows"],      "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.4.0f1"},
-						{"name": "ui",     "id": "ui-windows-5.3.4p1", "os": ["windows"],      "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.4p1"},
-						{"name": "ui",     "id": "ui-windows-5.3.5f1", "os": ["windows"],      "unity": "5.3.5f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=win&unity=5.3.5f1"},
-						{"name": "ui",     "id": "ui-unix-5.4.0f1",    "os": ["linux", "mac"], "unity": "5.4.0f1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.4.0f1"},
-						{"name": "ui",     "id": "ui-unix-5.3.4.p1",   "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://07th-mod.com/ui.php?chapter=tatarigoroshi&os=unix&unity=5.3.4p1"}
+						{"name": "ui",     "id": "ui-windows-5.4.0f1", "os": ["windows"],      "unity": "5.4.0f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/Tatarigoroshi-UI_5.4.0f1_win.7z"},
+						{"name": "ui",     "id": "ui-windows-5.3.4p1", "os": ["windows"],      "unity": "5.3.4p1", "url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/Tatarigoroshi-UI_5.3.4p1_win.7z"},
+						{"name": "ui",     "id": "ui-windows-5.3.5f1", "os": ["windows"],      "unity": "5.3.5f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/Tatarigoroshi-UI_5.3.5f1_win.7z"},
+						{"name": "ui",     "id": "ui-unix-5.4.0f1",    "os": ["linux", "mac"], "unity": "5.4.0f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/Tatarigoroshi-UI_5.4.0f1_unix.7z"},
+						{"name": "ui",     "id": "ui-unix-5.3.4.p1",   "os": ["linux", "mac"], "unity": "5.3.4p1", "url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/Tatarigoroshi-UI_5.3.4p1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tatarigoroshi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Tatarigoroshi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/tatarigoroshi/releases/download/v0.5.2/Tatarigoroshi.Voice.Patch.v0.5.2.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -219,7 +207,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep03.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp03_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep03.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp03_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -252,7 +240,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Tatarigoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Tatarigoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -271,27 +259,21 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Himatsubushi-Graphics.7z",   "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie.7z",         "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Himatsubushi-Voices.7z",        "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/himatsubushi-v1.0/himatsubushi-base.7z",    "priority": 0},
 						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/himatsubushi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/Higurashi-OG-BGM-SE-v1.3.7z",                "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
-						{"name": "remake-bgm",          "url":"https://07th-mod.com/rikachama/audio/Higurashi-Remake-BGM.7z",               "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",                                "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix",  "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Himatsubushi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
-						{"name": "ui",    "id": "ui-unix",     "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
+						{"name": "ui",    "id": "ui-windows",  "os": ["windows"],      "unity": "5.4.1f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/himatsubushi-v1.0/Himatsubushi-UI_5.4.1f1_win.7z"},
+						{"name": "ui",    "id": "ui-unix",     "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/himatsubushi-v1.0/Himatsubushi-UI_5.4.1f1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Himatsubushi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Himatsubushi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/himatsubushi/releases/download/v0.5.1/Himatsubushi.Voice.Patch.v0.5.1.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -304,7 +286,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep04.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp04_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep04.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp04_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -337,7 +319,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Himatsubushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Himatsubushi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -355,28 +337,23 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Meakashi-Graphics.7z", "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie.7z",       "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Meakashi-Voices.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/meakashi-base.7z",      "priority": 0},
 						{"name": "ui",      "url":null,                                                           "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/meakashi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",                                        "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie",  "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Meakashi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",     "id": "ui-windows-5.5.3p3", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p3"},
-						{"name": "ui",     "id": "ui-windows-5.5.3p1", "os": ["windows"],      "unity": "5.5.3p1", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=win&unity=5.5.3p1"},
-						{"name": "ui",     "id": "ui-unix-5.5.3p3", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=unix&unity=5.5.3p3"},
-						{"name": "ui",     "id": "ui-unix-5.5.3p1", "os": ["mac", "linux"], "unity": "5.5.3p1", "url":"https://07th-mod.com/ui.php?chapter=meakashi&os=unix&unity=5.5.3p1"}
+						{"name": "ui",     "id": "ui-windows-5.5.3p3", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/Meakashi-UI_5.5.3p3_win.7z"},
+						{"name": "ui",     "id": "ui-windows-5.5.3p1", "os": ["windows"],      "unity": "5.5.3p1", "url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/Meakashi-UI_5.5.3p1_win.7z"},
+						{"name": "ui",     "id": "ui-unix-5.5.3p3", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/Meakashi-UI_5.5.3p3_unix.7z"},
+						{"name": "ui",     "id": "ui-unix-5.5.3p1", "os": ["mac", "linux"], "unity": "5.5.3p1", "url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/Meakashi-UI_5.5.3p1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Meakashi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Meakashi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/meakashi/releases/download/v0.5.0/Meakashi.Voice.Patch.v0.5.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -389,7 +366,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep05.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp05_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep05.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp05_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -422,7 +399,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Meakashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Meakashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -440,29 +417,24 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "graphics","url":"https://07th-mod.com/rikachama/graphics/Tsumihoroboshi-Graphics.7z", "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie.7z",       "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/Tsumihoroboshi-Voices.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/tsumihoroboshi-base.7z",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/tsumihoroboshi-og-dll-asset-update.7z",   "priority": 0},
-						{"name": "system",              "url": "https://07th-mod.com/rikachama/tsumi-system/this-file-intentionally-left-blank.7z",         "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0},
+						{"name": "system",              "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z",         "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/tsumihoroboshi/releases/latest/download/Tsumihoroboshi.Voice.and.Graphics.Patch.zip",                            "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Tsumihoroboshi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
-						{"name": "ui",    "id": "ui-windows-downgrade", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=win&unity=5.5.3p3"},
-						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.5.3p3", "url":"https://07th-mod.com/ui.php?chapter=tsumihoroboshi&os=unix&unity=5.5.3p3"},
-						{"name": "system", "id": "system-mangagamer-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/tsumi-system/Tsumihoroboshi-System.7z"}
+						{"name": "ui",     "id": "ui-windows",                "os": ["windows"],      "unity": "5.5.3p3", "url": "https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/Tsumihoroboshi-UI_5.5.3p3_win.7z"},
+						{"name": "ui",     "id": "ui-windows-downgrade",      "os": ["windows"],      "unity": "5.6.7f1", "url": "https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/Tsumihoroboshi-UI_5.5.3p3_win.7z"},
+						{"name": "ui",     "id": "ui-unix",                   "os": ["mac", "linux"], "unity": "5.5.3p3", "url": "https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/Tsumihoroboshi-UI_5.5.3p3_unix.7z"},
+						{"name": "system", "id": "system-mangagamer-windows", "os": ["windows"],      "unity": "5.6.7f1", "url": "https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/Tsumihoroboshi-System.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/nipah/Tsumihoroboshi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Tsumihoroboshi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/tsumihoroboshi/releases/download/v0.1.0/Tsumihoroboshi.Voice.Patch.v0.1.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -475,7 +447,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep06.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp06_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep06.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp06_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -504,7 +476,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Tsumihoroboshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Tsumihoroboshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -522,26 +494,21 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Minagoroshi-Graphics.7z",   "priority": 0},
-						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Minagoroshi-Movie.7z",         "priority": 0},
-						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Minagoroshi-Voices.7z",        "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/minagoroshi-v1.0/minagoroshi-base.7z",      "priority": 0},
 						{"name": "ui",      "url": null,                                                                "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/minagoroshi-og-dll-asset-update.7z", "priority": 0},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip",                                 "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Minagoroshi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=win&unity=5.6.7f1"},
-						{"name": "ui",    "id": "ui-unix", "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=minagoroshi&os=unix&unity=5.6.7f1"}
+						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/minagoroshi-v1.0/Minagoroshi-UI_5.6.7f1_win.7z"},
+						{"name": "ui",    "id": "ui-unix",    "os": ["mac", "linux"], "unity": "5.6.7f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/minagoroshi-v1.0/Minagoroshi-UI_5.6.7f1_unix.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Minagoroshi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Minagoroshi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -554,7 +521,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep07.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp07_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep07.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp07_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -583,7 +550,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "https://07th-mod.com/nipah/Minagoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Minagoroshi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				}
@@ -601,45 +568,40 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "system",  "url": "https://07th-mod.com/rikachama/matsuri-system/this-file-intentionally-left-blank.7z", "priority": 0},
-						{"name": "graphics","url": "https://07th-mod.com/rikachama/graphics/Matsuribayashi-Graphics.7z",    "priority": 5},
-						{"name": "movie",   "url": "https://07th-mod.com/rikachama/video/Matsuribayashi-Movie.7z",          "priority": 5},
-						{"name": "voices",  "url": "https://07th-mod.com/rikachama/voice/Matsuribayashi-Voices.7z",         "priority": 5},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/matsuribayashi-base.7z",      "priority": 0},
+						{"name": "system",  "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z", "priority": 0},
 						{"name": "ui",      "url": null,                                                                    "priority": 5, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/matsuribayashi-og-dll-asset-update.7z", "priority": 5},
-						{"name": "restore-bgm-se",      "url":"https://07th-mod.com/rikachama/audio/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
-						{"name": "og-bgm-se",           "url":"https://07th-mod.com/rikachama/audio/HigurashiKai-OG-BGM-SE.7z",             "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5},
+						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url": "https://github.com/07th-mod/matsuribayashi/releases/latest/download/Matsuribayashi.Voice.and.Graphics.Patch.zip",                           "priority": 10, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix", "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Matsuribayashi-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
+						{"name": "ui",    "id": "ui-windows", "os": ["windows"],      "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_win.7z"},
+						{"name": "ui",    "id": "ui-macos", "os": ["mac"], "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_unix.7z"},
+						{"name": "ui",    "id": "ui-linux-steam", "os": ["linux"], "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_unix.7z", "targetChecksums": [
 							["sharedassets0.assets.backup", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"],
 							["sharedassets0.assets", "24e34f48f675d8577fdf1e01baa9a40a1c1505d39283def309f4245536c73220"]
 						]},
-						{"name": "ui",    "id": "ui-linux-gog-mg", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/rikachama/ui/Matsuribayashi-UI_2017.2.5_unix_gog_mg.7z", "targetChecksums": [
+						{"name": "ui",    "id": "ui-linux-gog-mg", "os": ["linux"], "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_unix_gog_mg.7z", "targetChecksums": [
 							["sharedassets0.assets.backup", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"],
 							["sharedassets0.assets", "A200EC2A85349BC03B59C8E2F106B99ED0CBAAA25FC50928BB8BA2E2AA90FCE9"]
 						]},
-						{"name": "ui",    "id": "ui-windows-old", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-windows-gog-upgraded", "os": ["windows"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=win&unity=2017.2.5", "targetChecksums": [
+						{"name": "ui",    "id": "ui-windows-old", "os": ["windows"],      "unity": "5.6.7f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_win.7z"},
+						{"name": "ui",    "id": "ui-windows-gog-upgraded", "os": ["windows"], "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_win.7z", "targetChecksums": [
 							["sharedassets0.assets.backup", "22890F97997B7B7BD21F5E64F69E1A6FB2E0FF82B3DF6C59860D8D1A56B23BBB"]
 						]},
-						{"name": "ui",    "id": "ui-linux-old", "os": ["linux"], "unity": "5.6.7f1", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5"},
-						{"name": "ui",    "id": "ui-linux-gog-upgraded", "os": ["linux"], "unity": "2017.2.5", "url":"https://07th-mod.com/ui.php?chapter=matsuribayashi&os=unix&unity=2017.2.5", "targetChecksums": [
+						{"name": "ui",    "id": "ui-linux-old", "os": ["linux"], "unity": "5.6.7f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_unix.7z"},
+						{"name": "ui",    "id": "ui-linux-gog-upgraded", "os": ["linux"], "unity": "2017.2.5", "url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-UI_2017.2.5_unix.7z", "targetChecksums": [
 							["sharedassets0.assets.backup", "a1f7b39665d63d704bc14275dcdf71cf4cca9532ac61bee23b5b18b62a5cd3af"]
 						]},
-						{"name": "system", "id": "system-gog-linux", "os": ["linux"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System_unix.7z"},
-						{"name": "system", "id": "system-gog-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://07th-mod.com/rikachama/matsuri-system/Matsuribayashi-System.7z"}
+						{"name": "system", "id": "system-gog-linux", "os": ["linux"], "unity": "5.6.7f1", "url": "https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-System_unix.7z"},
+						{"name": "system", "id": "system-gog-windows", "os": ["windows"], "unity": "5.6.7f1", "url": "https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/Matsuribayashi-System.7z"}
 					]
 				},
 				{
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voices-only/Matsuribayashi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Matsuribayashi-Voices.7z", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/matsuribayashi/releases/download/v0.0.1/Matsuribayashi.Voice.Patch.v0.0.1.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -652,7 +614,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep08.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp08_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep08.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp08_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -699,20 +661,15 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Rei-Graphics-V2.7z", "priority": 0},
-						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Rei-Movie.7z", "priority": 0},
-						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Rei-Voices.7z", "priority": 0},
-						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Rei-BGM-SE.7z", "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/rei-og-dll-asset-update.7z",   "priority": 0},
 						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "movie", "id": "movie-unix",   "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/Rei-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.3"},
-						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=win&unity=2019.4.4"},
-						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.3"},
-						{"name": "ui",    "id": "ui-unix-mg",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://07th-mod.com/ui.php?chapter=rei&os=unix&unity=2019.4.4"}
+						{"name": "ui",    "id": "ui-windows",   "os": ["windows"],      "unity": "2019.4.3", "url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_win.7z"},
+						{"name": "ui",    "id": "ui-windows-mg","os": ["windows"],      "unity": "2019.4.4", "url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.4_win.7z"},
+						{"name": "ui",    "id": "ui-unix",      "os": ["mac", "linux"], "unity": "2019.4.3", "url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.3_unix.7z"},
+						{"name": "ui",    "id": "ui-unix-mg",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/Rei-UI_2019.4.4_unix.7z"}
 					]
 				}
 			],
@@ -723,7 +680,7 @@
 					"checkBox": [
 						{
 							"name": "High Quality Ryukishi/OG Sprites (from Hou+)", "description": "This option replaces the upscaled Ryukishi sprites with the higher quality ones found in Higurashi no Naku Koro ni Hou+.\n Please note some characters (who don't appear often) may be in lower quality.",
-							"data": {"url": "https://07th-mod.com/rikachama/og-hou-sprites/hou-ogsprites-ep09.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp09_Data/StreamingAssets/OGSprites"}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-option-hou-ogsprites-v1.0/hou-ogsprites-ep09.7z", "relativeExtractionPath": ".", "priority": 40, "deletePath": "HigurashiEp09_Data/StreamingAssets/OGSprites"}
 						}
 					]
 				},
@@ -752,16 +709,13 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "graphics",    "url": "https://07th-mod.com/rikachama/graphics/Hou-Plus-Graphics.7z", "priority": 0},
-						{"name": "movie",       "url": "https://07th-mod.com/rikachama/video/Hou-Plus-Movie.7z", "priority": 0},
-						{"name": "voices",      "url": "https://07th-mod.com/rikachama/voice/Hou-Plus-Voices.7z", "priority": 0},
-						{"name": "bgm-se",      "url": "https://07th-mod.com/rikachama/audio/Hou-Plus-BGM-SE-v1.3.7z", "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
 						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides": [
-						{"name": "ui",    "id": "ui-windows","os": ["windows"],      "unity": "2019.4.4", "url":"https://github.com/07th-mod/ui-editing-scripts/releases/download/v1.0.6_hou-plus/Hou-Plus-UI_2019.4.4_win.7z"},
-						{"name": "ui",    "id": "ui-unix",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://github.com/07th-mod/ui-editing-scripts/releases/download/v1.0.6_hou-plus/Hou-Plus-UI_2019.4.4_unix.7z"}
+						{"name": "ui",    "id": "ui-windows","os": ["windows"],      "unity": "2019.4.4", "url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/Hou-Plus-UI_2019.4.4_win.7z"},
+						{"name": "ui",    "id": "ui-unix",   "os": ["mac", "linux"], "unity": "2019.4.4", "url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/Hou-Plus-UI_2019.4.4_unix.7z"}
 					]
 				}
 			],
@@ -780,23 +734,19 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "cg",      "url":"https://07th-mod.com/rikachama/graphics/ConsoleArcs-Graphics.7z",               "priority": 0},
-						{"name": "bgm",     "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-BGM.7z",              "priority": 0},
-						{"name": "se",      "url":"https://07th-mod.com/rikachama/audio/ConsoleArcs-SE.7z",               "priority": 0},
-						{"name": "movie",   "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie.7z",            "priority": 0},
-						{"name": "voices",  "url":"https://07th-mod.com/rikachama/voice/ConsoleArcs-Voices.7z",           "priority": 0},
+						{"name": "base1","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.001",      "priority": 0},
+						{"name": "base2","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.002",      "priority": 0},
+						{"name": "base3","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.003",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                  "priority": 0, "installOnRepair":  true},
 						{"name": "system",  "url":null,                                                                  "priority": 0},
-						{"name": "og-dll-asset-update", "url":"https://07th-mod.com/rikachama/og-dll-asset-update/console-og-dll-asset-update.7z", "priority": 0},
 						{"name": "script",    "url":"https://github.com/07th-mod/higurashi-console-arcs/releases/latest/download/ConsoleArcs.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_win.7z"},
-						{"name": "system", "id": "system-linux",   "os": ["linux"],        "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_linux.7z"},
-						{"name": "system", "id": "system-mac",     "os": ["mac"],          "url":"https://07th-mod.com/rikachama/misc/ConsoleArcs-System_mac.7z"},
-						{"name": "movie",  "id": "movie-unix",     "os": ["mac", "linux"], "url":"https://07th-mod.com/rikachama/video/ConsoleArcs-Movie_UNIX.7z", "wine": true},
-						{"name": "ui",     "id": "ui-windows",     "os": ["windows"],      "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=win&unity=5.4.1f1"},
-						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://07th-mod.com/ui.php?chapter=himatsubushi&os=unix&unity=5.4.1f1"}
+						{"name": "system", "id": "system-windows", "os": ["windows"],      "url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/ConsoleArcs-System_win.7z"},
+						{"name": "system", "id": "system-linux",   "os": ["linux"],        "url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/ConsoleArcs-System_linux.7z"},
+						{"name": "system", "id": "system-mac",     "os": ["mac"],          "url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/ConsoleArcs-System_mac.7z"},
+						{"name": "ui",     "id": "ui-windows",     "os": ["windows"],      "unity": "5.4.1f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/ConsoleArcs-UI_5.4.1f1_win.7z"},
+						{"name": "ui",     "id": "ui-unix",        "os": ["mac", "linux"], "unity": "5.4.1f1", "url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/ConsoleArcs-UI_5.4.1f1_unix.7z"}
 					]
 				}
 			],
@@ -814,31 +764,23 @@
 					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "graphics", "url":"https://07th-mod.com/Beato/1080p/Umineko-Graphics-1080p-v3.7z.meta4", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.001", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.002", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.003", "priority": 0},
+						{"name": "movie", "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z",  "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/Umineko-ADV_Mode.7z", "priority": 0},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-Rolling-ALL-OS.7z", "priority": 2},
-						{"name": "os-specific-update", "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "priority": 1},
-						{"name": "exe", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Beato/1080p/Umineko1to4.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-full-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
-						{"name": "os-specific-update",  "id": "os-specific-update-unix", "os":["mac", "linux"], "steam": null, "url":"https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4"}
+						{"name": "movie",  "id": "movie-unix", "os":["mac", "linux"], "steam": null, "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z"}
 					]
 				},
 				{
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Beato/Umineko-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "exe", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Beato-voice/Umineko1to4", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Beato-voice/Umineko1to4.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-voice-only.7z", "priority": 0},
+						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-voice-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -850,11 +792,11 @@
 					"radio": [
 						{
 							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -864,7 +806,7 @@
 					"checkBox": [
 						{
 							"name": "Use Censored 'British Jessica' CG from PS3 game", "description": "In one scene, the PS3 game replaces a CG of a Touhou character with another CG for copyright reasons.\n\nTick this if you want the PS3 art style for that one CG, even if it removes the Touhou reference.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-British-Jessica.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -875,15 +817,15 @@
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
 							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-Upscaled-Potato-v3.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Potato-v3.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
-							"data": {"url": "https://07th-mod.com/Beato/Umineko-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-PS3-Sprites.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -905,11 +847,11 @@
 						{"name": "No Change (default)", "description": "Don't apply any Proton/Wine fixes"},
 						{
 							"name": "Small Movie Fix", "description": "Enable this option if you are playing the game on Linux/Steam Deck with Wine/Proton.\n\nFor the Question Arcs under Linux with Wine/Proton, the installer will install the wrong (small) movie files, causing movie playback to only display on the top left of the screen. This override installs the correct 'big' movie files.",
-							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Update-1080p-v3_2019_01_03_WINDOWS.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert Movie Fix", "description": "This reverts the above 'Proton Wine Movie Fix' by installing the (small) Native Linux movie files",
-							"data": {"url": "https://07th-mod.com/Beato/1080p/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Update-1080p-v3_2019_01_03_MAC_LINUX.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -965,14 +907,12 @@
 					"name" : "novel-mode",
 					"descriptionID": "uminekoAnswerFull",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003", "priority": 0},
+						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-nvl-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -981,15 +921,13 @@
 					"name" : "adv-mode",
 					"descriptionID": "uminekoAnswerADV",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/UminekoChiru-Graphics-v2.7z.meta4", "priority": 0},
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003", "priority": 0},
+						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004", "priority": 0},
+						{"name": "adv-zip", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "adv-zip", "url":"https://07th-mod.com/Bern/UminekoChiru-ADV_Mode.7z", "priority": 0},
-						{"name": "exe", "url":"https://07th-mod.com/Bern/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "rolling-update", "url":"https://07th-mod.com/Bern/Umineko-Answer-Update-Full-Rolling-ALL-OS.7z", "priority": 1},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-nvl-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -998,13 +936,9 @@
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
-						{"name": "voices", "url":"https://07th-mod.com/Bern/UminekoChiru-Voices-nsa.7z.meta4", "priority": 0},
-						{"name": "update", "url":"https://07th-mod.com/Bern/UminekoChiruVO-Update1.zip", "priority": 1},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-voice-only.7z", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
-						{"name": "exe", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.exe", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-linux", "url":"https://07th-mod.com/Bern-voice/Umineko5to8", "priority": 3, "installOnRepair":  true},
-						{"name": "exe-mac", "url":"https://07th-mod.com/Bern-voice/Umineko5to8.app.zip", "priority": 3, "installOnRepair":  true},
-						{"name": "common-lib", "url":"https://07th-mod.com/Beato/linux-libpng-libjpeg.7z", "priority": 4}
+						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-voice-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [
 					]
@@ -1016,11 +950,11 @@
 					"radio": [
 						{
 							"name": "Default BGM", "description": "This option will use the soundtrack that comes with the vanilla game.",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-default.zip", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Use Console BGM", "description": "This option will use the soundtrack replacements introduced in the PS4/Switch version:<br><table><tr><th>Original track<th>Console track<tr><td>Fortitude<td>Dead of Dawn<tr><td>Novelette<td>fragrant cypress<tr><td>Moonlit Night<td>dark-shines<tr><td>system0<td>System Zero<tr><td>Steady Pace<td>ordinary-noon<tr><td>Thunberg Lily<td>ab-sinthe<tr><td>Tsurupettan<td>Swee-Swee Sweets</table>",
-							"data": {"url": "https://07th-mod.com/Bern/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-qa-bgm-console-v2.zip", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -1031,15 +965,15 @@
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
 							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
-							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-Upscaled-Potato-v4.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
-							"data": {"url": "https://07th-mod.com/Bern/UminekoChiru-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-PS3-Sprites.7z", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -1111,7 +1045,7 @@
 					"name" : "full",
 					"descriptionID": "uminekoTsubasaOnscripterFull",
 					"files":[
-						{"name": "mod", "url":"https://07th-mod.com/Bern/Tsubasa/umineko-tsubasa-ons.zip", "priority": 0}
+						{"name": "mod", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/umineko-tsubasa-ons.zip", "priority": 0}
 					],
 					"fileOverrides" : []
 				}
@@ -1130,10 +1064,10 @@
 					"name" : "full",
 					"descriptionID": "uminekoHaneFull",
 					"files":[
-						{"name": "graphics", "url":"https://07th-mod.com/Lambdadelta/Hane/Graphics.7z", "priority": 0},
-						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "graphics", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/hane-graphics.7z", "priority": 0},
+						{"name": "voices", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/hane-voice.7z", "priority": 0},
 						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/master/0.u", "priority": 0},
-						{"name": "exe", "url": "https://07th-mod.com/Lambdadelta/Hane/exe.7z", "priority": 0}
+						{"name": "exe", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/hane-exe.7z", "priority": 0}
 					],
 					"fileOverrides" : []
 				},
@@ -1141,7 +1075,7 @@
 					"name": "voice-only",
 					"descriptionID": "uminekoHaneVoiceOnly",
 					"files": [
-						{"name": "voices", "url": "https://07th-mod.com/Lambdadelta/Hane/voice.7z", "priority": 0},
+						{"name": "voices", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/hane-voice.7z", "priority": 0},
 						{"name": "script", "url": "https://github.com/07th-mod/umineko-hane-enter/raw/voice-only/0.utf", "priority": 0}
 					],
 					"fileOverrides" : []
@@ -1162,8 +1096,8 @@
 					"descriptionID": "uminekoSakuFull",
 					"files":[
 						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
-						{"name": "graphics", "url":"https://07th-mod.com/Bern/Saku/UminekoSaku-Graphics.7z", "priority": 0},
-						{"name": "movie", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Movie.7z", "priority": 0}
+						{"name": "graphics", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Graphics.7z", "priority": 0},
+						{"name": "movie", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Movie.7z", "priority": 0}
 					],
 					"fileOverrides" : []
 				},
@@ -1172,7 +1106,7 @@
 					"descriptionID": "uminekoSakuTLOnly",
 					"files": [
 						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
-						{"name": "graphics", "url": "https://07th-mod.com/Bern/Saku/UminekoSaku-Potato.7z", "priority": 0}
+						{"name": "graphics", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Potato.7z", "priority": 0}
 					],
 					"fileOverrides": []
 				}
