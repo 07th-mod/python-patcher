@@ -60,7 +60,7 @@ def extractSteamGrid(downloadDir):
                                                                downloadTempDir=downloadDir,
                                                                extractionDir=downloadDir,
                                                                supressDownloadStatus=True)
-        downloaderAndExtractor.addItemManually(url="https://07th-mod.com/installer/steamgrid/higumi-steamgrid.zip",
+        downloaderAndExtractor.addItemManually(url="https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/higumi-steamgrid.zip",
                                                extractionDir=downloadDir)
         downloaderAndExtractor.download()
 
