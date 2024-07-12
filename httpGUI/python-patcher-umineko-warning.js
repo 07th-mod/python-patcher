@@ -24,16 +24,12 @@ window.onload = function onWindowLoaded() {
     data: {
       subModList: [],
       masonryInitialized: false,
-      donationProgress: 'N months',
-      donationMonthsRemaining: 'XXX%',
       metaInfo: {
         buildInfo: '', // Installer Build Version and Date
         installerIsLatest: [null, ''], // 2- Tuple of whether installer is latest, and description of version information
         lockFileExists: false, // This indicates if a install is already running in a different instance, or a previous install was killed while running
         operatingSystem: '', // The operating system - either 'windows', 'linux', or 'mac'
         installAlreadyInProgress: false, // This is true if the install is currently running. Use to resume displaying an ongoing installation if the user accidentally closed the browser tab.
-        donationMonthsRemaining: '', // How many months the server can be paid for with current funding
-        donationProgressPercent: '', // How close funding is to the 12 month donation goal, in percent
       },
       modalVisible: false,
     },

@@ -718,35 +718,6 @@ def sevenZipTest(archive_path):
 	             ]
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
-def getDonationStatus():
-	# type: () -> (Optional[str], Optional[str])
-	"""
-	:return: (months_remaining, funding_goal_percentage) as a tuple (can both be None if download or parsing failed)
-	"""
-	try:
-		entirePage = downloadFile(r"https://07th-mod.com/wiki/", is_text=True)
-	except HTTPError as error:
-		return None, None
-
-	class DonationHTMLParser(HTMLParser, object):
-		def __init__(self):
-			super(DonationHTMLParser, self).__init__()
-			self.funding_goal_percentage = None
-			self.months_remaining = None
-
-		def handle_starttag(self, tag, attrs):
-			if tag == "progress":
-				for k, v in attrs:
-					if k == 'value':
-						self.funding_goal_percentage = v
-					elif k == 'data-months-remaining':
-						self.months_remaining = v
-
-	parser = DonationHTMLParser()
-	parser.feed(entirePage)
-
-	return parser.months_remaining, parser.funding_goal_percentage
-
 def preloadModUpdatesHTML():
 	html, errorInfo = getJSON("https://github.com/07th-mod/python-patcher-updates/releases/latest/download/updates.json", isURL=True)
 

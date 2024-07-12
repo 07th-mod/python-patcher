@@ -117,7 +117,6 @@ function setModNameAndNavigate(modName) {
 }
 
 function getInitStatus(onStatusReceived) {
-  // Retrieve the donation status
   doPost('getInitStatus', [], (response) => {
     onStatusReceived(response);
   });
