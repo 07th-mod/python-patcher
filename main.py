@@ -38,33 +38,6 @@ try:
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 
-def check07thModServerConnection():
-	"""
-	Makes sure that we can connect to the 07th-mod server, where the mod downloads are stored.
-	This check is only required because Japan is blocked from downloading the 07th-mod website - the installer
-	already downloads a file from Github during startup, which suffices to check the internet connection.
-	This function/check can be removed if the block is removed.
-	"""
-	try:
-		_ = common.downloadFile("https://07th-mod.com/", is_text=True)
-	except Exception as error:
-		traceback.print_exc()
-		raise Exception("""------------------------------------------------------------------------
-Error: Couldn't reach 07th Mod Server! (https://07th-mod.com/)
-
-If you have a working internet connection, most likely you are in Japan, which is blocked from the 07th-mod server.
-Please visit https://www.07th-mod.com - if you get a "406 Not Acceptable" error, you are definitely blocked.
-As a workaround, VPNs like ProtonVPN could be used...
-
-Otherwise, please check the following:
-- You have a working internet connection
-- Check if our website is down (https://07th-mod.com/)
-- Check our Wiki for more solutions: https://07th-mod.com/wiki/Installer/faq/#connection-troubleshooting
-------------------------------------------------------------------------
-
-Dev Error Message: {}
-""".format(error))
-
 def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):
 		return common.getModList("installData.json", isURL=False)
@@ -277,9 +250,8 @@ if __name__ == "__main__":
 			# Run remaining init tasks concurrently
 			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)
 			t_unimportantTasks = common.makeThread(thread_unimportantTasks)
-			t_check07thModServer = common.makeThread(check07thModServerConnection)
 
-			common.startAndJoinThreads([t_getSubModConfig, t_unimportantTasks, t_check07thModServer])
+			common.startAndJoinThreads([t_getSubModConfig, t_unimportantTasks])
 
 			if common.Globals.DEVELOPER_MODE:
 				fileVersionManagement.Developer_ValidateVersionDataJSON(t_getSubModConfig.result)

@@ -171,7 +171,6 @@ if __name__ == "__main__":
 	gui_main.installerCommonStartupTasks()
 
 	common.Globals.scanForExecutables()
-	gui_main.check07thModServerConnection()
 	modList = gui_main.getModList()
 	subModList = gui_main.getSubModConfigList(modList) #type: List[SubModConfig]
 
