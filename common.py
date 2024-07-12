@@ -240,15 +240,11 @@ class Globals:
 		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
 
 		for certificate_path in paths_to_try:
-			if not testCurlHeaders('https://07th-mod.com/', certificate_path):
-				print("chooseCurlCertificate(): Failed to download headers using CURL from 07th-mod.com using cert [{}]".format(certificate_path))
-				continue
-
 			if not testCurlHeaders('https://github.com/', certificate_path):
 				print("chooseCurlCertificate(): Failed to download headers using CURL from github.com using cert [{}]".format(certificate_path))
 				continue
 
-			print("chooseCurlCertificate(): Will use certificate [{}] when using cURL with 07th-mod and github".format(certificate_path))
+			print("chooseCurlCertificate(): Will use certificate [{}] when using cURL".format(certificate_path))
 			Globals.CA_CERT_PATH = certificate_path
 			return
 
@@ -272,15 +268,11 @@ class Globals:
 		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
 
 		for certificate_path in paths_to_try:
-			if not testURLOpenHeaders(Request('https://07th-mod.com/', headers={"User-Agent": ""}), certificate_path):
-				print("chooseURLOpenCertificate(): Failed to download headers using urlOpen from 07th-mod.com using cert [{}]".format(certificate_path))
-				continue
-
 			if not testURLOpenHeaders(Request('https://github.com/', headers={"User-Agent": ""}), certificate_path):
 				print("chooseURLOpenCertificate(): Failed to download headers using urlOpen from github.com using cert [{}]".format(certificate_path))
 				continue
 
-			print("chooseURLOpenCertificate(): Will use certificate [{}] for URLOpen() on 07th-mod and github".format(certificate_path))
+			print("chooseURLOpenCertificate(): Will use certificate [{}] for URLOpen()".format(certificate_path))
 			Globals.URLOPEN_CERT_PATH = certificate_path
 			return
 
@@ -290,7 +282,7 @@ class Globals:
 	@staticmethod
 	def scanForAria():
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
-		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://07th-mod.com/', '--dry-run=true'])
+		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://github.com/', '--dry-run=true'])
 
 		if Globals.ARIA_EXECUTABLE is None:
 			print("\nWARNING: aria2 failed to download 07th-mod website. Using fallback detection method.")
