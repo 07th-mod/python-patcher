@@ -780,6 +780,7 @@
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
 						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-voice-only.7z", "priority": 0},
+						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-voice-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
 					"fileOverrides" : [

@@ -204,6 +204,7 @@
 		"id" : "Umineko Question (Ch. 1-4)/voice-only",
 		"files":[
 			{"id": "base",                    "version": "1.0.0"},
+			{"id": "script",                  "version": "1.0.32"},
 			{"id": "exe",                     "version": "1.0.0"}
 		]
 	},
