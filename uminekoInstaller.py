@@ -139,11 +139,6 @@ def mainUmineko(conf):
 
 	downloaderAndExtractor.printPreview()
 
-	# Delete all non-checksummed files from the download folder, if they exist
-	if not optionParser.downloadManually:
-		print("Removing non-checksummed downloads:")
-		deleteExtractablesFromFolder(downloadTempDir, [x for x in downloaderAndExtractor.extractList if not x.fromMetaLink])
-
 	downloaderAndExtractor.download()
 
 	# Treat the install as "started" once the "download" stage is complete
