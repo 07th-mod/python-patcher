@@ -970,7 +970,7 @@
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Potato-v4.7z", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
