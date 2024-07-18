@@ -624,7 +624,7 @@
 					"checkBox": [
 						{
 							"name": "HD Ryukishi Sprites", "description": "Replaces the original (640x480) sprites with upscaled HD versions (1280x960)",
-							"data": {"url": "http://07th-mod.com/nipah/Matsuribayashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Matsuribayashi-HD.7z", "relativeExtractionPath": ".", "priority": 40}
 						}
 					]
 				},
