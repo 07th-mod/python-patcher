@@ -467,6 +467,10 @@
 						{
 							"name": "Apply Russian language patch", "description": "A patch including a full conversion of the game to Russian. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please contact the creator [by e-mail](mailto:wf1264962@gmail.com?subject=Tsumihoroboshi).",
 							"data": {"url": "https://github.com/wf1264/tsumihoroboshi-ru/releases/latest/download/tsumihoroboshi_ru_windows.7z", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Apply Brazilian Portuguese Language Patch", "description": "A patch including a full conversion of the game to Brazilian Portuguese. **Please note:** \n - 07th-mod doesn't directly support this community fork - instead, please raise an issue on the [Brazilian's patch Github page](https://github.com/0Mateus/tsumihoroboshi/issues).\n - Also consider checking out the [patch's discord server](https://discord.com/invite/XSeue89aaa) directly instead.",
+							"data": {"url": "https://github.com/0Mateus/tsumihoroboshi/releases/latest/download/Tsumihoroboshi_PT-BR.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
