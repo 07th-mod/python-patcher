@@ -912,10 +912,10 @@
 					"name" : "novel-mode",
 					"descriptionID": "uminekoAnswerFull",
 					"files":[
-						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001", "priority": 0},
-						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002", "priority": 0},
-						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003", "priority": 0},
-						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001.meta4", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002.meta4", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003.meta4", "priority": 0},
+						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-nvl-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
@@ -926,10 +926,10 @@
 					"name" : "adv-mode",
 					"descriptionID": "uminekoAnswerADV",
 					"files":[
-						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001", "priority": 0},
-						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002", "priority": 0},
-						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003", "priority": 0},
-						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.001.meta4", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.002.meta4", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.003.meta4", "priority": 0},
+						{"name": "base4", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-nvl.7z.004.meta4", "priority": 0},
 						{"name": "adv-zip", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-ADV_Mode.7z", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-adv-mode.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-nvl-exe.7z", "priority": 3, "installOnRepair":  true}
