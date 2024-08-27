@@ -13,7 +13,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/onikakushi-base.7z", "priority": 0},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/onikakushi-base.7z.meta4", "priority": 0},
 						{"name": "ui",      "url":null,                                                              "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp01_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/onikakushi/releases/latest/download/Onikakushi.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
@@ -95,7 +95,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/watanagashi-v1.0/watanagashi-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/watanagashi-v1.0/watanagashi-base.7z.meta4",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                   "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp02_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/watanagashi/releases/latest/download/Watanagashi.Voice.and.Graphics.Patch.zip",                                  "priority": 5, "installOnRepair":  true}
@@ -177,7 +177,7 @@
 					"name" : "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/tatarigoroshi-base.7z",    "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tatarigoroshi-v1.0/tatarigoroshi-base.7z.meta4",    "priority": 0},
 						{"name": "ui",      "url": null,                                                                  "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp03_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/tatarigoroshi/releases/latest/download/Tatarigoroshi.Voice.and.Graphics.Patch.zip",                              "priority": 5, "installOnRepair":  true}
@@ -259,7 +259,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/himatsubushi-v1.0/himatsubushi-base.7z",    "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/himatsubushi-v1.0/himatsubushi-base.7z.meta4",    "priority": 0},
 						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Question-BGM-SE-Restore.7z", "relativeExtractionPath": "HigurashiEp04_Data/StreamingAssets", "priority":  0, "requirementsList": ["skip-if-crc32:StreamingAssets/SE/wa_003.ogg:0F8F4B01"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/himatsubushi/releases/latest/download/Himatsubushi.Voice.and.Graphics.Patch.zip",                                "priority": 5, "installOnRepair":  true}
@@ -337,7 +337,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/meakashi-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/meakashi-v1.0/meakashi-base.7z.meta4",      "priority": 0},
 						{"name": "ui",      "url":null,                                                           "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp05_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url":"https://github.com/07th-mod/meakashi/releases/latest/download/Meakashi.Voice.and.Graphics.Patch.zip",                                        "priority": 5, "installOnRepair":  true}
@@ -417,7 +417,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/tsumihoroboshi-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/tsumihoroboshi-v1.0/tsumihoroboshi-base.7z.meta4",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                 "priority": 0, "installOnRepair":  true},
 						{"name": "system",              "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z",         "priority": 0},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp06_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
@@ -498,7 +498,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/minagoroshi-v1.0/minagoroshi-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/minagoroshi-v1.0/minagoroshi-base.7z.meta4",      "priority": 0},
 						{"name": "ui",      "url": null,                                                                "priority": 0, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp07_Data/StreamingAssets", "priority": 0, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
 						{"name": "script",              "url": "https://github.com/07th-mod/minagoroshi/releases/latest/download/Minagoroshi.Voice.and.Graphics.Patch.zip",                                 "priority": 5, "installOnRepair":  true}
@@ -512,7 +512,7 @@
 					"name": "voice-only",
 					"descriptionID": "higurashiVoiceOnly",
 					"files":[
-						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Minagoroshi-Voices.7z", "priority": 0},
+						{"name": "voices",  "url":"https://github.com/07th-mod/patch-releases/releases/download/higurashi-voice-only-v1.0/Minagoroshi-Voices.7z.meta4", "priority": 0},
 						{"name": "script",  "url":"https://github.com/07th-mod/minagoroshi/releases/download/v0.0.2/Minagoroshi.Voice.Patch.v0.0.2.zip", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
@@ -572,7 +572,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/matsuribayashi-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/matsuribayashi-v1.0/matsuribayashi-base.7z.meta4",      "priority": 0},
 						{"name": "system",  "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z", "priority": 0},
 						{"name": "ui",      "url": null,                                                                    "priority": 5, "installOnRepair":  true},
 						{"name": "restore-bgm-se",      "url":"https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/MangaGamer-Answer-BGM-SE-Restore.7z",   "relativeExtractionPath": "HigurashiEp08_Data/StreamingAssets", "priority": 5, "requirementsList": ["skip-if-exists:StreamingAssets/BGM/bellflower.ogg"]},
@@ -665,7 +665,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/rei-v1.0/rei-base.7z.meta4",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
 						{"name": "script",      "url": "https://github.com/07th-mod/higurashi-rei/releases/latest/download/Rei.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
@@ -713,7 +713,7 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z",      "priority": 0},
+						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z.meta4",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
 						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
@@ -738,9 +738,9 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files":[
-						{"name": "base1","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.001",      "priority": 0},
-						{"name": "base2","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.002",      "priority": 0},
-						{"name": "base3","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.003",      "priority": 0},
+						{"name": "base1","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.001.meta4",      "priority": 0},
+						{"name": "base2","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.002.meta4",      "priority": 0},
+						{"name": "base3","url":"https://github.com/07th-mod/patch-releases/releases/download/console-arcs-v1.0/console-base.7z.003.meta4",      "priority": 0},
 						{"name": "ui",      "url":null,                                                                  "priority": 0, "installOnRepair":  true},
 						{"name": "system",  "url":null,                                                                  "priority": 0},
 						{"name": "script",    "url":"https://github.com/07th-mod/higurashi-console-arcs/releases/latest/download/ConsoleArcs.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
@@ -768,9 +768,9 @@
 					"name" : "full",
 					"descriptionID": "uminekoQuestionFull",
 					"files":[
-						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.001", "priority": 0},
-						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.002", "priority": 0},
-						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.003", "priority": 0},
+						{"name": "base1", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.001.meta4", "priority": 0},
+						{"name": "base2", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.002.meta4", "priority": 0},
+						{"name": "base3", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-full.7z.003.meta4", "priority": 0},
 						{"name": "movie", "url": "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/this-file-intentionally-left-blank.7z",  "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-full.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-full-exe.7z", "priority": 3, "installOnRepair":  true}
@@ -783,7 +783,7 @@
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
-						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-voice-only.7z", "priority": 0},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-base-voice-only.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-question/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/umineko-question-voice-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
@@ -822,15 +822,15 @@
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
 							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Potato-v3.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-Upscaled-Potato-v3.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-PS3-Sprites.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-question-v1.0/Umineko-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -941,7 +941,7 @@
 					"name" : "voice-only",
 					"descriptionID": "uminekoVoiceOnly",
 					"files":[
-						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-voice-only.7z", "priority": 0},
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-base-voice-only.7z.meta4", "priority": 0},
 						{"name": "script", "url":"https://github.com/07th-mod/umineko-answer/releases/latest/download/script-voice-only.7z", "priority": 3, "installOnRepair":  true},
 						{"name": "exe", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/umineko-answer-voice-exe.7z", "priority": 3, "installOnRepair":  true}
 					],
@@ -970,15 +970,15 @@
 						{"name": "PS3 sprites (default)", "description": "Use sprites from the PS3 game. No additional download required."},
 						{
 							"name": "Pachinko Sprites", "description": "The game will use upscaled Pachinko Sprites (Mangagamer sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites, and some characters have no pachinko sprite, so the PS3 sprite will be used.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Pachinko.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Pachinko.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Ryukishi Sprites", "description": "The game will use upscaled Ryukishi Sprites (Old/Potato sprites).\n An additional 550MB of download is required.\n Please note that some scenes may still show the PS3 sprites.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Potato-v4.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-Upscaled-Potato-v4.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						},
 						{
 							"name": "Revert to PS3 Sprites", "description": "Use this option to go back to the PS3 sprites, if you previously installed the Pachinko or Ryukishi sprites.",
-							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-PS3-Sprites.7z", "relativeExtractionPath": ".", "priority": 10}
+							"data": {"url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-answer-v1.0/UminekoChiru-PS3-Sprites.7z.meta4", "relativeExtractionPath": ".", "priority": 10}
 						}
 					]
 				},
@@ -1101,7 +1101,7 @@
 					"descriptionID": "uminekoSakuFull",
 					"files":[
 						{"name": "script", "url": "https://raw.githubusercontent.com/07th-mod/umineko-saku/master/0.utf", "priority": 0},
-						{"name": "graphics", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Graphics.7z", "priority": 0},
+						{"name": "graphics", "url":"https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Graphics.7z.meta4", "priority": 0},
 						{"name": "movie", "url": "https://github.com/07th-mod/patch-releases/releases/download/umineko-legacy-v1.0/UminekoSaku-Movie.7z", "priority": 0}
 					],
 					"fileOverrides" : []
