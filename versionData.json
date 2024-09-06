@@ -169,8 +169,8 @@
 		"files": [
 			{"id": "base",                "version": "1.0.0"},
 			{"id": "script",              "version": "1.0.4"},
-			{"id": "ui-windows",          "version": "1.0.1"},
-			{"id": "ui-unix",             "version": "1.0.1"}
+			{"id": "ui-windows",          "version": "1.0.2"},
+			{"id": "ui-unix",             "version": "1.0.2"}
 		]
 	},
 	{
