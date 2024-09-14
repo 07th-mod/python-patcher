@@ -54,6 +54,7 @@ jobs:
       # CACHE NOTE: This action also provides Github Actions caching of rust builds (uses Swatinem/rust-cache internally)
       - name: Install and configure rust for 32-bit builds
         uses: actions-rust-lang/setup-rust-toolchain@v1
+        cache-workspaces: install_loader
 
       # Run Python Deploy Script
       # This also installs and scans .exe with virustotal on Windows (to try prevent .exe virus false positives)
