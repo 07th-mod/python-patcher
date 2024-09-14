@@ -223,16 +223,17 @@ class Installer:
 		# The backup (resources.assets.backup) will be deleted on a successful install
 		self.tryBackupFile('resources.assets')
 
-	def clearCompiledScripts(self):
-		compiledScriptsPattern = path.join(self.assetsDir, "CompiledUpdateScripts/*.mg")
+	def clearScriptsAndCompiledScripts(self):
+		for globPattern in ["CompiledUpdateScripts/*.mg", "Update/*.txt"]:
+			compiledScriptsPattern = path.join(self.assetsDir, globPattern)
 
-		print("Attempting to clear compiled scripts")
-		try:
-			for mg in glob.glob(compiledScriptsPattern):
-				forceRemove(mg)
-		except Exception:
-			print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
-			traceback.print_exc()
+			print("Attempting to clear compiled scripts")
+			try:
+				for mg in glob.glob(compiledScriptsPattern):
+					forceRemove(mg)
+			except Exception:
+				print('WARNING: Failed to clean up the [{}] compiledScripts'.format(compiledScriptsPattern))
+				traceback.print_exc()
 
 	def cleanOld(self):
 		"""
@@ -243,7 +244,7 @@ class Installer:
 		oldCGAlt = path.join(self.assetsDir, "CGAlt")
 
 		if self.clearScripts:
-			self.clearCompiledScripts()
+			self.clearScriptsAndCompiledScripts()
 
 		# Only delete the oldCG and oldCGAlt folders on a full update, as the CG pack won't always be extracted
 		if self.fileVersionManager.fullUpdateRequired():
