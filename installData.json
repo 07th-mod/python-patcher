@@ -713,7 +713,8 @@
 					"name": "full",
 					"descriptionID": "higurashiFull",
 					"files": [
-						{"name": "base","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z.meta4",      "priority": 0},
+						{"name": "base1","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z.001.meta4",      "priority": 0},
+						{"name": "base2","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z.002.meta4",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
 						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true}
 					],
