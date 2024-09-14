@@ -1,0 +1,5 @@
+[toolchain]
+channel = "1.66.0"
+components = [ ]
+targets = [ "i686-pc-windows-msvc" ]
+profile = "minimal"
