@@ -3,7 +3,7 @@
 		"id" : "Onikakushi Ch.1/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "7.1.8"},
+			{"id": "script",              "version": "7.2.0"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
