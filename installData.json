@@ -728,7 +728,19 @@
 					]
 				}
 			],
-			"modOptionGroups": []
+			"modOptionGroups": [
+				{
+					"name" : "Alternate Languages", "type": "downloadAndExtract",
+					"submods": ["full"],
+					"radio": [
+						{"name": "English", "description": "Use the default language", "data":null},
+						{
+							"name": "Apply Russian language patch", "description": "Бета-версия перевода большей части контента Higurashi no Naku Koro ni Hou+. [Больше информации](https://github.com/Airdrakis/Higurashi_Hou-ru/). Примечание:\n - В бете отсутствует перевод «Главы о Неистовстве Богов» и «Заседания 2022 года»!\n - Команда 07th-mod не занимается поддержкой данного перевода!\n - О возникших проблемах вы можете сообщить здесь [github](https://github.com/Airdrakis/Higurashi_Hou-ru/issues).\n - Также вы можете обратиться за помощью в личные сообщения сообщества авторов перевода [Zettai TL](https://vk.com/zettai_tl).",
+							"data": {"url": "https://github.com/Airdrakis/Higurashi_Hou-ru/releases/latest/download/HigurashiEp10_Data.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				}
+			]
 		},
 		{
 			"family": "higurashi",
@@ -847,6 +859,11 @@
 						{
 							"name": "Ukrainian", "description": "Replaces the English translation with Ukrainian. Currently only covers Episode 1. This is not compatible with the experimental script option below.",
 							"data": {"url": "https://github.com/Shreibikus/UminekoGolden/releases/latest/download/07thmod_ukr.zip", "relativeExtractionPath": ".", "priority": 30}
+						},
+						{
+							"name": "Applica la patch per la lingua italiana",
+							"description": "La patch include una completa conversione del gioco in italiano. [Maggiori dettagli qui](https://github.com/FrederikaBern/umineko-questionarcs-ita/releases). Attenzione:\n - 07th-mod non supporta direttamente questa patch; si prega invece di visitare il canale #modding_italian channel nel server discord del team 07th-mod, o solleva un problema sulla [pagina Github della patch italiana](https://github.com/FrederikaBern/umineko-questionarcs-ita/issues).\n - Considerate anche di contattare direttamente il team italiano al loro [canale telegram](https://t.me/beyondtheataraxia).",
+							"data": {"url": "https://github.com/FrederikaBern/umineko-questionarcs-ita/releases/download/last/questionarcs_ita_07th_mod_installer.v.1.0.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
 				},
