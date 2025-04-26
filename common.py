@@ -187,7 +187,9 @@ class Globals:
 
 	PROTON_WITH_ASSETS_OVERRIDE_MESSAGE = "NOTE: Game is running under Proton/Wine, but user has deliberately selected which OS's assets to install, so it is OK"
 
-	CA_CERT_PATH = None
+	LINUX_CERT_PATH_TO_TEST = None
+	CURL_CERT_PATH = None
+	ARIA2_CERT_PATH = None
 	URLOPEN_CERT_PATH = None
 	URLOPEN_IS_BROKEN = False
 
@@ -230,14 +232,15 @@ class Globals:
 
 			args += ['-I', url]
 
+			print("Testing Curl: [{}]".format(args))
 			with NullOrTemp.open() as os_devnull:
 				return subprocess.call(args, stdout=os_devnull, stderr=os_devnull) == 0
 
 		# Try:
-		# 1. Default Cert (whatever CURL uses when you don't specify argument)
-		# 2. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 1. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 2. Default Cert (whatever CURL uses when you don't specify argument)
 		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
-		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
+		paths_to_try = [Globals.LINUX_CERT_PATH_TO_TEST, None, "curl-ca-bundle.crt"]
 
 		for certificate_path in paths_to_try:
 			if not testCurlHeaders('https://github.com/', certificate_path):
@@ -245,10 +248,46 @@ class Globals:
 				continue
 
 			print("chooseCurlCertificate(): Will use certificate [{}] when using cURL".format(certificate_path))
-			Globals.CA_CERT_PATH = certificate_path
+			Globals.CURL_CERT_PATH = certificate_path
 			return
 
 		print("chooseCurlCertificate(): ERROR: No certificates were found to work, tried [{}] Probably can't use installer!".format(paths_to_try))
+
+	# this function must be run AFTER scanCertLocation()
+	@staticmethod
+	def chooseAria2Certificate():
+		def testAria2c(url, certPath):
+			try:
+				command = [Globals.ARIA_EXECUTABLE, url, '--dry-run=true']
+				if certPath is not None:
+					command.append("--ca-certificate=" + certPath)
+
+				print("Testing Aria2C: [{}]".format(command))
+				with NullOrTemp.open() as os_devnull:
+					subprocess.check_call(command, stdout=os_devnull, stderr=os_devnull)
+
+				return True
+			except Exception as error:
+				print("Error: testAria2c() Failed: {}".format(error))
+				return False
+
+		# Try:
+		# 1. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 2. Default Cert (whatever CURL uses when you don't specify argument)
+		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
+		paths_to_try = [Globals.LINUX_CERT_PATH_TO_TEST, None, "curl-ca-bundle.crt"]
+
+		for certificate_path in paths_to_try:
+			if not testAria2c('https://github.com/', certificate_path):
+				print("chooseAria2Certificate(): Failed to download from github.com using cert [{}]".format(certificate_path))
+				continue
+
+			print("chooseAria2Certificate(): Will use certificate [{}] when using Aria2C".format(certificate_path))
+			Globals.ARIA2_CERT_PATH = certificate_path
+			return
+
+		print("chooseAria2Certificate(): ERROR: No certificates were found to work, tried [{}] Probably can't use installer!".format(paths_to_try))
+
 
 	# this function must be run AFTER scanCertLocation()
 	@staticmethod
@@ -265,7 +304,7 @@ class Globals:
 		# 1. Default Cert (whatever CURL uses when you don't specify argument)
 		# 2. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
 		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
-		paths_to_try = [None, Globals.CA_CERT_PATH, "curl-ca-bundle.crt"]
+		paths_to_try = [Globals.LINUX_CERT_PATH_TO_TEST, None, "curl-ca-bundle.crt"]
 
 		for certificate_path in paths_to_try:
 			if not testURLOpenHeaders(Request('https://github.com/', headers={"User-Agent": ""}), certificate_path):
@@ -278,14 +317,13 @@ class Globals:
 
 		print("chooseURLOpenCertificate(): ERROR: No certificates were found to work, tried [{}] Probably can't use installer!".format(paths_to_try))
 
-
 	@staticmethod
 	def scanForAria():
 		ariaSearchPaths = ["./aria2c", "./.aria2c", "aria2c"]
 		Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['https://github.com/', '--dry-run=true'])
 
 		if Globals.ARIA_EXECUTABLE is None:
-			print("\nWARNING: aria2 failed to download 07th-mod website. Using fallback detection method.")
+			print("\nWARNING: aria2 failed to download 07th-mod website. Try using fallback detection method (call Aria2c with -h).")
 			Globals.ARIA_EXECUTABLE = findWorkingExecutablePath(ariaSearchPaths, ['-h'])
 
 		if Globals.ARIA_EXECUTABLE is None:
@@ -424,8 +462,8 @@ You can try manually running [{}] once so the installer can use the file.""".for
 				"/etc/ssl/cert.pem",  # Alpine Linux
 			]:
 				if os.path.exists(possibleCertLocation):
-					Globals.CA_CERT_PATH = possibleCertLocation
-					print("[Linux] CA Cert - found at: {}".format(Globals.CA_CERT_PATH))
+					Globals.LINUX_CERT_PATH_TO_TEST = possibleCertLocation
+					print("[Linux] CA Cert - found at: {}".format(Globals.LINUX_CERT_PATH_TO_TEST))
 					return
 
 	@staticmethod
@@ -624,8 +662,8 @@ def aria(downloadDir=None, inputFile=None, url=None, followMetaLink=False, useIP
 	if outputFile:
 		arguments.append("--out=" + outputFile)
 
-	if Globals.CA_CERT_PATH is not None:
-		arguments.append("--ca-certificate=" + Globals.CA_CERT_PATH)
+	if Globals.ARIA2_CERT_PATH is not None:
+		arguments.append("--ca-certificate=" + Globals.ARIA2_CERT_PATH)
 
 	# On linux, there is some problem where the console buffer is not read by runProcessOutputToTempFile(...) until
 	# a newline is printed. I was unable to fix this properly, however setting 'summary-interval' (default 60s) lower will
@@ -1250,8 +1288,8 @@ class DownloaderAndExtractor:
 			with NullOrTemp.open() as os_devnull:
 				# Build CURL arguments
 				subprocess_args = [Globals.CURL_EXECUTABLE]
-				if Globals.CA_CERT_PATH is not None:
-					subprocess_args += ['--cacert', Globals.CA_CERT_PATH]
+				if Globals.CURL_CERT_PATH is not None:
+					subprocess_args += ['--cacert', Globals.CURL_CERT_PATH]
 				subprocess_args += ["-fILX", "GET", queryUrl]
 
 				print("queryUsingCURL(): Using args {}".format(subprocess_args))

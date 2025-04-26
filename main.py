@@ -239,6 +239,7 @@ if __name__ == "__main__":
 			common.Globals.scanCertLocation()
 			common.Globals.chooseCurlCertificate()
 			common.Globals.chooseURLOpenCertificate()
+			common.Globals.chooseAria2Certificate()
 
 			# Run remaining init tasks concurrently
 			t_getSubModConfig = common.makeThread(thread_getSubModConfigList)
