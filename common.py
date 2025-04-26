@@ -301,8 +301,8 @@ class Globals:
 				return False
 
 		# Try:
-		# 1. Default Cert (whatever CURL uses when you don't specify argument)
-		# 2. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 1. On Linux, we scan for certs on the user's computer and store the first found one. Try this.
+		# 2. Default Cert (whatever CURL uses when you don't specify argument)
 		# 3. Try the certificate we bundle with the installer. We try this last becuase it might be out of date, depending on when the installer was last released.
 		paths_to_try = [Globals.LINUX_CERT_PATH_TO_TEST, None, "curl-ca-bundle.crt"]
 
