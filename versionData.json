@@ -181,7 +181,7 @@
 			{"id": "base2",               "version": "1.0.0"},
 			{"id": "base3",               "version": "1.0.0"},
 			{"id": "base4",               "version": "1.0.0"},
-			{"id": "script",              "version": "10.1.2"},
+			{"id": "script",              "version": "10.2.0"},
 			{"id": "system-windows",      "version": "1.0.0"},
 			{"id": "system-linux",        "version": "1.0.0"},
 			{"id": "system-mac",          "version": "1.0.0"},
