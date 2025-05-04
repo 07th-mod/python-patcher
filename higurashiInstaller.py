@@ -381,7 +381,7 @@ class Installer:
 
 		# For now, assume language patches don't provide CompiledUpdateScripts folder, so clear any existing compiled
 		# scripts which may come with the main patch
-		self.clearCompiledScripts()
+		self.clearScriptsAndCompiledScripts()
 
 		invalidUIFileList = listInvalidUIFiles(folderToApply)
 
