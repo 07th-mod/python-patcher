@@ -89,8 +89,8 @@ class VersionManager:
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
 	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, datadir=None, _testRemoteSubModVersion=None, verbosePrinting=True):
-		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool) -> None
-		subMod = fullInstallConfiguration.subModConfig
+		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool, Optional[list[str]]) -> None
+		subMod = fullInstallConfiguration.subModConfig # type: installConfiguration.SubModConfig
 		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
 		self.unfilteredModFileList = modFileList
@@ -132,8 +132,14 @@ class VersionManager:
 			for file in self.unfilteredModFileList:
 				self.updatesRequiredDict[file.id] = (True, "Failed to retrieve remote version information")
 		else:
+			forceUpdateList = []
+
+			# Always install script when language patch is enabled
+			if subMod.family == "higurashi" and modOptionParser.languagePatchIsEnabled:
+				forceUpdateList.append(ForceUpdate('script', 'Language patch option forces script re-install'))
+
 			# Mark files which need update
-			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo, repairMode=modOptionParser.repairMode)
+			self.updatesRequiredDict = getFilesNeedingUpdate(self.unfilteredModFileList, self.localVersionInfo, self.remoteVersionInfo, repairMode=modOptionParser.repairMode, forceUpdateList=forceUpdateList)
 
 			if verbosePrinting:
 				print("\nInstaller Update Information:")
@@ -266,10 +272,15 @@ def getRemoteVersion(remoteTargetID):
 
 	return SubModVersionInfo(remoteVersionObject)
 
+class ForceUpdate:
+	def __init__(self, name, reason):
+		#type: (str, str) -> None
+		self.name = name
+		self.reason = reason
 
 # given a mod
-def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo, repairMode):
-	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo, bool) -> Dict[str, Tuple[bool, str]]
+def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo, repairMode, forceUpdateList=None):
+	#type: (List[installConfiguration.ModFile], SubModVersionInfo, SubModVersionInfo, bool, Optional[list[ForceUpdate]]) -> Dict[str, Tuple[bool, str]]
 	"""
 
 	:param modFileList:
@@ -300,6 +311,13 @@ def getFilesNeedingUpdate(modFileList, localVersionInfo, remoteVersionInfo, repa
 	for file in modFileList:
 		result = updatesRequiredDict.get(file.id)
 		needUpdate, updateReason = (True, "Missing version info") if result is None else result
+
+		# Check for files forced to update via forceUpdateList parameter
+		if not needUpdate and forceUpdateList is not None:
+			for forceUpdate in forceUpdateList:
+				if file.name == forceUpdate.name:
+					needUpdate = True
+					updateReason = forceUpdate.reason
 
 		if not needUpdate and repairMode and file.installOnRepair:
 			needUpdate = True

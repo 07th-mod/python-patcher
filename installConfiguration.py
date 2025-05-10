@@ -275,6 +275,7 @@ class ModOptionParser:
 		self.repairMode = False
 		self.downloadManually = False
 		self.forceInstallFromScratch = False
+		self.languagePatchIsEnabled = False
 
 		# Sort according to priority - higher priority items will be extracted later, overwriting lower priority items.
 		for modOption in self.config.subModConfig.modOptions:
@@ -307,6 +308,10 @@ class ModOptionParser:
 		# Make sure download and extraction options are sorted
 		self.downloadAndExtractOptionsByPriority.sort(key=lambda opt: opt.priority)
 
+		# Check if any language patch options are enabled
+		for opt in self.downloadAndExtractOptionsByPriority:
+			if opt.group == 'Alternate Languages':
+				self.languagePatchIsEnabled = True
 
 class SubModConfig:
 	# directly represents a single submod from the json file

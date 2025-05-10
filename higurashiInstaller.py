@@ -124,12 +124,12 @@ class Installer:
 		:param str directory: The directory of the game
 		:param dict info: The info dictionary from server JSON file for the requested target
 		"""
+		self.optionParser = modOptionParser
 		self.forcedExtractDirectory = forcedExtractDirectory
 		self.info = fullInstallConfiguration
 		self.directory = fullInstallConfiguration.installPath
 		self.dataDirectory = self.getDataDirectory(self.directory)
 		self.clearScripts = False  # If true, will clear CompiledUpdateScripts before extraction stage
-		self.languagePatchIsEnabled = False  # True if at least one language patch will be installed
 		self.skipDownload = skipDownload
 		self.isWine = fullInstallConfiguration.isWine
 
@@ -175,16 +175,11 @@ class Installer:
 
 		self.downloaderAndExtractor.buildDownloadAndExtractionList()
 
-		self.optionParser = modOptionParser
-
 		for opt in self.optionParser.downloadAndExtractOptionsByPriority:
 			self.downloaderAndExtractor.addItemManually(
 				url=opt.url,
 				extractionDir=os.path.join(self.extractDir, opt.relativeExtractionPath),
 			)
-			if opt.group == 'Alternate Languages':
-				self.clearScripts = True
-				self.languagePatchIsEnabled = True
 
 		self.downloaderAndExtractor.printPreview()
 
@@ -227,7 +222,7 @@ class Installer:
 		for globPattern in ["CompiledUpdateScripts/*.mg", "Update/*.txt"]:
 			compiledScriptsPattern = path.join(self.assetsDir, globPattern)
 
-			print("Attempting to clear compiled scripts")
+			print("Attempting to clear compiled scripts in [{}]".format(compiledScriptsPattern))
 			try:
 				for mg in glob.glob(compiledScriptsPattern):
 					forceRemove(mg)
@@ -376,12 +371,23 @@ class Installer:
 			folderToApply = self.getDataDirectory(self.forcedExtractDirectory)
 
 		# Don't need to apply any special UI if no language patch
-		if not self.languagePatchIsEnabled:
+		if not self.optionParser.languagePatchIsEnabled:
 			return
+
+		print("applyLanguagePatchFixesIfNecessary(): Language Patch Enabled - Executing Extra Language Patch Fixes...")
 
 		# For now, assume language patches don't provide CompiledUpdateScripts folder, so clear any existing compiled
 		# scripts which may come with the main patch
-		self.clearScriptsAndCompiledScripts()
+		# NOTE: previously, scripts were cleared here via self.clearScriptsAndCompiledScripts(), but this caused issues.
+		# It is now changed to:
+		#
+		# 1. Before this function is called, scripts are cleared (as part of normal mod script installation)
+		# 2. Then, base scripts are then installed (will always happen even if already on latest script ver.)
+		# 3. Then the language patch scripts are installed
+		#
+		# This is done because as all language patches omit some files (at least init.txt, but often other scripts),
+		# so language patches must be installed "ontop" of existing scripts. Clearing scripts at any other time will result
+		# in missing scripts.
 
 		invalidUIFileList = listInvalidUIFiles(folderToApply)
 
