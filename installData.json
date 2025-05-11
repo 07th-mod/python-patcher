@@ -31,6 +31,14 @@
 						{"name": "script",  "url":"https://github.com/07th-mod/onikakushi/releases/download/v0.9.0/Onikakushi.Voice.Patch.v0.9.0.7z", "priority": 5, "installOnRepair":  true}
 					],
 					"fileOverrides" : []
+				},
+				{
+					"name": "vanilla",
+					"descriptionID": "higurashiVanilla",
+					"files":[
+						{"name": "base", "url":"https://github.com/07th-mod/patch-releases/releases/download/onikakushi-v1.0/onikakushi-base.7z.meta4", "relativeExtractionPath": "07th_mod_temp", "priority": 0}
+					],
+					"fileOverrides" : []
 				}
 			],
 			"modOptionGroups": [

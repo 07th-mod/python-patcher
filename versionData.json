@@ -17,6 +17,12 @@
 		]
 	},
 	{
+		"id" : "Onikakushi Ch.1/vanilla",
+		"files":[
+			{"id": "base",                "version": "1.0.0"}
+		]
+	},
+	{
 		"id" : "Watanagashi Ch.2/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},

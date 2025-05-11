@@ -504,7 +504,9 @@ def main(fullInstallConfiguration):
 	keepDownloads = modOptionParser.keepDownloads
 
 	# The Partial Manual Install option is mainly for Windows, so please don't assume it works properly on Linux/MacOS
-	if modOptionParser.partialManualInstall:
+	if fullInstallConfiguration.subModConfig.subModName == 'vanilla':
+		pass
+	elif modOptionParser.partialManualInstall:
 		extractDir = fullInstallConfiguration.subModConfig.modName + " " + fullInstallConfiguration.subModConfig.subModName + " Extracted"
 		installer = Installer(fullInstallConfiguration, extractDirectlyToGameDirectory=False, modOptionParser=modOptionParser, forcedExtractDirectory=extractDir)
 		installer.download()
