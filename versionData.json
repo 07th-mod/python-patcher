@@ -170,6 +170,7 @@
 			{"id": "base1",               "version": "1.0.1"},
 			{"id": "base2",               "version": "1.0.1"},
 			{"id": "script",              "version": "1.2.2"},
+			{"id": "og-mode",             "version": "1.0.0"},
 			{"id": "ui-windows",          "version": "1.0.2"},
 			{"id": "ui-unix",             "version": "1.0.2"}
 		]
