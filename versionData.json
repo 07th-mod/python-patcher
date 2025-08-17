@@ -113,7 +113,7 @@
 		"id": "Minagoroshi Ch.7/full",
 		"files": [
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "2.4.2"},
+			{"id": "script",              "version": "2.4.3"},
 			{"id": "ui-windows",          "version": "1.2.0"},
 			{"id": "ui-unix",             "version": "1.2.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
