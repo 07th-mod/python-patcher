@@ -721,7 +721,7 @@
 						{"name": "base2","url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-base.7z.002.meta4",      "priority": 0},
 						{"name": "ui",          "url": null, "priority": 0, "installOnRepair":  true},
 						{"name": "script",      "url": "https://github.com/07th-mod/hou-plus/releases/latest/download/Hou.Voice.and.Graphics.Patch.zip", "priority": 5, "installOnRepair":  true},
-						{"name": "og-mode",      "url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-og-sprites-backgrounds.7z",   "relativeExtractionPath": "HigurashiEp10_Data/StreamingAssets", "priority": 2}
+						{"name": "og-mode",      "url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/hou-og-sprites-backgrounds-v2.7z", "priority": 2}
 					],
 					"fileOverrides": [
 						{"name": "ui",    "id": "ui-windows","os": ["windows"],      "unity": "2019.4.4", "url":"https://github.com/07th-mod/patch-releases/releases/download/hou-plus-v1.0/Hou-Plus-UI_2019.4.4_win.7z"},
