@@ -157,7 +157,7 @@
 		"id": "Rei/full",
 		"files": [
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "1.5.1"},
+			{"id": "script",              "version": "1.5.2"},
 			{"id": "ui-windows",          "version": "1.0.3"},
 			{"id": "ui-windows-mg",       "version": "1.0.3"},
 			{"id": "ui-unix",             "version": "1.0.3"},
