@@ -20,7 +20,7 @@
 		"id" : "Watanagashi Ch.2/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "5.2.0"},
+			{"id": "script",              "version": "5.2.1"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
@@ -57,7 +57,7 @@
 		"id" : "Himatsubushi Ch.4/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "7.1.3"},
+			{"id": "script",              "version": "7.1.4"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
