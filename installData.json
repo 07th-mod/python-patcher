@@ -736,7 +736,7 @@
 					"radio": [
 						{"name": "English", "description": "Use the default language", "data":null},
 						{
-							"name": "Apply Russian language patch", "description": "Бета-версия перевода большей части контента Higurashi no Naku Koro ni Hou+. [Больше информации](https://github.com/Airdrakis/Higurashi_Hou-ru/). Примечание:\n - В бете отсутствует перевод «Главы о Неистовстве Богов» и «Заседания 2022 года»!\n - Команда 07th-mod не занимается поддержкой данного перевода!\n - О возникших проблемах вы можете сообщить здесь [github](https://github.com/Airdrakis/Higurashi_Hou-ru/issues).\n - Также вы можете обратиться за помощью в личные сообщения сообщества авторов перевода [Zettai TL](https://vk.com/zettai_tl).",
+							"name": "Apply Russian language patch", "description": "Патч с полным переводом контента Higurashi no Naku Koro ni Hou+. [Больше информации](https://github.com/Airdrakis/Higurashi_Hou-ru/). Примечание:\n - Команда 07th-mod не занимается поддержкой данного перевода!\n - О возникших проблемах вы можете сообщить здесь [github](https://github.com/Airdrakis/Higurashi_Hou-ru/issues).\n - Также вы можете обратиться за помощью в личные сообщения сообщества авторов перевода [Zettai TL](https://vk.com/zettai_tl).",
 							"data": {"url": "https://github.com/Airdrakis/Higurashi_Hou-ru/releases/latest/download/HigurashiEp10_Data.7z", "relativeExtractionPath": ".", "priority": 30}
 						}
 					]
