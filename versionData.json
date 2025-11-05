@@ -37,7 +37,7 @@
 		"id" : "Tatarigoroshi Ch.3/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "6.1.3"},
+			{"id": "script",              "version": "6.1.4"},
 			{"id": "ui-windows-5.4.0f1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.4p1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.5f1",  "version": "1.3.0"},
