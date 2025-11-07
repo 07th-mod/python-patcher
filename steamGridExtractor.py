@@ -36,40 +36,60 @@ def getSteamPath():
 def getUserDataFolders():
     steamPath = getSteamPath()
 
-    print("steamGridExtractor: Attempting to install steamgrid icons to [{}]".format(steamPath))
+    print("steamGridExtractor.getUserDataFolders: Looking for user data folders inside [{}]".format(steamPath))
 
     if steamPath:
         if not os.path.exists(steamPath):
-            print("steamGridExtractor: WARNING: steamPath [{}] does not exist! steamGrid extraction will probably fail!".format(steamPath))
+            print("steamGridExtractor.getUserDataFolders: WARNING: steamPath [{}] does not exist! steamGrid extraction will probably fail!".format(steamPath))
 
-        return glob.glob(
+        maybePaths = glob.glob(
             os.path.join(steamPath, "userdata", "**", "config"), recursive=True
         )
+
+        # Only return folders, not files called 'config'
+        return list(filter(os.path.isdir, maybePaths))
     else:
         return None
 
 
 def extractSteamGrid(downloadDir):
+    commandLineParser.printSeventhModStatusUpdate(98, "Downloading and Extracting Steam Grid")
+
+    # Try to find/guess the steam user data folder where the steam grid assets should be extracted
+    userDataFolders = None
     try:
         userDataFolders = getUserDataFolders()
+    except Exception as e:
+        print("steamGridExtractor.extractSteamGrid: Failed to get Steam User Data folders (where steamgrid extracted): {}".format(e))
 
-        commandLineParser.printSeventhModStatusUpdate(98, "Downloading and Extracting Steam Grid")
-        print("Downloading and Extracting Steam Grid Icons to {}".format(userDataFolders))
+    if not userDataFolders:
+        print("steamGridExtractor.extractSteamGrid: WARNING: not extracting steamgrid icons as no steam user data folders found")
+        return
 
+    print("steamGridExtractor.extractSteamGrid: Found {} Steam User Data folders: {}".format(len(userDataFolders), userDataFolders))
+
+    # Download the steamgrid assets
+    try:
+        steamGridURL = "https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/higumi-steamgrid.zip"
+
+        print("steamGridExtractor.extractSteamGrid: Downloading Steam Grid Icons from [{}]...".format(steamGridURL))
         downloaderAndExtractor = common.DownloaderAndExtractor(modFileList=[],
                                                                downloadTempDir=downloadDir,
                                                                extractionDir=downloadDir,
                                                                supressDownloadStatus=True)
-        downloaderAndExtractor.addItemManually(url="https://github.com/07th-mod/patch-releases/releases/download/mod-common-v1.0/higumi-steamgrid.zip",
+        downloaderAndExtractor.addItemManually(url=steamGridURL,
                                                extractionDir=downloadDir)
         downloaderAndExtractor.download()
-
-        # Extract to each steam user's data folder (steam has one folder per user)
-        if userDataFolders:
-            for i in userDataFolders:
-                shutil.unpack_archive(os.path.join(downloadDir, "higumi-steamgrid.zip"), i)
-        else:
-            print("steamGridExtractor: WARNING: not extracting steamgrid icons as no steam user data folders found")
-
     except Exception as e:
-        print("Steamgrid Installation Failed: {}".format(e))
+        print("steamGridExtractor.extractSteamGrid: Steamgrid Installation - Failed to download steamgrid assets zip file: {}".format(e))
+
+    # Extract to each found user's data folder (steam has one folder per user)
+    for i in userDataFolders:
+        try:
+            print("steamGridExtractor.extractSteamGrid: Extracting Steam Grid Icons to [{}]...".format(i), end="")
+            print("OK")
+            shutil.unpack_archive(os.path.join(downloadDir, "higumi-steamgrid.zip"), i)
+        except Exception as e:
+            print("ERROR")
+            print("steamGridExtractor.extractSteamGrid: Warning - failed to extract to [{}], but other paths may work. Error: {}".format(i, e))
+
