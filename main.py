@@ -42,7 +42,7 @@ def getModList(is_developer=True):
 	if is_developer and os.path.exists('installData.json'):
 		return common.getModList("installData.json", isURL=False)
 	else:
-		return common.getModList(common.Globals.GITHUB_MASTER_BASE_URL + "installData.json", isURL=True)
+		return common.getModList(common.Globals.META_PATH__INSTALL_DATA, isURL=False)
 
 def getSubModConfigList(modList):
 	subModconfigList = []
@@ -207,6 +207,28 @@ if __name__ == "__main__":
 	installerGUI = httpGUI.InstallerGUI()
 
 	def thread_getSubModConfigList():
+		# Download and extract the installer meta data zip file, containing download links, file versions, file size etc.
+		# If you've cloned the repo (developer) then the installer will download these files, but won't use them except for
+		# the updates.json file, which is located in the other repo "python-patcher-status"
+
+		# Delete the old file to be sure we're using the latest metadata.
+		installerMetadataZipPath = "installerMetadata.zip"
+		common.removeFileWithCheck(installerMetadataZipPath)
+
+		# Download and extract the installer metadata zip
+		# Abort installation if we can't download/extract this file
+		url = common.Globals.INSTALLER_META_DATA_ZIP_URL
+		if common.aria(url=url, outputFile="installerMetadata.zip") != 0:
+			raise Exception("ERROR - could not download [{}] with aria2c".format(url))
+
+		# Extract the zip file. This should overwrite existing files so we don't get old metadata.
+		common.extractOrCopyFile(
+			filename = "installerMetadata.zip",
+			sourceFolder = ".",
+			destinationFolder = common.Globals.INSTALLER_META_DATA_FOLDER
+		)
+
+		# Now parse/load the downloaded files. Note that some files may be used later in the installer.
 		modList = getModList(common.Globals.DEVELOPER_MODE)
 		common.Globals.loadCachedDownloadSizes(modList)
 		return getSubModConfigList(modList)

@@ -246,13 +246,11 @@ def getLocalVersion(localVersionFilePath):
 
 
 def getRemoteVersion(remoteTargetID):
-	remoteVersionURL = common.Globals.GITHUB_MASTER_BASE_URL + "versionData.json"
-
 	# Get remote version
 	if common.Globals.DEVELOPER_MODE and os.path.exists("versionData.json"):
 		allRemoteVersions, remoteError = common.getJSON("versionData.json", isURL=False)
 	else:
-		allRemoteVersions, remoteError = common.getJSON(remoteVersionURL, isURL=True)
+		allRemoteVersions, remoteError = common.getJSON(common.Globals.META_PATH__VERSION_DATA, isURL=False)
 
 	if remoteError is not None:
 		print("Error retrieving remote version".format(remoteError))

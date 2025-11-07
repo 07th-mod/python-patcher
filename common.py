@@ -127,7 +127,15 @@ def printErrorMessage(text):
 
 ################################################## Global Variables#####################################################
 class Globals:
-	GITHUB_MASTER_BASE_URL = "https://raw.githubusercontent.com/07th-mod/python-patcher/master/"
+	# On startup, the installer will download a zip file containing the following files
+	# and extract them to the INSTALLER_META_DATA_FOLDER
+	INSTALLER_META_DATA_ZIP_URL = "https://github.com/07th-mod/python-patcher-metadata/releases/latest/download/installerMetadata.zip"
+	INSTALLER_META_DATA_FOLDER = "installerMetadata"
+	META_PATH__INSTALL_DATA = os.path.join(INSTALLER_META_DATA_FOLDER, "installData.json")
+	META_PATH__VERSION_DATA = os.path.join(INSTALLER_META_DATA_FOLDER, "versionData.json")
+	META_PATH__DOWNLOAD_SIZES = os.path.join(INSTALLER_META_DATA_FOLDER, "cachedDownloadSizes.json")
+	META_PATH__UPDATES = os.path.join(INSTALLER_META_DATA_FOLDER, "updates.json")
+
 	# The installer info version this installer is compatibile with
 	# Increment it when you make breaking changes to the json files
 	JSON_VERSION = 12
@@ -377,7 +385,7 @@ You can try manually running [{}] once so the installer can use the file.""".for
 			if Globals.DEVELOPER_MODE:
 				downloadSizesDict, _error = getJSON('cachedDownloadSizes.json', isURL=False)
 			else:
-				downloadSizesDict, _error = getJSON(Globals.GITHUB_MASTER_BASE_URL + 'cachedDownloadSizes.json', isURL=True)
+				downloadSizesDict, _error = getJSON(Globals.META_PATH__DOWNLOAD_SIZES, isURL=False)
 
 			if downloadSizesDict is None:
 				print("ERROR: Failed to retrieve cachedDownloadSizes.json file")
@@ -749,7 +757,7 @@ def sevenZipTest(archive_path):
 	return runProcessOutputToTempFile(arguments, sevenZipMode=True)
 
 def preloadModUpdatesHTML():
-	html, errorInfo = getJSON("https://github.com/07th-mod/python-patcher-updates/releases/latest/download/updates.json", isURL=True)
+	html, errorInfo = getJSON(Globals.META_PATH__UPDATES, isURL=False)
 
 	if errorInfo is not None:
 		print('WARNING: Failed to get mod updates from server')
@@ -1483,6 +1491,7 @@ def downloadFile(url, is_text):
 	:return:
 	"""
 	def downloadUsingURLOpen(download_url):
+		print("Downloading [{}] using Python urlopen...".format(download_url))
 		file = urlopen(Request(download_url, headers={"User-Agent": ""}), context=Globals.getURLOpenContext())
 		data = file.read()
 		file.close()

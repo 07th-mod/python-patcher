@@ -10,7 +10,7 @@ This repository contains the mod installer, used for installing all 07th-mod mod
 
 ### Updating landing page and mod page "update" banners
 
-The HTML for the landing page and update banners for each mod is dynamically fetched from this github repo [https://github.com/07th-mod/python-patcher-updates](https://github.com/07th-mod/python-patcher-updates).
+The HTML for the landing page and update banners for each mod is dynamically fetched from this github repo [https://github.com/07th-mod/python-patcher-metadata](https://github.com/07th-mod/python-patcher-metadata).
 
 To update the html:
 
