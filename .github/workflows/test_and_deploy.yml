@@ -112,6 +112,7 @@ jobs:
           repo: 07th-mod/python-patcher-metadata
           # Required when using the `repo` option. Either a PAT or a token generated from the GitHub app or CLI
           token: "${{ secrets.PYTHON_PATCHER_METADATA_PAT }}"
+          ref: main # this repo uses 'master', but the python-patcher-metadata uses 'main'
 
       # Download Windows artifacts
       - name: Download all Windows .exe artifacts
