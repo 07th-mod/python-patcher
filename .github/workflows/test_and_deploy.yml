@@ -102,6 +102,17 @@ jobs:
       - name: Validate JSON
         run: bash travis_validate_json.sh
 
+      # Build installMetadata.zip
+      # Only run this if the JSON validation was successful, in case there is an error in one of the JSON files
+      # NOTE: This PAT will expire periodically, but Github should send a reminder to renew it.
+      - name: Trigger installMetadata.zip build in python-patcher-metadata repo
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: build.yml
+          repo: 07th-mod/python-patcher-metadata
+          # Required when using the `repo` option. Either a PAT or a token generated from the GitHub app or CLI
+          token: "${{ secrets.PYTHON_PATCHER_METADATA_PAT }}"
+
       # Download Windows artifacts
       - name: Download all Windows .exe artifacts
         uses: actions/download-artifact@v4
