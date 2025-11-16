@@ -3,7 +3,7 @@
 		"id" : "Onikakushi Ch.1/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "7.2.0"},
+			{"id": "script",              "version": "7.2.1"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
@@ -20,7 +20,7 @@
 		"id" : "Watanagashi Ch.2/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "5.2.2"},
+			{"id": "script",              "version": "5.2.3"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
@@ -37,7 +37,7 @@
 		"id" : "Tatarigoroshi Ch.3/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "6.1.4"},
+			{"id": "script",              "version": "6.1.5"},
 			{"id": "ui-windows-5.4.0f1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.4p1",  "version": "1.3.0"},
 			{"id": "ui-windows-5.3.5f1",  "version": "1.3.0"},
@@ -57,7 +57,7 @@
 		"id" : "Himatsubushi Ch.4/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "7.1.5"},
+			{"id": "script",              "version": "7.1.6"},
 			{"id": "ui-windows",          "version": "1.3.0"},
 			{"id": "ui-unix",             "version": "1.3.0"},
 			{"id": "restore-bgm-se",      "version": "1.0.0"}
