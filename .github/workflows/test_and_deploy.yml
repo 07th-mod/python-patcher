@@ -140,7 +140,7 @@ jobs:
       # Only run this if the JSON validation was successful, in case there is an error in one of the JSON files
       # NOTE: This PAT will expire periodically, but Github should send a reminder to renew it.
       - name: Trigger installMetadata.zip build in python-patcher-metadata repo
-        if: steps.filter.outputs.metadata-changed == 'true'
+        if: github.ref == 'refs/heads/master' && steps.filter.outputs.metadata-changed == 'true'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build.yml
