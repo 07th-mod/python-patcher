@@ -23,9 +23,33 @@ on:
 
 # Docs on sharing data between jobs (between VMs): https://help.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts#passing-data-between-jobs-in-a-workflow
 jobs:
+  # This job checks which files have changed, and skips building the installer if only the metadata has changed.
+  # Modified from example at https://github.com/dorny/paths-filter#examples
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from filter step
+    outputs:
+      build-installer: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') || steps.filter.outputs.build-installer }}
+    steps:
+    # Download the repository
+    - uses: actions/checkout@v4
+
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          build-installer:
+            - '!((installData.json)|(versionData.json)|(cachedDownloadSizes.json))'
+
   # Windows Build
   windows_build:
     name: Windows Build
+    needs: changes
+    if: ${{ needs.changes.outputs.build-installer == 'true' }}
     runs-on: windows-latest
     strategy:
       matrix:
@@ -82,7 +106,8 @@ jobs:
   # Linux/Mac Build
   linux_mac_build:
     name: Linux and Mac Build
-    needs: windows_build
+    if: ${{ always() }} # Always run this, even if windows_build or other tasks fail
+    needs: [windows_build, changes]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -116,6 +141,7 @@ jobs:
 
       # Download Windows artifacts
       - name: Download all Windows .exe artifacts
+        if: ${{ needs.changes.outputs.build-installer == 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: windows-loader-exe
@@ -123,6 +149,7 @@ jobs:
 
       # Run Python Deploy Script
       - name: Run Deploy Script
+        if: ${{ needs.changes.outputs.build-installer == 'true' }}
         run: python travis_build_script.py
 
       # Publish a release (tagged commits)
