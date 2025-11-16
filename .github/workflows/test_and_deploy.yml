@@ -122,7 +122,7 @@ jobs:
         id: filter
         with:
           filters: |
-            validate-json:
+            metadata-changed:
               - '**/*.json'
 
       # Setup Python
@@ -133,13 +133,14 @@ jobs:
 
       # Run JSON Validation script
       - name: Validate JSON
-        if: steps.filter.outputs.validate-json == 'true'
+        if: steps.filter.outputs.metadata-changed == 'true'
         run: bash travis_validate_json.sh
 
       # Build installMetadata.zip
       # Only run this if the JSON validation was successful, in case there is an error in one of the JSON files
       # NOTE: This PAT will expire periodically, but Github should send a reminder to renew it.
       - name: Trigger installMetadata.zip build in python-patcher-metadata repo
+        if: steps.filter.outputs.metadata-changed == 'true'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build.yml
