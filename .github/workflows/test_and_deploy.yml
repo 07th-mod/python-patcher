@@ -117,6 +117,14 @@ jobs:
       # Download the repository
       - uses: actions/checkout@v4
 
+      # Check which files have changed
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            validate-json:
+              - '**/*.json'
+
       # Setup Python
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -125,6 +133,7 @@ jobs:
 
       # Run JSON Validation script
       - name: Validate JSON
+        if: steps.filter.outputs.validate-json == 'true'
         run: bash travis_validate_json.sh
 
       # Build installMetadata.zip
