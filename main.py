@@ -235,20 +235,12 @@ if __name__ == "__main__":
 
 	def thread_unimportantTasks():
 		t_loadLatestInstallerStatus = common.makeThread(common.Globals.loadInstallerLatestStatus)
-		t_preloadModUpdatesHTML = common.makeThread(installerGUI.preloadModUpdatesHTML)
 		t_loadLatestInstallerStatus.start()
-		t_preloadModUpdatesHTML.start()
 
 		try:
 			t_loadLatestInstallerStatus.join(timeout=6)
 		except Exception as e:
 			print(e)
-
-		try:
-			t_preloadModUpdatesHTML.join(timeout=6)
-		except Exception as e:
-			print(e)
-
 
 	def doInstallerInit():
 		try:
@@ -271,6 +263,10 @@ if __name__ == "__main__":
 
 			if common.Globals.DEVELOPER_MODE:
 				fileVersionManagement.Developer_ValidateVersionDataJSON(t_getSubModConfig.result)
+
+			# Some displayed HTML is dynamically loaded from the updates.json (in the installerMetadata.zip)
+			# This must be done after the installerMetadata.zip is extracted.
+			installerGUI.preloadModUpdatesHTML()
 
 			# Indicate init is complete. This causes the browser to advance from loading_screen.html to index.html
 			installerGUI.setSubModconfigs(t_getSubModConfig.result)
