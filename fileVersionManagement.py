@@ -223,6 +223,29 @@ class VersionManager:
 		if os.path.exists(localVersionFilePathToDelete):
 			os.remove(localVersionFilePathToDelete)
 
+	def getLocalVersionOrStatusString(self, fileID):
+		#type: (str) -> str
+		if self.localVersionInfo is None:
+			return "Mod Not Installed"
+
+		fileVersion = self.localVersionInfo.fileVersionsDict.get(fileID)
+
+		if fileVersion is None:
+			return "Not Installed".format(fileID)
+
+		return fileVersion.version
+
+	def getLatestVersionOrStatusString(self, fileID):
+		#type: (str) -> str
+		if self.remoteVersionInfo is None:
+			return "Remote ver data missing"
+
+		fileVersion = self.remoteVersionInfo.fileVersionsDict.get(fileID)
+
+		if fileVersion is None:
+			return "Remote id [{}] ver missing".format(fileID)
+
+		return fileVersion.version
 
 def installNewerThanDate(versionDataJsonPath, date):
 	# type: (str, datetime) -> Tuple[bool, str]

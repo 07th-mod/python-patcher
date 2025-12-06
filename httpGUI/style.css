@@ -204,6 +204,61 @@ h1, h2, h3, h4, h5, h6 {
     border-color: black;
 }
 
+.download-preview-table {
+    width: 100%;
+    table-layout: fixed; /* Setting width: 100% and table-layout:fixed achieves equally sized columns */
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
+    /* border-radius: 8px; */
+    overflow: hidden; /* Fix top of table not being rounded     */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.download-preview-table th {
+    background-color: #47b475;
+    color: #fff;
+    font-size: 16px;
+    padding: 2px 10px 2px 10px;
+    font-weight: bold;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.download-preview-table td {
+    padding: 2px 10px 2px 10px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.download-preview-table tr.inactive {
+    background-color: lightgray;
+}
+
+.download-preview-table tr.active {
+    background-color: lightgreen;
+}
+
+.download-preview-table tr.warningMinor {
+    background-color: lightyellow;
+}
+
+.download-preview-table tr.warning {
+    background-color: yellow;
+    border-width: 4px;
+    border-style: solid;
+    border-color: black;
+}
+
+.download-preview-table td.warning {
+    background-color: yellow;
+    border-width: 4px;
+    border-style: solid;
+    border-color: black;
+}
+
 .warning-text {
     background-color: yellow;
     border-width: 4px;

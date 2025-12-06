@@ -680,27 +680,33 @@
 																<span>Rows will turn green when downloaded correctly.</span>
 															</div>
 															<div v-bind:class="{ 'greyed-out': startInstallInProgressFiltered }">
-																<table class="umineko-image-table-content">
+																<table class="download-preview-table">
 																	<thead>
 																		<tr>
 																			<th style="width: 100px">File</th>
 																			<th style="width: 80px">Size</th>
 																			<th style="width: 100%">Update Reason</th>
+																			<th style="width: 100px">Installed Version</th>
+																			<th style="width: 100px">Latest Version</th>
 																			<th v-if="downloadItemsPreview.downloadManually" style="width: 200%">Manual Download Status</th>
 																		</tr>
 																	</thead>
 																	<tbody>
 																		<tr v-for="fileInfo in downloadItemsPreview.downloadItems"
-																		v-bind:class="{ active: fileInfo.rowClass === 'active', inactive: fileInfo.rowClass === 'inactive', warning: fileInfo.rowClass === 'warning' }">
+																		v-bind:class="{ active: fileInfo.rowClass === 'active', inactive: fileInfo.rowClass === 'inactive', warningMinor: fileInfo.rowClass === 'warning' }">
 																			<td>{{ fileInfo.id }}</td>
 																			<td>{{ fileInfo.fileSize }}</td>
 																			<td>{{ fileInfo.updateReason }}</td>
-																			<td v-if="downloadItemsPreview.downloadManually"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span>	</td>
+																			<td>{{ fileInfo.localVersion }}</td>
+																			<td>{{ fileInfo.remoteVersion }}</td>
+																			<td v-if="downloadItemsPreview.downloadManually" v-bind:class="{ warning: fileInfo.rowClass === 'warning' }"><span class="rendered-markdown" v-html="renderMarkdown(fileInfo.manualDownloadStatus)"></span>	</td>
 																		</tr>
 																		<tr>
 																			<td>Total Download Size</td>
 																			<td>{{ downloadItemsPreview.totalDownload }}</td>
 																			<td>{{ downloadItemsPreview.updateTypeDescription }}</td>
+																			<td></td>
+																			<td></td>
 																			<td v-if="downloadItemsPreview.downloadManually"></td>
 																		</tr>
 																	</tbody>

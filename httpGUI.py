@@ -592,6 +592,8 @@ Otherwise, re-download the file from
 						"url": item.url,
 						"manualDownloadStatus": None,
 						"fileName": None,
+						"localVersion": self.fileVersionManager.getLocalVersionOrStatusString(item.modFileID),
+						"remoteVersion": self.fileVersionManager.getLatestVersionOrStatusString(item.modFileID),
 					}
 				)
 			else:
@@ -631,6 +633,8 @@ Otherwise, re-download the file from
 							"url": extractableItem.fileURL,
 							"manualDownloadStatus": manualDownloadStatus,
 							"fileName": extractableItem.filename,
+							"localVersion": self.fileVersionManager.getLocalVersionOrStatusString(item.modFileID),
+							"remoteVersion": self.fileVersionManager.getLatestVersionOrStatusString(item.modFileID),
 						}
 					)
 
