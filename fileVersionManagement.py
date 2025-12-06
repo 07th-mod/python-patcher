@@ -69,7 +69,7 @@ def parseRequirementsList(scanPath, requirementsListString):
 
 
 class VersionManager:
-	cachedRemoteVersionInfo = {}
+	cachedRemoteVersionInfo = {} #type: Dict[str, SubModVersionInfo]
 	localVersionFileName = "installedVersionData.json"
 	def userDidPartialReinstall(self, gameInstallTimeProbePath):
 		"""
@@ -89,7 +89,7 @@ class VersionManager:
 		return os.path.getctime(gameInstallTimeProbePath) > os.path.getmtime(self.localVersionFilePath)
 
 	def __init__(self, fullInstallConfiguration, modFileList, localVersionFolder, datadir=None, _testRemoteSubModVersion=None, verbosePrinting=True):
-		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, str, Optional[SubModVersionInfo], bool, Optional[list[str]]) -> None
+		#type: (installConfiguration.FullInstallConfiguration, List[installConfiguration.ModFile], str, Optional[str], Optional[SubModVersionInfo], bool) -> None
 		subMod = fullInstallConfiguration.subModConfig # type: installConfiguration.SubModConfig
 		self.verbosePrinting = verbosePrinting
 		self.targetID = subMod.modName + '/' + subMod.subModName
@@ -241,6 +241,7 @@ def installNewerThanDate(versionDataJsonPath, date):
 		return False, "Modded install AND mod updated/installed on [{}] is OLDER than cutoff date [{}]".format(installDateModified, date)
 
 def getLocalVersion(localVersionFilePath):
+	#type: (str) -> Optional[SubModVersionInfo]
 	localVersionObject, localError = common.getJSON(localVersionFilePath, isURL=False)
 	return None if localVersionObject is None else SubModVersionInfo(localVersionObject)
 
