@@ -93,7 +93,7 @@
 		"id" : "Tsumihoroboshi Ch.6/full",
 		"files":[
 			{"id": "base",                "version": "1.0.0"},
-			{"id": "script",              "version": "4.4.2"},
+			{"id": "script",              "version": "4.4.3"},
 			{"id": "ui-windows",          "version": "1.4.0"},
 			{"id": "ui-unix",             "version": "1.4.0"},
 			{"id": "ui-windows-downgrade", "version": "1.1.0"},
