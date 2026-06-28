@@ -170,6 +170,9 @@ def getMaybeGamePaths():
 	if common.Globals.IS_MAC:
 		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common")
 		hardCodedGameContainingPaths.append("~/GOG Games")  # Not sure if this is correct for MacOS
+		crossOverSteamPattern = os.path.expanduser("~/Library/Application Support/CrossOver/Bottles/*/drive_c/Program Files*/Steam/steamapps/common")
+		for steamPath in glob.glob(crossOverSteamPattern):
+			hardCodedGameContainingPaths.append(steamPath)
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
 		hardCodedGameContainingPaths.append("c:/GOG Games")
@@ -184,7 +187,7 @@ def getMaybeGamePaths():
 
 	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
 	try:
-		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower()]
+		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower() and 'crossover/bottles' not in p.lower()]
 		hardCodedGameContainingPaths += [os.path.realpath(os.path.join(p, "steamapps", "common")) for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
 	except:
 		traceback.print_exc()
