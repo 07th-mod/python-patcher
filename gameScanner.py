@@ -17,6 +17,39 @@ try:
 except ImportError:
 	pass # Just needed for pycharm comments
 
+def _decodeVDFPath(vdfPath):
+	# type: (str) -> str
+	"""
+	Decode the small amount of escaping Steam uses for paths in VDF files.
+	"""
+	return vdfPath.replace("\\\\", "\\")
+
+def _winePathToHostPath(winePath, bottlePath):
+	# type: (str, str) -> Optional[str]
+	"""
+	Convert a Windows path inside a Wine/CrossOver bottle to a host path.
+
+	For example:
+	C:\\Program Files (x86)\\Steam -> <bottlePath>/drive_c/Program Files (x86)/Steam
+	"""
+	winePath = _decodeVDFPath(winePath)
+	match = re.match(r'^([a-zA-Z]):[\\/]*(.*)$', winePath)
+	if not match:
+		return os.path.realpath(os.path.expanduser(winePath))
+
+	driveLetter = match.group(1).lower()
+	relativePath = match.group(2).replace("\\", "/")
+
+	dosDevicePath = os.path.join(bottlePath, "dosdevices", "{}:".format(driveLetter))
+	if os.path.exists(dosDevicePath):
+		hostDrivePath = os.path.realpath(dosDevicePath)
+	elif driveLetter == 'c':
+		hostDrivePath = os.path.join(bottlePath, "drive_c")
+	else:
+		return None
+
+	return os.path.realpath(os.path.join(hostDrivePath, relativePath))
+
 def findAdditionalSteamLibraries(mainSteamPath):
 	# type: (str) -> List[str]
 	r"""
@@ -38,6 +71,59 @@ def findAdditionalSteamLibraries(mainSteamPath):
 	except:
 		traceback.print_exc()
 		return []
+
+def findAdditionalSteamLibrariesInCrossOverBottle(mainSteamPath, bottlePath):
+	# type: (str, str) -> List[str]
+	r"""
+	Try to locate additional Steam libraries for a Windows Steam install inside
+	a CrossOver bottle, returning native macOS paths.
+	"""
+	try:
+		vdf = os.path.join(mainSteamPath, "steamapps", "libraryfolders.vdf")
+		if not os.path.exists(vdf):
+			return []
+
+		import io
+		baseInstallFolderRegex = re.compile(r'^\s*"path"\s+"([^"]+)"', re.MULTILINE)
+		with io.open(vdf, 'r', encoding='UTF-8') as vdfFile:
+			libraries = []
+			for steamLibraryPath in baseInstallFolderRegex.findall(vdfFile.read()):
+				hostPath = _winePathToHostPath(steamLibraryPath, bottlePath)
+				if hostPath and os.path.isdir(os.path.join(hostPath, "steamapps")):
+					libraries.append(hostPath)
+			return libraries
+	except:
+		traceback.print_exc()
+		return []
+
+def findPossibleCrossOverSteamPathsMac(crossoverBottlesPath=None):
+	# type: (Optional[str]) -> List[str]
+	r"""
+	Find Windows Steam installs inside CrossOver bottles on macOS.
+	Returns Steam root paths, not the steamapps/common folders.
+	"""
+	if crossoverBottlesPath is None:
+		crossoverBottlesPath = os.path.expanduser("~/Library/Application Support/CrossOver/Bottles")
+
+	if not os.path.isdir(crossoverBottlesPath):
+		return []
+
+	allSteamPaths = []
+	for bottlePath in glob.glob(os.path.join(crossoverBottlesPath, "*")):
+		if not os.path.isdir(bottlePath):
+			continue
+
+		candidateSteamPaths = [
+			os.path.join(bottlePath, "drive_c", "Program Files (x86)", "Steam"),
+			os.path.join(bottlePath, "drive_c", "Program Files", "Steam")
+		]
+
+		for steamPath in candidateSteamPaths:
+			if os.path.isdir(os.path.join(steamPath, "steamapps")):
+				allSteamPaths.append(os.path.realpath(steamPath))
+				allSteamPaths += findAdditionalSteamLibrariesInCrossOverBottle(steamPath, bottlePath)
+
+	return deDuplicatePaths(allSteamPaths)
 
 def getSecondarySteamPaths(baseSteamPaths):
 	# type: (List[str]) -> List[str]
@@ -170,6 +256,10 @@ def getMaybeGamePaths():
 	if common.Globals.IS_MAC:
 		hardCodedGameContainingPaths.append("~/Library/Application Support/Steam/steamapps/common")
 		hardCodedGameContainingPaths.append("~/GOG Games")  # Not sure if this is correct for MacOS
+		hardCodedGameContainingPaths += [
+			os.path.join(steamPath, "steamapps", "common")
+			for steamPath in findPossibleCrossOverSteamPathsMac()
+		]
 	if common.Globals.IS_WINDOWS:
 		hardCodedGameContainingPaths.append("c:/games/Mangagamer")
 		hardCodedGameContainingPaths.append("c:/GOG Games")
@@ -184,7 +274,7 @@ def getMaybeGamePaths():
 
 	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
 	try:
-		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower()]
+		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower() and 'crossover/bottles' not in p.lower()]
 		hardCodedGameContainingPaths += [os.path.realpath(os.path.join(p, "steamapps", "common")) for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
 	except:
 		traceback.print_exc()

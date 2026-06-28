@@ -335,7 +335,7 @@ class Installer:
 		osString = common.Globals.OS_STRING
 		if self.isWine:
 			osString = "windows"
-			print("Language Patch UI: Proton/Wine detected! Forcing install of Windows sharedassets0.assets.")
+			print("Language Patch UI: Proton/Wine/CrossOver detected! Forcing install of Windows sharedassets0.assets.")
 
 		# TODO: use the sharedassets0.assets.backup to determine store name?
 		# For now, only differentiate steam/non-steam
@@ -498,8 +498,10 @@ class Installer:
 def main(fullInstallConfiguration):
 	# type: (installConfiguration.FullInstallConfiguration) -> None
 
-	if common.Globals.IS_LINUX:
-		print("Linux Compatibility Layer: {}".format("YES: Using Wine or Proton" if fullInstallConfiguration.isWine else "no: Using Native"))
+	if fullInstallConfiguration.isWine:
+		print("Compatibility Layer: YES: Using Wine, Proton, or CrossOver")
+	elif common.Globals.IS_LINUX:
+		print("Linux Compatibility Layer: no: Using Native")
 
 	isVoiceOnly = fullInstallConfiguration.subModConfig.subModName == 'voice-only'
 	if isVoiceOnly:

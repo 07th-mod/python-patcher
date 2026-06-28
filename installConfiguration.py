@@ -95,7 +95,7 @@ class FullInstallConfiguration:
 		self.useIPV6 = False
 		self.unityVersion = None
 
-		if self.subModConfig.family == "higurashi" and common.Globals.IS_LINUX and higurashiWindowsExecutableExists(self.subModConfig.dataName, self.installPath):
+		if self.subModConfig.family == "higurashi" and (not common.Globals.IS_WINDOWS) and higurashiWindowsExecutableExists(self.subModConfig.dataName, self.installPath):
 			self.isWine = True
 		else:
 			self.isWine = False
