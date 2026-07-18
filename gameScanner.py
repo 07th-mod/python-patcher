@@ -185,9 +185,22 @@ def getMaybeGamePaths():
 	# Expand '~' before continuing to the next steps so os.path.* functions work correctly
 	hardCodedGameContainingPaths = [os.path.realpath(os.path.expanduser(p)) for p in hardCodedGameContainingPaths]
 
-	# Try to find secondary steam folders. Need to remove the 'steamapps/common' part of path to get base steam path
+	# Scan the libraryfolders.vdf of each steam path for secondary steam folders
 	try:
-		baseHardCodedSteamPaths = [os.path.split(os.path.split(p)[0])[0] for p in hardCodedGameContainingPaths if 'steam' in p.lower() and 'crossover/bottles' not in p.lower()]
+		baseHardCodedSteamPaths = []
+		for p in hardCodedGameContainingPaths:
+			# Exclude MacOS Crossover paths from being scanned for additional steam paths from the libraryfolders.vdf file
+			# See discussion at https://github.com/07th-mod/python-patcher/pull/241 for more details
+			if common.Globals.IS_MAC and 'crossover/bottles' in p.lower():
+				continue
+
+			# Exclude non-steam game paths (this assumes all steam paths have 'steam' somewhere in the path)
+			if 'steam' not in p.lower():
+				continue
+
+			# Need to remove the 'steamapps/common' part of path to get base steam path
+			baseHardCodedSteamPaths.append(os.path.split(os.path.split(p)[0])[0])
+
 		hardCodedGameContainingPaths += [os.path.realpath(os.path.join(p, "steamapps", "common")) for p in getSecondarySteamPaths(baseHardCodedSteamPaths)]
 	except:
 		traceback.print_exc()
