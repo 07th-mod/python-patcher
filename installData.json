@@ -1006,6 +1006,28 @@
 					]
 				},
 				{
+					"name": "Translations", "type": "downloadAndExtract",
+					"submods": ["novel-mode"],
+					"radio": [
+						{"name": "English/Japanese", "description": "Uses the official English and Japanese translations for the game."},
+						{
+							"name": "Applica la patch per la lingua italiana", "description": "La patch include una completa conversione del gioco in italiano. [Maggiori dettagli qui](https://github.com/FrederikaBern/umineko-answerarcs_nvl-ita/releases). Attenzione:\n - 07th-mod non supporta direttamente questa patch; si prega invece di visitare il canale #modding_italian channel nel server discord del team 07th-mod, o solleva un problema sulla [pagina Github della patch italiana](https://github.com/FrederikaBern/umineko-answerarcs_nvl-ita/issues).\n - Considerate anche di contattare direttamente il team italiano al loro [canale telegram](https://t.me/beyondtheataraxia).",
+							"data": {"url": "https://github.com/FrederikaBern/umineko-answerarcs_nvl-ita/releases/download/Latest/answerarcs_nvl_ita_07th_mod_installer.v.1.0.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
+					"name": "Translations", "type": "downloadAndExtract",
+					"submods": ["adv-mode"],
+					"radio": [
+						{"name": "English/Japanese", "description": "Uses the official English and Japanese translations for the game."},
+						{
+							"name": "Applica la patch per la lingua italiana", "description": "La patch include una completa conversione del gioco in italiano. [Maggiori dettagli qui](https://github.com/FrederikaBern/umineko-answerarcs_adv-ita/releases). Attenzione:\n - 07th-mod non supporta direttamente questa patch; si prega invece di visitare il canale #modding_italian channel nel server discord del team 07th-mod, o solleva un problema sulla [pagina Github della patch italiana](https://github.com/FrederikaBern/umineko-answerarcs_adv-ita/issues).\n - Considerate anche di contattare direttamente il team italiano al loro [canale telegram](https://t.me/beyondtheataraxia).",
+							"data": {"url": "https://github.com/FrederikaBern/umineko-answerarcs_adv-ita/releases/download/Latest/answerarcs_adv_ita_07th_mod_installer.v.1.0.7z", "relativeExtractionPath": ".", "priority": 30}
+						}
+					]
+				},
+				{
 					"name" : "Experimental Script", "type": "downloadAndExtract",
 					"submods" : ["novel-mode"],
 					"radio": [
