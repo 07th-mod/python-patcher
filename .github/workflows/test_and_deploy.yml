@@ -26,7 +26,7 @@ jobs:
   # This job checks which files have changed, and skips building the installer if only the metadata has changed.
   # Modified from example at https://github.com/dorny/paths-filter#examples
   changes:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     # Required permissions
     permissions:
       pull-requests: read
@@ -53,7 +53,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.12]
     steps:
       # Download the repository
       - uses: actions/checkout@v4
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.12]
 
     steps:
       # Download the repository
@@ -127,7 +127,7 @@ jobs:
 
       # Setup Python
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
