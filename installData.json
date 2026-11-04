@@ -1059,7 +1059,7 @@
 				},
 				{
 					"name" : "Experimental Engine / Executable", "type": "downloadAndExtract",
-					"submods" : ["novel-mode", "adv-mode"],
+					"submods" : ["novel-mode", "adv-mode", "voice-only"],
 					"radio": [
 						{"name": "No Change", "description": "No change to engine"},
 						{
