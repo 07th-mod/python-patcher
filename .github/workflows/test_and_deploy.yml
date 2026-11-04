@@ -26,7 +26,7 @@ jobs:
   # This job checks which files have changed, and skips building the installer if only the metadata has changed.
   # Modified from example at https://github.com/dorny/paths-filter#examples
   changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Required permissions
     permissions:
       pull-requests: read
